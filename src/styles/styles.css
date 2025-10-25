@@ -285,8 +285,8 @@
                 linear-gradient(135deg, #3d2817 0%, #2c2416 50%, #3d2817 100%);
             padding: 35px 45px;
             border-radius: 8px;
-            max-width: 600px;
-            width: 500px;
+            max-width: none;
+            width: auto;
             border: 4px solid #d4af37;
             box-shadow: 
                 0 0 30px rgba(212, 175, 55, 0.4),

@@ -1,10 +1,10 @@
 # 🎴 Dungeon Scoundrel
 
-> A dark medieval roguelike card game with atmospheric music and strategic gameplay
+**A Dark Medieval Roguelike Card Game**
 
-[![Play Now](https://img.shields.io/badge/Play-Now-success?style=for-the-badge)](https://your-game-url.netlify.app)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-[![Vibe Coded](https://img.shields.io/badge/Vibe%20Coded-Windsurf-purple?style=for-the-badge)](https://codeium.com/windsurf)
+A challenging, atmospheric roguelike card game inspired by Fear and Hunger's dark medieval aesthetic. Face deadly monsters, collect powerful relics, and prove your skill across 4 difficulties with 6 unique character classes.
+
+**[▶️ Play Now](https://dungeonscoundrel.netlify.app)** | **[📋 Changelog](CHANGELOG.md)** | **[🤝 Contributing](CONTRIBUTING.md)** | **[📁 Structure](docs/PROJECT_STRUCTURE.md)**
 
 ---
 
@@ -150,12 +150,13 @@ DungeonScoundrel/
 - [x] Dark atmospheric music system
 - [x] 50 achievements
 - [x] Global leaderboard
-- [x] Mobile optimization
+- [x] Desktop/tablet optimization
 - [x] Boss battles
 - [x] Professional polish
+- [x] Interactive tutorial
+- [x] Keyboard shortcuts
 - [ ] Daily challenges
 - [ ] More special cards
-- [ ] Interactive tutorial
 - [ ] Steam release (maybe?)
 
 ---

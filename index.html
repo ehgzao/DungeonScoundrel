@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1024, initial-scale=1.0, user-scalable=yes">
     <title>🎴 Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- SEO Meta Tags -->
@@ -46,41 +46,185 @@
 <body>
 
     <!-- ============================================ -->
-    <!-- ORIENTATION WARNING (Mobile Portrait)
-    <!-- ============================================ -->
-    <div class="orientation-warning" id="orientationWarning">
-        <div class="orientation-warning-icon">📱➡️📱</div>
-        <h2>Rotate Your Device</h2>
-        <p>For the best experience, please rotate your device to <strong>landscape mode</strong> (horizontal).</p>
-        <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.7;">You can still play in portrait, but landscape is recommended.</p>
-    </div>
-
-    <!-- ============================================ -->
     <!-- WELCOME SCREEN
     <!-- ============================================ -->
-    <div class="welcome-screen" id="welcomeScreen">
-        <h1>🎴 DUNGEON SCOUNDREL</h1>
-        <div class="welcome-buttons">
-            <button class="welcome-btn" id="btnWelcomeStart">⚔️ Start Quest</button>
-            <button class="welcome-btn" id="btnWelcomeTutorial">📜 How to Play</button>
-            <button class="welcome-btn" id="btnWelcomeLeaderboard">🏆 Hall of Fame</button>
-            <button class="welcome-btn" id="btnWelcomeSoundboard">🎼 Music Chamber</button>
-            <button class="welcome-btn btn-highlight" id="btnWelcomeUnlocks">🗝️ Upgrades</button>
+    <div class="welcome-screen" id="welcomeScreen" style="
+        background: url('assets/dungeon-bg.jpg') center center / cover no-repeat, linear-gradient(180deg, #1a1410 0%, #0d0a08 50%, #000000 100%);
+        position: relative;
+        overflow: hidden;
+    ">
+        <!-- Dark Overlay for Readability -->
+        <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.65); pointer-events: none; z-index: 1;"></div>
+        
+        <!-- Vignette Effect -->
+        <div style="position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.85) 100%); pointer-events: none; z-index: 2;"></div>
+        
+        <!-- Noise Texture Overlay -->
+        <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px); pointer-events: none; z-index: 3; opacity: 0.5;"></div>
+        
+        <!-- Content Container -->
+        <div style="position: relative; z-index: 4; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px;">
+        
+        <!-- Title Logo Image -->
+        <div style="text-align: center; margin-bottom: 15px;">
+            <img src="assets/title-logo.png" alt="Dungeon Scoundrel" style="
+                max-width: min(90vw, 900px);
+                height: auto;
+                display: block;
+                margin: 0 auto;
+                filter: drop-shadow(0 0 20px rgba(201, 169, 97, 0.5))
+                        drop-shadow(0 8px 30px rgba(0, 0, 0, 0.9));
+                image-rendering: crisp-edges;
+                -webkit-user-drag: none;
+            ">
         </div>
         
-        <!-- Music Controls -->
-        <div style="margin-top: 30px; width: 100%; max-width: 350px;">
-            <div id="nowPlayingDisplay" style="text-align: center; color: #d4af37; font-size: clamp(0.9em, 3vw, 1.1em); margin-bottom: 15px; min-height: 25px; font-weight: 600; font-family: 'Cinzel', serif;">
-                🎵 Dark Awakening
-            </div>
-            <div style="display: flex; gap: 12px; justify-content: center; align-items: center;">
-                <button class="settings-btn" id="btnWelcomeMusicToggle" title="Play/Pause Music" style="font-size: clamp(1.2em, 4vw, 1.5em); padding: 10px 18px; background: linear-gradient(135deg, #8b7355 0%, #a89078 100%); border: 2px solid #d4af37;">
-                    ⏯️
-                </button>
-                <input type="range" id="welcomeMusicVolume" min="0" max="100" value="15" title="Music Volume" 
-                       style="width: 120px; height: 24px; cursor: pointer; margin: 0 10px;">
+        <!-- Subtitle -->
+        <p style="
+            font-family: 'Cinzel', serif;
+            font-size: clamp(0.75em, 2vw, 1em);
+            color: #8b7355;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            margin: 10px 0 40px 0;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            font-weight: 600;
+        ">A Roguelike Card Game</p>
+        <!-- Menu Buttons Container -->
+        <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 420px; margin-bottom: 30px;">
+            <button id="btnWelcomeStart" style="
+                font-family: 'Cinzel', serif;
+                font-size: clamp(0.95em, 2.5vw, 1.1em);
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                padding: 16px 24px;
+                background: linear-gradient(180deg, #c9a961 0%, #a68948 100%);
+                border: 2px solid #d4af37;
+                box-shadow: 
+                    0 0 0 1px #8b7355,
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                    inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+                    0 4px 12px rgba(0, 0, 0, 0.6);
+                color: #1a1410;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.6)'"><span style="font-size: 1.2em;">⚔️</span> Start Quest</button>
+            
+            <button id="btnPlayTutorial" class="menu-btn-secondary" style="
+                font-family: 'Cinzel', serif;
+                font-size: clamp(0.85em, 2.2vw, 1em);
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                padding: 14px 20px;
+                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+                border: 1px solid #5a4a38;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
+                color: #c9a961;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🎮</span> Play Tutorial</button>
+            
+            <button id="btnWelcomeTutorial" class="menu-btn-secondary" style="
+                font-family: 'Cinzel', serif;
+                font-size: clamp(0.85em, 2.2vw, 1em);
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                padding: 14px 20px;
+                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+                border: 1px solid #5a4a38;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
+                color: #c9a961;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">📜</span> Read Guide</button>
+            
+            <button id="btnWelcomeLeaderboard" class="menu-btn-secondary" style="
+                font-family: 'Cinzel', serif;
+                font-size: clamp(0.85em, 2.2vw, 1em);
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                padding: 14px 20px;
+                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+                border: 1px solid #5a4a38;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
+                color: #c9a961;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🏆</span> Hall of Fame</button>
+            
+            <button id="btnWelcomeSoundboard" class="menu-btn-secondary" style="
+                font-family: 'Cinzel', serif;
+                font-size: clamp(0.85em, 2.2vw, 1em);
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                padding: 14px 20px;
+                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+                border: 1px solid #5a4a38;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
+                color: #c9a961;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🎼</span> Music Chamber</button>
+            
+            <button id="btnWelcomeUnlocks" class="menu-btn-secondary" style="
+                font-family: 'Cinzel', serif;
+                font-size: clamp(0.85em, 2.2vw, 1em);
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                padding: 14px 20px;
+                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+                border: 1px solid #5a4a38;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
+                color: #c9a961;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🗝️</span> Upgrades</button>
+        </div>
+        
+        <!-- Music Controls (Minimalist) -->
+        <div style="width: 100%; max-width: 420px;">
+            <div id="nowPlayingDisplay" style="
+                text-align: center;
+                color: #8b7355;
+                font-size: clamp(0.75em, 2vw, 0.9em);
+                margin-bottom: 12px;
+                font-family: 'Cinzel', serif;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                opacity: 0.8;
+            ">🎵 Dark Awakening</div>
+            <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+                <button id="btnWelcomeMusicToggle" title="Play/Pause Music" style="
+                    font-size: 1.3em;
+                    padding: 8px 16px;
+                    background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+                    border: 1px solid #5a4a38;
+                    color: #c9a961;
+                    cursor: pointer;
+                    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
+                    transition: all 0.2s ease;
+                ">⏯️</button>
+                <input type="range" id="welcomeMusicVolume" min="0" max="100" value="15" title="Music Volume" style="
+                    width: 140px;
+                    height: 6px;
+                    cursor: pointer;
+                    -webkit-appearance: none;
+                    appearance: none;
+                    border-radius: 3px;
+                    outline: none;
+                    border: 1px solid #5a4a38;
+                ">
             </div>
         </div>
+        
+        </div> <!-- Close content container -->
     </div>
 
     <!-- ============================================ -->
@@ -106,9 +250,14 @@
                 </div>
             </div>
             
-            <!-- ACHIEVEMENTS COMPACT -->
-            <div class="achievements-compact" id="achievementsCompact" title="Click to view all achievements">
-                🏆 <span class="achievement-counter" id="achievementCounter">0/50</span>
+            <!-- CENTER GROUP: Timer + Achievements -->
+            <div style="display: flex; gap: 20px; align-items: center; justify-content: center; flex: 1;">
+                <div class="stat-display" id="gameTimer" title="Elapsed Time" style="font-size: 1.1em; font-weight: bold; color: #ffd700;">
+                    ⏱️ <span class="stat-value">00:00</span>
+                </div>
+                <div class="achievements-compact" id="achievementsCompact" title="Click to view all achievements">
+                    🏆 <span class="achievement-counter" id="achievementCounter">0/50</span>
+                </div>
             </div>
             
             <div class="settings-group">
@@ -130,11 +279,66 @@
         <!-- CENTER AREA (RELICS, STAGE, HOLD) -->
         <div class="center-area">
             
-            <!-- LEFT PANEL (RELICS & SHOP) -->
-            <div class="left-sidebar" id="relicsPanel">
-                <h3>🔮 RELICS</h3>
-                <div id="relicsList">
-                    <!-- Relics are injected here -->
+            <!-- LEFT PANEL (PLAYER, RELICS, SHOP) -->
+            <div class="left-sidebar">
+                <!-- Player Class Info - REDESIGNED -->
+                <div style="
+                    background: linear-gradient(135deg, rgba(201,169,97,0.2) 0%, rgba(42,35,24,0.9) 100%);
+                    border: 3px solid #d4af37;
+                    border-radius: 15px;
+                    padding: 20px 15px;
+                    margin-bottom: 15px;
+                    box-shadow: 0 6px 20px rgba(212,175,55,0.5);
+                    text-align: center;
+                ">
+                    <!-- Large Avatar -->
+                    <img id="playerAvatar" src="" alt="Avatar" style="
+                        width: 130px;
+                        height: 130px;
+                        border-radius: 12px;
+                        border: 4px solid #ffd700;
+                        object-fit: cover;
+                        box-shadow: 0 2px 10px rgba(255,215,0,0.4);
+                        margin: 0 auto 12px auto;
+                        display: block;
+                    ">
+                    
+                    <!-- Player Info -->
+                    <div id="playerNameDisplay" style="
+                        color: #ffd700;
+                        font-weight: bold;
+                        font-size: 1.3em;
+                        font-family: 'Cinzel', serif;
+                        text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+                        margin-bottom: 5px;
+                    "></div>
+                    <div id="playerClassDisplay" style="
+                        color: #d4af37;
+                        font-size: 0.9em;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        font-weight: 700;
+                        margin-bottom: 12px;
+                    "></div>
+                    
+                    <!-- Passive Icons Display -->
+                    <div id="passiveIconsDisplay" style="
+                        display: flex;
+                        gap: 6px;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        padding-top: 12px;
+                        border-top: 2px solid rgba(212,175,55,0.5);
+                    ">
+                        <!-- Passive icons will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="relics-panel" id="relicsPanel">
+                    <div class="sidebar-label">Relics</div>
+                    <div id="relicsList">
+                        <div class="empty-slot">No Relics Yet</div>
+                    </div>
                 </div>
                 <div class="sidebar-action">
                     <button class="btn-shop" id="btnOpenShop">🏺 Merchant</button>
@@ -168,8 +372,63 @@
                 </div>
             </div>
 
-            <!-- RIGHT PANEL (HOLD, DISCARD, TIMER) -->
+            <!-- RIGHT PANEL (ABILITY, HOLD, DISCARD, TIMER) -->
             <div class="right-sidebar">
+                <!-- Class Ability Button - COMPACT -->
+                <div style="
+                    margin-bottom: 15px;
+                    background: linear-gradient(135deg, rgba(201,169,97,0.1) 0%, rgba(42,35,24,0.6) 100%);
+                    border: 2px solid #d4af37;
+                    border-radius: 10px;
+                    padding: 10px;
+                    box-shadow: 0 3px 12px rgba(212,175,55,0.3);
+                ">
+                    <button id="btnClassAbility" class="btn btn-primary" style="
+                        width: 100%;
+                        padding: 10px 8px;
+                        font-size: 0.9em;
+                        font-family: 'Cinzel', serif;
+                        background: linear-gradient(180deg, #ffd700 0%, #c9a961 100%);
+                        border: 2px solid #d4af37;
+                        color: #1a1410;
+                        font-weight: bold;
+                        position: relative;
+                        border-radius: 8px;
+                        box-shadow: 0 3px 8px rgba(255,215,0,0.4);
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+                    " 
+                    onmouseover="if(!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 12px rgba(255,215,0,0.6)'; }"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 3px 8px rgba(255,215,0,0.4)';"
+                    title="Class special ability">
+                        <span id="abilityIcon" style="font-size: 1.3em; margin-right: 5px;">✨</span>
+                        <span id="abilityName" style="font-size: 0.85em;">Ability</span>
+                        <div id="abilityCooldownDisplay" style="
+                            position: absolute;
+                            top: 3px;
+                            right: 3px;
+                            font-size: 0.6em;
+                            background: rgba(255,107,107,0.95);
+                            padding: 2px 6px;
+                            border-radius: 10px;
+                            color: #fff;
+                            font-weight: bold;
+                            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+                        "></div>
+                    </button>
+                    <div id="abilityDescription" style="
+                        font-size: 0.65em;
+                        color: #d4af37;
+                        text-align: center;
+                        margin-top: 6px;
+                        padding: 6px;
+                        background: rgba(0,0,0,0.4);
+                        border-radius: 5px;
+                        line-height: 1.3;
+                        border: 1px solid rgba(201,169,97,0.2);
+                    "></div>
+                </div>
+                
                 <div class="hold-area">
                     <div class="sidebar-label hold-label">Held Card</div>
                     <div id="holdAreaContainer">
@@ -182,9 +441,7 @@
                     <!-- Discard mini-cards -->
                 </div>
                 
-                <div class="sidebar-timer" id="gameTimer">
-                    ⏱️ 00:00
-                </div>
+                <!-- Timer moved to top-bar -->
             </div>
 
         </div>
@@ -201,9 +458,9 @@
     <!-- MODALS
     <!-- ============================================ -->
 
-    <!-- Modal: New Game (Name + Difficulty) -->
+    <!-- Modal: New Game -->
     <div class="modal-overlay" id="newGameModal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 600px !important; max-height: 90vh; overflow-y: auto;">
             <h2>✨ New Game</h2>
             <div class="form-group">
                 <label for="playerNameInput">👤 Player Name (3-10 characters) *</label>
@@ -245,7 +502,170 @@
         </div>
     </div>
     
-    <!-- Modal: Tutorial -->
+    <!-- Modal: Class Selection -->
+    <div class="modal-overlay" id="classSelectionModal">
+        <div class="modal-content" style="max-width: 1000px !important; width: 90vw !important; padding: 40px 30px !important;">
+            <h2 id="classSelectionTitle" style="text-align: center; font-family: 'Cinzel', serif; color: #c9a961; margin-bottom: 10px;">⚔️ SELECT YOUR HERO</h2>
+            <p id="classSelectionSubtitle" style="text-align: center; color: #8b7355; font-size: 0.9em; margin-bottom: 20px; min-height: 20px;"></p>
+            
+            <!-- Class Avatars (Horizontal) -->
+            <div style="display: flex; gap: 20px; margin-bottom: 25px; justify-content: center; flex-wrap: wrap;">
+                <!-- Scoundrel -->
+                <div class="class-card" data-class="scoundrel" style="
+                    background: linear-gradient(180deg, #2a2318 0%, #1a1410 100%);
+                    border: 2px solid #5a4a38;
+                    border-radius: 8px;
+                    padding: 10px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    text-align: center;
+                    flex: 0 0 auto;
+                    width: 240px;
+                    box-sizing: border-box;
+                " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
+                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                        <img src="assets/avatar-scoundrel.jpg" alt="Scoundrel" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    </div>
+                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">SCOUNDREL</h3>
+                </div>
+                
+                <!-- Knight -->
+                <div class="class-card" data-class="knight" style="
+                    background: linear-gradient(180deg, #2a2318 0%, #1a1410 100%);
+                    border: 2px solid #5a4a38;
+                    border-radius: 8px;
+                    padding: 10px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    text-align: center;
+                    flex: 0 0 auto;
+                    width: 240px;
+                    box-sizing: border-box;
+                " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
+                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                        <img src="assets/avatar-knight.jpg" alt="Knight" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    </div>
+                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">KNIGHT</h3>
+                </div>
+                
+                <!-- Rogue -->
+                <div class="class-card" data-class="rogue" style="
+                    background: linear-gradient(180deg, #2a2318 0%, #1a1410 100%);
+                    border: 2px solid #5a4a38;
+                    border-radius: 8px;
+                    padding: 10px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    text-align: center;
+                    flex: 0 0 auto;
+                    width: 240px;
+                    box-sizing: border-box;
+                " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
+                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                        <img src="assets/avatar-rogue.jpg" alt="Rogue" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    </div>
+                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">ROGUE</h3>
+                </div>
+                
+                <!-- Dancer -->
+                <div class="class-card" data-class="dancer" style="
+                    background: linear-gradient(180deg, #2a2318 0%, #1a1410 100%);
+                    border: 2px solid #5a4a38;
+                    border-radius: 8px;
+                    padding: 10px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    text-align: center;
+                    flex: 0 0 auto;
+                    width: 240px;
+                    box-sizing: border-box;
+                " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
+                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                        <img src="assets/avatar-dancer.jpg" alt="Dancer" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    </div>
+                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">DANCER</h3>
+                </div>
+                
+                <!-- Berserker -->
+                <div class="class-card" data-class="berserker" style="
+                    background: linear-gradient(180deg, #2a2318 0%, #1a1410 100%);
+                    border: 2px solid #5a4a38;
+                    border-radius: 8px;
+                    padding: 10px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    text-align: center;
+                    flex: 0 0 auto;
+                    width: 240px;
+                    box-sizing: border-box;
+                " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
+                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                        <img src="assets/avatar-berserker.jpg" alt="Berserker" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    </div>
+                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">BERSERKER</h3>
+                </div>
+                
+                <!-- Priest -->
+                <div class="class-card" data-class="priest" style="
+                    background: linear-gradient(180deg, #2a2318 0%, #1a1410 100%);
+                    border: 2px solid #5a4a38;
+                    border-radius: 8px;
+                    padding: 10px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    text-align: center;
+                    flex: 0 0 auto;
+                    width: 240px;
+                    box-sizing: border-box;
+                " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
+                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                        <img src="assets/avatar-priest.jpg" alt="Priest" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    </div>
+                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">PRIEST</h3>
+                </div>
+            </div>
+            
+            <!-- Class Description -->
+            <div id="classDescription" style="
+                background: rgba(0,0,0,0.4);
+                border: 1px solid #5a4a38;
+                border-radius: 8px;
+                padding: 20px;
+                min-height: 150px;
+                margin-bottom: 20px;
+                display: none;
+            ">
+                <h3 id="classDescTitle" style="color: #c9a961; font-family: 'Cinzel', serif; margin-top: 0;"></h3>
+                <p id="classDescMotivation" style="color: #d4af37; font-style: italic; margin-bottom: 15px;"></p>
+                <p id="classDescMechanics" style="color: #ddd; line-height: 1.6;"></p>
+            </div>
+            
+            <div class="modal-controls">
+                <button class="btn btn-success" id="btnConfirmClass" disabled>⚔️ Begin Adventure!</button>
+                <button class="btn btn-secondary" id="btnCancelClass">Back</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal: Interactive Tutorial -->
+    <div class="modal-overlay" id="interactiveTutorialModal">
+        <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+            <h2 id="tutorialStepTitle">🎮 Interactive Tutorial</h2>
+            <div id="tutorialStepContent" style="min-height: 300px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 8px; margin: 20px 0;">
+                <!-- Dynamic content here -->
+            </div>
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+                <button class="btn btn-secondary" id="btnTutorialPrev" disabled>⬅️ Previous</button>
+                <button class="btn btn-primary" id="btnTutorialNext">➡️ Next</button>
+                <button class="btn btn-secondary" id="btnTutorialSkip">⏩ Skip Tutorial</button>
+            </div>
+            <div style="text-align: center; margin-top: 15px; color: #aaa; font-size: 0.9em;">
+                Step <span id="tutorialCurrentStep">1</span> of <span id="tutorialTotalSteps">8</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal: Tutorial (Read Guide) -->
     <div class="modal-overlay" id="tutorialModal">
         <div class="modal-content">
             <h2>📜 How to Play</h2>
@@ -281,18 +701,43 @@
 
             <div class="tutorial-section">
                 <h3>📌 "Hold" System</h3>
-                <p><strong>Tap & hold</strong> (or <strong>right-click</strong> on desktop) <strong>ANY card</strong> in the room (bottom bar) to save it in the "Held" area (right sidebar).</p>
-                <p>• <strong>Works with ALL cards:</strong> Monsters 👹, Weapons ⚔️, Potions 💊, and Specials ✨</p>
+                <p><strong>Tap & hold</strong> (or <strong>right-click</strong> on desktop) cards in the room (bottom bar) to save them in the "Held" area (right sidebar).</p>
+                <p>• <strong>Can hold:</strong> Weapons ⚔️, Potions 💊, and Specials ✨</p>
+                <p>• <strong>Cannot hold:</strong> Monsters 👹 (must be fought immediately!)</p>
                 <p>• Only 1 card can be held at a time.</p>
                 <p>• Tap the held card to use it immediately (returns to room).</p>
                 <p>• <strong>Strategy:</strong> Hold a weapon to skip it now and equip later, or hold a potion for when you need it most!</p>
             </div>
             
             <div class="tutorial-section">
-                <h3>⚔️ Weapon Durability</h3>
+                <h3>⚠️ Weapon Durability</h3>
                 <p>Weapons break after use! Easy: 3 uses | Normal: 2 | Hard: 1</p>
                 <p>• Colored bar shows durability (🟢 good, 🟡 medium, 🔴 low)</p>
-                <p>• Repair in shop or find 🔨 Master Smith relic</p>
+                <p>• Repair in shop or find 🔨 Durable Weapons relic for infinite durability</p>
+                <p>• <strong>⛔ Warning:</strong> Equipping a new weapon breaks your combo!</p>
+            </div>
+            
+            <div class="tutorial-section">
+                <h3>🔥 Combo System</h3>
+                <p><strong>Build combos by killing monsters without taking damage!</strong></p>
+                <p>• <strong>Combo increases:</strong> Perfect kills (no damage taken)</p>
+                <p>• <strong>Combo persists:</strong> Between rooms - keep it going!</p>
+                <p>• <strong>Combo breaks:</strong> Taking damage OR equipping a weapon</p>
+                <p>• <strong>Potions don't break combo</strong> - use them strategically!</p>
+                <p>• <strong>Visual rewards:</strong> 5x = GREAT!, 7x = AMAZING!, 10x = LEGENDARY!</p>
+                <p>• <strong>Score bonus:</strong> Max combo x10 points in final score</p>
+            </div>
+            
+            <div class="tutorial-section">
+                <h3>👹 Boss Battles</h3>
+                <p><strong>Every 10th room is a BOSS ROOM!</strong></p>
+                <p>• Bosses have <strong>15 HP</strong> and require multiple hits</p>
+                <p>• <strong>HP bar</strong> shows boss health (🟢→🟡→🔴)</p>
+                <p>• <strong>⚠️ Critical:</strong> If you fight a boss <strong>WITHOUT a weapon</strong>:</p>
+                <p>&nbsp;&nbsp;&nbsp;• Boss attacks once and flees</p>
+                <p>&nbsp;&nbsp;&nbsp;• You take full damage (15 HP!)</p>
+                <p>&nbsp;&nbsp;&nbsp;• <strong>NO GOLD REWARD</strong></p>
+                <p>• <strong>💡 Strategy:</strong> Always have a weapon before room 10, 20, 30...</p>
             </div>
             
             <div class="tutorial-section">
@@ -310,8 +755,37 @@
                 <p>&nbsp;&nbsp;&nbsp;🟢 Uncommon (50🪙) - Moderate bonuses</p>
                 <p>&nbsp;&nbsp;&nbsp;🔵 Rare (100🪙) - Powerful bonuses</p>
                 <p>&nbsp;&nbsp;&nbsp;🟠 Legendary (200🪙) - Game-changing!</p>
+                <p>• <strong>⚠️ Shop Penalty:</strong> Each shop visit costs -50 points in final score</p>
                 <p>• <strong>Events:</strong> 🎲 Random encounters after clearing rooms. Make choices!</p>
                 <p>• <strong>Unlocks:</strong> 🔓 Permanent progress that carries over between runs!</p>
+            </div>
+            
+            <div class="tutorial-section">
+                <h3>🏆 Score System</h3>
+                <p><strong>Victory score is calculated from multiple factors:</strong></p>
+                <p>• <strong>Base Bonuses:</strong></p>
+                <p>&nbsp;&nbsp;&nbsp;🎯 Win Bonus: +1000</p>
+                <p>&nbsp;&nbsp;&nbsp;❤️ Health: HP x 20</p>
+                <p>&nbsp;&nbsp;&nbsp;💰 Gold: Total earned x 5</p>
+                <p>&nbsp;&nbsp;&nbsp;🔥 Combo: Max combo x 10</p>
+                <p>&nbsp;&nbsp;&nbsp;⚔️ Monsters: Slain x 2</p>
+                <p>• <strong>Special Bonuses:</strong></p>
+                <p>&nbsp;&nbsp;&nbsp;⚡ Speedrun: +500 (<5 min) or +250 (<10 min)</p>
+                <p>&nbsp;&nbsp;&nbsp;🏆 Perfect Run: +1000 (no damage taken!)</p>
+                <p>• <strong>Penalties:</strong></p>
+                <p>&nbsp;&nbsp;&nbsp;⏱️ Time: -2 points per second</p>
+                <p>&nbsp;&nbsp;&nbsp;🏺 Shop: -50 per visit</p>
+                <p>• <strong>Difficulty Multiplier:</strong> Easy x1, Normal x1.5, Hard x2.5</p>
+            </div>
+            
+            <div class="tutorial-section" style="background: rgba(255, 215, 0, 0.1); border: 2px solid #ffd700; padding: 15px; border-radius: 8px;">
+                <h3>💡 Pro Tips</h3>
+                <p>• <strong>Combo strategy:</strong> Don't equip weapons mid-combo unless absolutely necessary</p>
+                <p>• <strong>Boss prep:</strong> Always check your weapon before room 10, 20, 30...</p>
+                <p>• <strong>Shop discipline:</strong> Each shop visit costs score - use it wisely!</p>
+                <p>• <strong>Speedrun tip:</strong> <5 minutes = +500 bonus points!</p>
+                <p>• <strong>Perfect run:</strong> Take zero damage for +1000 bonus!</p>
+                <p>• <strong>Hold system:</strong> Save healing potions for emergencies</p>
             </div>
             
             <button class="close-modal-btn" id="btnCloseTutorial">Got it!</button>
@@ -448,6 +922,21 @@
         </div>
     </div>
     
+    <!-- Modal: Give Up -->
+    <div class="modal-overlay" id="giveUpModal">
+        <div class="modal-content" style="max-width: 500px; border: 3px solid #ff6b6b;">
+            <h2 style="color: #ff6b6b;">🏳️ GIVE UP?</h2>
+            <p style="text-align: center; color: #ddd; font-size: 1.1em; margin: 20px 0;">
+                Are you sure you want to end this run?<br>
+                Your progress will be lost and your score will be 0.
+            </p>
+            <div class="modal-controls" style="gap: 15px;">
+                <button class="btn btn-secondary" id="btnCancelGiveUp">Cancel</button>
+                <button class="btn btn-danger" id="btnConfirmGiveUp" style="background: #ff6b6b; border-color: #ff6b6b;">Give Up</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Game Over Overlay (will be created via JS) -->
     
     <!-- ============================================ -->
@@ -509,23 +998,61 @@
         // OPTIMIZATION HELPERS
         // ============================================
         
-        // Storage Cache - Optimizes localStorage operations
+        // Storage Cache - Optimizes localStorage operations with error handling
         class StorageCache {
             constructor() {
                 this.cache = {};
+                this.storageAvailable = this.checkStorageAvailability();
+            }
+            
+            checkStorageAvailability() {
+                try {
+                    const test = '__storage_test__';
+                    localStorage.setItem(test, test);
+                    localStorage.removeItem(test);
+                    return true;
+                } catch(e) {
+                    console.warn('LocalStorage not available:', e);
+                    return false;
+                }
             }
             
             get(key, defaultValue = {}) {
+                if (!this.storageAvailable) return defaultValue;
+                
                 if (this.cache[key] === undefined) {
-                    const data = localStorage.getItem(key);
-                    this.cache[key] = data ? JSON.parse(data) : defaultValue;
+                    try {
+                        const data = localStorage.getItem(key);
+                        this.cache[key] = data ? JSON.parse(data) : defaultValue;
+                    } catch(e) {
+                        console.error(`Error reading ${key}:`, e);
+                        this.cache[key] = defaultValue;
+                    }
                 }
                 return this.cache[key];
             }
             
             set(key, value) {
+                if (!this.storageAvailable) {
+                    console.warn('Storage not available, using cache only');
+                    this.cache[key] = value;
+                    return false;
+                }
+                
                 this.cache[key] = value;
-                localStorage.setItem(key, JSON.stringify(value));
+                try {
+                    localStorage.setItem(key, JSON.stringify(value));
+                    return true;
+                } catch(e) {
+                    if (e.name === 'QuotaExceededError') {
+                        console.error('Storage quota exceeded');
+                        // Try to clear old data
+                        this.clearOldData();
+                    } else {
+                        console.error(`Error saving ${key}:`, e);
+                    }
+                    return false;
+                }
             }
             
             update(key, updater) {
@@ -541,6 +1068,22 @@
             
             clearCache() {
                 this.cache = {};
+            }
+            
+            clearOldData() {
+                // Clear non-essential data if quota exceeded
+                try {
+                    const keysToPreserve = ['scoundrel_lifetime_stats', 'scoundrel_unlocks'];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key && !keysToPreserve.includes(key)) {
+                            localStorage.removeItem(key);
+                            delete this.cache[key];
+                        }
+                    }
+                } catch(e) {
+                    console.error('Error clearing old data:', e);
+                }
             }
         }
         
@@ -604,9 +1147,20 @@
         
         // Welcome Buttons
         const btnWelcomeStart = document.getElementById('btnWelcomeStart');
+        const btnPlayTutorial = document.getElementById('btnPlayTutorial');
         const btnWelcomeTutorial = document.getElementById('btnWelcomeTutorial');
         const btnWelcomeLeaderboard = document.getElementById('btnWelcomeLeaderboard');
         const btnWelcomeUnlocks = document.getElementById('btnWelcomeUnlocks');
+        
+        // Interactive Tutorial Elements
+        const interactiveTutorialModal = document.getElementById('interactiveTutorialModal');
+        const tutorialStepTitle = document.getElementById('tutorialStepTitle');
+        const tutorialStepContent = document.getElementById('tutorialStepContent');
+        const btnTutorialPrev = document.getElementById('btnTutorialPrev');
+        const btnTutorialNext = document.getElementById('btnTutorialNext');
+        const btnTutorialSkip = document.getElementById('btnTutorialSkip');
+        const tutorialCurrentStep = document.getElementById('tutorialCurrentStep');
+        const tutorialTotalSteps = document.getElementById('tutorialTotalSteps');
         
         // New Game Modal
         const newGameModal = document.getElementById('newGameModal');
@@ -687,6 +1241,293 @@
             updateAchievementsDisplay();
             achievementsModal.classList.add('active');
         };
+        
+        // ============================================
+        // INTERACTIVE TUTORIAL SYSTEM
+        // ============================================
+        let tutorialStep = 0;
+        const tutorialSteps = [
+            {
+                title: "🎴 Welcome to Dungeon Scoundrel!",
+                content: `
+                    <div style="text-align: center; padding: 20px;">
+                        <h3 style="color: #ffd700; margin-bottom: 20px;">Your Quest Begins!</h3>
+                        <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 20px;">
+                            You are a <strong>scoundrel</strong> exploring dark medieval dungeons filled with monsters, treasures, and ancient relics.
+                        </p>
+                        <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <p style="font-size: 1.2em; color: #6bcf7f;"><strong>🎯 Goal:</strong> Clear all 50 cards from the dungeon deck without dying!</p>
+                        </div>
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Crect fill='%232c2416' width='200' height='100'/%3E%3Ctext x='100' y='55' text-anchor='middle' fill='%23d4af37' font-size='40' font-family='serif'%3E🎴🗡️🏰%3C/text%3E%3C/svg%3E" alt="Game Preview" style="width: 100%; max-width: 300px; margin: 20px auto; border-radius: 8px;">
+                    </div>
+                `
+            },
+            {
+                title: "🃏 Card Types",
+                content: `
+                    <div style="padding: 20px;">
+                        <h3 style="color: #ffd700; margin-bottom: 20px; text-align: center;">Learn the Cards</h3>
+                        <div style="display: grid; gap: 20px;">
+                            <div style="background: rgba(0,0,0,0.4); padding: 20px; border-left: 4px solid #ff6b6b; border-radius: 8px;">
+                                <h4 style="color: #ff6b6b; margin-bottom: 10px;">♠️ ♣️ MONSTERS (Spades & Clubs)</h4>
+                                <p><strong>Click to fight!</strong> Damage = Monster Value - Your Weapon Value</p>
+                                <p style="margin-top: 10px; color: #aaa; font-size: 0.9em;">💡 Tip: Always have a weapon equipped before fighting!</p>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.4); padding: 20px; border-left: 4px solid #ffd93d; border-radius: 8px;">
+                                <h4 style="color: #ffd93d; margin-bottom: 10px;">♦️ WEAPONS (Diamonds)</h4>
+                                <p><strong>Click to equip!</strong> Replaces your current weapon</p>
+                                <p style="margin-top: 10px; color: #aaa; font-size: 0.9em;">⚠️ Warning: Equipping breaks your combo!</p>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.4); padding: 20px; border-left: 4px solid #6bcf7f; border-radius: 8px;">
+                                <h4 style="color: #6bcf7f; margin-bottom: 10px;">♥️ POTIONS (Hearts)</h4>
+                                <p><strong>Click to heal!</strong> Limit: 1 per room</p>
+                                <p style="margin-top: 10px; color: #aaa; font-size: 0.9em;">💊 Potions DON'T break combo!</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "📌 Hold System",
+                content: `
+                    <div style="padding: 20px;">
+                        <h3 style="color: #ffd700; margin-bottom: 20px; text-align: center;">Save Cards for Later</h3>
+                        <div style="background: rgba(0,0,0,0.4); padding: 25px; border-radius: 8px; text-align: center;">
+                            <p style="font-size: 1.2em; margin-bottom: 20px;"><strong>Right-click</strong> or <strong>tap & hold</strong> cards to save them!</p>
+                            <div style="margin: 20px 0; padding: 20px; background: rgba(255, 215, 0, 0.1); border: 2px solid #ffd700; border-radius: 8px;">
+                                <p style="color: #ffd700; font-size: 1.1em; margin-bottom: 10px;"><strong>✅ CAN HOLD:</strong></p>
+                                <p>Weapons ⚔️ | Potions 💊 | Specials ✨</p>
+                            </div>
+                            <div style="margin: 20px 0; padding: 20px; background: rgba(255, 107, 107, 0.1); border: 2px solid #ff6b6b; border-radius: 8px;">
+                                <p style="color: #ff6b6b; font-size: 1.1em; margin-bottom: 10px;"><strong>❌ CANNOT HOLD:</strong></p>
+                                <p>Monsters 👹 (must fight immediately!)</p>
+                            </div>
+                            <p style="margin-top: 20px; color: #aaa;">💡 Strategy: Hold potions for emergencies or weapons for later!</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "🔥 Combo System",
+                content: `
+                    <div style="padding: 20px;">
+                        <h3 style="color: #ffd700; margin-bottom: 20px; text-align: center;">Build Epic Combos!</h3>
+                        <div style="background: rgba(0,0,0,0.4); padding: 25px; border-radius: 8px;">
+                            <p style="font-size: 1.1em; text-align: center; margin-bottom: 20px;">Kill monsters without taking damage to build combos!</p>
+                            <div style="display: grid; gap: 15px; margin: 20px 0;">
+                                <div style="padding: 15px; background: rgba(107, 207, 127, 0.1); border-left: 4px solid #6bcf7f; border-radius: 8px;">
+                                    <strong style="color: #6bcf7f;">✅ COMBO INCREASES:</strong>
+                                    <p style="margin-top: 8px;">Perfect kills (no damage taken)</p>
+                                </div>
+                                <div style="padding: 15px; background: rgba(255, 107, 107, 0.1); border-left: 4px solid #ff6b6b; border-radius: 8px;">
+                                    <strong style="color: #ff6b6b;">❌ COMBO BREAKS:</strong>
+                                    <p style="margin-top: 8px;">Taking damage OR equipping a weapon</p>
+                                </div>
+                            </div>
+                            <div style="text-align: center; margin-top: 20px; padding: 20px; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                                <p style="font-size: 0.9em; color: #ffd93d;"><strong>Rewards:</strong></p>
+                                <p style="margin-top: 10px;">5x = GREAT! | 7x = AMAZING! | 10x = LEGENDARY!</p>
+                                <p style="margin-top: 10px; color: #aaa; font-size: 0.9em;">Max combo × 10 = bonus points!</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "👹 Boss Battles",
+                content: `
+                    <div style="padding: 20px;">
+                        <h3 style="color: #ffd700; margin-bottom: 20px; text-align: center;">Face the Bosses!</h3>
+                        <div style="background: rgba(0,0,0,0.4); padding: 25px; border-radius: 8px;">
+                            <p style="font-size: 1.2em; text-align: center; margin-bottom: 20px; color: #ff6b6b;"><strong>Every 10th room = BOSS ROOM!</strong></p>
+                            <div style="margin: 20px 0;">
+                                <p style="margin-bottom: 10px;">• Bosses have <strong>15 HP</strong></p>
+                                <p style="margin-bottom: 10px;">• Requires multiple hits to defeat</p>
+                                <p style="margin-bottom: 10px;">• HP bar shows boss health</p>
+                            </div>
+                            <div style="margin: 30px 0; padding: 20px; background: rgba(255, 107, 107, 0.2); border: 2px solid #ff6b6b; border-radius: 8px;">
+                                <h4 style="color: #ff6b6b; margin-bottom: 15px; text-align: center;">⚠️ CRITICAL WARNING!</h4>
+                                <p style="text-align: center; font-size: 1.1em;"><strong>Fight boss WITHOUT weapon:</strong></p>
+                                <p style="text-align: center; margin-top: 10px;">• Boss attacks once (15 HP damage!)</p>
+                                <p style="text-align: center;">• Boss FLEES immediately</p>
+                                <p style="text-align: center;">• <strong style="color: #ff6b6b;">NO GOLD REWARD!</strong></p>
+                            </div>
+                            <p style="text-align: center; color: #ffd93d; font-size: 1.1em; margin-top: 20px;">💡 Always have a weapon before room 10, 20, 30...</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "💰 Shop & Economy",
+                content: `
+                    <div style="padding: 20px;">
+                        <h3 style="color: #ffd700; margin-bottom: 20px; text-align: center;">Spend Wisely!</h3>
+                        <div style="background: rgba(0,0,0,0.4); padding: 25px; border-radius: 8px;">
+                            <p style="text-align: center; font-size: 1.1em; margin-bottom: 20px;">Click 🏺 MERCHANT button to open shop</p>
+                            <div style="margin: 20px 0; padding: 20px; background: rgba(78, 205, 196, 0.1); border: 2px solid #4ecdc4; border-radius: 8px;">
+                                <h4 style="color: #4ecdc4; margin-bottom: 15px; text-align: center;">💎 Shop Features:</h4>
+                                <p>• Buy healing potions</p>
+                                <p>• Upgrade weapons</p>
+                                <p>• Purchase relics (4 rarities)</p>
+                                <p>• Increase max HP</p>
+                            </div>
+                            <div style="margin: 20px 0; padding: 20px; background: rgba(255, 107, 107, 0.2); border: 2px solid #ff6b6b; border-radius: 8px;">
+                                <h4 style="color: #ff6b6b; margin-bottom: 15px; text-align: center;">⚠️ Shop Penalties:</h4>
+                                <p style="text-align: center;">• Each visit = <strong>-50 score points</strong></p>
+                                <p style="text-align: center; margin-top: 10px;">• Prices increase <strong>15%</strong> per purchase (anti-exploit!)</p>
+                            </div>
+                            <p style="text-align: center; color: #ffd93d; margin-top: 20px;">💡 Use shop strategically to maximize score!</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "🏆 Score System",
+                content: `
+                    <div style="padding: 20px;">
+                        <h3 style="color: #ffd700; margin-bottom: 20px; text-align: center;">How Scoring Works</h3>
+                        <div style="background: rgba(0,0,0,0.4); padding: 25px; border-radius: 8px; font-size: 0.95em;">
+                            <div style="margin-bottom: 20px; padding: 15px; background: rgba(107, 207, 127, 0.1); border-radius: 8px;">
+                                <h4 style="color: #6bcf7f; margin-bottom: 10px;">✅ BONUSES:</h4>
+                                <p>🎯 Win: +1000</p>
+                                <p>❤️ Health: HP × 20</p>
+                                <p>💰 Gold: Total × 5</p>
+                                <p>🔥 Combo: Max × 10</p>
+                                <p>⚔️ Monsters: Slain × 2</p>
+                                <p style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(107, 207, 127, 0.3);">
+                                    ⚡ <strong>Speedrun:</strong> +500 (&lt;5min) or +250 (&lt;10min)<br>
+                                    🏆 <strong>Perfect Run:</strong> +1000 (no damage!)
+                                </p>
+                            </div>
+                            <div style="margin-bottom: 20px; padding: 15px; background: rgba(255, 107, 107, 0.1); border-radius: 8px;">
+                                <h4 style="color: #ff6b6b; margin-bottom: 10px;">❌ PENALTIES:</h4>
+                                <p>⏱️ Time: -2 per second</p>
+                                <p>🏺 Shop: -50 per visit</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                                <p style="color: #ffd93d;"><strong>Difficulty Multiplier:</strong></p>
+                                <p>Easy × 1 | Normal × 1.5 | Hard × 2.5</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "⌨️ Keyboard Shortcuts",
+                content: `
+                    <div style="padding: 20px;">
+                        <h3 style="color: #ffd700; margin-bottom: 20px; text-align: center;">Master the Keyboard!</h3>
+                        <div style="background: rgba(0,0,0,0.4); padding: 25px; border-radius: 8px;">
+                            <p style="text-align: center; font-size: 1.1em; margin-bottom: 25px; color: #6bcf7f;">
+                                <strong>🖥️ Desktop players can use keyboard shortcuts for faster gameplay!</strong>
+                            </p>
+                            
+                            <div style="display: grid; gap: 12px; margin: 20px 0;">
+                                <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #ffd93d;"><strong>Space</strong> or <strong>D</strong></span>
+                                    <span style="color: #ddd;">→ Draw Room</span>
+                                </div>
+                                
+                                <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #ffd93d;"><strong>A</strong></span>
+                                    <span style="color: #ddd;">→ Avoid Room</span>
+                                </div>
+                                
+                                <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #ffd93d;"><strong>Q</strong></span>
+                                    <span style="color: #ddd;">→ Use Class Ability</span>
+                                </div>
+                                
+                                <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #ffd93d;"><strong>U</strong></span>
+                                    <span style="color: #ddd;">→ Undo Last Move</span>
+                                </div>
+                                
+                                <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #ffd93d;"><strong>S</strong></span>
+                                    <span style="color: #ddd;">→ Open Shop</span>
+                                </div>
+                                
+                                <div style="padding: 12px 20px; background: rgba(107, 207, 127, 0.15); border-left: 4px solid #6bcf7f; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #ffd93d;"><strong>1, 2, 3, 4, 5</strong></span>
+                                    <span style="color: #ddd;">→ Click cards in room</span>
+                                </div>
+                                
+                                <div style="padding: 12px 20px; background: rgba(255, 107, 107, 0.15); border-left: 4px solid #ff6b6b; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: #ffd93d;"><strong>ESC</strong></span>
+                                    <span style="color: #ddd;">→ Close any modal</span>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 25px; padding: 20px; background: rgba(255, 215, 0, 0.1); border: 2px solid #ffd700; border-radius: 8px; text-align: center;">
+                                <p style="color: #ffd93d; font-size: 1.1em; margin-bottom: 10px;"><strong>⚡ Pro Tip:</strong></p>
+                                <p style="color: #ddd;">Use keyboard shortcuts to play 3x faster!</p>
+                                <p style="color: #aaa; font-size: 0.9em; margin-top: 10px;">No need to move your mouse constantly!</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "🎮 Ready to Play!",
+                content: `
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <h3 style="color: #ffd700; font-size: 2em; margin-bottom: 20px;">You're Ready!</h3>
+                        <p style="font-size: 1.2em; margin-bottom: 30px;">You now know everything to become a legendary scoundrel!</p>
+                        <div style="background: rgba(0,0,0,0.4); padding: 30px; border-radius: 8px; margin: 30px 0;">
+                            <p style="font-size: 1.1em; color: #6bcf7f; margin-bottom: 15px;"><strong>Quick Recap:</strong></p>
+                            <p style="margin: 10px 0;">⚔️ Fight monsters with weapons</p>
+                            <p style="margin: 10px 0;">💊 Use potions wisely</p>
+                            <p style="margin: 10px 0;">🔥 Build combos for bonus points</p>
+                            <p style="margin: 10px 0;">👹 Always bring weapons to bosses</p>
+                            <p style="margin: 10px 0;">💰 Use shop strategically</p>
+                            <p style="margin: 10px 0;">⌨️ Use keyboard shortcuts for speed</p>
+                        </div>
+                        <p style="font-size: 1.3em; color: #ffd93d; margin-top: 30px;"><strong>Close this tutorial and click "⚔️ Start Quest" to begin!</strong></p>
+                        <p style="margin-top: 20px; color: #aaa; font-size: 0.9em;">You can always re-read the guide from the main menu.</p>
+                    </div>
+                `
+            }
+        ];
+        
+        function startInteractiveTutorial() {
+            tutorialStep = 0;
+            updateTutorialStep();
+            interactiveTutorialModal.classList.add('active');
+        }
+        
+        function updateTutorialStep() {
+            const step = tutorialSteps[tutorialStep];
+            tutorialStepTitle.textContent = step.title;
+            tutorialStepContent.innerHTML = step.content;
+            tutorialCurrentStep.textContent = tutorialStep + 1;
+            tutorialTotalSteps.textContent = tutorialSteps.length;
+            
+            // Update buttons
+            btnTutorialPrev.disabled = tutorialStep === 0;
+            btnTutorialNext.textContent = tutorialStep === tutorialSteps.length - 1 ? '✅ Finish' : '➡️ Next';
+        }
+        
+        btnTutorialNext.onclick = () => {
+            if (tutorialStep < tutorialSteps.length - 1) {
+                tutorialStep++;
+                updateTutorialStep();
+            } else {
+                // Finish tutorial
+                interactiveTutorialModal.classList.remove('active');
+            }
+        };
+        
+        btnTutorialPrev.onclick = () => {
+            if (tutorialStep > 0) {
+                tutorialStep--;
+                updateTutorialStep();
+            }
+        };
+        
+        btnTutorialSkip.onclick = () => {
+            interactiveTutorialModal.classList.remove('active');
+        };
 
         // ============================================
         // GAME STATE
@@ -755,6 +1596,7 @@
         
         // Welcome Screen Hooks
         btnWelcomeStart.onclick = showNewGameModal;
+        btnPlayTutorial.onclick = startInteractiveTutorial;
         btnWelcomeTutorial.onclick = showTutorial;
         btnWelcomeLeaderboard.onclick = showLeaderboard;
         btnWelcomeUnlocks.onclick = openUnlocks;
@@ -764,6 +1606,15 @@
         // New Game Modal Hooks
         const nameError = document.getElementById('nameError');
         
+        // Sanitize player name input (XSS prevention)
+        function sanitizePlayerName(input) {
+            return input
+                .trim()
+                .replace(/[<>'"&]/g, '') // Remove dangerous chars
+                .replace(/\s+/g, ' ')     // Collapse multiple spaces
+                .substring(0, 10);         // Max 10 chars
+        }
+        
         // Clear error on input
         playerNameInput.oninput = () => {
             nameError.style.display = 'none';
@@ -771,7 +1622,8 @@
         };
         
         btnStartGameModal.onclick = () => {
-            const name = playerNameInput.value.trim();
+            const name = sanitizePlayerName(playerNameInput.value);
+            
             if (name.length < 3) {
                 nameError.textContent = '❌ Name must have at least 3 characters!';
                 nameError.style.display = 'block';
@@ -786,13 +1638,293 @@
                 playerNameInput.focus();
                 return;
             }
-            startGame();
+            
+            // Update input with sanitized value
+            playerNameInput.value = name;
+            
+            // Open class selection instead of starting game directly
+            showClassSelection();
         };
         btnCancelStart.onclick = () => {
             newGameModal.classList.remove('active');
             nameError.style.display = 'none';
             playerNameInput.style.borderColor = '#667eea';
         };
+        
+        // ============================================
+        // CLASS SELECTION SYSTEM
+        // ============================================
+        const classSelectionModal = document.getElementById('classSelectionModal');
+        const classCards = document.querySelectorAll('.class-card');
+        const classDescription = document.getElementById('classDescription');
+        const classDescTitle = document.getElementById('classDescTitle');
+        const classDescMotivation = document.getElementById('classDescMotivation');
+        const classDescMechanics = document.getElementById('classDescMechanics');
+        const btnConfirmClass = document.getElementById('btnConfirmClass');
+        const btnCancelClass = document.getElementById('btnCancelClass');
+        const classSelectionTitle = document.getElementById('classSelectionTitle');
+        const classSelectionSubtitle = document.getElementById('classSelectionSubtitle');
+        
+        let selectedClass = null;
+        
+        // Class definitions
+        const CLASSES = {
+            scoundrel: {
+                name: 'SCOUNDREL',
+                motivation: '"I have no honor, no glory, only survival in the dark."',
+                mechanics: '<strong>⚔️ Passive:</strong> None - Pure skill and luck<br><br><strong>✨ Active:</strong> None - Just you and your wits<br><br><em style="color: #8b7355; font-size: 0.9em;">This is the baseline class. Master the basics before seeking power.</em>',
+                icon: '🎭',
+                unlocked: true,
+                unlockRequirement: 'Always available',
+                passive: {},
+                active: null
+            },
+            knight: {
+                name: 'KNIGHT',
+                motivation: '"Honor and steel shall guide my path through the darkness."',
+                mechanics: '<strong>🛡️ Passive:</strong> +5 Max HP | Weapons have +1 durability<br><br><strong>⚔️ Active (Shield Bash):</strong> Deal damage equal to your weapon value to the first monster in the room. Cooldown: 3 rooms.',
+                icon: '🛡️',
+                unlocked: false,
+                unlockRequirement: 'Win on Easy difficulty',
+                passive: { maxHpBonus: 5, weaponDurabilityBonus: 1 },
+                active: {
+                    name: 'Shield Bash',
+                    description: 'Deal weapon damage to first monster',
+                    cooldown: 3,
+                    icon: '🛡️'
+                }
+            },
+            rogue: {
+                name: 'ROGUE',
+                motivation: '"In shadows I thrive, through cunning I survive."',
+                mechanics: '<strong>🗡️ Passive:</strong> Can hold 2 cards instead of 1 | Start with 1 extra gold per room<br><br><strong>🔪 Active (Shadow Strike):</strong> Next monster takes double weapon damage and doesn\'t break combo. Cooldown: 4 rooms.',
+                icon: '🗡️',
+                unlocked: false,
+                unlockRequirement: 'Win on Normal difficulty',
+                passive: { maxHoldCards: 2, bonusGoldPerRoom: 1 },
+                active: {
+                    name: 'Shadow Strike',
+                    description: 'Next monster: 2x damage, combo safe',
+                    cooldown: 4,
+                    icon: '🔪'
+                }
+            },
+            dancer: {
+                name: 'DANCER',
+                motivation: '"Grace in motion, life in every step, death in every turn."',
+                mechanics: '<strong>💃 Passive:</strong> Potions heal +3 HP | Can use 2 potions per room | Higher event chance (luck)<br><br><strong>✨ Active (Healing Dance):</strong> Heal 5 HP and gain +2 weapon damage for next 2 monsters. Cooldown: 5 rooms.',
+                icon: '💃',
+                unlocked: false,
+                unlockRequirement: 'Win on Hard difficulty',
+                passive: { potionHealBonus: 3, maxPotionsPerRoom: 2, eventChanceBonus: 15 },
+                active: {
+                    name: 'Healing Dance',
+                    description: 'Heal 5 HP + damage buff',
+                    cooldown: 5,
+                    icon: '✨'
+                }
+            },
+            berserker: {
+                name: 'BERSERKER',
+                motivation: '"Through pain I find power. Through fury I find victory."',
+                mechanics: '<strong>💢 Passive (Bloodlust):</strong> Damage increases as HP decreases<br>• +1 damage at ≤70% HP<br>• +2 damage at ≤50% HP<br>• +3 damage at ≤30% HP<br><br><strong>⚔️ Active (Rage Strike):</strong> Sacrifice 5 HP for triple damage (3x) on next attack. Breaks combo. Cooldown: 4 rooms.<br><em style="color: #ff6b6b; font-size: 0.9em;">⚠️ Cannot use if HP ≤ 5</em>',
+                icon: '💢',
+                unlocked: false,
+                unlockRequirement: 'Win on Hard + Kill 5 bosses total',
+                passive: { bloodlust: true },
+                active: {
+                    name: 'Rage Strike',
+                    description: 'Sacrifice 5 HP: 3x damage, breaks combo',
+                    cooldown: 4,
+                    icon: '⚔️'
+                }
+            },
+            priest: {
+                name: 'PRIEST',
+                motivation: '"The light protects me. The divine guides me. Chaos shall be purified."',
+                mechanics: '<strong>🕊️ Passive (Divine Blessing):</strong> 15% chance to negate damage completely | Potions heal +1 HP | Start with +2 Max HP<br><br><strong>📿 Active (Purification):</strong> Permanently remove the strongest monster from current dungeon OR transform a monster into a potion. Cooldown: 6 rooms.<br><em style="color: #ffd700; font-size: 0.9em;">✨ Strategic: Eliminate threats before facing them</em>',
+                icon: '📿',
+                unlocked: false,
+                unlockRequirement: 'Collect 20 relics + 10 events + 5 wins total',
+                passive: { divineBlessing: true, potionHealBonus: 1, startMaxHpBonus: 2 },
+                active: {
+                    name: 'Purification',
+                    description: 'Remove strongest monster or convert to potion',
+                    cooldown: 6,
+                    icon: '📿'
+                }
+            }
+        };
+        
+        // Function to check class unlocks based on wins
+        function checkClassUnlocks() {
+            const stats = storage.get('scoundrel_lifetime_stats', {});
+            
+            // Knight unlocks after Easy win
+            if (stats.easyWins >= 1) {
+                CLASSES.knight.unlocked = true;
+            }
+            
+            // Rogue unlocks after Normal win
+            if (stats.normalWins >= 1) {
+                CLASSES.rogue.unlocked = true;
+            }
+            
+            // Dancer unlocks after Hard win
+            if (stats.hardWins >= 1) {
+                CLASSES.dancer.unlocked = true;
+            }
+            
+            // Berserker unlocks after Hard win + 5 bosses killed
+            if (stats.hardWins >= 1 && (stats.bossesKilled || 0) >= 5) {
+                CLASSES.berserker.unlocked = true;
+            }
+            
+            // Priest unlocks after 20 relics + 10 events + 5 wins
+            const totalRelics = stats.totalRelicsCollected || 0;
+            const totalEvents = stats.eventsTriggered || 0;
+            const totalWins = stats.gamesWon || 0;
+            
+            if (totalRelics >= 20 && totalEvents >= 10 && totalWins >= 5) {
+                CLASSES.priest.unlocked = true;
+            }
+        }
+        
+        function showClassSelection() {
+            newGameModal.classList.remove('active');
+            classSelectionModal.classList.add('active');
+            selectedClass = null;
+            btnConfirmClass.disabled = true;
+            classDescription.style.display = 'none';
+            classSelectionTitle.textContent = 'SELECT YOUR HERO';
+            classSelectionSubtitle.textContent = '';
+            
+            // Check unlocks before showing
+            checkClassUnlocks();
+            
+            // Reset all class cards and apply lock states
+            classCards.forEach(card => {
+                const className = card.dataset.class;
+                const classData = CLASSES[className];
+                const isLocked = !classData.unlocked;
+                
+                card.classList.remove('selected');
+                card.style.borderColor = '#5a4a38';
+                card.style.transform = 'translateY(0)';
+                
+                // Apply locked visual state
+                if (isLocked) {
+                    card.style.opacity = '0.4';
+                    card.style.filter = 'grayscale(80%)';
+                    card.style.cursor = 'not-allowed';
+                    
+                    // Add lock icon overlay
+                    if (!card.querySelector('.lock-overlay')) {
+                        const lockOverlay = document.createElement('div');
+                        lockOverlay.className = 'lock-overlay';
+                        lockOverlay.style.cssText = `
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            font-size: 3em;
+                            z-index: 10;
+                            pointer-events: none;
+                        `;
+                        lockOverlay.textContent = '🔒';
+                        card.style.position = 'relative';
+                        card.appendChild(lockOverlay);
+                    }
+                } else {
+                    card.style.opacity = '1';
+                    card.style.filter = 'none';
+                    card.style.cursor = 'pointer';
+                    
+                    // Remove lock overlay if exists
+                    const lockOverlay = card.querySelector('.lock-overlay');
+                    if (lockOverlay) {
+                        lockOverlay.remove();
+                    }
+                }
+            });
+        }
+        
+        // Class card click handlers
+        classCards.forEach(card => {
+            card.onclick = () => {
+                const className = card.dataset.class;
+                const classData = CLASSES[className];
+                
+                // Check if locked
+                if (!classData.unlocked) {
+                    // Show lock message
+                    classSelectionTitle.textContent = classData.name + ' 🔒';
+                    classSelectionSubtitle.textContent = 'LOCKED';
+                    classDescTitle.textContent = classData.name + ' (LOCKED)';
+                    classDescMotivation.textContent = '';
+                    classDescMechanics.innerHTML = `
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="font-size: 3em; margin-bottom: 15px;">🔒</div>
+                            <div style="color: #ff6b6b; font-weight: bold; font-size: 1.2em; margin-bottom: 10px;">
+                                CLASS LOCKED
+                            </div>
+                            <div style="color: #ffd700; font-size: 1.1em;">
+                                ${classData.unlockRequirement}
+                            </div>
+                        </div>
+                    `;
+                    classDescription.style.display = 'block';
+                    btnConfirmClass.disabled = true;
+                    playSound('error');
+                    return;
+                }
+                
+                selectedClass = className;
+                
+                // Update UI
+                classCards.forEach(c => {
+                    c.classList.remove('selected');
+                    if (CLASSES[c.dataset.class].unlocked) {
+                        c.style.borderColor = '#5a4a38';
+                    }
+                });
+                card.classList.add('selected');
+                card.style.borderColor = '#c9a961';
+                card.style.transform = 'translateY(-5px)';
+                
+                // Show description
+                classSelectionTitle.textContent = classData.name;
+                classSelectionSubtitle.textContent = 'Your chosen hero';
+                classDescTitle.textContent = classData.name;
+                classDescMotivation.textContent = classData.motivation;
+                classDescMechanics.innerHTML = classData.mechanics;
+                classDescription.style.display = 'block';
+                
+                btnConfirmClass.disabled = false;
+                playSound('cardFlip');
+            };
+        });
+        
+        btnConfirmClass.onclick = () => {
+            if (!selectedClass) return;
+            classSelectionModal.classList.remove('active');
+            startGameWithClass(selectedClass);
+        };
+        
+        btnCancelClass.onclick = () => {
+            classSelectionModal.classList.remove('active');
+            newGameModal.classList.add('active');
+        };
+        
+        // Store class in game object
+        function startGameWithClass(className) {
+            game.playerClass = className;
+            game.classData = CLASSES[className];
+            game.classAbilityCooldown = 0; // Tracks rooms until ability is ready
+            game.classAbilityActive = false; // For buffs like Shadow Strike
+            game.classAbilityCounter = 0; // For counting buff duration
+            startGame();
+        }
         
         // FIXED HOOK: Difficulty Selector
         difficultySelector.addEventListener('click', (e) => {
@@ -822,7 +1954,7 @@
         btnCancelGiveUp.onclick = () => giveUpModal.classList.remove('active');
         btnConfirmGiveUp.onclick = () => {
             giveUpModal.classList.remove('active');
-            endGame('death', true); // Pass a flag to show 0 score
+            endGame('death', true); // true = gave up
         };
         
         // FIXED HOOKS: Action Buttons
@@ -835,37 +1967,91 @@
             btnUndo.onclick = undoLastMove;
         }
         
-        // ============================================
-        // ORIENTATION DETECTION (Mobile)
-        // ============================================
-        const orientationWarning = document.getElementById('orientationWarning');
-        let orientationDismissed = false;
-        
-        function checkOrientation() {
-            // Only check on mobile devices
-            const isMobile = window.innerWidth <= 768;
-            const isPortrait = window.innerHeight > window.innerWidth;
-            const isGameActive = document.getElementById('gameWrapper').classList.contains('active');
-            
-            if (isMobile && isPortrait && isGameActive && !orientationDismissed) {
-                orientationWarning.classList.add('active');
-            } else {
-                orientationWarning.classList.remove('active');
-            }
+        // Class Ability Button Hook
+        const btnClassAbility = document.getElementById('btnClassAbility');
+        if (btnClassAbility) {
+            btnClassAbility.onclick = useClassAbility;
         }
         
-        // Check on load and orientation change
-        window.addEventListener('load', checkOrientation);
-        window.addEventListener('resize', checkOrientation);
-        window.addEventListener('orientationchange', checkOrientation);
-        
-        // Allow dismissing the warning by clicking
-        orientationWarning.addEventListener('click', () => {
-            orientationDismissed = true;
-            orientationWarning.classList.remove('active');
+        // ============================================
+        // KEYBOARD SHORTCUTS (Desktop Optimization)
+        // ============================================
+        document.addEventListener('keydown', (e) => {
+            // Ignore if typing in input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            // Ignore if modal is open (except ESC)
+            const modalOpen = document.querySelector('.modal-overlay.active');
+            if (modalOpen && e.key !== 'Escape') return;
+            
+            // ESC - Close modals
+            if (e.key === 'Escape') {
+                const modal = document.querySelector('.modal-overlay.active');
+                if (modal) {
+                    modal.classList.remove('active');
+                    playSound('cardFlip');
+                    return;
+                }
+            }
+            
+            // Only in-game shortcuts below
+            if (!gameWrapper.classList.contains('active') || game.gameOver) return;
+            
+            switch(e.key.toLowerCase()) {
+                case ' ': // Space - Draw Room
+                case 'd':
+                    e.preventDefault();
+                    if (!btnDrawRoom.disabled) {
+                        btnDrawRoom.click();
+                    }
+                    break;
+                    
+                case 'a': // A - Avoid Room
+                    e.preventDefault();
+                    if (!btnAvoidRoom.disabled) {
+                        btnAvoidRoom.click();
+                    }
+                    break;
+                    
+                case 'q': // Q - Class Ability
+                    e.preventDefault();
+                    if (btnClassAbility && !btnClassAbility.disabled) {
+                        btnClassAbility.click();
+                    }
+                    break;
+                    
+                case 'u': // U - Undo
+                    e.preventDefault();
+                    const btnUndo = document.getElementById('btnUndo');
+                    if (btnUndo && !btnUndo.disabled) {
+                        btnUndo.click();
+                    }
+                    break;
+                    
+                case 's': // S - Shop
+                    e.preventDefault();
+                    if (btnOpenShop && !btnOpenShop.disabled) {
+                        btnOpenShop.click();
+                    }
+                    break;
+                    
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                    e.preventDefault();
+                    const cardIndex = parseInt(e.key) - 1;
+                    const cards = bottomBar.querySelectorAll('.card');
+                    if (cards[cardIndex]) {
+                        cards[cardIndex].click();
+                    }
+                    break;
+            }
         });
-
-
+        
+        console.log('✅ Keyboard shortcuts loaded! D=Draw | A=Avoid | Q=Ability | 1-5=Cards | U=Undo | S=Shop | ESC=Close');
+        
         // ============================================
         // ALL GAME CODE (STARTGAME, HANDLECLICK, ETC)
         // ============================================
@@ -1831,9 +3017,17 @@ class DarkAtmosphericMusic {
         // Music Volume Control (Gameplay)
         const musicVolumeSlider = document.getElementById('musicVolume');
         if (musicVolumeSlider) {
+            // Initialize slider background with current value
+            const initialVolume = musicVolumeSlider.value || 15;
+            musicVolumeSlider.style.background = `linear-gradient(to right, #c9a961 0%, #c9a961 ${initialVolume}%, #2a2318 ${initialVolume}%, #2a2318 100%)`;
+            
             musicVolumeSlider.oninput = (e) => {
                 const volume = e.target.value / 100;
+                const volumePercent = e.target.value;
                 music.masterGain.gain.value = volume;
+                
+                // Update slider background dynamically
+                e.target.style.background = `linear-gradient(to right, #c9a961 0%, #c9a961 ${volumePercent}%, #2a2318 ${volumePercent}%, #2a2318 100%)`;
             };
         }
 
@@ -1868,11 +3062,23 @@ class DarkAtmosphericMusic {
         // Music Volume Control (Welcome Screen)
         const welcomeMusicVolumeSlider = document.getElementById('welcomeMusicVolume');
         if (welcomeMusicVolumeSlider) {
+            // Initialize slider background with current value
+            const initialVolume = welcomeMusicVolumeSlider.value;
+            welcomeMusicVolumeSlider.style.background = `linear-gradient(to right, #c9a961 0%, #c9a961 ${initialVolume}%, #2a2318 ${initialVolume}%, #2a2318 100%)`;
+            
             welcomeMusicVolumeSlider.oninput = (e) => {
                 const volume = e.target.value / 100;
+                const volumePercent = e.target.value;
                 music.masterGain.gain.value = volume;
+                
+                // Update slider background dynamically
+                e.target.style.background = `linear-gradient(to right, #c9a961 0%, #c9a961 ${volumePercent}%, #2a2318 ${volumePercent}%, #2a2318 100%)`;
+                
                 // Sync with gameplay slider
-                if (musicVolumeSlider) musicVolumeSlider.value = e.target.value;
+                if (musicVolumeSlider) {
+                    musicVolumeSlider.value = e.target.value;
+                    musicVolumeSlider.style.background = `linear-gradient(to right, #c9a961 0%, #c9a961 ${volumePercent}%, #2a2318 ${volumePercent}%, #2a2318 100%)`;
+                }
             };
         }
         
@@ -1937,9 +3143,16 @@ class DarkAtmosphericMusic {
         // Initialize welcome music button state
         updateWelcomeMusicButton();
 
-        // Particles System
+        // Particles System with performance limit
+        let activeParticles = 0;
+        const MAX_PARTICLES = 150; // Prevent performance issues
+        
         function createParticles(x, y, color, count = 10) {
-            for (let i = 0; i < count; i++) {
+            // Limit number of particles for performance
+            const actualCount = Math.min(count, MAX_PARTICLES - activeParticles);
+            if (actualCount <= 0) return; // Skip if at limit
+            
+            for (let i = 0; i < actualCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.cssText = `
@@ -1952,8 +3165,12 @@ class DarkAtmosphericMusic {
                     animation: particleFade ${Math.random() * 0.5 + 0.5}s ease-out forwards;
                     transform: translate(${(Math.random() - 0.5) * 100}px, ${(Math.random() - 0.5) * 100}px);
                 `;
+                activeParticles++;
                 document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 1000);
+                setTimeout(() => {
+                    particle.remove();
+                    activeParticles--;
+                }, 1000);
             }
         }
         
@@ -2059,11 +3276,33 @@ class DarkAtmosphericMusic {
         function showCombo(count) {
             const comboEl = document.createElement('div');
             comboEl.className = 'combo-counter';
-            comboEl.textContent = `${count}x COMBO!`;
+            
+            // Different messages and colors based on combo count
+            let message = `${count}x COMBO!`;
+            let color = '#ffd93d'; // Default yellow
+            
+            if (count >= 10) {
+                message = `${count}x LEGENDARY!`;
+                color = '#ff6b6b'; // Red for legendary
+            } else if (count >= 7) {
+                message = `${count}x AMAZING!`;
+                color = '#a8edea'; // Blue for amazing
+            } else if (count >= 5) {
+                message = `${count}x GREAT!`;
+                color = '#6bcf7f'; // Green for great
+            }
+            
+            comboEl.textContent = message;
+            comboEl.style.color = color;
+            comboEl.style.textShadow = `0 0 30px ${color}`;
+            
             document.body.appendChild(comboEl);
             setTimeout(() => comboEl.remove(), 1000);
             
-            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 30);
+            // Extra particles for high combos
+            if (count >= 5) {
+                createParticles(window.innerWidth / 2, window.innerHeight / 2, color, count * 3);
+            }
         }
         
         function screenShake() {
@@ -2076,19 +3315,44 @@ class DarkAtmosphericMusic {
 
         // Hold System
         function holdCard(card, sourceIndex) {
-            if (game.heldCard) {
-                showMessage('❌ You already have a held card! Use it first.', 'warning');
+            // Check max hold cards (Rogue can hold 2)
+            const maxHold = (game.classData && game.classData.passive.maxHoldCards) || 1;
+            
+            // Count current held cards
+            const currentHeldCount = game.heldCard ? (Array.isArray(game.heldCard) ? game.heldCard.length : 1) : 0;
+            
+            if (currentHeldCount >= maxHold) {
+                showMessage(`❌ Hold slots full! (Max: ${maxHold})`, 'warning');
                 playSound('error');
                 return;
             }
             
-            game.heldCard = { ...card, sourceIndex };
+            // Monsters cannot be held!
+            const cardType = getCardType(card);
+            if (cardType === 'monster') {
+                showMessage('❌ Monsters cannot be held! You must fight them.', 'danger');
+                playSound('error');
+                return;
+            }
+            
+            // Initialize heldCard as array for Rogue, single for others
+            if (!game.heldCard) {
+                game.heldCard = maxHold > 1 ? [] : null;
+            }
+            
+            // Add to hold
+            const cardToHold = { ...card, sourceIndex };
+            if (maxHold > 1) {
+                if (!Array.isArray(game.heldCard)) game.heldCard = [];
+                game.heldCard.push(cardToHold);
+            } else {
+                game.heldCard = cardToHold;
+            }
+            
             game.room.splice(sourceIndex, 1);
             game.stats.cardsHeld++;
             
-            const cardType = getCardType(card);
             const typeEmoji = {
-                'monster': '👹',
                 'weapon': '⚔️',
                 'potion': '💊',
                 'special': '✨'
@@ -2096,9 +3360,10 @@ class DarkAtmosphericMusic {
             
             playSound('hold');
             addLog(`Held ${card.value}${card.suit}`, 'info');
-            showMessage(`📌 ${typeEmoji[cardType]} Held for later use!`, 'info');
+            showMessage(`📌 ${typeEmoji[cardType]} Held for later use! (${currentHeldCount + 1}/${maxHold})`, 'info');
             createParticles(window.innerWidth / 2, window.innerHeight / 3, '#ffd93d', 20);
             updateUI();
+            checkGameState(); // Check if room is now cleared after holding card
         }
 
         function useHeldCard() {
@@ -2120,6 +3385,222 @@ class DarkAtmosphericMusic {
             }, 100);
         }
         
+        // ============================================
+        // CLASS ABILITIES
+        // ============================================
+        
+        function useClassAbility() {
+            if (!game.classData) return;
+            
+            // Scoundrel has no ability
+            if (!game.classData.active) {
+                showMessage('❌ Scoundrel has no special abilities!', 'warning');
+                playSound('error');
+                return;
+            }
+            
+            // Check cooldown
+            if (game.classAbilityCooldown > 0) {
+                showMessage(`⏳ Ability on cooldown! ${game.classAbilityCooldown} rooms remaining.`, 'warning');
+                playSound('error');
+                return;
+            }
+            
+            // Execute ability based on class
+            if (game.playerClass === 'knight') {
+                useKnightAbility();
+            } else if (game.playerClass === 'rogue') {
+                useRogueAbility();
+            } else if (game.playerClass === 'dancer') {
+                useDancerAbility();
+            } else if (game.playerClass === 'berserker') {
+                useBerserkerAbility();
+            } else if (game.playerClass === 'priest') {
+                usePriestAbility();
+            }
+            
+            updateAbilityUI();
+        }
+        
+        function useKnightAbility() {
+            // Shield Bash: Deal weapon damage to first monster
+            if (!game.equippedWeapon) {
+                showMessage('⚠️ Need a weapon equipped to use Shield Bash!', 'warning');
+                playSound('error');
+                return;
+            }
+            
+            const firstMonster = game.room.find(c => getCardType(c) === 'monster');
+            if (!firstMonster) {
+                showMessage('⚠️ No monsters in room!', 'warning');
+                playSound('error');
+                return;
+            }
+            
+            const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+            const damage = game.equippedWeapon.numValue + powerBonus;
+            firstMonster.numValue -= damage;
+            
+            if (firstMonster.numValue <= 0) {
+                const index = game.room.indexOf(firstMonster);
+                game.room.splice(index, 1);
+                game.discardPile.push(firstMonster);
+                game.stats.monstersSlain++;
+                showMessage(`🛡️ Shield Bash! Monster defeated!`, 'success');
+            } else {
+                showMessage(`🛡️ Shield Bash! Dealt ${damage} damage! (${firstMonster.numValue} HP left)`, 'success');
+            }
+            
+            game.classAbilityCooldown = game.classData.active.cooldown;
+            playSound('special');
+            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#c9a961', 40);
+            updateUI();
+            checkGameState();
+        }
+        
+        function useRogueAbility() {
+            // Shadow Strike: Next monster 2x damage, combo safe
+            game.classAbilityActive = true;
+            game.classAbilityCounter = 1; // Next monster only
+            game.classAbilityCooldown = game.classData.active.cooldown;
+            
+            showMessage('🔪 Shadow Strike activated! Next kill: 2x damage, combo safe!', 'success');
+            playSound('special');
+            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#667eea', 40);
+            updateUI();
+        }
+        
+        function useDancerAbility() {
+            // Healing Dance: Heal 5 HP + damage buff
+            game.health = Math.min(game.maxHealth, game.health + 5);
+            game.classAbilityActive = true;
+            game.classAbilityCounter = 2; // Next 2 monsters
+            game.classAbilityCooldown = game.classData.active.cooldown;
+            
+            showMessage('✨ Healing Dance! +5 HP and damage buff for 2 attacks!', 'success');
+            playSound('heal');
+            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 50);
+            updateUI();
+        }
+        
+        function useBerserkerAbility() {
+            // Rage Strike: Sacrifice 5 HP for 3x damage
+            if (game.health <= 5) {
+                showMessage('⚠️ Not enough HP! Need more than 5 HP to use Rage Strike.', 'danger');
+                playSound('error');
+                return;
+            }
+            
+            // Sacrifice HP
+            game.health -= 5;
+            
+            // Activate 3x damage buff
+            game.classAbilityActive = true;
+            game.classAbilityCounter = 1; // Next attack only
+            game.rageStrikeActive = true; // Special flag for triple damage
+            game.classAbilityCooldown = game.classData.active.cooldown;
+            
+            // Break combo (high risk)
+            if (game.combo > 0) {
+                showMessage(`💢 Rage Strike! -5 HP, next attack: 3x damage! ⚠️ Combo broken! (Lost ${game.combo}x)`, 'warning');
+                game.combo = 0;
+            } else {
+                showMessage('💢 Rage Strike! -5 HP, next attack: 3x damage!', 'warning');
+            }
+            
+            playSound('special');
+            screenShake();
+            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 60);
+            updateUI();
+        }
+        
+        function usePriestAbility() {
+            // Purification: Remove strongest monster or convert to potion
+            const monsters = game.dungeon.filter(c => getCardType(c) === 'monster');
+            
+            if (monsters.length === 0) {
+                showMessage('⚠️ No monsters in dungeon to purify!', 'warning');
+                playSound('error');
+                return;
+            }
+            
+            // Find strongest monster
+            const strongestMonster = monsters.reduce((max, card) => 
+                card.numValue > max.numValue ? card : max
+            );
+            
+            // Ask player what to do
+            const choice = confirm(
+                `📿 PURIFICATION\n\n` +
+                `Strongest monster: ${strongestMonster.value}${strongestMonster.suit} (${strongestMonster.numValue} HP)\n\n` +
+                `Choose:\n` +
+                `• OK = Remove permanently\n` +
+                `• Cancel = Transform into potion`
+            );
+            
+            const index = game.dungeon.indexOf(strongestMonster);
+            
+            if (choice) {
+                // Remove permanently
+                game.dungeon.splice(index, 1);
+                showMessage(`📿 Purification! ${strongestMonster.value}${strongestMonster.suit} removed from existence!`, 'success');
+            } else {
+                // Transform to potion (random value 2-10)
+                const potionValue = Math.floor(Math.random() * 9) + 2;
+                game.dungeon[index] = {
+                    value: potionValue.toString(),
+                    suit: '♥',
+                    numValue: potionValue,
+                    suitName: 'hearts'
+                };
+                showMessage(`📿 Purification! ${strongestMonster.value}${strongestMonster.suit} transformed into ${potionValue}♥ potion!`, 'success');
+            }
+            
+            game.classAbilityCooldown = game.classData.active.cooldown;
+            playSound('special');
+            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 70);
+            updateUI();
+        }
+        
+        function updateAbilityUI() {
+            const btn = document.getElementById('btnClassAbility');
+            const cooldownDisplay = document.getElementById('abilityCooldownDisplay');
+            const desc = document.getElementById('abilityDescription');
+            
+            if (!game.classData) return;
+            
+            // Scoundrel has no ability - disable button
+            if (!game.classData.active) {
+                btn.disabled = true;
+                btn.style.opacity = '0.3';
+                btn.style.display = 'none'; // Hide button for Scoundrel
+                cooldownDisplay.style.display = 'none';
+                if (desc) desc.textContent = 'No abilities available';
+                return;
+            }
+            
+            // Show button for classes with abilities
+            btn.style.display = 'block';
+            
+            if (game.classAbilityCooldown > 0) {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                cooldownDisplay.textContent = `${game.classAbilityCooldown} rooms`;
+                cooldownDisplay.style.display = 'block';
+            } else {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                cooldownDisplay.style.display = 'none';
+            }
+            
+            // Show active buff
+            if (game.classAbilityActive && game.classAbilityCounter > 0) {
+                desc.innerHTML = `<strong style="color: #6bcf7f;">✨ ACTIVE! ${game.classAbilityCounter} uses left</strong>`;
+            } else {
+                desc.textContent = game.classData.active.description;
+            }
+        }
+        
         // Tooltip Generation
         function generateTooltip(card) {
             const type = getCardType(card);
@@ -2134,8 +3615,36 @@ class DarkAtmosphericMusic {
             if (type === 'monster') {
                 const baseWeapon = game.equippedWeapon?.numValue || 0;
                 const berserkBonus = game.berserkStacks > 0 ? 5 : 0;
-                const totalWeapon = baseWeapon + powerBonus + berserkBonus;
-                const effectiveWeapon = game.doubleDamage ? totalWeapon * 2 : totalWeapon;
+                
+                // Add class ability bonuses
+                let classBonus = 0;
+                if (game.classAbilityActive && game.classAbilityCounter > 0) {
+                    if (game.playerClass === 'dancer') {
+                        classBonus = 2;
+                    }
+                }
+                
+                // Berserker Bloodlust passive
+                let bloodlustBonus = 0;
+                if (game.classData && game.classData.passive.bloodlust) {
+                    const hpPercent = (game.health / game.maxHealth) * 100;
+                    if (hpPercent <= 30) bloodlustBonus = 3;
+                    else if (hpPercent <= 50) bloodlustBonus = 2;
+                    else if (hpPercent <= 70) bloodlustBonus = 1;
+                }
+                
+                const totalWeapon = baseWeapon + powerBonus + berserkBonus + classBonus + bloodlustBonus;
+                let effectiveWeapon = game.doubleDamage ? totalWeapon * 2 : totalWeapon;
+                
+                // Rogue Shadow Strike (2x)
+                if (game.classAbilityActive && game.classAbilityCounter > 0 && game.playerClass === 'rogue') {
+                    effectiveWeapon *= 2;
+                }
+                
+                // Berserker Rage Strike (3x)
+                if (game.rageStrikeActive && game.classAbilityCounter > 0) {
+                    effectiveWeapon *= 3;
+                }
 
                 if (baseWeapon === 0) {
                     return `<span class="tooltip-negative">⚠️ No weapon! Damage: -${card.numValue} HP</span>`;
@@ -2148,6 +3657,10 @@ class DarkAtmosphericMusic {
                 if (game.berserkStacks > 0) buffInfo += `🔥+${berserkBonus} `;
                 if (game.doubleDamage) buffInfo += `⚡2x `;
                 if (game.mirrorShield > 0) buffInfo += `🪞${game.mirrorShield} `;
+                if (classBonus > 0) buffInfo += `💃+${classBonus} `;
+                if (bloodlustBonus > 0) buffInfo += `💢+${bloodlustBonus} `;
+                if (game.classAbilityActive && game.classAbilityCounter > 0 && game.playerClass === 'rogue') buffInfo += `🔪2x `;
+                if (game.rageStrikeActive && game.classAbilityCounter > 0) buffInfo += `⚔️3x `;
                 
                 if (game.dodgeActive) return `<span class="tooltip-positive">🛡️ Dodge: No damage! ${buffInfo}</span>`;
                 
@@ -2173,13 +3686,22 @@ class DarkAtmosphericMusic {
                 else return `<span class="tooltip-neutral">↔️ Same Weapon (${cardValue})</span>`;
                 
             } else if (type === 'potion') {
-                if (game.potionsUsed >= 1) return `<span class="tooltip-negative">❌ Potion already used in dungeon</span>`;
+                const maxPotions = (game.classData && game.classData.passive.maxPotionsPerRoom) || 1;
+                if (game.potionsUsed >= maxPotions) {
+                    return `<span class="tooltip-negative">❌ Potion limit reached (${maxPotions}/${maxPotions})</span>`;
+                }
                 
                 const healBonus = getRelicBonus('healBonus');
-                const heal = Math.min(card.numValue + healBonus, game.maxHealth - game.health);
+                const classHealBonus = (game.classData && game.classData.passive.potionHealBonus) || 0;
+                const totalHealBonus = healBonus + classHealBonus;
+                const heal = Math.min(card.numValue + totalHealBonus, game.maxHealth - game.health);
 
-                if (heal > 0) return `<span class="tooltip-positive">💚 Heal: +${heal} HP</span>`;
-                else return `<span class="tooltip-neutral">💚 HP Full</span>`;
+                if (heal > 0) {
+                    let bonusText = totalHealBonus > 0 ? ` (+${totalHealBonus} bonus)` : '';
+                    return `<span class="tooltip-positive">💚 Heal: +${heal} HP${bonusText}</span>`;
+                } else {
+                    return `<span class="tooltip-neutral">💚 HP Full</span>`;
+                }
                 
             } else if (card.special) {
                 return `<span class="tooltip-positive">✨ ${card.special.description}</span>`;
@@ -2214,16 +3736,70 @@ class DarkAtmosphericMusic {
         
         // Initialize deck
         function createDeck() {
-            const deck = [];
-            for (let suit in suits) {
-                for (let value of values) {
-                    deck.push({ value, suit, numValue: parseInt(value), suitName: suits[suit] });
+            let deck = [];
+            
+            // SCOUNDREL ORIGINAL RULES:
+            // Remove: Jokers, Red Face Cards (J♥,Q♥,K♥,J♦,Q♦,K♦), Red Aces (A♥,A♦)
+            
+            // 26 MONSTERS (♠ Spades + ♣ Clubs): A(14), 2-10, J(11), Q(12), K(13)
+            const monsterSuits = [
+                { suit: '♠', suitName: 'spades' },
+                { suit: '♣', suitName: 'clubs' }
+            ];
+            const monsterValues = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+            const monsterNumValues = [14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+            
+            for (let suit of monsterSuits) {
+                for (let i = 0; i < monsterValues.length; i++) {
+                    deck.push({ 
+                        value: monsterValues[i], 
+                        suit: suit.suit, 
+                        numValue: monsterNumValues[i], 
+                        suitName: suit.suitName 
+                    });
                 }
             }
-            const specialCount = 2 + Math.floor(Math.random() * 3);
-            for (let i = 0; i < specialCount; i++) {
-                deck.push({ value: '✨', suit: '', numValue: 0, suitName: 'special', special: specialCards[Math.floor(Math.random() * specialCards.length)] });
+            
+            // 9 WEAPONS (♦ Diamonds): 2-10 only (NO face cards, NO Ace)
+            const weaponValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
+            const weaponNumValues = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+            
+            for (let i = 0; i < weaponValues.length; i++) {
+                deck.push({ 
+                    value: weaponValues[i], 
+                    suit: '♦', 
+                    numValue: weaponNumValues[i], 
+                    suitName: 'diamonds' 
+                });
             }
+            
+            // 9 POTIONS (♥ Hearts): 2-10 only (NO face cards, NO Ace)
+            const potionValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
+            const potionNumValues = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+            
+            for (let i = 0; i < potionValues.length; i++) {
+                deck.push({ 
+                    value: potionValues[i], 
+                    suit: '♥', 
+                    numValue: potionNumValues[i], 
+                    suitName: 'hearts' 
+                });
+            }
+            
+            // SPECIAL CARDS (our addition for gamification)
+            // Always 6 special cards, but types are random (deck = 50 cards total)
+            const specialCount = 6;
+            for (let i = 0; i < specialCount; i++) {
+                deck.push({ 
+                    value: '✨', 
+                    suit: '', 
+                    numValue: 0, 
+                    suitName: 'special', 
+                    special: specialCards[Math.floor(Math.random() * specialCards.length)] 
+                });
+            }
+            
+            // TOTAL: 26 monsters + 9 weapons + 9 potions + 6 specials = 50 cards
             return shuffleDeck(deck);
         }
 
@@ -2251,7 +3827,73 @@ class DarkAtmosphericMusic {
             let startHealthBonus = permanentUnlocks.startHealth ? 5 : 0;
 
             game.maxHealth = healthMap[game.difficulty] + startHealthBonus;
+            
+            // Apply class passives
+            if (game.classData && game.classData.passive) {
+                // Knight: +5 Max HP
+                if (game.classData.passive.maxHpBonus) {
+                    game.maxHealth += game.classData.passive.maxHpBonus;
+                }
+                // Priest: +2 Max HP (starting bonus)
+                if (game.classData.passive.startMaxHpBonus) {
+                    game.maxHealth += game.classData.passive.startMaxHpBonus;
+                }
+            }
+            
             game.health = game.maxHealth;
+            
+            // Update player info display
+            if (game.playerClass) {
+                document.getElementById('playerAvatar').src = `assets/avatar-${game.playerClass}.jpg`;
+                document.getElementById('playerNameDisplay').textContent = sanitizePlayerName(playerNameInput.value);
+                document.getElementById('playerClassDisplay').textContent = game.classData.name;
+                
+                // Update ability button (only if class has an active ability)
+                if (game.classData.active) {
+                    document.getElementById('abilityIcon').textContent = game.classData.active.icon;
+                    document.getElementById('abilityName').textContent = game.classData.active.name;
+                    document.getElementById('abilityDescription').textContent = game.classData.active.description;
+                }
+                
+                // Show passive icons
+                const passiveIconsDisplay = document.getElementById('passiveIconsDisplay');
+                passiveIconsDisplay.innerHTML = '';
+                
+                // Create passive icons based on class
+                const passiveIcons = {
+                    knight: [
+                        { icon: '❤️', text: '+5 HP', title: 'Start with +5 Max HP' },
+                        { icon: '🔨', text: '+1 Dur', title: 'Weapons last +1 use' }
+                    ],
+                    rogue: [
+                        { icon: '📌', text: 'x2 Hold', title: 'Can hold 2 cards' },
+                        { icon: '💰', text: '+1 Gold', title: '+1 gold per room' }
+                    ],
+                    dancer: [
+                        { icon: '💊', text: '+3 HP', title: 'Potions heal +3 HP' },
+                        { icon: '💊', text: 'x2 Use', title: 'Use 2 potions per room' },
+                        { icon: '🎲', text: '+15%', title: '+15% event chance' }
+                    ],
+                    berserker: [
+                        { icon: '💢', text: 'Bloodlust', title: 'Damage increases as HP decreases' },
+                        { icon: '⚔️', text: 'High Risk', title: '+1/+2/+3 damage at ≤70%/50%/30% HP' }
+                    ],
+                    priest: [
+                        { icon: '🕊️', text: '15% Dodge', title: '15% chance to dodge damage' },
+                        { icon: '💊', text: '+1 HP', title: 'Potions heal +1 HP' },
+                        { icon: '❤️', text: '+2 HP', title: 'Start with +2 Max HP' }
+                    ]
+                };
+                
+                const icons = passiveIcons[game.playerClass] || [];
+                icons.forEach(passive => {
+                    const iconEl = document.createElement('div');
+                    iconEl.style.cssText = 'background: rgba(0,0,0,0.5); border: 1px solid #5a4a38; border-radius: 6px; padding: 4px 8px; font-size: 0.7em; display: flex; align-items: center; gap: 4px; color: #ffd700;';
+                    iconEl.title = passive.title;
+                    iconEl.innerHTML = `<span>${passive.icon}</span><span style="color: #c9a961;">${passive.text}</span>`;
+                    passiveIconsDisplay.appendChild(iconEl);
+                });
+            }
             
             game.deck = createDeck();
             game.dungeon = [...game.deck];
@@ -2269,12 +3911,21 @@ class DarkAtmosphericMusic {
             game.mirrorShield = 0;
             game.obliterateMode = false;
             game.gameStartTime = Date.now();
+            game.seenEvents = []; // Track events seen this run (no repeats)
+            game.eventTriggeredThisRoom = false; // Max 1 event per room
+            game.shopPriceMultiplier = 1.0; // Price increases 15% per purchase (anti-exploit)
+            
+            // Class abilities
+            game.classAbilityCooldown = 0; // Cooldown in rooms
+            game.classAbilityActive = false; // Is buff active?
+            game.classAbilityCounter = 0; // Uses left for buff
             
             // Run Stats
             game.stats = {
                 monstersSlain: 0, totalDamage: 0, totalHealing: 0, roomsCleared: 0,
                 weaponsEquipped: 0, potionsUsed: 0, maxCombo: 0, specialsUsed: 0,
                 cardsHeld: 0, roomsAvoided: 0, gamesWon: 0, hardWins: 0,
+                shopsVisited: 0,  // Track for score penalty
                 minimalistWin: false, onePunch: false, musicWasOn: game.settings.musicEnabled
             };
             
@@ -2332,16 +3983,35 @@ class DarkAtmosphericMusic {
             const nextRoomNumber = game.stats.roomsCleared + 1;
             const isBossRoom = nextRoomNumber % 10 === 0;
             
+            // Warn player about upcoming boss
+            if (nextRoomNumber === 9) {
+                showMessage('⚠️ BOSS APPROACHING! Prepare for battle in the next room!', 'warning');
+            }
+            
             if (isBossRoom) {
                 // BOSS BATTLE!
                 const bossNumber = Math.floor(nextRoomNumber / 10);
-                const bossHP = 12 + (bossNumber * 3); // Boss 1: 15HP, Boss 2: 18HP, Boss 3: 21HP, Boss 4: 24HP
+                const bossHP = 15; // Fixed boss HP
+                
+                // Boss names and flavor
+                const bossNames = [
+                    { name: 'The Forgotten Knight', flavor: 'A hollow warrior bound by ancient curses...' },
+                    { name: 'The Crimson Warden', flavor: 'Guardian of the deeper dungeons, covered in blood of the fallen.' },
+                    { name: 'The Shadow Lord', flavor: 'Darkness incarnate. Few have lived to speak of this encounter.' },
+                    { name: 'The Abyss Keeper', flavor: 'The final horror. The one who devours all hope.' }
+                ];
+                
+                const boss = bossNames[Math.min(bossNumber - 1, bossNames.length - 1)];
+                
                 const bossCard = {
                     suit: '👹',
                     value: '👹',
                     numValue: bossHP,
+                    maxHP: bossHP, // Store max HP for HP bar
                     isBoss: true,
-                    bossNumber: bossNumber
+                    bossNumber: bossNumber,
+                    bossName: boss.name,
+                    bossFlavor: boss.flavor
                 };
                 
                 const numToDraw = Math.min(3, game.dungeon.length);
@@ -2350,12 +4020,19 @@ class DarkAtmosphericMusic {
                 game.lastActionWasAvoid = false;
                 
                 playSound('special');
-                addLog(`⚔️ BOSS BATTLE! Boss has ${bossHP} HP!`, 'danger');
-                showMessage(`👹 BOSS ROOM! Defeat the boss for massive rewards!`, 'danger');
+                addLog(`⚠️ BOSS BATTLE! ${boss.name} has ${bossHP} HP!`, 'danger');
+                showMessage(`👹 BOSS: ${boss.name}`, 'danger');
+                
+                // Show boss intro with flavor
+                setTimeout(() => {
+                    showMessage(boss.flavor, 'info');
+                }, 1000);
+                
                 createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 60);
             } else {
-                const numToDraw = Math.min(4, game.dungeon.length);
-                const drawnCards = game.dungeon.splice(0, numToDraw);
+                // Normal room
+                const numToDraw = 4;
+                const drawnCards = game.dungeon.splice(0, Math.min(numToDraw, game.dungeon.length));
                 game.room.push(...drawnCards);
                 game.lastActionWasAvoid = false;
                 
@@ -2501,13 +4178,94 @@ class DarkAtmosphericMusic {
             
             // Add berserk bonus
             const berserkBonus = game.berserkStacks > 0 ? 5 : 0;
-            const totalWeapon = baseWeapon + powerBonus + berserkBonus;
             
-            const effectiveWeapon = game.doubleDamage ? totalWeapon * 2 : totalWeapon;
+            // Add class ability bonuses
+            let classBonus = 0;
+            let rogueDoubleActive = false;
+            let berserkerTripleActive = false;
+            if (game.classAbilityActive && game.classAbilityCounter > 0) {
+                if (game.playerClass === 'rogue') {
+                    // Rogue: 2x damage on next attack
+                    rogueDoubleActive = true;
+                } else if (game.playerClass === 'dancer') {
+                    // Dancer: +2 damage for next 2 monsters
+                    classBonus = 2;
+                } else if (game.playerClass === 'berserker' && game.rageStrikeActive) {
+                    // Berserker: 3x damage on next attack
+                    berserkerTripleActive = true;
+                }
+            }
+            
+            // Berserker Bloodlust passive
+            let bloodlustBonus = 0;
+            if (game.classData && game.classData.passive.bloodlust) {
+                const hpPercent = (game.health / game.maxHealth) * 100;
+                if (hpPercent <= 30) bloodlustBonus = 3;
+                else if (hpPercent <= 50) bloodlustBonus = 2;
+                else if (hpPercent <= 70) bloodlustBonus = 1;
+            }
+            
+            const totalWeapon = baseWeapon + powerBonus + berserkBonus + classBonus + bloodlustBonus;
+            let effectiveWeapon = game.doubleDamage ? totalWeapon * 2 : totalWeapon;
+            
+            // Apply Rogue Shadow Strike (2x damage)
+            if (rogueDoubleActive) {
+                effectiveWeapon *= 2;
+            }
+            
+            // Apply Berserker Rage Strike (3x damage)
+            if (berserkerTripleActive) {
+                effectiveWeapon *= 3;
+            }
             
             // Boss battle: reduce HP instead of instant kill
             if (monster.isBoss) {
+                // SPECIAL CASE: Boss without weapon - boss attacks once and flees!
+                if (!game.equippedWeapon) {
+                    const bossDamage = monster.numValue;
+                    game.health -= bossDamage;
+                    game.stats.totalDamage += bossDamage;
+                    
+                    // Remove boss from room
+                    game.room.splice(index, 1);
+                    game.discardPile.push(monster);
+                    
+                    showMessage(`👹 ${monster.bossName || 'Boss'} attacked and fled! -${bossDamage} HP (NO REWARD!)`, 'danger');
+                    playSound('damage');
+                    screenShake();
+                    createParticles(window.innerWidth / 2, window.innerWidth / 2, '#ff6b6b', 60);
+                    
+                    // Additional warning message
+                    setTimeout(() => {
+                        showMessage(`⚠️ No weapon equipped = No gold! Always bring a weapon to boss fights!`, 'warning');
+                    }, 1500);
+                    
+                    // Break combo
+                    game.combo = permanentUnlocks.comboMaster ? 1 : 0;
+                    
+                    updateUI();
+                    checkGameState();
+                    return;
+                }
+                
                 monster.numValue -= effectiveWeapon;
+                
+                // Weapon durability for boss attacks
+                if (game.equippedWeapon && game.equippedWeapon.durability < 999) {
+                    game.equippedWeapon.durability--;
+                    
+                    if (game.equippedWeapon.durability <= 0) {
+                        // Weapon broke!
+                        showMessage(`💔 Your weapon broke!`, 'danger');
+                        playSound('error');
+                        game.discardPile.push(game.equippedWeapon);
+                        game.equippedWeapon = null;
+                        
+                        // Check if room is now cleared after weapon broke
+                        updateUI();
+                        checkGameState();
+                    }
+                }
                 
                 if (monster.numValue <= 0) {
                     // Boss defeated!
@@ -2517,19 +4275,37 @@ class DarkAtmosphericMusic {
                     
                     const bossGold = (Math.floor(Math.random() * 21) + 30);
                     earnGold(bossGold);
-                    showMessage(`👹 BOSS DEFEATED! +${bossGold} GOLD!`, 'success');
+                    
+                    // Victory messages based on boss
+                    const victoryMessages = [
+                        '⚔️ The Knight falls silent. The curse is broken...',
+                        '💉 The Warden collapses. The path ahead is now open.',
+                        '✨ The Shadow dissolves into nothingness. Light returns.',
+                        '🌟 The Abyss Keeper is no more. You are the legend now.'
+                    ];
+                    
+                    const victoryMsg = victoryMessages[Math.min(monster.bossNumber - 1, victoryMessages.length - 1)];
+                    
+                    showMessage(`👹 ${monster.bossName} DEFEATED! +${bossGold} GOLD!`, 'success');
+                    setTimeout(() => showMessage(victoryMsg, 'success'), 800);
+                    
                     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 80);
                     playSound('special');
+                    
+                    // Increment combo for boss kill
+                    game.combo++;
+                    game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
                     
                     updateUI();
                     checkGameState();
                     checkAchievements();
                     return;
                 } else {
-                    // Boss still alive, take damage
+                    // Boss still alive - show HP remaining
                     showMessage(`⚔️ Hit boss for ${effectiveWeapon} damage! Boss HP: ${monster.numValue}`, 'info');
                     playSound('attack');
                     updateUI();
+                    // DON'T return - let player continue in same room with boss
                     return;
                 }
             }
@@ -2550,6 +4326,15 @@ class DarkAtmosphericMusic {
                 playSound('special');
                 addLog(`Dodged attack from ${monster.value}${monster.suit}!`, 'heal');
                 showMessage('🛡️ Dodged! No damage!', 'success');
+            }
+            // Priest Divine Blessing - 15% chance to dodge
+            else if (damage > 0 && game.classData && game.classData.passive.divineBlessing && Math.random() < 0.15) {
+                playSound('special');
+                addLog(`Divine Blessing! Dodged attack from ${monster.value}${monster.suit}!`, 'heal');
+                showMessage('🕊️ Divine Blessing! No damage!', 'success');
+                createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 40);
+                game.combo++;
+                game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
             } 
             // Mirror Shield - Reflect damage
             else if (damage > 0 && game.mirrorShield > 0) {
@@ -2639,6 +4424,24 @@ class DarkAtmosphericMusic {
                 }
             }
             
+            // Decrement class ability counter
+            if (game.classAbilityActive && game.classAbilityCounter > 0) {
+                game.classAbilityCounter--;
+                if (game.classAbilityCounter === 0) {
+                    game.classAbilityActive = false;
+                    game.rageStrikeActive = false; // Reset Berserker flag
+                    showMessage('✨ Class ability buff expired!', 'info');
+                }
+            }
+            
+            // Rogue Shadow Strike: don't break combo
+            const rogueComboSafe = (game.playerClass === 'rogue' && rogueDoubleActive);
+            if (rogueComboSafe && damage > 0) {
+                // Override combo break for Rogue ability
+                game.combo++;
+                game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
+            }
+            
             game.stats.monstersSlain++;
             game.room.splice(index, 1);
             game.discardPile.push(monster);
@@ -2691,13 +4494,28 @@ class DarkAtmosphericMusic {
                 game.discardPile.push(game.equippedWeapon);
             }
             
+            // BREAKING COMBO: Equiping weapon breaks combo (strategic choice!)
+            if (game.combo > 0) {
+                const brokenCombo = game.combo;
+                game.combo = permanentUnlocks.comboMaster ? 1 : 0;
+                if (brokenCombo >= 3) {
+                    showMessage(`💔 ${brokenCombo}x combo broken! (equipped weapon)`, 'warning');
+                }
+            }
+            
             game.equippedWeapon = weapon;
             game.room.splice(index, 1);
             game.stats.weaponsEquipped++;
             
-            // Set weapon durability based on difficulty and relics
+            // Set durability based on difficulty
             const durabilityMap = { easy: 3, normal: 2, hard: 1, endless: 2 };
             game.equippedWeapon.maxDurability = durabilityMap[game.difficulty] || 2;
+            
+            // Apply Knight bonus (+1 durability)
+            if (game.classData && game.classData.passive.weaponDurabilityBonus) {
+                game.equippedWeapon.maxDurability += game.classData.passive.weaponDurabilityBonus;
+            }
+            
             game.equippedWeapon.durability = game.equippedWeapon.maxDurability;
             
             // Check for Durable Weapons relic
@@ -2717,8 +4535,12 @@ class DarkAtmosphericMusic {
         }
 
         function handlePotion(potion, index) {
-            if (game.potionsUsed >= 1) {
-                showMessage('Only 1 potion per dungeon! Discarding...', 'warning');
+            // Check max potions per room (Dancer can use 2)
+            const maxPotions = (game.classData && game.classData.passive.maxPotionsPerRoom) || 1;
+            
+            // Check if potion limit reached
+            if (game.potionsUsed >= maxPotions) {
+                showMessage(`Only ${maxPotions} potion(s) per dungeon! Discarding...`, 'warning');
                 game.room.splice(index, 1);
                 game.discardPile.push(potion);
                 addLog(`Discarded potion ${potion.value}${potion.suit}`, 'info');
@@ -2727,8 +4549,13 @@ class DarkAtmosphericMusic {
                 return;
             }
 
+            // POTIONS DO NOT BREAK COMBO! (Strategic choice - different from weapons)
+            // This allows for healing while maintaining combo chains
+            
             const healBonus = getRelicBonus('healBonus');
-            const heal = potion.numValue + healBonus;
+            // Add class bonus (Dancer: +3 HP)
+            const classHealBonus = (game.classData && game.classData.passive.potionHealBonus) || 0;
+            const heal = potion.numValue + healBonus + classHealBonus;
             
             const oldHealth = game.health;
             game.health = Math.min(game.health + heal, game.maxHealth);
@@ -2758,11 +4585,26 @@ class DarkAtmosphericMusic {
             if (game.room.length === 0 && !game.gameOver) {
                 game.potionsUsed = 0;
                 game.stats.roomsCleared++;
-                if (game.combo >= 3) showMessage(`🔥 ${game.combo}x COMBO! DUNGEON CLEAR!`, 'success');
                 
-                game.combo = permanentUnlocks.comboMaster ? 1 : 0; // Reset combo
+                // Show combo message if active (combo now persists between rooms!)
+                if (game.combo >= 3) {
+                    showMessage(`🔥 ${game.combo}x COMBO! DUNGEON CLEAR! Keep it going!`, 'success');
+                    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 40);
+                }
+                
+                // COMBO NO LONGER RESETS - it persists between chambers!
+                // (Only breaks when: taking damage, or equipping a weapon)
                 game.undoAvailable = false; // Reset undo for new room
                 game.lastGameState = null;
+                game.eventTriggeredThisRoom = false; // Reset event flag for new room
+                
+                // Decrement class ability cooldown
+                if (game.classAbilityCooldown > 0) {
+                    game.classAbilityCooldown--;
+                    if (game.classAbilityCooldown === 0) {
+                        showMessage('✨ Class ability ready!', 'success');
+                    }
+                }
                 
                 playSound('roomClear');
                 addLog(`Dungeon cleared! Total: ${game.stats.roomsCleared}`, 'info');
@@ -2775,19 +4617,29 @@ class DarkAtmosphericMusic {
                 btnDrawRoom.disabled = false;
                 btnAvoidRoom.disabled = game.lastActionWasAvoid;
                 
-                // Room Clear Relics
-                game.relics.forEach(r => { if (r.id === 'tank') r.shieldUsed = false; });
-                
-                // Gold per room from relics
+                // Room Clear Relics (optimized single iteration)
                 let goldPerRoom = 0;
-                goldPerRoom += game.relics.filter(r => r.id === 'coin_pouch').length * 2;
-                goldPerRoom += game.relics.filter(r => r.id === 'greedy').length * 3;
-                if (goldPerRoom > 0) earnGold(goldPerRoom);
-                
-                // Passive healing from relics
                 let passiveHeal = 0;
-                passiveHeal += game.relics.filter(r => r.id === 'bandage').length * 0.5;
-                passiveHeal += game.relics.filter(r => r.id === 'meditation').length * 1;
+                
+                game.relics.forEach(r => {
+                    // Reset tank shield
+                    if (r.id === 'tank') r.shieldUsed = false;
+                    
+                    // Gold bonuses
+                    if (r.id === 'coin_pouch') goldPerRoom += 2;
+                    if (r.id === 'greedy') goldPerRoom += 3;
+                    
+                    // Passive healing
+                    if (r.id === 'bandage') passiveHeal += 0.5;
+                    if (r.id === 'meditation') passiveHeal += 1;
+                });
+                
+                // Rogue: +1 gold per room
+                if (game.classData && game.classData.passive.bonusGoldPerRoom) {
+                    goldPerRoom += game.classData.passive.bonusGoldPerRoom;
+                }
+                
+                if (goldPerRoom > 0) earnGold(goldPerRoom);
                 if (passiveHeal > 0) game.health = Math.min(game.maxHealth, game.health + Math.floor(passiveHeal));
                 
                 // Reset Mirror Shield at room clear (only for current dungeon)
@@ -2814,16 +4666,22 @@ class DarkAtmosphericMusic {
                 checkAchievements();
 
                 // Event Chance (difficulty-based)
+                // Only trigger if no event was triggered this room yet
                 const eventChanceByDifficulty = {
                     easy: 0.40,      // 40% chance
                     normal: 0.30,    // 30% chance
                     hard: 0.20,      // 20% chance
                     endless: 0.25    // 25% chance
                 };
-                const eventChance = eventChanceByDifficulty[game.difficulty] || 0.30;
+                let eventChance = eventChanceByDifficulty[game.difficulty] || 0.30;
+                
+                // Dancer: +15% event chance (luck passive)
+                if (game.classData && game.classData.passive.eventChanceBonus) {
+                    eventChance += (game.classData.passive.eventChanceBonus / 100);
+                }
                 
                 setTimeout(() => {
-                    if (!game.gameOver && Math.random() < eventChance) {
+                    if (!game.gameOver && !game.eventTriggeredThisRoom && Math.random() < eventChance) {
                         triggerRandomEvent();
                     }
                 }, 800);
@@ -2857,16 +4715,30 @@ class DarkAtmosphericMusic {
 
             if (reason === 'death') {
                 title = '💀 DEFEAT';
-                message = gaveUp ? 'You gave up the run.' : 'Your health reached zero!';
+                const deathNarratives = [
+                    'The darkness claimed another soul...',
+                    'Your tale ends here, in the depths.',
+                    'The dungeon has taken its toll.',
+                    'Another scoundrel falls to the abyss.'
+                ];
+                const randomDeath = deathNarratives[Math.floor(Math.random() * deathNarratives.length)];
+                message = gaveUp ? 'You gave up the run.' : randomDeath;
                 score = gaveUp ? 0 : calculateDeathScore(); // Score is 0 if gave up
-                scoreLabel = '💀 Final Score:';
+                scoreLabel = 'Final Score:';
                 playSound('defeat');
             } else if (reason === 'victory') {
                 isVictory = true;
                 title = '🏆 VICTORY';
-                message = 'You conquered the dungeon!';
+                const victoryNarratives = [
+                    'Against all odds, you emerge victorious!',
+                    'The dungeon is conquered. You are the legend.',
+                    'Light pierces through the darkness. You survived.',
+                    'Your name will echo through these halls forever.'
+                ];
+                const randomVictory = victoryNarratives[Math.floor(Math.random() * victoryNarratives.length)];
+                message = randomVictory;
                 score = calculateWinScore();
-                scoreLabel = '🏆 Final Score:';
+                scoreLabel = 'Final Score:';
                 playSound('victory');
                 
                 // Epic victory particle explosion!
@@ -2914,10 +4786,15 @@ class DarkAtmosphericMusic {
             const comboBonus = game.stats.maxCombo * 10;
             const monsterBonus = game.stats.monstersSlain * 2;
             
+            // NEW BONUSES/PENALTIES
+            const speedrunBonus = timeInSeconds < 300 ? 500 : (timeInSeconds < 600 ? 250 : 0); // <5min: +500, <10min: +250
+            const perfectRunBonus = game.stats.totalDamage === 0 ? 1000 : 0; // No damage taken
+            const shopPenalty = (game.stats.shopsVisited || 0) * 50; // -50 per shop visit
+            
             const timePenalty = timeInSeconds * 2;
             
             const totalScore = Math.floor(
-                ((baseScore + healthBonus + goldBonus + comboBonus + monsterBonus) - timePenalty) * difficultyMultiplier
+                ((baseScore + healthBonus + goldBonus + comboBonus + monsterBonus + speedrunBonus + perfectRunBonus) - timePenalty - shopPenalty) * difficultyMultiplier
             );
             
             return Math.max(1, totalScore); // Score must be at least 1
@@ -2952,33 +4829,45 @@ class DarkAtmosphericMusic {
                 const goldBonus = game.totalGoldEarned * 5;
                 const comboBonus = game.stats.maxCombo * 10;
                 const monsterBonus = game.stats.monstersSlain * 2;
+                
+                // NEW BONUSES/PENALTIES
+                const speedrunBonus = timeInSeconds < 300 ? 500 : (timeInSeconds < 600 ? 250 : 0);
+                const perfectRunBonus = game.stats.totalDamage === 0 ? 1000 : 0;
+                const shopPenalty = (game.stats.shopsVisited || 0) * 50;
+                
                 const timePenalty = timeInSeconds * 2;
-                const subTotal = (baseScore + healthBonus + goldBonus + comboBonus + monsterBonus) - timePenalty;
+                const subTotal = (baseScore + healthBonus + goldBonus + comboBonus + monsterBonus + speedrunBonus + perfectRunBonus) - timePenalty - shopPenalty;
+
+                let bonusesHTML = '';
+                if (speedrunBonus > 0) bonusesHTML += `<p style="color: #6bcf7f;">⚡ Speedrun Bonus (${Math.floor(timeInSeconds/60)}m${timeInSeconds%60}s): +${speedrunBonus}</p>`;
+                if (perfectRunBonus > 0) bonusesHTML += `<p style="color: #ffd700;">🏆 Perfect Run (No Damage): +${perfectRunBonus}</p>`;
+                if (shopPenalty > 0) bonusesHTML += `<p style="color: #ff6b6b;">🏺 Shop Penalty (${game.stats.shopsVisited || 0} visits): -${shopPenalty}</p>`;
 
                 scoreBreakdownHTML = `
                     <div class="game-over-stats" style="background: rgba(0,0,0,0.4); border: 1px solid #ffd700; margin-bottom: 15px; text-align: left;">
-                        <p style="color: #ffd700; font-weight: bold; font-size: 1.1em; margin-bottom: 10px;">Score Breakdown:</p>
-                        <p>Win Bonus: +1000</p>
-                        <p>Health Bonus (${game.health} HP): +${healthBonus}</p>
-                        <p>Gold Bonus (${game.totalGoldEarned} 🪙): +${goldBonus}</p>
-                        <p>Combo Bonus (${game.stats.maxCombo}x): +${comboBonus}</p>
-                        <p>Monster Bonus (${game.stats.monstersSlain} ⚔️): +${monsterBonus}</p>
-                        <p style="color: #ff6b6b;">Time Penalty (${timeInSeconds}s): -${timePenalty}</p>
+                        <p style="color: #ffd700; font-weight: bold; font-size: 1.1em; margin-bottom: 10px;">📊 Score Breakdown:</p>
+                        <p>🎯 Win Bonus: +1000</p>
+                        <p>❤️ Health Bonus (${game.health} HP): +${healthBonus}</p>
+                        <p>💰 Gold Bonus (${game.totalGoldEarned} 🪙): +${goldBonus}</p>
+                        <p>🔥 Combo Bonus (${game.stats.maxCombo}x): +${comboBonus}</p>
+                        <p>⚔️ Monster Bonus (${game.stats.monstersSlain}): +${monsterBonus}</p>
+                        ${bonusesHTML}
+                        <p style="color: #ff6b6b;">⏱️ Time Penalty (${Math.floor(timeInSeconds/60)}m${timeInSeconds%60}s): -${timePenalty}</p>
                         <hr style="border-color: rgba(255,255,255,0.2); margin: 5px 0;">
-                        <p>Subtotal (${subTotal}) x ${difficultyMultiplier} (Difficulty) = <strong>${score}</strong></p>
+                        <p>Subtotal: ${subTotal} x ${difficultyMultiplier}x (${game.difficulty.toUpperCase()}) = <strong style="color: #ffd700; font-size: 1.2em;">${score}</strong></p>
                     </div>
                 `;
             }
             
             overlay.innerHTML = `
-                <div class="game-over-content ${isVictory ? 'victory' : ''}">
-                    <h2>${title}</h2>
+                <div class="modal-content" style="max-width: 600px;">
+                    <h1>${title}</h1>
                     <p>${message}</p>
                     ${scoreBreakdownHTML}
                     <p class="game-over-score">${scoreLabel} ${score}</p>
                     <div class="game-over-stats">
                         <p>📊 <strong>Run Statistics:</strong></p>
-                        <p>⏱️ Time: ${gameTime}s</p>
+                        <p>⏱️ Time: ${Math.floor(gameTime/60)}m ${(gameTime%60).toString().padStart(2, '0')}s</p>
                         <p>⚔️ Monsters Slain: ${game.stats.monstersSlain}</p>
                         <p>🗡️ Weapons Used: ${game.stats.weaponsEquipped}</p>
                         <p>💔 Damage Taken: ${game.stats.totalDamage}</p>
@@ -3026,10 +4915,13 @@ class DarkAtmosphericMusic {
             msgEl.textContent = text;
             messageArea.appendChild(msgEl);
             
+            // Adjust duration based on importance
+            const duration = type === 'danger' ? 4000 : (type === 'success' ? 2500 : 3000);
+            
             setTimeout(() => {
                 msgEl.style.opacity = '0';
                 setTimeout(() => msgEl.remove(), 500);
-            }, 3000);
+            }, duration);
         }
 
         // ============================================
@@ -3045,8 +4937,14 @@ class DarkAtmosphericMusic {
             // HP Critical Warning
             if (game.health > 0 && game.health <= 5) {
                 document.body.classList.add('hp-critical');
+                // Show warning message first time
+                if (!game.criticalWarningShown) {
+                    showMessage('⚠️ CRITICAL HP! Find healing soon!', 'danger');
+                    game.criticalWarningShown = true;
+                }
             } else {
                 document.body.classList.remove('hp-critical');
+                game.criticalWarningShown = false;
             }
             
             // Top Bar
@@ -3055,6 +4953,28 @@ class DarkAtmosphericMusic {
             dungeonCountEl.textContent = game.dungeon.length;
             statRoomsEl.textContent = game.stats.roomsCleared;
             mainScoreValue.textContent = game.score; // Update main score
+            
+            // Show active class buff indicator
+            if (game.classAbilityActive && game.classAbilityCounter > 0) {
+                const buffIndicator = document.createElement('div');
+                buffIndicator.style.cssText = 'position: fixed; top: 120px; right: 20px; background: rgba(255, 215, 0, 0.9); color: #000; padding: 10px 15px; border-radius: 8px; font-weight: bold; z-index: 100; animation: pulse 1s infinite;';
+                buffIndicator.id = 'classBuffIndicator';
+                
+                if (game.playerClass === 'rogue') {
+                    buffIndicator.innerHTML = `🔪 SHADOW STRIKE<br><small>2x damage, combo safe!</small>`;
+                } else if (game.playerClass === 'dancer') {
+                    buffIndicator.innerHTML = `💃 HEALING DANCE<br><small>+2 dmg (${game.classAbilityCounter} left)</small>`;
+                }
+                
+                // Remove old indicator
+                const oldIndicator = document.getElementById('classBuffIndicator');
+                if (oldIndicator) oldIndicator.remove();
+                
+                document.body.appendChild(buffIndicator);
+            } else {
+                const oldIndicator = document.getElementById('classBuffIndicator');
+                if (oldIndicator) oldIndicator.remove();
+            }
             
             // Undo button visibility (Easy/Normal only)
             const btnUndo = document.getElementById('btnUndo');
@@ -3107,15 +5027,46 @@ class DarkAtmosphericMusic {
                 equippedWeaponEl.innerHTML = '<div class="empty-slot">No Weapon</div>';
             }
             
-            // Right Bar - Hold
+            // Right Bar - Hold (supports multiple cards for Rogue)
             holdAreaContainer.innerHTML = '';
+            const maxHold = (game.classData && game.classData.passive.maxHoldCards) || 1;
+            
             if (game.heldCard) {
-                const cardEl = createCardElement(game.heldCard);
-                cardEl.classList.add('held');
-                cardEl.onclick = useHeldCard;
-                holdAreaContainer.appendChild(cardEl);
+                // Handle both single card and array of cards
+                const heldCards = Array.isArray(game.heldCard) ? game.heldCard : [game.heldCard];
+                
+                heldCards.forEach((card, idx) => {
+                    const cardEl = createCardElement(card);
+                    cardEl.classList.add('held');
+                    cardEl.style.marginBottom = '10px';
+                    cardEl.onclick = () => {
+                        // Use specific held card
+                        if (Array.isArray(game.heldCard)) {
+                            const selectedCard = game.heldCard.splice(idx, 1)[0];
+                            if (game.heldCard.length === 0) game.heldCard = null;
+                            game.room.unshift(selectedCard);
+                            updateUI();
+                            setTimeout(() => {
+                                const firstCardEl = bottomBar.querySelector('.card');
+                                if (firstCardEl) firstCardEl.click();
+                            }, 100);
+                        } else {
+                            useHeldCard();
+                        }
+                    };
+                    holdAreaContainer.appendChild(cardEl);
+                });
+                
+                // Show count if multiple slots
+                if (maxHold > 1) {
+                    const countEl = document.createElement('div');
+                    countEl.style.cssText = 'text-align:center;color:#ffd93d;font-size:0.9em;margin-top:5px;';
+                    countEl.textContent = `${heldCards.length}/${maxHold} held`;
+                    holdAreaContainer.appendChild(countEl);
+                }
             } else {
-                holdAreaContainer.innerHTML = '<div class="empty-slot" style="font-size: 0.8em;">Right-click to hold</div>';
+                const emptyText = maxHold > 1 ? `Right-click to hold (0/${maxHold})` : 'Right-click to hold';
+                holdAreaContainer.innerHTML = `<div class="empty-slot" style="font-size: 0.8em;">${emptyText}</div>`;
             }
             
             // Right Bar - Discard
@@ -3160,7 +5111,8 @@ class DarkAtmosphericMusic {
                         else if (cardValue < current) cardEl.classList.add('preview-danger');
                         else cardEl.classList.add('preview-neutral');
                     } else if (type === 'potion') {
-                        if (game.potionsUsed >= 1) cardEl.classList.add('preview-danger');
+                        const maxPotions = (game.classData && game.classData.passive.maxPotionsPerRoom) || 1;
+                        if (game.potionsUsed >= maxPotions) cardEl.classList.add('preview-danger');
                         else cardEl.classList.add('preview-safe');
                     } else if (type === 'special') {
                         cardEl.classList.add('preview-safe');
@@ -3178,37 +5130,15 @@ class DarkAtmosphericMusic {
                         holdCard(card, index);
                     };
                     
-                    // Touch support for mobile (long press to hold)
-                    let touchTimer = null;
-                    let touchMoved = false;
-                    
-                    cardEl.addEventListener('touchstart', (e) => {
-                        touchMoved = false;
-                        touchTimer = setTimeout(() => {
-                            if (!touchMoved) {
-                                navigator.vibrate && navigator.vibrate(50); // Haptic feedback
-                                holdCard(card, index);
-                            }
-                        }, 500); // 500ms long press
-                    }, { passive: true });
-                    
-                    cardEl.addEventListener('touchmove', () => {
-                        touchMoved = true;
-                        if (touchTimer) clearTimeout(touchTimer);
-                    }, { passive: true });
-                    
-                    cardEl.addEventListener('touchend', () => {
-                        if (touchTimer) clearTimeout(touchTimer);
-                    }, { passive: true });
-                    
-                    cardEl.addEventListener('touchcancel', () => {
-                        if (touchTimer) clearTimeout(touchTimer);
-                    }, { passive: true });
-                    
                     bottomBar.appendChild(cardEl);
                 });
             } else if (!game.gameOver) {
                  bottomBar.innerHTML = '<div class="empty-slot">Dungeon Empty. Use controls above.</div>';
+            }
+            
+            // Update class ability UI
+            if (game.classData) {
+                updateAbilityUI();
             }
         }
 
@@ -3233,10 +5163,17 @@ class DarkAtmosphericMusic {
                     <div class="card-suit">✨</div>
                 `;
             } else if (card.isBoss) {
+                // Calculate HP percentage for bar
+                const hpPercent = card.maxHP ? (card.numValue / card.maxHP) * 100 : 100;
+                const hpColor = hpPercent > 66 ? '#6bcf7f' : (hpPercent > 33 ? '#ffd93d' : '#ff6b6b');
+                
                 cardEl.innerHTML = `
                     <div class="card-value" style="font-size: 2em;">👹</div>
                     <div style="font-size: 0.9em; color: #ff6b6b; font-weight: bold;">BOSS</div>
                     <div class="card-suit" style="font-size: 1.2em; color: #ff6b6b;">${card.numValue} HP</div>
+                    <div style="width: 90%; height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; margin: 5px auto 0; overflow: hidden;">
+                        <div style="width: ${hpPercent}%; height: 100%; background: ${hpColor}; transition: all 0.3s ease; border-radius: 4px;"></div>
+                    </div>
                 `;
             } else {
                 cardEl.innerHTML = `
@@ -3311,6 +5248,7 @@ class DarkAtmosphericMusic {
             { id: 'magnet', name: '🧲 Magnet', description: '+40% gold from all sources', rarity: 'uncommon', effect: 'goldBonus' },
             { id: 'ring_fire', name: '🔥 Fire Ring', description: 'Combo damage +1 per stack', rarity: 'uncommon', effect: 'comboBoost' },
             { id: 'cloak', name: '🧥 Cloak', description: 'First damage each room is 0', rarity: 'uncommon', effect: 'firstDodge' },
+            { id: 'berserker', name: '💢 Berserker Ring', description: '+2 damage to all weapons', rarity: 'uncommon', effect: 'power' },
             
             // === RARA (8) - Efeitos poderosos ===
             { id: 'gold_shield', name: '🛡️ Golden Shield', description: '+10 maximum health', rarity: 'rare', effect: 'bigHealth' },
@@ -3841,7 +5779,25 @@ class DarkAtmosphericMusic {
 
         function triggerRandomEvent() {
             if (game.gameOver) return;
-            const event = EVENTS[Math.floor(Math.random() * EVENTS.length)];
+            
+            // Filter out events already seen this run (no repeats)
+            const availableEvents = EVENTS.filter(e => !game.seenEvents.includes(e.id));
+            
+            // If all events seen, reset the pool
+            if (availableEvents.length === 0) {
+                game.seenEvents = [];
+                availableEvents.push(...EVENTS);
+            }
+            
+            // Pick random event from available pool
+            const event = availableEvents[Math.floor(Math.random() * availableEvents.length)];
+            
+            // Mark event as seen this run
+            game.seenEvents.push(event.id);
+            
+            // Mark that an event was triggered this room (max 1 per room)
+            game.eventTriggeredThisRoom = true;
+            
             showEventModal(event);
         }
         
@@ -3892,7 +5848,9 @@ class DarkAtmosphericMusic {
             // Switch to shop music
             music.switchContext('shop');
             
-            // Track shop visit for achievement
+            // Track shop visit for score penalty AND achievements
+            game.stats.shopsVisited = (game.stats.shopsVisited || 0) + 1;
+            
             const saved = localStorage.getItem('scoundrel_lifetime_stats');
             let lifetimeStats = saved ? JSON.parse(saved) : {};
             lifetimeStats.shopsVisited = (lifetimeStats.shopsVisited || 0) + 1;
@@ -3904,39 +5862,88 @@ class DarkAtmosphericMusic {
             shopGoldAmount.textContent = game.gold;
             shopItems.innerHTML = ''; // Clear shop
             
+            // Check for shop discount unlock
+            const discount = permanentUnlocks.shopDiscount ? 0.8 : 1.0; // 20% discount
+            
+            // Show price multiplier warning if prices have increased
+            if (game.shopPriceMultiplier > 1.0) {
+                const increasePercent = Math.round((game.shopPriceMultiplier - 1) * 100);
+                const warningBanner = document.createElement('div');
+                warningBanner.style.cssText = 'background: rgba(255, 107, 107, 0.2); border: 2px solid #ff6b6b; padding: 10px; margin-bottom: 15px; text-align: center; border-radius: 8px;';
+                warningBanner.innerHTML = `⚠️ <strong>Prices increased by ${increasePercent}%</strong> due to repeated purchases!`;
+                shopItems.appendChild(warningBanner);
+            }
+            
             SHOP_ITEMS.forEach(item => {
+                const basePrice = Math.floor(item.price * discount);
+                const finalPrice = Math.floor(basePrice * game.shopPriceMultiplier);
                 const itemEl = document.createElement('div');
                 itemEl.className = 'shop-item';
                 
+                // Add visual indicator if can't afford
+                const canAfford = game.gold >= finalPrice;
+                const affordClass = canAfford ? '' : 'cannot-afford';
+                const priceColor = canAfford ? '#ffd700' : '#ff6b6b';
+                
+                // Show original price if discount OR price increased
+                let priceDisplayHTML = '';
+                if (discount < 1.0 && game.shopPriceMultiplier > 1.0) {
+                    // Show both original and base (with multiplier) if both active
+                    priceDisplayHTML = `<span style="text-decoration: line-through; opacity: 0.5;">${item.price}</span> → <span style="text-decoration: line-through; opacity: 0.5;">${basePrice}</span> `;
+                } else if (discount < 1.0) {
+                    // Just discount
+                    priceDisplayHTML = `<span style="text-decoration: line-through; opacity: 0.5;">${item.price}</span> `;
+                } else if (game.shopPriceMultiplier > 1.0) {
+                    // Just price increase
+                    priceDisplayHTML = `<span style="text-decoration: line-through; opacity: 0.5;">${item.price}</span> `;
+                }
+                
                 itemEl.innerHTML = `
-                    <div class="item-info">
+                    <div class="item-info ${affordClass}">
                         <div class="item-name">${item.name}</div>
                         <div class="item-description">${item.description}</div>
-                        <div class="item-price">Price: ${item.price} 🪙</div>
+                        <div class="item-price" style="color: ${priceColor}; font-weight: bold;">
+                            ${priceDisplayHTML}${finalPrice} 🪙
+                            ${!canAfford ? ' <span style="color: #ff6b6b; font-size: 0.9em;">(Need ' + (finalPrice - game.gold) + ' more)</span>' : ''}
+                        </div>
                     </div>
-                    <button class="buy-btn" data-item-id="${item.id}">Buy</button>
+                    <button class="buy-btn" data-item-id="${item.id}" data-price="${finalPrice}">${canAfford ? 'Buy' : '🔒 Locked'}</button>
                 `;
                 
                 const buyBtn = itemEl.querySelector('.buy-btn');
-                if (game.gold < item.price) {
+                if (!canAfford) {
                     buyBtn.disabled = true;
+                    buyBtn.style.opacity = '0.5';
                 }
                 
-                buyBtn.onclick = () => buyItem(item);
+                buyBtn.onclick = () => buyItem(item, finalPrice);
                 
                 shopItems.appendChild(itemEl);
             });
+            
+            // Show discount banner if unlocked
+            if (discount < 1.0) {
+                const banner = document.createElement('div');
+                banner.style.cssText = 'background: rgba(255, 215, 0, 0.2); border: 2px solid #ffd700; padding: 10px; margin-bottom: 15px; text-align: center; border-radius: 8px;';
+                banner.innerHTML = '🏪 <strong>Merchant Friend Active!</strong> 20% discount on all items!';
+                shopItems.prepend(banner);
+            }
         }
         
-        function buyItem(item) {
-            if (game.gold < item.price) {
-                showMessage('Not enough gold!', 'warning');
+        function buyItem(item, finalPrice) {
+            if (game.gold < finalPrice) {
+                showMessage(`❌ Not enough gold! Need ${finalPrice - game.gold} more.`, 'danger');
+                playSound('error');
                 return;
             }
             
             const success = item.buy(); // Run the item's function
             if (success) {
-                game.gold -= item.price;
+                game.gold -= finalPrice;
+                
+                // ANTI-EXPLOIT: Increase prices by 15% after each purchase
+                game.shopPriceMultiplier *= 1.15;
+                
                 showMessage(`Purchased ${item.name}!`, 'success');
                 playSound('special');
                 
