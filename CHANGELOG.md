@@ -73,6 +73,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Links
 
-- [GitHub Repository](https://github.com/yourusername/dungeon-scoundrel)
+- [GitHub Repository](https://github.com/ehgzao/DungeonScoundrel)
 - [Play Online](https://dungeonscoundrel.netlify.app)
-- [Report Issues](https://github.com/yourusername/dungeon-scoundrel/issues)
+- [Report Issues](https://github.com/ehgzao/DungeonScoundrel/issues)

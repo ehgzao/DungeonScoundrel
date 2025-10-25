@@ -186,8 +186,8 @@ git push origin feature/my-feature
 
 ## ❓ Questions?
 
-- Open an [Issue](https://github.com/yourusername/DungeonScoundrel/issues)
-- Start a [Discussion](https://github.com/yourusername/DungeonScoundrel/discussions)
+- Open an [Issue](https://github.com/ehgzao/DungeonScoundrel/issues)
+- Start a [Discussion](https://github.com/ehgzao/DungeonScoundrel/discussions)
 
 ---
 

@@ -137,8 +137,8 @@ To add or update documentation:
 
 ## 📞 Need Help?
 
-- **Issues:** [GitHub Issues](https://github.com/yourusername/DungeonScoundrel/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/yourusername/DungeonScoundrel/discussions)
+- **Issues:** [GitHub Issues](https://github.com/ehgzao/DungeonScoundrel/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/ehgzao/DungeonScoundrel/discussions)
 - **Docs:** You're in the right place!
 
 ---

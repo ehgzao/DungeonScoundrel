@@ -102,13 +102,13 @@ Clear all cards from the dungeon deck without your health reaching zero!
 ## 🚀 Quick Start
 
 ### Play Online
-👉 **[Play Now](https://your-game-url.netlify.app)** _(No installation required!)_
+👉 **[Play Now](https://dungeonscoundrel.netlify.app)** _(No installation required!)_
 
 ### Run Locally
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/DungeonScoundrel.git
+git clone https://github.com/ehgzao/DungeonScoundrel.git
 cd DungeonScoundrel
 
 # Open index.html in your browser
@@ -270,9 +270,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-- **GitHub:** [@yourusername](https://github.com/yourusername)
-- **Issues:** [Report a bug](https://github.com/yourusername/DungeonScoundrel/issues)
-- **Discussions:** [Join the discussion](https://github.com/yourusername/DungeonScoundrel/discussions)
+- **GitHub:** [@ehgzao](https://github.com/ehgzao)
+- **Issues:** [Report a bug](https://github.com/ehgzao/DungeonScoundrel/issues)
+- **Discussions:** [Join the discussion](https://github.com/ehgzao/DungeonScoundrel/discussions)
 
 ---
 
@@ -288,9 +288,9 @@ If you enjoyed the game:
 
 ## 📊 Stats
 
-![GitHub stars](https://img.shields.io/github/stars/yourusername/DungeonScoundrel?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/DungeonScoundrel?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/yourusername/DungeonScoundrel?style=social)
+![GitHub stars](https://img.shields.io/github/stars/ehgzao/DungeonScoundrel?style=social)
+![GitHub forks](https://img.shields.io/github/forks/ehgzao/DungeonScoundrel?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/ehgzao/DungeonScoundrel?style=social)
 
 ---
 
@@ -300,6 +300,6 @@ If you enjoyed the game:
 
 *Vibe coded in a single session - October 2025*
 
-[Play Now](https://your-game-url.netlify.app) • [Report Bug](https://github.com/yourusername/DungeonScoundrel/issues) • [Request Feature](https://github.com/yourusername/DungeonScoundrel/issues)
+[Play Now](https://dungeonscoundrel.netlify.app) • [Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues) • [Request Feature](https://github.com/ehgzao/DungeonScoundrel/issues)
 
 </div>
