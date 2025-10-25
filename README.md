@@ -11,13 +11,56 @@ A challenging, atmospheric roguelike card game inspired by Fear and Hunger's dar
 ## ✨ Features
 
 - 🏰 **4 Difficulty Modes** - Easy, Normal, Hard, and Endless
+- ⚔️ **6 Unique Classes** - Each with special abilities and playstyles
 - 🎵 **Dark Atmospheric Music** - 5 unique procedurally generated tracks
 - 🏆 **50 Achievements** - Bronze, Silver, Gold, and Platinum tiers
 - 🗝️ **Permanent Unlocks** - Progress that carries between runs
 - 👹 **Epic Boss Battles** - Face powerful bosses every 10 rooms
-- 🔮 **100+ Relics** - Unique powers and synergies
+- 🔮 **30+ Relics** - Unique powers and synergies
 - 📊 **Global Leaderboard** - Compete with players worldwide
-- 🎮 **Mobile Friendly** - Play on any device
+- ⌨️ **Keyboard Shortcuts** - Full desktop support for faster gameplay
+
+---
+
+## 🗡️ Character Classes
+
+Choose your hero and unlock more through gameplay!
+
+### **🎭 Scoundrel** _(Always Available)_
+**The Survivor**
+- **Passive:** None - Pure skill and survival
+- **Active:** None - Rely on your wits
+- 🎯 Perfect for learning the game mechanics
+
+### **🛡️ Knight** _(Unlock: Win on Easy)_
+**The Tank**
+- **Passive:** +5 Max HP | Weapons have +1 durability
+- **Active:** Shield Bash - Deal weapon damage to first monster (Cooldown: 3 rooms)
+- 🎯 Defensive playstyle with extra survivability
+
+### **🗡️ Rogue** _(Unlock: Win on Normal)_
+**The Utility Master**
+- **Passive:** Hold 2 cards | +1 gold per room
+- **Active:** Shadow Strike - Next attack: 2x damage, doesn't break combo (Cooldown: 4 rooms)
+- 🎯 Strategic playstyle with card management
+
+### **💃 Dancer** _(Unlock: Win on Hard)_
+**The Support**
+- **Passive:** Potions heal +3 HP | Use 2 potions per room | +15% event chance
+- **Active:** Healing Dance - Heal 5 HP + damage buff for 2 attacks (Cooldown: 5 rooms)
+- 🎯 Sustain-focused with powerful healing
+
+### **⚔️ Berserker** _(Unlock: Win on Hard + Kill 5 Bosses)_
+**The Glass Cannon**
+- **Passive:** Bloodlust - Damage increases as HP decreases (+1/+2/+3 at ≤70%/50%/30% HP)
+- **Active:** Rage Strike - Sacrifice 5 HP for 3x damage, breaks combo (Cooldown: 4 rooms)
+- 🎯 High risk, high reward aggressive playstyle
+
+### **📿 Priest** _(Unlock: 20 Relics + 10 Events + 5 Wins)_
+**The Divine Protector**
+- **Passive:** 15% dodge chance | Potions heal +1 HP | Start with +2 Max HP
+- **Active:** Purification - Remove strongest monster OR transform to potion (Cooldown: 6 rooms)
+- 🎯 Control and defensive playstyle with strategic choices
 
 ---
 
@@ -33,9 +76,26 @@ Clear all cards from the dungeon deck without your health reaching zero!
 - **✨ Special Cards** - Unique effects
 
 ### Controls
-- **Click** cards to use them
-- **Tap & Hold** (or right-click) to save cards for later
-- **Strategic thinking** is key!
+
+**Mouse:**
+- **Left-click** cards to use them
+- **Right-click** cards to hold for later
+- **Click buttons** to draw rooms, avoid, or use abilities
+
+**Keyboard Shortcuts (Desktop):**
+- **Space** or **D** - Draw Room
+- **A** - Avoid Room
+- **Q** - Use Class Ability
+- **U** - Undo Last Move
+- **S** - Open Shop
+- **1-5** - Click cards 1-5 in room
+- **ESC** - Close any modal
+
+**Strategy:**
+- Manage your health carefully
+- Save cards strategically with right-click
+- Build combos for bonus points
+- Always bring weapons to boss fights!
 
 ---
 
