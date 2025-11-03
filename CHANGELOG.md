@@ -5,6 +5,72 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2025-11-03
+
+### 🎯 Speedrunner System Overhaul
+
+#### **Score Changes**
+- **Changed**: Speedrun bonus now awards:
+  - **+1000 points** for completing run in **under 1 minute**
+  - **+500 points** for completing run in **1-5 minutes**
+  - **0 points** for runs over 5 minutes
+- **Previous**: +500 (<5min), +250 (<10min)
+- **Impact**: Speedrunning is now significantly more rewarding and challenging
+
+#### **Achievement Changes**
+- **Fixed**: "Speedrunner" achievement now unlocks **only** for runs under 1 minute
+- **Previous**: Unlocked for runs under 10 minutes
+- **Description Updated**: "Win a game in under 1 minute"
+
+#### **Permanent Unlock Changes**
+- **Fixed**: "Speedrunner" unlock now requires winning under **1 minute**
+- **Previous**: Required under 5 minutes
+- **Description Updated**: "Gain 2x gold for winning under 1 minute"
+- **Check Updated**: `< 60` seconds instead of `< 300`
+
+#### **Text Updates**
+- Updated speedrun references in 3 locations:
+  - Main tutorial (How to Play)
+  - Pro Tips section
+  - Interactive tutorial score breakdown
+
+### 🐛 Critical Bug Fixes
+
+#### **Shop Modal Bug (Bug #14)** 🔴
+- **Fixed**: Clicking X button on Shop modal left game buttons disabled
+- **Root Cause**: Button called `classList.remove()` directly instead of `closeShop()` function
+- **Impact**: Players couldn't continue game after shopping if they closed with X button
+- **Solution**: Created `closeShopWrapper()` global function and updated button onclick handler
+
+#### **Event Modal Bug (Bug #15)** 🔴
+- **Fixed**: Clicking X button on Event modal left game buttons disabled
+- **Root Cause**: Same issue as Shop modal - direct DOM manipulation without re-enabling buttons
+- **Impact**: Players couldn't continue game after events if they closed with X button
+- **Solution**: Created `closeEventWrapper()` global function with proper button re-enabling logic
+
+#### **Code Duplication (Bug #16)**
+- **Fixed**: Achievement unlock code was duplicated (speedrun, iron_will, perfect_run checked twice)
+- **Impact**: Minor performance issue, no functional impact
+- **Solution**: Removed duplicate achievement checks
+
+### 🔧 Technical Improvements
+
+- **Global Function Wrappers**: Added window-scoped wrappers for modal close handlers
+- **Consistent Modal Behavior**: All modals now properly re-enable game buttons when closed
+- **Code Quality**: Removed redundant code blocks
+
+### 🎮 Gameplay Impact
+
+- **Speedrunning**: Now a true high-skill challenge with 2x reward for sub-1-minute runs
+- **Modal UX**: Fixed critical usability issues preventing game continuation
+- **Achievement Balance**: Speedrunner achievement now properly reflects elite-tier difficulty
+
+### 🙏 Special Thanks
+
+Bugs reported and fixed thanks to playtesting feedback from the community.
+
+---
+
 ## [1.1.1] - 2025-11-03
 
 ### ✨ Added
@@ -83,6 +149,7 @@ This release fixes **13 critical bugs** discovered during comprehensive code rev
 
 Bugs discovered through comprehensive code review and invaluable playtesting feedback from:
 - **Carol**
+- **Baka***
 - **Kamui**
 - **Leon**
 - **Breno**
@@ -151,6 +218,7 @@ Thank you for playing and helping make Dungeon Scoundrel better! 🎮✨
 
 ## Project Milestones
 
+- **v1.1.2** - Speedrunner Overhaul & Modal Fixes (November 3, 2025) ⚡ **3 bugs fixed**
 - **v1.1.1** - Critical Bug Fixes (November 3, 2025) ⭐ **13 bugs fixed**
 - **v1.0.0** - Full Release (October 26, 2025)
 - **v0.9.0** - Class System (October 25, 2025)
