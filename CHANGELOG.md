@@ -81,13 +81,13 @@ This release fixes **13 critical bugs** discovered during comprehensive code rev
 
 ### 🙏 Special Thanks
 
-Bugs discovered through comprehensive code review and invaluable user feedback from:
-- **Carol** - Testing and bug reports
-- **Kamui** - Gameplay feedback
-- **Leon** - Feature testing
-- **Breno** - Quality assurance
+Bugs discovered through comprehensive code review and invaluable playtesting feedback from:
+- **Carol**
+- **Kamui**
+- **Leon**
+- **Breno**
 
-Thank you for helping make Dungeon Scoundrel better! 🎮✨
+Thank you for playing and helping make Dungeon Scoundrel better! 🎮✨
 
 ---
 
