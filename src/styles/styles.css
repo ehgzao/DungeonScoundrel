@@ -1201,16 +1201,45 @@
             background: linear-gradient(135deg, #555 0%, #333 100%);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 10px;
+            padding: 15px 30px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            margin-top: 20px;
+            font-family: 'Cinzel', serif;
+            transition: all 0.3s ease;
             width: 100%;
             font-size: 1.1em;
         }
         .close-modal-btn:hover { 
             background: linear-gradient(135deg, #666 0%, #444 100%);
+        }
+        
+        /* X button in top right corner of modals */
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #8b7355;
+            color: #d4af37;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            line-height: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            font-weight: bold;
+            z-index: 10;
+        }
+        .modal-close-btn:hover {
+            background: rgba(255, 107, 107, 0.8);
+            border-color: #ff6b6b;
+            color: #fff;
+            transform: rotate(90deg);
         }
 
         /* Leaderboard Modal */

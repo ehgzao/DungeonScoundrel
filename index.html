@@ -215,7 +215,7 @@
                     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
                     transition: all 0.2s ease;
                 ">⏯️</button>
-                <input type="range" id="welcomeMusicVolume" min="0" max="100" value="15" title="Music Volume" style="
+                <input type="range" id="welcomeMusicVolume" min="0" max="100" value="70" title="Music Volume" style="
                     width: 140px;
                     height: 6px;
                     cursor: pointer;
@@ -269,14 +269,14 @@
                 
                 <div class="music-controls">
                     <button class="settings-btn" id="btnMusicToggle" title="Play/Pause Music">⏯️</button>
-                    <input type="range" id="musicVolume" min="0" max="100" value="15" title="Music Volume" 
+                    <input type="range" id="musicVolume" min="0" max="100" value="70" title="Music Volume" 
                            style="width: 80px; height: 20px; vertical-align: middle; margin: 0 5px; cursor: pointer;">
                 </div>
                 
                 <button class="settings-btn" id="btnTopTutorial" title="Open Tutorial">📖</button>
                 <button class="settings-btn" id="btnTopLeaderboard" title="Open Leaderboard">📊</button>
                 <button class="settings-btn btn-highlight" id="btnTopUnlocks" title="Open Unlocks">🔓</button>
-                <button class="settings-btn btn-danger-style" id="btnTopGiveUp" title="Give Up Run">🏳️</button>
+                <button class="settings-btn btn-danger-style" id="btnTopGiveUp" title="Give Up Run" onclick="tryGiveUp();">🏳️</button>
             </div>
         </div>
 
@@ -465,6 +465,7 @@
     <!-- Modal: New Game -->
     <div class="modal-overlay" id="newGameModal">
         <div class="modal-content" style="max-width: 600px !important; max-height: 90vh; overflow-y: auto;">
+            <button class="modal-close-btn" onclick="document.getElementById('newGameModal').classList.remove('active');">✕</button>
             <h2>✨ New Game</h2>
             <div class="form-group">
                 <label for="playerNameInput">👤 Player Name (3-10 characters) *</label>
@@ -654,6 +655,7 @@
     <!-- Modal: Interactive Tutorial -->
     <div class="modal-overlay" id="interactiveTutorialModal">
         <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+            <button class="modal-close-btn" onclick="document.getElementById('interactiveTutorialModal').classList.remove('active');">✕</button>
             <h2 id="tutorialStepTitle">🎮 Interactive Tutorial</h2>
             <div id="tutorialStepContent" style="min-height: 300px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 8px; margin: 20px 0;">
                 <!-- Dynamic content here -->
@@ -672,6 +674,7 @@
     <!-- Modal: Tutorial (Read Guide) -->
     <div class="modal-overlay" id="tutorialModal">
         <div class="modal-content">
+            <button class="modal-close-btn" onclick="document.getElementById('tutorialModal').classList.remove('active');">✕</button>
             <h2>📜 How to Play</h2>
             
             <div class="tutorial-section">
@@ -799,6 +802,7 @@
     <!-- Modal: Leaderboard -->
     <div class="modal-overlay" id="leaderboardModal">
         <div class="modal-content" style="max-width: 700px;">
+            <button class="modal-close-btn" onclick="document.getElementById('leaderboardModal').classList.remove('active');">✕</button>
             <h2>🏆 Hall of Fame (Top 10)</h2>
             
             <!-- Difficulty Tabs -->
@@ -827,6 +831,7 @@
     <!-- Other Modals (Shop, Event, Unlocks) - Identical structure -->
     <div class="modal-overlay" id="shopModal">
         <div class="modal-content">
+            <button class="modal-close-btn" onclick="document.getElementById('shopModal').classList.remove('active');">✕</button>
             <h2>🏺 Merchant's Wares</h2>
             <p style="text-align: center; color: #aaa; margin-bottom: 20px;">
                 Spend your gold wisely! (Gold: <span id="shopGoldAmount">0</span>)
@@ -838,6 +843,7 @@
 
     <div class="modal-overlay" id="eventModal">
         <div class="modal-content">
+            <button class="modal-close-btn" onclick="document.getElementById('eventModal').classList.remove('active');">✕</button>
             <h2 id="eventTitle">🎲 Event</h2>
             <div class="event-text" id="eventText"></div>
             <div id="eventChoices"></div>
@@ -847,6 +853,7 @@
 
     <div class="modal-overlay" id="unlocksModal">
         <div class="modal-content">
+            <button class="modal-close-btn" onclick="document.getElementById('unlocksModal').classList.remove('active');">✕</button>
             <h2>🗝️ Permanent Upgrades</h2>
             <p style="text-align: center; color: #aaa; margin-bottom: 20px;">
                 Progress that continues between runs!
@@ -856,21 +863,11 @@
         </div>
     </div>
     
-    <!-- Modal: Give Up Confirmation -->
-    <div class="modal-overlay" id="giveUpModal">
-        <div class="modal-content">
-            <h2>🏳️ Give Up?</h2>
-            <p class="event-text" style="text-align: center;">Are you sure you want to end this run? Your progress will be lost and your score will be 0.</p>
-            <div class="modal-controls" style="flex-direction: row; justify-content: center;">
-                <button class="btn btn-secondary" id="btnCancelGiveUp">Cancel</button>
-                <button class="btn btn-danger" id="btnConfirmGiveUp">Give Up</button>
-            </div>
-        </div>
-    </div>
     
     <!-- Modal: Achievements -->
     <div class="modal-overlay" id="achievementsModal">
         <div class="modal-content" style="max-width: 900px;">
+            <button class="modal-close-btn" onclick="document.getElementById('achievementsModal').classList.remove('active');">✕</button>
             <h2>🏆 Achievements</h2>
             <p style="text-align: center; color: #aaa; margin-bottom: 20px;">
                 <span id="achievementStats">0/50 Unlocked</span> | 
@@ -887,6 +884,7 @@
     <!-- Modal: Soundboard -->
     <div class="modal-overlay" id="soundboardModal">
         <div class="modal-content" style="max-width: 600px;">
+            <button class="modal-close-btn" onclick="document.getElementById('soundboardModal').classList.remove('active');">✕</button>
             <h2>🎵 Soundboard - Dark Atmospheric Music</h2>
             <p style="color: #aaa; margin-bottom: 20px;">Preview all atmospheric tracks from the game!</p>
             
@@ -929,14 +927,15 @@
     <!-- Modal: Give Up -->
     <div class="modal-overlay" id="giveUpModal">
         <div class="modal-content" style="max-width: 500px; border: 3px solid #ff6b6b;">
+            <button class="modal-close-btn" onclick="document.getElementById('giveUpModal').classList.remove('active');">✕</button>
             <h2 style="color: #ff6b6b;">🏳️ GIVE UP?</h2>
             <p style="text-align: center; color: #ddd; font-size: 1.1em; margin: 20px 0;">
                 Are you sure you want to end this run?<br>
                 Your progress will be lost and your score will be 0.
             </p>
             <div class="modal-controls" style="gap: 15px;">
-                <button class="btn btn-secondary" id="btnCancelGiveUp">Cancel</button>
-                <button class="btn btn-danger" id="btnConfirmGiveUp" style="background: #ff6b6b; border-color: #ff6b6b;">Give Up</button>
+                <button class="btn btn-secondary" id="btnCancelGiveUp" onclick="document.getElementById('giveUpModal').classList.remove('active');">Cancel</button>
+                <button class="btn btn-danger" id="btnConfirmGiveUp" style="background: #ff6b6b; border-color: #ff6b6b;" onclick="confirmGiveUp();">Give Up</button>
             </div>
         </div>
     </div>
@@ -1544,11 +1543,10 @@
             lastActionWasAvoid: false,
             gameOver: false,
             gameTimerInterval: null,
-            gameStartTime: null,
+            gameStartTime: 0,
             undoAvailable: false,
             lastGameState: null,
             potionsUsed: 0,
-            gameOver: false,
             difficulty: 'normal',
             combo: 0,
             score: 0,
@@ -1557,22 +1555,18 @@
             equippedWeapon: null,
             dungeon: [],
             room: [],
-            gameStartTime: 0,
-            gameTimerInterval: null,
-            lastActionWasAvoid: false,
             gold: 0,
             totalGoldEarned: 0,
-            relics: [],
             stats: {},
             settings: {
                 soundEnabled: true,
-                musicEnabled: false
+                musicEnabled: true
             },
             dodgeActive: false,
             doubleDamage: false,
             berserkStacks: 0,
             mirrorShield: 0,
-            obliterateMode: false,
+            obliterateMode: false
         };
 
         // Permanent Stats (LocalStorage)
@@ -1731,14 +1725,14 @@
             berserker: {
                 name: 'BERSERKER',
                 motivation: '"Through pain I find power. Through fury I find victory."',
-                mechanics: '<strong>💢 Passive (Bloodlust):</strong> Damage increases as HP decreases<br>• +1 damage at ≤70% HP<br>• +2 damage at ≤50% HP<br>• +3 damage at ≤30% HP<br><br><strong>⚔️ Active (Rage Strike):</strong> Sacrifice 5 HP for triple damage (3x) on next attack. Breaks combo. Cooldown: 4 rooms.<br><em style="color: #ff6b6b; font-size: 0.9em;">⚠️ Cannot use if HP ≤ 5</em>',
+                mechanics: '<strong>💢 Passive (Bloodlust):</strong> Damage increases as HP decreases<br>• +1 damage at ≤70% HP<br>• +2 damage at ≤50% HP<br>• +3 damage at ≤30% HP<br><br><strong>⚔️ Active (Rage Strike):</strong> Sacrifice 5 HP for triple damage (3x) on next 3 attacks. Breaks combo. Cooldown: 4 rooms.<br><em style="color: #ff6b6b; font-size: 0.9em;">⚠️ Cannot use if HP ≤ 5</em>',
                 icon: '💢',
                 unlocked: false,
                 unlockRequirement: 'Win on Hard + Kill 5 bosses total',
                 passive: { bloodlust: true },
                 active: {
                     name: 'Rage Strike',
-                    description: 'Sacrifice 5 HP: 3x damage, breaks combo',
+                    description: 'Sacrifice 5 HP: 3x damage for 3 attacks, breaks combo',
                     cooldown: 4,
                     icon: '⚔️'
                 }
@@ -1746,11 +1740,11 @@
             priest: {
                 name: 'PRIEST',
                 motivation: '"The light protects me. The divine guides me. Chaos shall be purified."',
-                mechanics: '<strong>🕊️ Passive (Divine Blessing):</strong> 15% chance to negate damage completely | Potions heal +1 HP | Start with +2 Max HP<br><br><strong>📿 Active (Purification):</strong> Permanently remove the strongest monster from current dungeon OR transform a monster into a potion. Cooldown: 6 rooms.<br><em style="color: #ffd700; font-size: 0.9em;">✨ Strategic: Eliminate threats before facing them</em>',
+                mechanics: '<strong>🕊️ Passive (Divine Blessing):</strong> 15% chance to negate damage completely | Potions heal +2 HP | Start with +2 Max HP<br><br><strong>📿 Active (Purification):</strong> Permanently remove the strongest monster from current dungeon OR transform a monster into a potion. Cooldown: 6 rooms.<br><em style="color: #ffd700; font-size: 0.9em;">✨ Strategic: Eliminate threats before facing them</em>',
                 icon: '📿',
                 unlocked: false,
                 unlockRequirement: 'Collect 20 relics + 10 events + 5 wins total',
-                passive: { divineBlessing: true, potionHealBonus: 1, startMaxHpBonus: 2 },
+                passive: { divineBlessing: true, potionHealBonus: 2, startMaxHpBonus: 2 },
                 active: {
                     name: 'Purification',
                     description: 'Remove strongest monster or convert to potion',
@@ -1950,16 +1944,39 @@
         btnTopUnlocks.onclick = openUnlocks;
         btnOpenShop.onclick = openShop;
         
-        // Give Up Hooks
-        btnTopGiveUp.onclick = () => {
-            if (game.gameOver || game.gameStartTime === 0) return; // Don't show if game not running
-            giveUpModal.classList.add('active');
-        };
-        btnCancelGiveUp.onclick = () => giveUpModal.classList.remove('active');
-        btnConfirmGiveUp.onclick = () => {
-            giveUpModal.classList.remove('active');
-            endGame('death', true); // true = gave up
-        };
+        // Give Up Hooks (ROBUST VERSION)
+        if (btnTopGiveUp && giveUpModal && btnCancelGiveUp && btnConfirmGiveUp) {
+            btnTopGiveUp.addEventListener('click', function() {
+                console.log('Give Up clicked', {gameOver: game.gameOver, gameStartTime: game.gameStartTime});
+                if (game.gameOver || game.gameStartTime === 0) {
+                    console.log('Give Up blocked - game not running');
+                    showMessage('⚠️ Start a game first!', 'warning');
+                    return;
+                }
+                console.log('Opening Give Up modal');
+                giveUpModal.classList.add('active');
+            });
+            
+            btnCancelGiveUp.addEventListener('click', function() {
+                console.log('Give Up cancelled');
+                giveUpModal.classList.remove('active');
+            });
+            
+            btnConfirmGiveUp.addEventListener('click', function() {
+                console.log('Give Up confirmed');
+                giveUpModal.classList.remove('active');
+                endGame('death', true); // true = gave up
+            });
+            
+            console.log('✅ Give Up system initialized');
+        } else {
+            console.error('❌ Give Up elements not found:', {
+                btnTopGiveUp: !!btnTopGiveUp,
+                giveUpModal: !!giveUpModal,
+                btnCancelGiveUp: !!btnCancelGiveUp,
+                btnConfirmGiveUp: !!btnConfirmGiveUp
+            });
+        }
         
         // FIXED HOOKS: Action Buttons
         btnDrawRoom.onclick = drawRoom;
@@ -2087,8 +2104,9 @@
             { id: 'treasure', name: '💰 Treasure', description: '+5 Max HP', effect: () => { game.maxHealth += 5; game.health += 5; showDamageNumber('+5 MAX', 'heal'); showMessage('💰 Max HP increased!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 35); } },
             
             // 🆕 NOVAS CARTAS ESPECIAIS
-            { id: 'berserker', name: '🔥 Berserk', description: 'Next 3 attacks +5 damage', effect: () => { 
-                game.berserkStacks = 3; 
+            { id: 'berserk_card', name: '🔥 Berserk', description: 'Next 3 attacks +5 damage', effect: () => { 
+                // Hourglass: +1 extra berserk turn
+                game.berserkStacks = game.relics.some(r => r.id === 'hourglass') ? 4 : 3; 
                 showMessage('🔥 BERSERK MODE! Next 3 attacks +5 damage!', 'success'); 
                 playSound('special');
                 createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 40);
@@ -2156,23 +2174,24 @@
                 updateUI();
             } },
             { id: 'mirror_shield', name: '🪞 Mirror', description: 'Reflect next 10 damage (this dungeon only)', effect: () => {
-                game.mirrorShield = 10;
-                showMessage('🪞 Mirror Shield! Next 10 damage reflected!', 'success');
+                const mirrorAmount = permanentUnlocks.mirrorMaster ? 15 : 10;
+                game.mirrorShield = mirrorAmount;
+                showMessage('🪞 Mirror Shield! Next ' + mirrorAmount + ' damage reflected!', 'success');
                 playSound('special');
                 createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 35);
             } },
-            { id: 'gamble', name: '🎰 Gamble', description: '50% chance: +10 HP or -5 HP', effect: () => {
+            { id: 'gamble', name: '🎰 Gamble', description: '50% chance: +15 HP or -10 HP', effect: () => {
                 const win = Math.random() < 0.5;
                 if (win) {
-                    const heal = Math.min(10, game.maxHealth - game.health);
-                    game.health = Math.min(game.maxHealth, game.health + 10);
+                    const heal = Math.min(15, game.maxHealth - game.health);
+                    game.health = Math.min(game.maxHealth, game.health + 15);
                     showDamageNumber(heal, 'heal');
-                    showMessage('🎰 JACKPOT! +10 HP!', 'success');
+                    showMessage('🎰 JACKPOT! +15 HP!', 'success');
                     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#6bcf7f', 50);
                 } else {
-                    game.health = Math.max(1, game.health - 5);
-                    showDamageNumber(5, 'damage');
-                    showMessage('🎰 Bad luck... -5 HP!', 'danger');
+                    game.health -= 10;
+                    showDamageNumber(10, 'damage');
+                    showMessage('🎰 Bad luck... -10 HP!', 'danger');
                     screenShake();
                     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 30);
                 }
@@ -2218,7 +2237,7 @@
             { id: 'gambler', tier: 'bronze', icon: '🎰', title: 'Gambler', description: 'Use the Gamble card 5 times', check: () => getLifetimeStat('gambleCards') >= 5 },
             { id: 'destroyer', tier: 'bronze', icon: '💥', title: 'Destroyer', description: 'Obliterate 3 cards (lifetime)', check: () => getLifetimeStat('cardsObliterated') >= 3 },
             { id: 'time_traveler', tier: 'bronze', icon: '⏰', title: 'Time Traveler', description: 'Use Time Warp card', check: () => getLifetimeStat('timeWarps') >= 1 },
-            { id: 'berserker', tier: 'bronze', icon: '🔥', title: 'Berserker', description: 'Use Berserk mode 3 times', check: () => getLifetimeStat('berserkUses') >= 3 },
+            { id: 'berserker_ach', tier: 'bronze', icon: '🔥', title: 'Berserker', description: 'Use Berserk mode 3 times', check: () => getLifetimeStat('berserkUses') >= 3 },
             
             // 🥈 SILVER (15) - Médias
             { id: 'veteran', tier: 'silver', icon: '🎖️', title: 'Veteran', description: 'Win 5 games', check: () => getLifetimeStat('gamesWon') >= 5 },
@@ -2546,7 +2565,7 @@ class DarkAtmosphericMusic {
         this.context = audioContext;
         this.masterGain = this.context.createGain();
         this.masterGain.connect(this.context.destination);
-        this.masterGain.gain.value = 0.15; // Mais baixo que 8-bit
+        this.masterGain.gain.value = 0.70; // Volume inicial 70%
         
         this.isPlaying = false;
         this.currentContext = 'menu'; // menu, gameplay, shop, victory, defeat
@@ -2617,7 +2636,7 @@ class DarkAtmosphericMusic {
     fadeIn(duration) {
         this.masterGain.gain.setValueAtTime(0.001, this.context.currentTime);
         this.masterGain.gain.exponentialRampToValueAtTime(
-            0.15,
+            0.70,
             this.context.currentTime + duration
         );
     }
@@ -3022,8 +3041,11 @@ class DarkAtmosphericMusic {
         const musicVolumeSlider = document.getElementById('musicVolume');
         if (musicVolumeSlider) {
             // Initialize slider background with current value
-            const initialVolume = musicVolumeSlider.value || 15;
+            const initialVolume = musicVolumeSlider.value || 70;
             musicVolumeSlider.style.background = `linear-gradient(to right, #c9a961 0%, #c9a961 ${initialVolume}%, #2a2318 ${initialVolume}%, #2a2318 100%)`;
+            
+            // Set initial volume to 70%
+            music.masterGain.gain.value = initialVolume / 100;
             
             musicVolumeSlider.oninput = (e) => {
                 const volume = e.target.value / 100;
@@ -3319,8 +3341,11 @@ class DarkAtmosphericMusic {
 
         // Hold System
         function holdCard(card, sourceIndex) {
-            // Check max hold cards (Rogue can hold 2)
-            const maxHold = (game.classData && game.classData.passive.maxHoldCards) || 1;
+            // Check max hold cards (Rogue can hold 2, Feather +1)
+            let maxHold = (game.classData && game.classData.passive.maxHoldCards) || 1;
+            
+            // Feather relic: +1 hold slot
+            if (game.relics.some(r => r.id === 'feather')) maxHold += 1;
             
             // Count current held cards
             const currentHeldCount = game.heldCard ? (Array.isArray(game.heldCard) ? game.heldCard.length : 1) : 0;
@@ -3500,7 +3525,7 @@ class DarkAtmosphericMusic {
             
             // Activate 3x damage buff
             game.classAbilityActive = true;
-            game.classAbilityCounter = 1; // Next attack only
+            game.classAbilityCounter = 3; // 3 attacks (buffed for balance)
             game.rageStrikeActive = true; // Special flag for triple damage
             game.classAbilityCooldown = game.classData.active.cooldown;
             
@@ -3614,11 +3639,17 @@ class DarkAtmosphericMusic {
                 return `<span class="tooltip-negative">💥 OBLITERATE: Remove this card permanently!</span>`;
             }
             
+            // Boss special tooltip
+            if (card.isBoss) {
+                const bossName = card.bossName || 'Boss';
+                return `<span class="tooltip-negative">👹 <strong>${bossName}</strong> - ${card.numValue}/${card.maxHP || card.numValue} HP<br>${card.bossFlavor || 'Defeat this boss to continue!'}</span>`;
+            }
+            
             const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
             
             if (type === 'monster') {
                 const baseWeapon = game.equippedWeapon?.numValue || 0;
-                const berserkBonus = game.berserkStacks > 0 ? 5 : 0;
+                const berserkBonus = getBerserkBonus();
                 
                 // Add class ability bonuses
                 let classBonus = 0;
@@ -3628,16 +3659,10 @@ class DarkAtmosphericMusic {
                     }
                 }
                 
-                // Berserker Bloodlust passive
-                let bloodlustBonus = 0;
-                if (game.classData && game.classData.passive.bloodlust) {
-                    const hpPercent = (game.health / game.maxHealth) * 100;
-                    if (hpPercent <= 30) bloodlustBonus = 3;
-                    else if (hpPercent <= 50) bloodlustBonus = 2;
-                    else if (hpPercent <= 70) bloodlustBonus = 1;
-                }
+                const bloodlustBonus = getBloodlustBonus();
+                const comboBonus = getComboBonus();
                 
-                const totalWeapon = baseWeapon + powerBonus + berserkBonus + classBonus + bloodlustBonus;
+                const totalWeapon = baseWeapon + powerBonus + berserkBonus + classBonus + bloodlustBonus + comboBonus;
                 let effectiveWeapon = game.doubleDamage ? totalWeapon * 2 : totalWeapon;
                 
                 // Rogue Shadow Strike (2x)
@@ -3659,6 +3684,7 @@ class DarkAtmosphericMusic {
                 // Add info about active buffs
                 let buffInfo = '';
                 if (game.berserkStacks > 0) buffInfo += `🔥+${berserkBonus} `;
+                if (comboBonus > 0) buffInfo += `🔥🔥+${comboBonus} `;
                 if (game.doubleDamage) buffInfo += `⚡2x `;
                 if (game.mirrorShield > 0) buffInfo += `🪞${game.mirrorShield} `;
                 if (classBonus > 0) buffInfo += `💃+${classBonus} `;
@@ -3738,6 +3764,41 @@ class DarkAtmosphericMusic {
             // (The log UI was removed for a cleaner layout)
         }
         
+        // Helper: Reset combo with unlocks
+        function resetCombo() {
+            if (permanentUnlocks.comboGod) game.combo = 2;
+            else if (permanentUnlocks.comboMaster) game.combo = 1;
+            else game.combo = 0;
+        }
+        
+        // Helper: Calculate berserk bonus
+        function getBerserkBonus() {
+            if (game.berserkStacks <= 0) return 0;
+            return permanentUnlocks.berserkMaster ? 7 : 5;
+        }
+        
+        // Helper: Calculate bloodlust bonus
+        function getBloodlustBonus() {
+            if (!game.classData || !game.classData.passive.bloodlust) return 0;
+            const hpPercent = (game.health / game.maxHealth) * 100;
+            if (hpPercent <= 30) return 3;
+            if (hpPercent <= 50) return 2;
+            if (hpPercent <= 70) return 1;
+            return 0;
+        }
+        
+        // Helper: Calculate combo bonus
+        function getComboBonus() {
+            let bonus = game.combo >= 2 ? game.combo - 1 : 0;  // 2 combo = +1, 3 combo = +2, etc.
+            
+            // Fire Ring: +1 damage per combo stack
+            if (game.relics.some(r => r.id === 'ring_fire') && game.combo >= 1) {
+                bonus += game.combo;
+            }
+            
+            return bonus;
+        }
+        
         // Initialize deck
         function createDeck() {
             let deck = [];
@@ -3791,8 +3852,14 @@ class DarkAtmosphericMusic {
             }
             
             // SPECIAL CARDS (our addition for gamification)
-            // Always 6 special cards, but types are random (deck = 50 cards total)
-            const specialCount = 6;
+            // Base: 6 special cards (deck = 50 cards total)
+            let specialCount = 6;
+            
+            // Old Book: +10% more special cards (+1)
+            if (game.relics.some(r => r.id === 'book')) specialCount += 1;
+            
+            // Magic Orb: +100% special cards (2x = +6)
+            if (game.relics.some(r => r.id === 'orb')) specialCount += 6;
             for (let i = 0; i < specialCount; i++) {
                 deck.push({ 
                     value: '✨', 
@@ -3844,6 +3911,11 @@ class DarkAtmosphericMusic {
                 }
             }
             
+            // Rope relic: +1 starting HP
+            if (game.relics.some(r => r.id === 'rope')) {
+                game.maxHealth += 1;
+            }
+            
             game.health = game.maxHealth;
             
             // Update player info display
@@ -3884,7 +3956,7 @@ class DarkAtmosphericMusic {
                     ],
                     priest: [
                         { icon: '🕊️', text: '15% Dodge', title: '15% chance to dodge damage' },
-                        { icon: '💊', text: '+1 HP', title: 'Potions heal +1 HP' },
+                        { icon: '💊', text: '+2 HP', title: 'Potions heal +2 HP' },
                         { icon: '❤️', text: '+2 HP', title: 'Start with +2 Max HP' }
                     ]
                 };
@@ -3908,7 +3980,7 @@ class DarkAtmosphericMusic {
             game.potionsUsed = 0;
             game.gameOver = false;
             game.score = 0;
-            game.combo = permanentUnlocks.comboMaster ? 1 : 0;
+            resetCombo();
             game.dodgeActive = false;
             game.doubleDamage = false;
             game.berserkStacks = 0;
@@ -3917,12 +3989,19 @@ class DarkAtmosphericMusic {
             game.gameStartTime = Date.now();
             game.seenEvents = []; // Track events seen this run (no repeats)
             game.eventTriggeredThisRoom = false; // Max 1 event per room
-            game.shopPriceMultiplier = 1.0; // Price increases 15% per purchase (anti-exploit)
+            game.endlessLevel = 0; // Track endless mode progression
+            game.finalBossDefeated = false; // Track if final boss was defeated
+            game.heldCardIndex = 0; // Track which held card is currently displayed (for Rogue)
+            
+            // Per-room flags initialization
+            game.firstAttackDone = false; // Power Gauntlet flag
+            game.criticalWarningShown = false; // HP critical warning flag
             
             // Class abilities
             game.classAbilityCooldown = 0; // Cooldown in rooms
             game.classAbilityActive = false; // Is buff active?
             game.classAbilityCounter = 0; // Uses left for buff
+            game.rageStrikeActive = false; // Berserker Rage Strike flag
             
             // Run Stats
             game.stats = {
@@ -3930,7 +4009,8 @@ class DarkAtmosphericMusic {
                 weaponsEquipped: 0, potionsUsed: 0, maxCombo: 0, specialsUsed: 0,
                 cardsHeld: 0, roomsAvoided: 0, gamesWon: 0, hardWins: 0,
                 shopsVisited: 0,  // Track for score penalty
-                minimalistWin: false, onePunch: false, musicWasOn: game.settings.musicEnabled
+                minimalistWin: false, onePunch: false, musicWasOn: game.settings.musicEnabled,
+                bossesKilled: 0, relicsCollected: 0, eventsTriggered: 0  // For class unlocks
             };
             
             // Initial Gold and Relics
@@ -3938,6 +4018,7 @@ class DarkAtmosphericMusic {
             game.gold = startingGoldMap[game.difficulty] || 0;
             game.totalGoldEarned = 0;
             game.relics = [];
+            game.shopPriceMultiplier = 1.0; // Shop price multiplier (increases with visits)
             applyPermanentUnlocks(); // Applies initial gold/relics
 
             // 3. Update UI
@@ -3973,11 +4054,28 @@ class DarkAtmosphericMusic {
             if (game.dungeon.length === 0) {
                 // Endless mode: reload deck instead of ending
                 if (game.difficulty === 'endless') {
+                    // Progressive difficulty scaling
+                    game.endlessLevel = (game.endlessLevel || 0) + 1;
+                    const difficultyScaling = Math.min(game.endlessLevel * 0.15, 2); // Max 2x scaling
+                    
                     game.dungeon = createDeck();
-                    showMessage('♾️ ENDLESS MODE: Deck reloaded! The dungeon never ends!', 'info');
+                    
+                    // Make monsters progressively harder
+                    game.dungeon.forEach(card => {
+                        if (card.suitName === 'clubs' || card.suitName === 'spades') {
+                            card.numValue = Math.floor(card.numValue * (1 + difficultyScaling));
+                        }
+                    });
+                    
+                    showMessage(`♾️ ENDLESS MODE: Deck ${game.endlessLevel} loaded! Monsters +${Math.floor(difficultyScaling * 100)}% HP!`, 'warning');
                     playSound('special');
                     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 50);
                 } else {
+                    // Check if final boss already defeated
+                    if (!game.finalBossDefeated) {
+                        spawnFinalBoss();
+                        return;
+                    }
                     endGame('victory');
                     return;
                 }
@@ -4018,8 +4116,13 @@ class DarkAtmosphericMusic {
                     bossFlavor: boss.flavor
                 };
                 
-                const numToDraw = Math.min(3, game.dungeon.length);
-                const drawnCards = game.dungeon.splice(0, numToDraw);
+                // Deal 3 cards to room (or remaining if < 3)
+                // Speed Boots: +1 extra card draw
+                let baseCardsToDraw = 3;
+                if (game.relics.some(r => r.id === 'boots')) baseCardsToDraw += 1;
+                
+                const cardsToDraw = Math.min(baseCardsToDraw, game.dungeon.length);
+                const drawnCards = game.dungeon.splice(0, cardsToDraw);
                 game.room.push(bossCard, ...drawnCards);
                 game.lastActionWasAvoid = false;
                 
@@ -4036,8 +4139,27 @@ class DarkAtmosphericMusic {
             } else {
                 // Normal room
                 const numToDraw = 4;
-                const drawnCards = game.dungeon.splice(0, Math.min(numToDraw, game.dungeon.length));
-                game.room.push(...drawnCards);
+                
+                // BEGINNER HELP: Guarantee weapon in first 5 rooms if player has none
+                if (game.stats.roomsCleared < 5 && !game.equippedWeapon) {
+                    // Find a weapon in dungeon
+                    const weaponIndex = game.dungeon.findIndex(card => card.suitName === 'diamonds');
+                    if (weaponIndex !== -1) {
+                        // Draw weapon + 3 random cards
+                        const weapon = game.dungeon.splice(weaponIndex, 1)[0];
+                        const otherCards = game.dungeon.splice(0, Math.min(3, game.dungeon.length));
+                        game.room.push(weapon, ...otherCards);
+                        showMessage('🔰 Beginner help: Weapon included!', 'success');
+                    } else {
+                        // No weapons left, draw normally
+                        const drawnCards = game.dungeon.splice(0, Math.min(numToDraw, game.dungeon.length));
+                        game.room.push(...drawnCards);
+                    }
+                } else {
+                    const drawnCards = game.dungeon.splice(0, Math.min(numToDraw, game.dungeon.length));
+                    game.room.push(...drawnCards);
+                }
+                
                 game.lastActionWasAvoid = false;
                 
                 playSound('cardDraw');
@@ -4056,19 +4178,22 @@ class DarkAtmosphericMusic {
                 playSound('error');
                 return;
             }
-            if (game.dungeon.length < 3) {
+            // Leather Boots: Avoid costs 2 cards instead of 3
+            const avoidCost = game.relics.some(r => r.id === 'leather_boots') ? 2 : 3;
+            
+            if (game.dungeon.length < avoidCost) {
                 showMessage('Not enough cards to avoid!', 'warning');
                 return;
             }
 
-            const discarded = game.dungeon.splice(0, 3);
+            const discarded = game.dungeon.splice(0, avoidCost);
             game.discardPile.push(...discarded);
             game.stats.roomsAvoided++;
             game.lastActionWasAvoid = true;
             
             playSound('avoid');
-            addLog('Avoided dungeon, 3 cards discarded', 'info');
-            showMessage('You avoided the dungeon! 3 cards discarded.', 'info');
+            addLog(`Avoided dungeon, ${avoidCost} cards discarded`, 'info');
+            showMessage(`You avoided the dungeon! ${avoidCost} cards discarded.`, 'info');
             updateUI();
 
             if (game.dungeon.length === 0) {
@@ -4087,7 +4212,7 @@ class DarkAtmosphericMusic {
                 equippedWeapon: game.equippedWeapon ? {...game.equippedWeapon} : null,
                 potionsUsed: game.potionsUsed,
                 combo: game.combo,
-                heldCard: game.heldCard ? {...game.heldCard} : null
+                heldCard: game.heldCard ? (Array.isArray(game.heldCard) ? [...game.heldCard] : {...game.heldCard}) : null
             };
             game.undoAvailable = true;
         }
@@ -4107,7 +4232,7 @@ class DarkAtmosphericMusic {
             game.equippedWeapon = game.lastGameState.equippedWeapon ? {...game.lastGameState.equippedWeapon} : null;
             game.potionsUsed = game.lastGameState.potionsUsed;
             game.combo = game.lastGameState.combo;
-            game.heldCard = game.lastGameState.heldCard ? {...game.lastGameState.heldCard} : null;
+            game.heldCard = game.lastGameState.heldCard ? (Array.isArray(game.lastGameState.heldCard) ? [...game.lastGameState.heldCard] : {...game.lastGameState.heldCard}) : null;
             
             game.undoAvailable = false;
             game.lastGameState = null;
@@ -4180,8 +4305,29 @@ class DarkAtmosphericMusic {
             const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
             const baseWeapon = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
             
-            // Add berserk bonus
-            const berserkBonus = game.berserkStacks > 0 ? 5 : 0;
+            // Calculate all bonuses using helpers (DRY principle)
+            const berserkBonus = getBerserkBonus();
+            const bloodlustBonus = getBloodlustBonus();
+            const comboBonus = getComboBonus();
+            
+            // Power Gauntlet: +3 damage on first attack each room
+            let gauntletBonus = 0;
+            if (game.relics.some(r => r.id === 'gauntlet') && !game.firstAttackDone) {
+                gauntletBonus = 3;
+                game.firstAttackDone = true; // Mark first attack as done
+            }
+            
+            // Thunder Gauntlet: 20% chance to deal double damage (flag only)
+            let thunderCrit = false;
+            if (game.relics.some(r => r.id === 'warrior') && Math.random() < 0.2) {
+                thunderCrit = true;
+            }
+            
+            // Critical Strike permanent unlock: 10% chance to deal 3x damage (flag only)
+            let criticalHit = false;
+            if (permanentUnlocks.criticalStrike && Math.random() < 0.1) {
+                criticalHit = true;
+            }
             
             // Add class ability bonuses
             let classBonus = 0;
@@ -4200,17 +4346,18 @@ class DarkAtmosphericMusic {
                 }
             }
             
-            // Berserker Bloodlust passive
-            let bloodlustBonus = 0;
-            if (game.classData && game.classData.passive.bloodlust) {
-                const hpPercent = (game.health / game.maxHealth) * 100;
-                if (hpPercent <= 30) bloodlustBonus = 3;
-                else if (hpPercent <= 50) bloodlustBonus = 2;
-                else if (hpPercent <= 70) bloodlustBonus = 1;
+            const totalWeapon = baseWeapon + powerBonus + berserkBonus + classBonus + bloodlustBonus + comboBonus + gauntletBonus;
+            let effectiveWeapon = game.doubleDamage ? totalWeapon * 2 : totalWeapon;
+            
+            // Thunder Gauntlet: 20% chance to deal double damage
+            if (thunderCrit) {
+                effectiveWeapon *= 2;
             }
             
-            const totalWeapon = baseWeapon + powerBonus + berserkBonus + classBonus + bloodlustBonus;
-            let effectiveWeapon = game.doubleDamage ? totalWeapon * 2 : totalWeapon;
+            // Critical Strike permanent unlock: 10% chance to deal 3x damage
+            if (criticalHit) {
+                effectiveWeapon *= 3;
+            }
             
             // Apply Rogue Shadow Strike (2x damage)
             if (rogueDoubleActive) {
@@ -4245,7 +4392,7 @@ class DarkAtmosphericMusic {
                     }, 1500);
                     
                     // Break combo
-                    game.combo = permanentUnlocks.comboMaster ? 1 : 0;
+                    resetCombo();
                     
                     updateUI();
                     checkGameState();
@@ -4274,10 +4421,24 @@ class DarkAtmosphericMusic {
                 if (monster.numValue <= 0) {
                     // Boss defeated!
                     game.stats.monstersSlain++;
+                    game.stats.bossesKilled++;  // Track for Berserker unlock
+                    
+                    // Check if this is the final boss
+                    if (monster.bossNumber === 99) {
+                        game.finalBossDefeated = true;
+                    }
+                    
                     game.room.splice(index, 1);
                     game.discardPile.push(monster);
                     
-                    const bossGold = (Math.floor(Math.random() * 21) + 30);
+                    // Boss gold based on difficulty
+                    const bossGoldByDifficulty = {
+                        easy: Math.floor(Math.random() * 16) + 25,    // 25-40 gold
+                        normal: Math.floor(Math.random() * 11) + 20,  // 20-30 gold
+                        hard: Math.floor(Math.random() * 11) + 15,    // 15-25 gold
+                        endless: Math.floor(Math.random() * 11) + 20  // 20-30 gold
+                    };
+                    const bossGold = bossGoldByDifficulty[game.difficulty] || 20;
                     earnGold(bossGold);
                     
                     // Victory messages based on boss
@@ -4316,6 +4477,124 @@ class DarkAtmosphericMusic {
             
             let damage = Math.max(0, monster.numValue - effectiveWeapon);
             
+            // === RELIC DEFENSE SYSTEM (BEFORE DAMAGE CALCULATION) ===
+            
+            // Mirror Shard: Reflect 2 damage once per room (BEFORE taking damage)
+            const mirrorShardRelic = game.relics.find(r => r.id === 'mirror_shard');
+            if (mirrorShardRelic && !mirrorShardRelic.usedThisRoom && damage > 0) {
+                mirrorShardRelic.usedThisRoom = true;
+                const reflectDamage = 2;
+                monster.numValue -= reflectDamage;
+                showMessage(`🪞 Mirror Shard reflected ${reflectDamage} damage!`, 'info');
+                
+                // Check if reflection killed the monster
+                if (monster.numValue <= 0) {
+                    game.room.splice(index, 1);
+                    game.discardPile.push(monster);
+                    game.stats.monstersSlain++;
+                    game.combo++;
+                    game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
+                    
+                    // Monster Tooth bonus
+                    if (game.relics.some(r => r.id === 'tooth')) {
+                        earnGold(1);
+                    }
+                    
+                    addLog(`Mirror Shard defeated ${monster.value}${monster.suit}!`, 'success');
+                    showMessage('🪞 Mirror Shard killed the monster!', 'success');
+                    playSound('special');
+                    updateUI();
+                    checkGameState();
+                    return;
+                }
+            }
+            
+            // Thorns Armor permanent unlock: Reflect 2 damage (doesn't prevent damage to player)
+            if (permanentUnlocks.thornsArmor && damage > 0) {
+                monster.numValue -= 2;
+                showMessage('🌵 Thorns Armor reflected 2 damage!', 'info');
+                
+                // Check if thorns killed the monster
+                if (monster.numValue <= 0) {
+                    game.room.splice(index, 1);
+                    game.discardPile.push(monster);
+                    game.stats.monstersSlain++;
+                    
+                    // Still take damage but monster is dead
+                    game.health -= damage;
+                    game.stats.totalDamage += damage;
+                    showDamageNumber(damage, 'damage');
+                    
+                    // Monster Tooth bonus
+                    if (game.relics.some(r => r.id === 'tooth')) {
+                        earnGold(1);
+                    }
+                    
+                    addLog(`Thorns Armor defeated ${monster.value}${monster.suit}!`, 'success');
+                    showMessage('🌵 Thorns Armor killed the monster (after taking damage)!', 'warning');
+                    resetCombo();
+                    updateUI();
+                    checkGameState();
+                    return;
+                }
+            }
+            
+            // Weak Thorns: Reflect 1 damage (doesn't prevent damage to player) (stacks with thornsArmor)
+            if (game.relics.some(r => r.id === 'weak_thorns') && damage > 0) {
+                monster.numValue -= 1;
+                showMessage('🌿 Weak Thorns reflected 1 damage!', 'info');
+                
+                // Check if thorns killed the monster
+                if (monster.numValue <= 0) {
+                    game.room.splice(index, 1);
+                    game.discardPile.push(monster);
+                    game.stats.monstersSlain++;
+                    
+                    // Still take damage but monster is dead
+                    game.health -= damage;
+                    game.stats.totalDamage += damage;
+                    showDamageNumber(damage, 'damage');
+                    
+                    // Monster Tooth bonus
+                    if (game.relics.some(r => r.id === 'tooth')) {
+                        earnGold(1);
+                    }
+                    
+                    addLog(`Weak Thorns defeated ${monster.value}${monster.suit}!`, 'success');
+                    showMessage('🌿 Weak Thorns killed the monster (after taking damage)!', 'warning');
+                    resetCombo();
+                    updateUI();
+                    checkGameState();
+                    return;
+                }
+            }
+            
+            // Iron Armor: Reduce ALL damage by 1 (permanent effect)
+            if (game.relics.some(r => r.id === 'armor') && damage > 0) {
+                const originalDamage = damage;
+                damage = Math.max(0, damage - 1);
+                if (damage < originalDamage) {
+                    if (damage === 0) {
+                        showMessage(`🦾 Iron Armor absorbed all ${originalDamage} damage!`, 'success');
+                    } else {
+                        showMessage(`🦾 Iron Armor reduced damage! (${originalDamage} → ${damage})`, 'info');
+                    }
+                }
+            }
+            
+            // Stone Relic - Reduce first damage by 1 each room (stacks with armor)
+            let stoneRelic = game.relics.find(r => r.id === 'stone' && !r.stoneUsed);
+            if (stoneRelic && damage > 0) {
+                stoneRelic.stoneUsed = true;
+                const originalDamage = damage;
+                damage = Math.max(0, damage - 1);
+                if (damage === 0) {
+                    showMessage(`🪨 Stone absorbed all ${originalDamage} damage!`, 'success');
+                } else {
+                    showMessage(`🪨 Stone reduced damage by 1! (${originalDamage} → ${damage})`, 'info');
+                }
+            }
+            
             // Consume berserk stack
             if (game.berserkStacks > 0 && berserkBonus > 0) {
                 game.berserkStacks--;
@@ -4324,9 +4603,20 @@ class DarkAtmosphericMusic {
             
             playSound('attack');
             
-            // Dodge
+            // Dodge (dodgeMaster: avoids 2 attacks instead of 1)
             if (game.dodgeActive && damage > 0) {
-                game.dodgeActive = false;
+                // dodgeMaster unlock: dodge lasts 2 attacks
+                if (!permanentUnlocks.dodgeMaster) {
+                    game.dodgeActive = false;
+                } else {
+                    // Track dodge counter for dodgeMaster
+                    if (!game.dodgeCounter) game.dodgeCounter = 2;
+                    game.dodgeCounter--;
+                    if (game.dodgeCounter <= 0) {
+                        game.dodgeActive = false;
+                        game.dodgeCounter = 0;
+                    }
+                }
                 playSound('special');
                 addLog(`Dodged attack from ${monster.value}${monster.suit}!`, 'heal');
                 showMessage('🛡️ Dodged! No damage!', 'success');
@@ -4360,33 +4650,52 @@ class DarkAtmosphericMusic {
                     game.combo++;
                     game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
                 } else {
-                    game.combo = permanentUnlocks.comboMaster ? 1 : 0;
+                    resetCombo();
                 }
             }
-            // Relic Shield
+            // Cloak Relic - First damage each room is 0 (PRIORITY)
             else if (damage > 0) {
-                let shieldRelic = game.relics.find(r => r.id === 'tank' && !r.shieldUsed);
-                if (shieldRelic) {
-                    shieldRelic.shieldUsed = true;
-                    const actualDamage = Math.max(0, damage - 1);
-                    showMessage(`🛡️ Shield absorbed 1 damage! Received ${actualDamage}.`, 'success');
-                    if (actualDamage > 0) {
-                        game.health -= actualDamage;
-                        game.stats.totalDamage += actualDamage;
-                        showDamageNumber(actualDamage, 'damage');
-                        playSound('damage');
-                        game.combo = permanentUnlocks.comboMaster ? 1 : 0;
+                let cloakRelic = game.relics.find(r => r.id === 'cloak' && !r.usedThisRoom);
+                if (cloakRelic) {
+                    cloakRelic.usedThisRoom = true;
+                    showMessage(`🧥 Cloak protected you! No damage this turn!`, 'success');
+                    playSound('special');
+                    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 30);
+                    // Perfect dodge - keep combo!
+                    game.combo++;
+                    game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
+                    if (game.combo >= 2) {
+                        showCombo(game.combo);
                     }
                 } else {
-                    // Normal Damage
-                    game.health -= damage;
-                    game.stats.totalDamage += damage;
-                    game.combo = permanentUnlocks.comboMaster ? 1 : 0; // Reset combo
-                    showDamageNumber(damage, 'damage');
-                    playSound('damage');
-                    screenShake();
-                    addLog(`Took ${damage} damage from ${monster.value}${monster.suit}`, 'damage');
-                    showMessage(`⚔️ Took ${damage} damage!`, 'danger');
+                    // Tank Relic Shield - Reduces damage by 1
+                    let shieldRelic = game.relics.find(r => r.id === 'tank' && !r.shieldUsed);
+                    if (shieldRelic) {
+                        shieldRelic.shieldUsed = true;
+                        const actualDamage = Math.max(0, damage - 1);
+                        showMessage(`🛡️ Shield absorbed 1 damage! Received ${actualDamage}.`, 'success');
+                        if (actualDamage > 0) {
+                            game.health -= actualDamage;
+                            game.stats.totalDamage += actualDamage;
+                            showDamageNumber(actualDamage, 'damage');
+                            playSound('damage');
+                            resetCombo();
+                        } else {
+                            // Shield absorbed all damage - keep combo
+                            game.combo++;
+                            game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
+                        }
+                    } else {
+                        // Normal Damage
+                        game.health -= damage;
+                        game.stats.totalDamage += damage;
+                        resetCombo(); // Reset combo
+                        showDamageNumber(damage, 'damage');
+                        playSound('damage');
+                        screenShake();
+                        addLog(`Took ${damage} damage from ${monster.value}${monster.suit}`, 'damage');
+                        showMessage(`⚔️ Took ${damage} damage!`, 'danger');
+                    }
                 }
             } 
             // Perfect Kill
@@ -4398,15 +4707,34 @@ class DarkAtmosphericMusic {
                     playSound('combo');
                 }
                 
-                // Lifesteal
-                const lifesteal = game.relics.filter(r => r.id === 'vampire').length * 2;
+                // Lifesteal (relic + permanent unlock)
+                let lifesteal = game.relics.filter(r => r.id === 'vampire').length * 2;
+                
+                // Permanent unlock: lifeSteal (1 HP on perfect kill)
+                if (permanentUnlocks.lifeSteal) {
+                    lifesteal += 1;
+                }
+                
                 if (lifesteal > 0) {
                     game.health = Math.min(game.maxHealth, game.health + lifesteal);
                     showMessage(`🧛 +${lifesteal} HP from Vampirism!`, 'success');
                 }
                 
+                // Monster Tooth: +1 gold per monster
+                if (game.relics.some(r => r.id === 'tooth')) {
+                    earnGold(1);
+                }
+                
                 addLog(`Defeated ${monster.value}${monster.suit}! (Combo: ${game.combo})`, 'info');
-                showMessage(`⚔️ Perfect kill! ${game.combo}x COMBO!`, 'success');
+                if (criticalHit) {
+                    showMessage(`💥 MEGA CRITICAL! ${game.combo}x COMBO!`, 'success');
+                    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 50);
+                } else if (thunderCrit) {
+                    showMessage(`⚡ CRITICAL HIT! ${game.combo}x COMBO!`, 'success');
+                    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 30);
+                } else {
+                    showMessage(`⚔️ Perfect kill! ${game.combo}x COMBO!`, 'success');
+                }
             }
             
             if (game.doubleDamage) game.doubleDamage = false;
@@ -4468,7 +4796,7 @@ class DarkAtmosphericMusic {
                 const goldByDifficulty = {
                     easy: Math.floor(Math.random() * 4) + 3,    // 3-6 gold
                     normal: Math.floor(Math.random() * 3) + 2,  // 2-4 gold
-                    hard: Math.floor(Math.random() * 2) + 1,    // 1-2 gold
+                    hard: Math.floor(Math.random() * 3) + 2,    // 2-4 gold (buffed from 1-2)
                     endless: Math.floor(Math.random() * 3) + 2  // 2-4 gold
                 };
                 const baseGold = goldByDifficulty[game.difficulty] || 2;
@@ -4501,7 +4829,7 @@ class DarkAtmosphericMusic {
             // BREAKING COMBO: Equiping weapon breaks combo (strategic choice!)
             if (game.combo > 0) {
                 const brokenCombo = game.combo;
-                game.combo = permanentUnlocks.comboMaster ? 1 : 0;
+                resetCombo();
                 if (brokenCombo >= 3) {
                     showMessage(`💔 ${brokenCombo}x combo broken! (equipped weapon)`, 'warning');
                 }
@@ -4518,6 +4846,16 @@ class DarkAtmosphericMusic {
             // Apply Knight bonus (+1 durability)
             if (game.classData && game.classData.passive.weaponDurabilityBonus) {
                 game.equippedWeapon.maxDurability += game.classData.passive.weaponDurabilityBonus;
+            }
+            
+            // Apply permanent unlock bonus (+1 durability)
+            if (permanentUnlocks.durablePlus) {
+                game.equippedWeapon.maxDurability += 1;
+            }
+            
+            // Gloves relic: +1 durability
+            if (game.relics.some(r => r.id === 'gloves')) {
+                game.equippedWeapon.maxDurability += 1;
             }
             
             game.equippedWeapon.durability = game.equippedWeapon.maxDurability;
@@ -4539,12 +4877,16 @@ class DarkAtmosphericMusic {
         }
 
         function handlePotion(potion, index) {
-            // Check max potions per room (Dancer can use 2)
-            const maxPotions = (game.classData && game.classData.passive.maxPotionsPerRoom) || 1;
+            // Max potions per dungeon (Herb relic: 2x instead of 1x)
+            let maxPotionsPerDungeon = 1;
+            if (game.relics.some(r => r.id === 'herb')) maxPotionsPerDungeon = 2;
             
-            // Check if potion limit reached
-            if (game.potionsUsed >= maxPotions) {
-                showMessage(`Only ${maxPotions} potion(s) per dungeon! Discarding...`, 'warning');
+            // Dancer can use 2 potions per ROOM (different from dungeon limit)
+            const maxPotionsPerRoom = (game.classData && game.classData.passive.maxPotionsPerRoom) || 1;
+            
+            // Check if potion limit reached (per dungeon)
+            if (game.potionsUsed >= maxPotionsPerDungeon) {
+                showMessage(`Only ${maxPotionsPerDungeon} potion(s) per dungeon! Discarding...`, 'warning');
                 game.room.splice(index, 1);
                 game.discardPile.push(potion);
                 addLog(`Discarded potion ${potion.value}${potion.suit}`, 'info');
@@ -4625,17 +4967,26 @@ class DarkAtmosphericMusic {
                 let goldPerRoom = 0;
                 let passiveHeal = 0;
                 
+                // Reset per-room flags
+                game.firstAttackDone = false; // Power Gauntlet reset
+                
                 game.relics.forEach(r => {
-                    // Reset tank shield
+                    // Reset per-room relic flags
                     if (r.id === 'tank') r.shieldUsed = false;
+                    if (r.id === 'cloak') r.usedThisRoom = false;
+                    if (r.id === 'stone') r.stoneUsed = false;
+                    if (r.id === 'mirror_shard') r.usedThisRoom = false;
                     
                     // Gold bonuses
                     if (r.id === 'coin_pouch') goldPerRoom += 2;
                     if (r.id === 'greedy') goldPerRoom += 3;
                     
-                    // Passive healing
-                    if (r.id === 'bandage') passiveHeal += 0.5;
-                    if (r.id === 'meditation') passiveHeal += 1;
+                    // Passive healing (generic system based on effect)
+                    if (r.effect === 'passive_heal') {
+                        // Standard passive healing: +1 HP per room (meditation, healing_study)
+                        passiveHeal += 1;
+                    }
+                    if (r.id === 'bandage') passiveHeal += 0.5; // Bandage gives additional 0.5
                 });
                 
                 // Rogue: +1 gold per room
@@ -4684,6 +5035,16 @@ class DarkAtmosphericMusic {
                     eventChance += (game.classData.passive.eventChanceBonus / 100);
                 }
                 
+                // Event Luck unlock: +50% event chance
+                if (permanentUnlocks.eventLuck) {
+                    eventChance += 0.50;
+                }
+                
+                // Compass relic: +10% event chance
+                if (game.relics.some(r => r.id === 'compass')) {
+                    eventChance += 0.10;
+                }
+                
                 setTimeout(() => {
                     if (!game.gameOver && !game.eventTriggeredThisRoom && Math.random() < eventChance) {
                         triggerRandomEvent();
@@ -4695,9 +5056,14 @@ class DarkAtmosphericMusic {
                 endGame('death');
             }
 
-            // Don't end game on victory in endless mode
+            // Victory condition: deck empty and room empty (non-endless)
             if (game.dungeon.length === 0 && game.room.length === 0 && game.difficulty !== 'endless') {
-                endGame('victory');
+                // Check if final boss already defeated
+                if (!game.finalBossDefeated) {
+                    spawnFinalBoss();
+                } else {
+                    endGame('victory');
+                }
             }
         }
 
@@ -4706,6 +5072,10 @@ class DarkAtmosphericMusic {
             
             game.gameOver = true;
             if (game.gameTimerInterval) clearInterval(game.gameTimerInterval); // Stop clock
+            
+            // Check if this is the first death (show encouraging modal)
+            const lifetimeStats = storage.get('scoundrel_lifetime_stats', {});
+            const isFirstDeath = reason === 'death' && !gaveUp && lifetimeStats.gamesPlayed <= 1;
             
             // Switch music based on outcome
             if (reason === 'victory') {
@@ -4730,6 +5100,11 @@ class DarkAtmosphericMusic {
                 score = gaveUp ? 0 : calculateDeathScore(); // Score is 0 if gave up
                 scoreLabel = 'Final Score:';
                 playSound('defeat');
+                
+                // Show encouraging modal on first death
+                if (isFirstDeath) {
+                    setTimeout(() => showEncouragingModal(), 2000);
+                }
             } else if (reason === 'victory') {
                 isVictory = true;
                 title = '🏆 VICTORY';
@@ -4912,6 +5287,71 @@ class DarkAtmosphericMusic {
                 });
             }
         }
+        
+        function spawnFinalBoss() {
+            // Spawn final boss based on difficulty
+            const difficultyHP = {
+                easy: 20,
+                normal: 30,
+                hard: 40
+            };
+            
+            const finalBossHP = difficultyHP[game.difficulty] || 30;
+            
+            const finalBoss = {
+                suit: '👹',
+                value: '👹',
+                numValue: finalBossHP,
+                maxHP: finalBossHP,
+                isBoss: true,
+                bossNumber: 99,  // Special marker for final boss
+                bossName: 'The Dungeon Lord',
+                bossFlavor: 'The master of this cursed place. Defeat them to claim your victory!'
+            };
+            
+            game.room = [finalBoss];
+            
+            playSound('special');
+            showMessage('👑 FINAL BOSS: The Dungeon Lord appears!', 'danger');
+            setTimeout(() => showMessage(finalBoss.bossFlavor, 'warning'), 1500);
+            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 100);
+            
+            // Screen shake for dramatic effect
+            screenShake();
+            
+            updateUI();
+        }
+        
+        function showEncouragingModal() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            
+            overlay.innerHTML = `
+                <div class="modal-content" style="max-width: 600px; border: 3px solid #ffd700;">
+                    <button class="modal-close-btn" onclick="this.closest('.modal-overlay').remove();">✕</button>
+                    <h1 style="color: #ffd700;">⚔️ DON'T GIVE UP!</h1>
+                    <div style="text-align: left; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 8px; margin: 20px 0;">
+                        <p style="font-size: 1.1em; color: #ddd; margin-bottom: 15px;">💀 <strong style="color: #ff6b6b;">Death is just the beginning.</strong> This game is intentionally challenging!</p>
+                        
+                        <p style="font-size: 1em; color: #c9a961; margin-bottom: 10px;">🎯 <strong>Tips for Success:</strong></p>
+                        <ul style="color: #aaa; line-height: 1.8; margin-left: 20px;">
+                            <li>🛡️ <strong style="color: #6bcf7f;">Always equip weapons</strong> before fighting monsters</li>
+                            <li>💰 <strong style="color: #ffd93d;">Visit the Shop (S)</strong> to buy relics and upgrades</li>
+                            <li>🗝️ <strong style="color: #d4af37;">Unlock permanent upgrades</strong> that carry between runs</li>
+                            <li>📌 <strong style="color: #a8edea;">Hold cards (right-click)</strong> for strategic plays</li>
+                            <li>⚔️ <strong style="color: #ff6b6b;">Start on Easy</strong> to learn the mechanics</li>
+                            <li>🎓 <strong style="color: #c9a961;">Read the Tutorial</strong> for detailed strategies</li>
+                        </ul>
+                        
+                        <p style="font-size: 1em; color: #6bcf7f; margin-top: 20px; text-align: center;">✨ Each death makes you stronger! Keep trying! ✨</p>
+                    </div>
+                    <div class="modal-controls">
+                        <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove();">💪 I'LL TRY AGAIN!</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
 
         function showMessage(text, type) {
             const msgEl = document.createElement('div');
@@ -4938,6 +5378,12 @@ class DarkAtmosphericMusic {
         }
         
         function updateUI() {
+            // Check for death FIRST (critical bug fix)
+            if (game.health <= 0 && !game.gameOver) {
+                endGame('death');
+                return; // Stop updating UI
+            }
+            
             // HP Critical Warning
             if (game.health > 0 && game.health <= 5) {
                 document.body.classList.add('hp-critical');
@@ -4954,7 +5400,21 @@ class DarkAtmosphericMusic {
             // Top Bar
             healthEl.textContent = `${game.health} / ${game.maxHealth}`;
             goldEl.textContent = game.gold;
-            dungeonCountEl.textContent = game.dungeon.length;
+            
+            // Show next cards if player has Map or Candle relic
+            const hasMap = game.relics.some(r => r.id === 'map');
+            const hasCandle = game.relics.some(r => r.id === 'candle');
+            
+            if (hasMap && game.dungeon.length > 0) {
+                const preview = game.dungeon.slice(0, 3).map(c => `${c.value}${c.suit}`).join(' ');
+                dungeonCountEl.textContent = `${game.dungeon.length} (🗺️ ${preview})`;
+            } else if (hasCandle && game.dungeon.length > 0) {
+                const preview = game.dungeon[0];
+                dungeonCountEl.textContent = `${game.dungeon.length} (🕯️ ${preview.value}${preview.suit})`;
+            } else {
+                dungeonCountEl.textContent = game.dungeon.length;
+            }
+            
             statRoomsEl.textContent = game.stats.roomsCleared;
             mainScoreValue.textContent = game.score; // Update main score
             
@@ -5033,40 +5493,115 @@ class DarkAtmosphericMusic {
             
             // Right Bar - Hold (supports multiple cards for Rogue)
             holdAreaContainer.innerHTML = '';
-            const maxHold = (game.classData && game.classData.passive.maxHoldCards) || 1;
+            let maxHold = (game.classData && game.classData.passive.maxHoldCards) || 1;
+            
+            // Feather relic: +1 hold slot
+            if (game.relics.some(r => r.id === 'feather')) maxHold += 1;
             
             if (game.heldCard) {
                 // Handle both single card and array of cards
                 const heldCards = Array.isArray(game.heldCard) ? game.heldCard : [game.heldCard];
                 
-                heldCards.forEach((card, idx) => {
-                    const cardEl = createCardElement(card);
+                // ROGUE: Multiple cards - show ONE at a time with navigation
+                if (maxHold > 1 && heldCards.length > 1) {
+                    // Ensure index is valid
+                    if (game.heldCardIndex >= heldCards.length) game.heldCardIndex = 0;
+                    if (game.heldCardIndex < 0) game.heldCardIndex = heldCards.length - 1;
+                    
+                    const currentCard = heldCards[game.heldCardIndex];
+                    
+                    // Navigation container
+                    const navContainer = document.createElement('div');
+                    navContainer.style.cssText = 'display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;';
+                    
+                    // Left arrow
+                    const leftArrow = document.createElement('button');
+                    leftArrow.innerHTML = '\u25c0';
+                    leftArrow.className = 'held-nav-btn';
+                    leftArrow.style.cssText = 'background: rgba(0,0,0,0.5); border: 2px solid #ffd93d; color: #ffd93d; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1em; display: flex; align-items: center; justify-content: center; transition: all 0.3s;';
+                    leftArrow.onmouseover = () => leftArrow.style.background = 'rgba(255, 217, 61, 0.3)';
+                    leftArrow.onmouseout = () => leftArrow.style.background = 'rgba(0,0,0,0.5)';
+                    leftArrow.onclick = (e) => {
+                        e.stopPropagation();
+                        game.heldCardIndex = (game.heldCardIndex - 1 + heldCards.length) % heldCards.length;
+                        updateUI();
+                    };
+                    
+                    // Counter
+                    const counter = document.createElement('div');
+                    counter.style.cssText = 'color: #ffd93d; font-weight: bold; font-size: 0.9em; min-width: 35px; text-align: center;';
+                    counter.textContent = `${game.heldCardIndex + 1}/${heldCards.length}`;
+                    
+                    // Right arrow
+                    const rightArrow = document.createElement('button');
+                    rightArrow.innerHTML = '\u25b6';
+                    rightArrow.className = 'held-nav-btn';
+                    rightArrow.style.cssText = 'background: rgba(0,0,0,0.5); border: 2px solid #ffd93d; color: #ffd93d; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 1em; display: flex; align-items: center; justify-content: center; transition: all 0.3s;';
+                    rightArrow.onmouseover = () => rightArrow.style.background = 'rgba(255, 217, 61, 0.3)';
+                    rightArrow.onmouseout = () => rightArrow.style.background = 'rgba(0,0,0,0.5)';
+                    rightArrow.onclick = (e) => {
+                        e.stopPropagation();
+                        game.heldCardIndex = (game.heldCardIndex + 1) % heldCards.length;
+                        updateUI();
+                    };
+                    
+                    navContainer.appendChild(leftArrow);
+                    navContainer.appendChild(counter);
+                    navContainer.appendChild(rightArrow);
+                    holdAreaContainer.appendChild(navContainer);
+                    
+                    // Show current card
+                    const cardEl = createCardElement(currentCard);
                     cardEl.classList.add('held');
-                    cardEl.style.marginBottom = '10px';
                     cardEl.onclick = () => {
-                        // Use specific held card
-                        if (Array.isArray(game.heldCard)) {
-                            const selectedCard = game.heldCard.splice(idx, 1)[0];
-                            if (game.heldCard.length === 0) game.heldCard = null;
-                            game.room.unshift(selectedCard);
-                            updateUI();
-                            setTimeout(() => {
-                                const firstCardEl = bottomBar.querySelector('.card');
-                                if (firstCardEl) firstCardEl.click();
-                            }, 100);
+                        const selectedCard = game.heldCard.splice(game.heldCardIndex, 1)[0];
+                        if (game.heldCard.length === 0) {
+                            game.heldCard = null;
+                            game.heldCardIndex = 0;
                         } else {
-                            useHeldCard();
+                            // Adjust index if needed
+                            if (game.heldCardIndex >= game.heldCard.length) game.heldCardIndex = 0;
                         }
+                        game.room.unshift(selectedCard);
+                        updateUI();
+                        setTimeout(() => {
+                            const firstCardEl = bottomBar.querySelector('.card');
+                            if (firstCardEl) firstCardEl.click();
+                        }, 100);
                     };
                     holdAreaContainer.appendChild(cardEl);
-                });
-                
-                // Show count if multiple slots
-                if (maxHold > 1) {
-                    const countEl = document.createElement('div');
-                    countEl.style.cssText = 'text-align:center;color:#ffd93d;font-size:0.9em;margin-top:5px;';
-                    countEl.textContent = `${heldCards.length}/${maxHold} held`;
-                    holdAreaContainer.appendChild(countEl);
+                    
+                } else {
+                    // Single card or single-hold classes: show normally
+                    heldCards.forEach((card, idx) => {
+                        const cardEl = createCardElement(card);
+                        cardEl.classList.add('held');
+                        cardEl.style.marginBottom = '10px';
+                        cardEl.onclick = () => {
+                            // Use specific held card
+                            if (Array.isArray(game.heldCard)) {
+                                const selectedCard = game.heldCard.splice(idx, 1)[0];
+                                if (game.heldCard.length === 0) game.heldCard = null;
+                                game.room.unshift(selectedCard);
+                                updateUI();
+                                setTimeout(() => {
+                                    const firstCardEl = bottomBar.querySelector('.card');
+                                    if (firstCardEl) firstCardEl.click();
+                                }, 100);
+                            } else {
+                                useHeldCard();
+                            }
+                        };
+                        holdAreaContainer.appendChild(cardEl);
+                    });
+                    
+                    // Show count if multiple slots
+                    if (maxHold > 1) {
+                        const countEl = document.createElement('div');
+                        countEl.style.cssText = 'text-align:center;color:#ffd93d;font-size:0.9em;margin-top:5px;';
+                        countEl.textContent = `${heldCards.length}/${maxHold} held`;
+                        holdAreaContainer.appendChild(countEl);
+                    }
                 }
             } else {
                 const emptyText = maxHold > 1 ? `Right-click to hold (0/${maxHold})` : 'Right-click to hold';
@@ -5184,6 +5719,14 @@ class DarkAtmosphericMusic {
                     <div class="card-value">${card.value}</div>
                     <div class="card-suit">${card.suit}</div>
                 `;
+                
+                // Bell relic: Show gold value on cards
+                if (game.relics.some(r => r.id === 'bell') && card.numValue > 0) {
+                    const goldBadge = document.createElement('div');
+                    goldBadge.style.cssText = 'position:absolute;top:5px;right:5px;background:rgba(255,215,0,0.9);color:#000;padding:2px 6px;border-radius:8px;font-size:0.7em;font-weight:bold;';
+                    goldBadge.textContent = `💰${card.numValue}`;
+                    cardEl.appendChild(goldBadge);
+                }
             }
             return cardEl;
         }
@@ -5252,7 +5795,7 @@ class DarkAtmosphericMusic {
             { id: 'magnet', name: '🧲 Magnet', description: '+40% gold from all sources', rarity: 'uncommon', effect: 'goldBonus' },
             { id: 'ring_fire', name: '🔥 Fire Ring', description: 'Combo damage +1 per stack', rarity: 'uncommon', effect: 'comboBoost' },
             { id: 'cloak', name: '🧥 Cloak', description: 'First damage each room is 0', rarity: 'uncommon', effect: 'firstDodge' },
-            { id: 'berserker', name: '💢 Berserker Ring', description: '+2 damage to all weapons', rarity: 'uncommon', effect: 'power' },
+            { id: 'berserker_ring', name: '💢 Berserker Ring', description: '+2 damage to all weapons', rarity: 'uncommon', effect: 'power' },
             
             // === RARA (8) - Efeitos poderosos ===
             { id: 'gold_shield', name: '🛡️ Golden Shield', description: '+10 maximum health', rarity: 'rare', effect: 'bigHealth' },
@@ -5274,7 +5817,7 @@ class DarkAtmosphericMusic {
                 choices: [
                     { text: '❤️ Sacrifice 5 HP for +2 weapon damage permanently (Gain Berserker Ring)',
                         effect: () => {
-                            if (game.health > 5) { game.health -= 5; game.relics.push({...RELICS.find(r => r.id === 'berserker')}); showMessage('Gained Berserker Ring!', 'success'); updateRelicsDisplay(); } 
+                            if (game.health > 5) { game.health -= 5; game.relics.push({...RELICS.find(r => r.id === 'berserker_ring')}); showMessage('Gained Berserker Ring!', 'success'); updateRelicsDisplay(); } 
                             else { showMessage('Not enough HP!', 'danger'); }
                         }},
                     { text: '💰 Offer 20 gold for +5 max HP',
@@ -5644,7 +6187,7 @@ class DarkAtmosphericMusic {
             { id: 'betterDrops', name: '🍀 Lucky', description: '+30% gold from all sources', requirement: 'Earn 500 gold (lifetime)', check: () => getTotalStat('totalGoldEarned') >= 500 },
             { id: 'extraRelic', name: '🔮 Relic Start', description: 'Start each run with 1 random relic', requirement: 'Clear 30 rooms', check: () => getTotalStat('roomsCleared') >= 30 },
             { id: 'richStart', name: '💎 Wealthy Start', description: 'Start with 50 gold instead of 30', requirement: 'Earn 1000 gold (lifetime)', check: () => getTotalStat('totalGoldEarned') >= 1000 },
-            { id: 'weaponMaster', name: '⚔️ Weapon Master', description: 'All weapons get +2 damage (stacks with Expert)', requirement: 'Equip 100 weapons', check: () => getTotalStat('weaponsEquipped') >= 100 },
+            { id: 'weaponMaster', name: '⚔️ Weapon Master', description: 'All weapons get +1 damage (stacks)', requirement: 'Equip 100 weapons', check: () => getTotalStat('weaponsEquipped') >= 100 },
             { id: 'potionMaster', name: '💊 Potion Master', description: 'All potions heal +4 HP (stacks)', requirement: 'Use 75 potions', check: () => getTotalStat('potionsUsed') >= 75 },
             
             // Tier 3: Advanced (Hard)
@@ -5655,7 +6198,7 @@ class DarkAtmosphericMusic {
             { id: 'relicMaster', name: '🔮🔮 Double Relic Start', description: 'Start with 2 random relics', requirement: 'Clear 100 rooms', check: () => getTotalStat('roomsCleared') >= 100 },
             
             // Tier 4: Expert (Very Hard)
-            { id: 'ultraWeapons', name: '⚔️⚔️⚔️ Weapon God', description: 'All weapons get +4 damage total', requirement: 'Defeat 500 monsters', check: () => getTotalStat('monstersSlain') >= 500 },
+            { id: 'ultraWeapons', name: '⚔️⚔️⚔️ Weapon God', description: 'All weapons get +2 damage (stacks)', requirement: 'Defeat 500 monsters', check: () => getTotalStat('monstersSlain') >= 500 },
             { id: 'startPower', name: '⚡ Power Start', description: 'Start each run with a random weapon', requirement: 'Win 5 games', check: () => getTotalStat('gamesWon') >= 5 },
             { id: 'megaHealth', name: '❤️❤️❤️ Titan Health', description: 'Start with +20 max HP total', requirement: 'Clear 150 rooms', check: () => getTotalStat('roomsCleared') >= 150 },
             { id: 'eventLuck', name: '🎲 Event Master', description: 'Events appear 50% more often', requirement: 'Complete 50 events', check: () => getTotalStat('eventsCompleted') >= 50 },
@@ -5686,9 +6229,9 @@ class DarkAtmosphericMusic {
             if (game.relics.some(r => r.id === 'lucky')) mult += 0.6;
             
             // Permanent unlocks
-            if (permanentUnlocks.betterDrops) mult += 0.3;
-            if (permanentUnlocks.goldRush) mult += 0.5;
-            if (permanentUnlocks.luckyCharm) mult += 0.6;
+            if (permanentUnlocks.betterDrops) mult += 0.3;   // +30%
+            if (permanentUnlocks.goldRush) mult += 0.5;      // +50%
+            if (permanentUnlocks.luckyCharm) mult += 0.6;    // +60% (already implemented!)
             
             const actual = Math.floor(amount * mult);
             game.gold += actual;
@@ -5713,6 +6256,7 @@ class DarkAtmosphericMusic {
             
             const randomRelic = available[Math.floor(Math.random() * available.length)];
             game.relics.push({...randomRelic, used: false});
+            game.stats.relicsCollected++;  // Track for Priest unlock
             
             // Apply immediate health effects
             if (randomRelic.effect === 'smallHealth') { game.maxHealth += 3; game.health += 3; }
@@ -5767,9 +6311,22 @@ class DarkAtmosphericMusic {
                 }
             });
             
-            // Permanent unlocks bonuses
-            if (type === 'power' && permanentUnlocks.strongerWeapons) bonus += 1;
-            if (type === 'healBonus' && permanentUnlocks.masterHealer) bonus += 2;
+            // Crown: Double all stat bonuses from relics
+            if (game.relics.some(r => r.id === 'crown')) {
+                bonus *= 2;
+            }
+            
+            // Permanent unlocks bonuses (BALANCED for better progression)
+            if (type === 'power') {
+                if (permanentUnlocks.strongerWeapons) bonus += 1;  // +1 damage
+                if (permanentUnlocks.weaponMaster) bonus += 1;    // +1 damage (reduced from +2)
+                if (permanentUnlocks.ultraWeapons) bonus += 2;    // +2 damage (reduced from +4)
+                // Total: +4 instead of +7 (better game balance)
+            }
+            if (type === 'healBonus') {
+                if (permanentUnlocks.masterHealer) bonus += 2;    // +2 HP potions
+                if (permanentUnlocks.potionMaster) bonus += 4;    // +4 HP potions (stacks)
+            }
             
             // Sum all power types for total weapon bonus
             if (type === 'totalPower') {
@@ -5783,6 +6340,8 @@ class DarkAtmosphericMusic {
 
         function triggerRandomEvent() {
             if (game.gameOver) return;
+            
+            game.stats.eventsTriggered++;  // Track for Priest unlock
             
             // Filter out events already seen this run (no repeats)
             const availableEvents = EVENTS.filter(e => !game.seenEvents.includes(e.id));
@@ -5816,6 +6375,19 @@ class DarkAtmosphericMusic {
                 choiceEl.innerHTML = choice.text;
                 choiceEl.onclick = () => {
                     choice.effect();
+                    
+                    // Lantern: +2 gold per event
+                    if (game.relics.some(r => r.id === 'lantern')) {
+                        earnGold(2);
+                        showMessage('🏮 Lantern: +2 gold from event!', 'info');
+                    }
+                    
+                    // Holy Necklace: Events heal 2 HP
+                    if (game.relics.some(r => r.id === 'necklace')) {
+                        game.health = Math.min(game.maxHealth, game.health + 2);
+                        showMessage('📿 Holy Necklace: +2 HP!', 'success');
+                    }
+                    
                     eventModal.classList.remove('active');
                     
                     // Track event completion for achievement
@@ -5866,8 +6438,17 @@ class DarkAtmosphericMusic {
             shopGoldAmount.textContent = game.gold;
             shopItems.innerHTML = ''; // Clear shop
             
-            // Check for shop discount unlock
-            const discount = permanentUnlocks.shopDiscount ? 0.8 : 1.0; // 20% discount
+            // Check for shop discount (unlocks + relics)
+            let discount = 1.0;
+            
+            // Permanent unlock: 20% discount
+            if (permanentUnlocks.shopDiscount) discount *= 0.8;
+            
+            // Dice relic: 5% discount
+            if (game.relics.some(r => r.id === 'dice')) discount *= 0.95;
+            
+            // Crystal relic: 15% discount
+            if (game.relics.some(r => r.id === 'crystal')) discount *= 0.85;
             
             // Show price multiplier warning if prices have increased
             if (game.shopPriceMultiplier > 1.0) {
@@ -5878,9 +6459,18 @@ class DarkAtmosphericMusic {
                 shopItems.appendChild(warningBanner);
             }
             
-            SHOP_ITEMS.forEach(item => {
-                const basePrice = Math.floor(item.price * discount);
-                const finalPrice = Math.floor(basePrice * game.shopPriceMultiplier);
+            // Old Key: Check if we have a free item available
+            const hasOldKey = game.relics.find(r => r.id === 'key' && !r.used);
+            
+            SHOP_ITEMS.forEach((item, itemIndex) => {
+                // Old Key: First item is FREE (once per game)
+                let finalPrice;
+                if (hasOldKey && itemIndex === 0) {
+                    finalPrice = 0;
+                } else {
+                    const basePrice = Math.floor(item.price * discount);
+                    finalPrice = Math.floor(basePrice * game.shopPriceMultiplier);
+                }
                 const itemEl = document.createElement('div');
                 itemEl.className = 'shop-item';
                 
@@ -5943,10 +6533,19 @@ class DarkAtmosphericMusic {
             
             const success = item.buy(); // Run the item's function
             if (success) {
+                // Old Key: Mark as used if this was a free purchase
+                if (finalPrice === 0) {
+                    const keyRelic = game.relics.find(r => r.id === 'key');
+                    if (keyRelic) {
+                        keyRelic.used = true;
+                        showMessage('🗝️ Old Key used - 1 free item!', 'info');
+                    }
+                }
+                
                 game.gold -= finalPrice;
                 
-                // ANTI-EXPLOIT: Increase prices by 15% after each purchase
-                game.shopPriceMultiplier *= 1.15;
+                // ANTI-EXPLOIT: Increase prices by 8% after each purchase (balanced)
+                game.shopPriceMultiplier *= 1.08;
                 
                 showMessage(`Purchased ${item.name}!`, 'success');
                 playSound('special');
@@ -6015,6 +6614,20 @@ class DarkAtmosphericMusic {
             updateUnlocksDisplay();
         }
         
+        // Expose Give Up function globally for onclick
+        window.tryGiveUp = () => {
+            if (game.gameStartTime > 0 && !game.gameOver) {
+                document.getElementById('giveUpModal').classList.add('active');
+            } else {
+                alert('Start a game first!');
+            }
+        }
+        
+        window.confirmGiveUp = () => {
+            document.getElementById('giveUpModal').classList.remove('active');
+            endGame('death', true);
+        }
+        
         function loadUnlocks() {
              const saved = localStorage.getItem('scoundrel_unlocks');
              if(saved) {
@@ -6034,9 +6647,46 @@ class DarkAtmosphericMusic {
         }
         
         function applyPermanentUnlocks() {
+            // Gold unlocks
             if (permanentUnlocks.startGold) earnGold(30);
             if (permanentUnlocks.richStart) earnGold(20); // Total 50
+            if (permanentUnlocks.godMode) earnGold(100); // God Mode bonus
+            
+            // HP unlocks (apply before health is set)
+            let bonusMaxHP = 0;
+            if (permanentUnlocks.startHealth) bonusMaxHP += 5;
+            if (permanentUnlocks.bigStart) bonusMaxHP += 10;
+            if (permanentUnlocks.megaHealth) bonusMaxHP += 20;
+            if (permanentUnlocks.godMode) bonusMaxHP += 15;
+            if (bonusMaxHP > 0) {
+                game.maxHealth += bonusMaxHP;
+                game.health += bonusMaxHP;
+            }
+            
+            // Relic unlocks
             if (permanentUnlocks.extraRelic) giveRandomRelic();
+            if (permanentUnlocks.relicMaster) {
+                giveRandomRelic();
+                giveRandomRelic();
+            }
+            if (permanentUnlocks.godMode) {
+                giveRandomRelic();
+                giveRandomRelic();
+            }
+            
+            // Weapon unlock
+            if (permanentUnlocks.startPower) {
+                const weaponValues = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+                const randomValue = weaponValues[Math.floor(Math.random() * weaponValues.length)];
+                const weaponCard = {
+                    value: randomValue.toString(),
+                    suit: '♦',
+                    numValue: randomValue,
+                    suitName: 'diamonds'
+                };
+                game.room.push(weaponCard);
+                showMessage('⚡ Power Start! Free weapon in room!', 'success');
+            }
         }
 
         // ============================================
@@ -6195,7 +6845,11 @@ class DarkAtmosphericMusic {
                 // Difficulty-specific wins
                 easyWins: game.stats.gamesWon > 0 && game.difficulty === 'easy' ? (stats.easyWins || 0) + 1 : (stats.easyWins || 0),
                 normalWins: game.stats.gamesWon > 0 && game.difficulty === 'normal' ? (stats.normalWins || 0) + 1 : (stats.normalWins || 0),
-                hardWins: game.stats.gamesWon > 0 && game.difficulty === 'hard' ? (stats.hardWins || 0) + 1 : (stats.hardWins || 0)
+                hardWins: game.stats.gamesWon > 0 && game.difficulty === 'hard' ? (stats.hardWins || 0) + 1 : (stats.hardWins || 0),
+                // Class unlock tracking
+                bossesKilled: (stats.bossesKilled || 0) + game.stats.bossesKilled,
+                totalRelicsCollected: (stats.totalRelicsCollected || 0) + game.stats.relicsCollected,
+                eventsTriggered: (stats.eventsTriggered || 0) + game.stats.eventsTriggered
             }));
             
             // Check achievements after updating stats

@@ -5,6 +5,65 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-11-03
+
+### 🐛 Critical Bug Fixes
+
+This release fixes **12 critical bugs** discovered during comprehensive code review:
+
+#### **Game State Initialization (Bugs #1-3)**
+- **Fixed**: `game.firstAttackDone` not initialized (Power Gauntlet broke)
+- **Fixed**: `game.criticalWarningShown` not initialized (HP warning system broke)
+- **Fixed**: `game.rageStrikeActive` not initialized (Berserker ability broke)
+- **Impact**: All per-room flags now properly reset and initialize
+
+#### **Data Structure (Bug #4)**
+- **Fixed**: Duplicate properties in `game` object (`gameOver`, `gameStartTime`, `gameTimerInterval`, `lastActionWasAvoid`, `relics`)
+- **Impact**: Cleaner code, prevents potential conflicts
+
+#### **Relic System (Bugs #5-7)**
+- **Fixed**: `healing_study` relic not healing (+1 HP per room now works)
+- **Fixed**: `Iron Armor` relic not reducing damage (-1 damage reduction now works)
+- **Fixed**: `Thunder Gauntlet` (warrior) relic not implemented (20% double damage now works)
+- **Impact**: All 25 relics now fully functional
+
+#### **Permanent Unlocks (Bugs #8-11)**
+- **Fixed**: `criticalStrike` unlock not applying (10% chance for 3x damage now works)
+- **Fixed**: `lifeSteal` unlock not healing (+1 HP on perfect kills now works)
+- **Fixed**: `thornsArmor` unlock not reflecting damage (reflects 2 damage now)
+- **Fixed**: `dodgeMaster` unlock not working (dodge now lasts 2 attacks)
+- **Impact**: All 29 permanent unlocks now fully functional
+
+#### **Critical Logic Error (Bug #12)** 🔴
+- **Fixed**: Thunder Gauntlet and Critical Strike modifying `effectiveWeapon` before variable existed
+- **Root Cause**: Variable used before declaration (JavaScript execution order bug)
+- **Impact**: These mechanics were completely non-functional since release
+- **Solution**: Moved multiplication logic after variable definition
+
+### 🎯 Testing & Verification
+
+- ✅ All 25 relics tested and verified
+- ✅ All 29 permanent unlocks tested and verified
+- ✅ All 6 class abilities tested and verified
+- ✅ Game state initialization verified
+- ✅ Combat damage calculation verified
+- ✅ Per-room flag reset system verified
+
+### 📈 Code Quality Improvements
+
+- **DRY Principle**: Helper functions for bonus calculations
+- **Code Organization**: Better separation of concerns
+- **Comments**: Improved inline documentation
+- **Maintainability**: Clearer variable naming and logic flow
+
+### 🔒 Stability
+
+- No breaking changes to save data
+- Backwards compatible with existing localStorage data
+- All features now working as originally designed
+
+---
+
 ## [1.0.0] - 2025-10-26
 
 ### Added
@@ -65,6 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Project Milestones
 
+- **v1.1.0** - Critical Bug Fixes (November 3, 2025) ⭐ **12 bugs fixed**
 - **v1.0.0** - Full Release (October 26, 2025)
 - **v0.9.0** - Class System (October 25, 2025)
 - **v0.1.0** - Initial Prototype (October 2025)
