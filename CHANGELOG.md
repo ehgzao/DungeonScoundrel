@@ -5,11 +5,11 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2025-11-03
+## [1.1.1] - 2025-11-03
 
 ### 🐛 Critical Bug Fixes
 
-This release fixes **12 critical bugs** discovered during comprehensive code review:
+This release fixes **13 critical bugs** discovered during comprehensive code review:
 
 #### **Game State Initialization (Bugs #1-3)**
 - **Fixed**: `game.firstAttackDone` not initialized (Power Gauntlet broke)
@@ -40,6 +40,12 @@ This release fixes **12 critical bugs** discovered during comprehensive code rev
 - **Impact**: These mechanics were completely non-functional since release
 - **Solution**: Moved multiplication logic after variable definition
 
+#### **Endless Mode Freeze (Bug #13)** 🔴
+- **Fixed**: Endless mode freezing with white screen when deck runs out
+- **Root Cause**: `checkGameState()` didn't auto-reload deck when both `dungeon` and `room` were empty
+- **Impact**: Game would freeze requiring page reload
+- **Solution**: Added auto-reload logic with automatic room draw in `checkGameState()`
+
 ### 🎯 Testing & Verification
 
 - ✅ All 25 relics tested and verified
@@ -48,6 +54,8 @@ This release fixes **12 critical bugs** discovered during comprehensive code rev
 - ✅ Game state initialization verified
 - ✅ Combat damage calculation verified
 - ✅ Per-room flag reset system verified
+- ✅ Endless mode progression verified
+- ✅ Rogue multi-card hold system verified
 
 ### 📈 Code Quality Improvements
 
@@ -61,6 +69,16 @@ This release fixes **12 critical bugs** discovered during comprehensive code rev
 - No breaking changes to save data
 - Backwards compatible with existing localStorage data
 - All features now working as originally designed
+
+### 🙏 Special Thanks
+
+Bugs discovered through comprehensive code review and invaluable user feedback from:
+- **Carol** - Testing and bug reports
+- **Kamui** - Gameplay feedback
+- **Leon** - Feature testing
+- **Breno** - Quality assurance
+
+Thank you for helping make Dungeon Scoundrel better! 🎮✨
 
 ---
 
@@ -124,7 +142,7 @@ This release fixes **12 critical bugs** discovered during comprehensive code rev
 
 ## Project Milestones
 
-- **v1.1.0** - Critical Bug Fixes (November 3, 2025) ⭐ **12 bugs fixed**
+- **v1.1.1** - Critical Bug Fixes (November 3, 2025) ⭐ **13 bugs fixed**
 - **v1.0.0** - Full Release (October 26, 2025)
 - **v0.9.0** - Class System (October 25, 2025)
 - **v0.1.0** - Initial Prototype (October 2025)
