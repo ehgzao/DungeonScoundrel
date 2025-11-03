@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.1] - 2025-11-03
 
+### ✨ Added
+
+- **Motivational Modal System**: Encouraging messages appear on 1st death and every 5th death
+- **"Dreams Never Get Old" Message**: Beautiful bilingual quote (English/Portuguese) with special animations
+- **Musical Pause Moment**: Game music pauses during motivational modals for contemplation
+- **Golden Glow Animations**: Gentle visual effects on motivational modals
+- **Version Badge**: Clickable v1.1.1 badge on welcome screen
+- **What's New Modal**: Interactive changelog viewer with all bug fixes and features
+
 ### 🐛 Critical Bug Fixes
 
 This release fixes **13 critical bugs** discovered during comprehensive code review:
