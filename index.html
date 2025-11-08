@@ -1721,14 +1721,22 @@
             if (!loginBtn) return;
             
             if (user) {
+                // User is logged in - show checkmark and name
                 loginBtn.innerHTML = `
-                    <span style="font-size: 1.1em;"></span> Cloud Sync
+                    <span style="font-size: 1.1em;">☁️</span> 
+                    <span style="color: #6bcf7f;">✓</span> 
+                    ${user.displayName ? user.displayName.split(' ')[0] : 'Synced'}
                 `;
+                loginBtn.style.borderColor = '#6bcf7f';
+                loginBtn.style.boxShadow = 'inset 0 1px 0 rgba(107, 207, 127, 0.1), 0 2px 8px rgba(107, 207, 127, 0.3)';
                 loginBtn.onclick = () => showUserMenu(user);
             } else {
+                // User is logged out - show cloud icon only
                 loginBtn.innerHTML = `
-                    <span style="font-size: 1.1em;"></span> Cloud Sync
+                    <span style="font-size: 1.1em;">☁️</span> Cloud Sync
                 `;
+                loginBtn.style.borderColor = '#5a4a38';
+                loginBtn.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5)';
                 loginBtn.onclick = signInWithGoogle;
             }
         }
