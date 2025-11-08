@@ -7680,6 +7680,9 @@ class DarkAtmosphericMusic {
             }
         }
 
+        // Expose function globally for retry button
+        window.loadLeaderboardForDifficulty = loadLeaderboardForDifficulty;
+        
         // Switch leaderboard difficulty (chamada pelos tabs)
         window.switchLeaderboardDifficulty = async function(difficulty) {
             currentLeaderboardDifficulty = difficulty;
