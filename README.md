@@ -1,245 +1,352 @@
-# 🎴 Dungeon Scoundrel
+# 🎮 Dungeon Scoundrel
 
-**A Dark Medieval Roguelike Card Game**
+<div align="center">
 
-A challenging, atmospheric roguelike card game inspired by Fear and Hunger's dark medieval aesthetic. Face deadly monsters, collect powerful relics, and prove your skill across 4 difficulties with 6 unique character classes.
+![Dungeon Scoundrel Logo](assets/title-logo.png)
 
-**[▶️ Play Now](https://dungeonscoundrel.netlify.app)** | **[📋 Changelog](CHANGELOG.md)** | **[🤝 Contributing](CONTRIBUTING.md)** | **[📁 Structure](docs/PROJECT_STRUCTURE.md)**
+**A Roguelike Card Game Adventure**
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge-id/deploy-status)](https://dungeonscoundrel.netlify.app/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-1.1.2-blue.svg)](https://github.com/ehgzao/DungeonScoundrel/releases)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+[🎮 Play Now](https://dungeonscoundrel.netlify.app/) | [📖 Documentation](docs/) | [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues) | [✨ Request Feature](https://github.com/ehgzao/DungeonScoundrel/issues)
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [About](#-about)
+- [Features](#-features)
+- [How to Play](#-how-to-play)
+- [Classes](#-classes)
+- [Technologies](#-technologies)
+- [Getting Started](#-getting-started)
+- [Development](#-development)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Acknowledgments](#-acknowledgments)
+
+---
+
+## 🎯 About
+
+**Dungeon Scoundrel** is a roguelike deck-building card game where you navigate through treacherous dungeons using a standard deck of cards. Fight monsters, collect weapons, use potions, and unlock powerful relics to survive the depths!
+
+### 🎲 Game Concept
+
+- **🃏 Card-Based Combat**: Use a deck of 50 cards (Monsters, Weapons, Potions, Specials)
+- **⚔️ Strategic Gameplay**: Manage resources, build combos, and choose when to fight or flee
+- **🔮 Progressive Unlocks**: Earn permanent upgrades across multiple runs
+- **👥 6 Unique Classes**: Each with distinct playstyles and abilities
+- **🏆 Achievement System**: 50 achievements to unlock
+- **🎵 Original Music**: Immersive soundtrack with multiple themes
 
 ---
 
 ## ✨ Features
 
-- 🏰 **4 Difficulty Modes** - Easy, Normal, Hard, and Endless
-- ⚔️ **6 Unique Classes** - Each with special abilities and playstyles
-- 🎵 **Dark Atmospheric Music** - 5 unique procedurally generated tracks
-- 🏆 **50 Achievements** - Bronze, Silver, Gold, and Platinum tiers
-- 🗝️ **Permanent Unlocks** - Progress that carries between runs
-- 👹 **Epic Boss Battles** - Face powerful bosses every 10 rooms
-- 🔮 **30+ Relics** - Unique powers and synergies
-- 📊 **Global Leaderboard** - Compete with players worldwide
-- ⌨️ **Keyboard Shortcuts** - Full desktop support for faster gameplay
+### 🎮 Core Gameplay
+- ✅ **4 Difficulty Levels**: Easy, Normal, Hard, Endless
+- ✅ **50-Card Deck System**: Monsters (♠♣), Weapons (♦), Potions (♥), Specials (✨)
+- ✅ **Boss Battles**: Epic fights every 10 rooms
+- ✅ **Combo System**: Chain perfect kills for damage bonuses
+- ✅ **Hold Mechanic**: Strategic card management
+- ✅ **Events & Shops**: Random encounters with meaningful choices
 
----
+### 🎭 Classes (6 Total)
+- **Scoundrel** 🎭 - Pure skill, no abilities
+- **Knight** 🛡️ - Tanky with Shield Bash
+- **Rogue** 🗡️ - Double hold, Shadow Strike
+- **Dancer** 💃 - Healing specialist, extra luck
+- **Berserker** 💢 - High risk/reward, Bloodlust passive
+- **Priest** 📿 - Divine protection, Purification ability
 
-## 🗡️ Character Classes
+### 🔓 Progression
+- **22 Permanent Unlocks**: Start with bonuses each run
+- **53 Relics**: Passive and active effects
+- **50 Achievements**: Bronze, Silver, Gold, Platinum tiers
+- **Leaderboard**: Firebase-powered global rankings
 
-Choose your hero and unlock more through gameplay!
-
-### **🎭 Scoundrel** _(Always Available)_
-**The Survivor**
-- **Passive:** None - Pure skill and survival
-- **Active:** None - Rely on your wits
-- 🎯 Perfect for learning the game mechanics
-
-### **🛡️ Knight** _(Unlock: Win on Easy)_
-**The Tank**
-- **Passive:** +5 Max HP | Weapons have +1 durability
-- **Active:** Shield Bash - Deal weapon damage to first monster (Cooldown: 3 rooms)
-- 🎯 Defensive playstyle with extra survivability
-
-### **🗡️ Rogue** _(Unlock: Win on Normal)_
-**The Utility Master**
-- **Passive:** Hold 2 cards | +1 gold per room
-- **Active:** Shadow Strike - Next attack: 2x damage, doesn't break combo (Cooldown: 4 rooms)
-- 🎯 Strategic playstyle with card management
-
-### **💃 Dancer** _(Unlock: Win on Hard)_
-**The Support**
-- **Passive:** Potions heal +3 HP | Use 2 potions per room | +15% event chance
-- **Active:** Healing Dance - Heal 5 HP + damage buff for 2 attacks (Cooldown: 5 rooms)
-- 🎯 Sustain-focused with powerful healing
-
-### **⚔️ Berserker** _(Unlock: Win on Hard + Kill 5 Bosses)_
-**The Glass Cannon**
-- **Passive:** Bloodlust - Damage increases as HP decreases (+1/+2/+3 at ≤70%/50%/30% HP)
-- **Active:** Rage Strike - Sacrifice 5 HP for 3x damage, breaks combo (Cooldown: 4 rooms)
-- 🎯 High risk, high reward aggressive playstyle
-
-### **📿 Priest** _(Unlock: 20 Relics + 10 Events + 5 Wins)_
-**The Divine Protector**
-- **Passive:** 15% dodge chance | Potions heal +1 HP | Start with +2 Max HP
-- **Active:** Purification - Remove strongest monster OR transform to potion (Cooldown: 6 rooms)
-- 🎯 Control and defensive playstyle with strategic choices
+### 🎨 Polish
+- 🌙 Beautiful pixel-art inspired UI
+- 🎵 Dynamic music system (menu, gameplay, boss, victory, defeat)
+- 🎨 Particle effects and screen shake
+- 📱 Mobile-friendly with haptic feedback
+- ♿ Accessibility features (ARIA labels, keyboard navigation)
+- 🌐 PWA-ready (offline capable)
 
 ---
 
 ## 🎮 How to Play
 
-### Objective
-Clear all cards from the dungeon deck without your health reaching zero!
+### Basic Rules
 
-### Card Types
-- **♠️ ♣️ Monsters** - Fight and take damage
-- **♦️ Weapons** - Equip to reduce damage
-- **♥️ Potions** - Heal yourself (1 per dungeon)
-- **✨ Special Cards** - Unique effects
+1. **🎯 Objective**: Clear all cards from the deck without dying (HP ≤ 0)
 
-### Controls
+2. **🏃 Actions Each Turn**:
+   - **Enter Dungeon** (Draw 4 cards) OR
+   - **Avoid Dungeon** (Discard 3 cards from top)
+   - ⚠️ Cannot avoid twice in a row (unless you have Four Leaf Clover relic)
 
-**Mouse:**
-- **Left-click** cards to use them
-- **Right-click** cards to hold for later
-- **Click buttons** to draw rooms, avoid, or use abilities
+3. **🃏 Card Types**:
+   - **Monsters** (♠ Spades, ♣ Clubs): Fight them with weapons
+   - **Weapons** (♦ Diamonds): Equip to deal damage
+   - **Potions** (♥ Hearts): Heal HP (1 per room limit)
+   - **Specials** (✨): Powerful one-time effects
 
-**Keyboard Shortcuts (Desktop):**
-- **Space** or **D** - Draw Room
-- **A** - Avoid Room
-- **Q** - Use Class Ability
-- **U** - Undo Last Move
-- **S** - Open Shop
-- **1-5** - Click cards 1-5 in room
-- **ESC** - Close any modal
+4. **⚔️ Combat**:
+   ```
+   Damage Taken = Monster Value - Your Weapon Value
+   ```
+   - Perfect kill (no damage) = Build combo!
+   - Taking damage = Reset combo
+   - No weapon = Take full damage
 
-**Strategy:**
-- Manage your health carefully
-- Save cards strategically with right-click
-- Build combos for bonus points
-- Always bring weapons to boss fights!
+5. **🔥 Combo System**:
+   - Chain perfect kills: 2x combo = +1 damage, 3x = +2, etc.
+   - Breaks when taking damage or equipping new weapon
+   - Higher combos = Better score
+
+### Advanced Mechanics
+
+- **Hold System**: Save cards for later (Right-click or long-press)
+- **Weapon Durability**: Weapons break after X uses (difficulty-dependent)
+- **Boss Rooms**: Every 10th room, face powerful bosses with multiple HP
+- **Events**: Random encounters with choices (heal, gold, relics, etc.)
+- **Shop**: Buy upgrades with gold (costs score penalty!)
 
 ---
 
-## 🚀 Quick Start
+## 👥 Classes
 
-### Play Online
-👉 **[Play Now](https://dungeonscoundrel.netlify.app)** _(No installation required!)_
+| Class | Unlock | Passive | Active | Playstyle |
+|-------|--------|---------|--------|-----------|
+| 🎭 **Scoundrel** | Always | None | None | Baseline, pure skill |
+| 🛡️ **Knight** | Win on Easy | +5 HP, +1 Durability | Shield Bash (3 cooldown) | Tank, consistent |
+| 🗡️ **Rogue** | Win on Normal | Hold 2 cards, +1 Gold/room | Shadow Strike (4 cooldown) | Flexible, combo-safe |
+| 💃 **Dancer** | Win on Hard | Potions +3 HP, 2 uses/room, +15% events | Healing Dance (5 cooldown) | Sustain, luck |
+| 💢 **Berserker** | Hard + 5 bosses | Bloodlust (+1/+2/+3 damage at low HP) | Rage Strike (4 cooldown) | High risk/reward |
+| 📿 **Priest** | 20 relics + 10 events + 5 wins | 15% dodge, Potions +2 HP, +2 Max HP | Purification (6 cooldown) | Strategic, safe |
 
-### Run Locally
+---
 
-```bash
-# Clone the repository
-git clone https://github.com/ehgzao/DungeonScoundrel.git
-cd DungeonScoundrel
+## 🛠 Technologies
 
-# Open index.html in your browser
-# Or use a local server:
-npx http-server
-# Access http://localhost:8080
+### Frontend
+- **HTML5** - Semantic markup
+- **CSS3** - Custom variables, animations, responsive design
+- **Vanilla JavaScript** - No frameworks, pure performance
+
+### Backend & Services
+- **Firebase Firestore** - Leaderboard database
+- **Firebase Auth** - Anonymous authentication
+- **EmailJS** - Bug reporting system
+- **Netlify** - Hosting and CI/CD
+
+### Audio
+- **Web Audio API** - Procedural sound effects
+- **Dynamic Music System** - Context-aware soundtrack
+
+### Tools & Build
+- **Git** - Version control
+- **Netlify CLI** - Deployment
+- **ESLint** (recommended) - Code quality
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Modern web browser (Chrome, Firefox, Safari, Edge)
+- Internet connection (for leaderboard features)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/ehgzao/DungeonScoundrel.git
+   cd DungeonScoundrel
+   ```
+
+2. **Open locally**
+   ```bash
+   # Simple HTTP server (Python)
+   python -m http.server 8080
+
+   # OR using Node.js
+   npx serve .
+   
+   # OR just open index.html in browser (some features may not work)
+   ```
+
+3. **Visit**
+   ```
+   http://localhost:8080
+   ```
+
+### Configuration
+
+#### Firebase Setup (Optional - for leaderboard)
+
+1. Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com/)
+2. Enable Firestore Database
+3. Enable Anonymous Authentication
+4. Copy your config to `src/config/firebase-config.js`:
+
+```javascript
+// src/config/firebase-config.js
+window.__firebase_config = JSON.stringify({
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+});
+```
+
+5. Add Firestore security rules:
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /artifacts/{appId}/public/data/{collection}/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
 ```
 
 ---
 
-## 📊 Game Statistics
+## 💻 Development
 
-- **Size:** 291 KB (optimized!)
-- **Load Time:** < 2 seconds on 3G
-- **Performance:** 60 FPS on all devices
-- **Browser Support:** Chrome, Firefox, Safari, Edge
-
----
-
-## 🎵 Music System
-
-The game features a **Dark Atmospheric Music System** with 5 unique tracks:
-- 🏰 **Dark Awakening** - Menu theme
-- ⚔️ **Into the Depths** - Gameplay theme
-- 🏺 **Merchant's Shadow** - Shop theme
-- 👑 **Triumph in Darkness** - Victory theme
-- 💀 **The Final Darkness** - Defeat theme
-
-All music is **procedurally generated** using Web Audio API!
-
----
-
-## 🗂️ Project Structure
-
+### Project Structure
 ```
 DungeonScoundrel/
-├── index.html              # Main game file
-├── README.md               # This file
-├── LICENSE                 # MIT License
-├── favicon.svg             # Game icon
-├── netlify.toml            # Deployment config
-├── site.webmanifest        # PWA manifest
-│
-├── assets/                 # Static assets
-│   └── icons/              # Alternative icons
-│
-├── src/                    # Source files
-│   ├── styles/             # CSS files
-│   │   └── styles.css      # Main stylesheet
-│   └── config/             # Configuration
-│       └── firebase-config.js
-│
-├── docs/                   # Documentation
-│   ├── INDEX.md            # Documentation index
-│   ├── implementation/     # Implementation guides
-│   ├── systems/            # System documentation
-│   └── archive/            # Historical documents
-│
-└── backups/                # Project backups
+├── assets/              # Images, icons
+│   ├── avatar-*.jpg     # Class avatars
+│   ├── dungeon-bg.jpg   # Background
+│   └── title-logo.png   # Game logo
+├── docs/                # Documentation
+│   ├── guides/          # How-to guides
+│   ├── systems/         # System documentation
+│   └── development/     # Dev notes
+├── src/
+│   ├── config/          # Firebase config
+│   └── styles/          # CSS files
+├── index.html           # Main game file (437 KB)
+├── README.md            # This file
+├── CHANGELOG.md         # Version history
+├── CONTRIBUTING.md      # Contribution guide
+├── LICENSE              # MIT License
+└── netlify.toml         # Netlify config
 ```
 
+### Development Workflow
+
+1. **Create a feature branch**
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+2. **Make changes**
+   - Edit `index.html` for game logic
+   - Edit `src/styles/styles.css` for styling
+   - Test locally
+
+3. **Test thoroughly**
+   - Test all difficulty levels
+   - Test all classes
+   - Check mobile responsiveness
+   - Verify achievements unlock correctly
+
+4. **Commit with meaningful messages**
+   ```bash
+   git commit -m "feat: Add new relic - Lucky Horseshoe"
+   ```
+
+5. **Push and create PR**
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+### Code Style Guide
+
+- **JavaScript**: Use ES6+ features, prefer `const`, descriptive names
+- **HTML**: Semantic markup, accessibility attributes
+- **CSS**: Use CSS variables, mobile-first approach
+- **Comments**: Document complex logic, use JSDoc for functions
+
 ---
 
-## 🛠️ Technology Stack
+## 🚢 Deployment
 
-- **Frontend:** HTML5, CSS3, Vanilla JavaScript
-- **Music:** Web Audio API (procedural generation)
-- **Storage:** LocalStorage + IndexedDB
-- **Backend:** Firebase (leaderboards & auth)
-- **Deployment:** Netlify
-- **No frameworks** - Pure vanilla JS for maximum performance!
+### Automated Deployment (Netlify)
 
----
+Netlify automatically deploys on push to `main` branch.
 
-## 🎯 Difficulty Scaling
+**Manual Deploy**:
+```bash
+# Using deployment script
+./deploy-latest.bat
 
-| Difficulty | Starting HP | Starting Gold | Weapon Durability | Gold Rewards | Event Chance |
-|------------|-------------|---------------|-------------------|--------------|--------------|
-| 🟢 Easy    | 20 HP       | 30 🪙         | 3 uses            | High         | 40%          |
-| 🟡 Normal  | 15 HP       | 15 🪙         | 2 uses            | Balanced     | 30%          |
-| 🔴 Hard    | 10 HP       | 0 🪙          | 1 use             | Low          | 20%          |
-| ♾️ Endless | 15 HP       | 15 🪙         | 2 uses            | Balanced     | 25%          |
+# OR using Netlify CLI
+netlify deploy --prod
+```
 
----
+### Build Optimization (Recommended)
 
-## 🏆 Achievements
+```bash
+# Minify HTML
+html-minifier --collapse-whitespace --remove-comments index.html -o dist/index.html
 
-50 unique achievements across 4 tiers:
-- 🥉 **Bronze** (25) - Getting started
-- 🥈 **Silver** (15) - Intermediate challenges
-- 🥇 **Gold** (9) - Expert gameplay
-- 💎 **Platinum** (1) - Ultimate mastery
+# Compress images to WebP
+cwebp -q 85 assets/*.jpg -o assets/*.webp
 
----
-
-## 📈 Roadmap
-
-- [x] Core gameplay mechanics
-- [x] Dark atmospheric music system
-- [x] 50 achievements
-- [x] Global leaderboard
-- [x] Desktop/tablet optimization
-- [x] Boss battles
-- [x] Professional polish
-- [x] Interactive tutorial
-- [x] Keyboard shortcuts
-- [ ] Daily challenges
-- [ ] More special cards
-- [ ] Steam release (maybe?)
+# Test production build
+netlify dev
+```
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+We love contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-### Development
+### Quick Start for Contributors
 
-```bash
-# 1. Fork the repository
-# 2. Create your feature branch
-git checkout -b feature/AmazingFeature
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'feat: Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-# 3. Commit your changes
-git commit -m 'Add some AmazingFeature'
+### Areas We Need Help
 
-# 4. Push to the branch
-git push origin feature/AmazingFeature
+- 🎨 **UI/UX Design**: Improve visual polish
+- 🎵 **Music**: Additional tracks or sound effects
+- 🌍 **Localization**: Translate to other languages
+- 🐛 **Bug Fixes**: Check [Issues](https://github.com/ehgzao/DungeonScoundrel/issues)
+- ⚡ **Performance**: Optimize code and assets
+- 📚 **Documentation**: Improve guides and tutorials
 
-# 5. Open a Pull Request
-```
+---
+
+## 📊 Performance
+
+- **Load Time**: < 2s (on 4G connection)
+- **Lighthouse Score**: 85/100
+- **Mobile-Friendly**: ✅ Yes
+- **Offline Support**: 🔜 Coming soon (PWA)
+
+See [OPTIMIZATION_REPORT.md](OPTIMIZATION_REPORT.md) for details.
 
 ---
 
@@ -247,59 +354,69 @@ git push origin feature/AmazingFeature
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+```
+MIT License - Copyright (c) 2025 ehgzao
+```
+
 ---
 
-## 🎨 Credits
-
-### Development
-- **Vibe Coded** using [Windsurf IDE](https://codeium.com/windsurf) with Cascade AI
-- All code, music, and game design created through **AI-assisted pair programming**
+## 🙏 Acknowledgments
 
 ### Inspiration
-- Classic roguelike card games (Slay the Spire, Monster Train)
-- Medieval dark fantasy aesthetics
-- Procedural music generation techniques
+- **Balatro** - UI/UX design inspiration
+- **Slay the Spire** - Roguelike mechanics
+- **Inscryption** - Card game innovation
 
 ### Assets
-- **Fonts:** Google Fonts (Cinzel, MedievalSharp)
-- **Icons:** Unicode emojis
-- **Music:** Procedurally generated (Web Audio API)
-- **No external assets** - Everything is code-generated!
+- **Google Fonts** - Cinzel, Cinzel Decorative, MedievalSharp
+- **AI-Generated Art** - Class avatars and backgrounds
+
+### Technologies
+- **Firebase** - Backend services
+- **Netlify** - Hosting
+- **EmailJS** - Email integration
+- **Web Audio API** - Procedural audio
+
+### Special Thanks
+- All contributors and playtesters
+- The roguelike community
+- Open source maintainers
 
 ---
 
-## 📞 Contact
+## 📞 Contact & Support
 
-- **GitHub:** [@ehgzao](https://github.com/ehgzao)
-- **Issues:** [Report a bug](https://github.com/ehgzao/DungeonScoundrel/issues)
-- **Discussions:** [Join the discussion](https://github.com/ehgzao/DungeonScoundrel/discussions)
-
----
-
-## 🌟 Support
-
-If you enjoyed the game:
-- ⭐ **Star this repository**
-- 🐛 **Report bugs** in Issues
-- 💡 **Suggest features** in Discussions
-- 🎮 **Share with friends**
+- **🌐 Website**: [dungeonscoundrel.netlify.app](https://dungeonscoundrel.netlify.app/)
+- **🐛 Bug Reports**: [GitHub Issues](https://github.com/ehgzao/DungeonScoundrel/issues)
+- **💬 Discussions**: [GitHub Discussions](https://github.com/ehgzao/DungeonScoundrel/discussions)
+- **📧 Email**: Use in-game bug report feature
 
 ---
 
-## 📊 Stats
+## 🗺️ Roadmap
 
-![GitHub stars](https://img.shields.io/github/stars/ehgzao/DungeonScoundrel?style=social)
-![GitHub forks](https://img.shields.io/github/forks/ehgzao/DungeonScoundrel?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/ehgzao/DungeonScoundrel?style=social)
+### Version 1.2.0 (Planned)
+- [ ] Multiplayer mode (async PvP)
+- [ ] Daily challenges
+- [ ] More relics (70 total)
+- [ ] New class: Mage
+- [ ] Card crafting system
+
+### Version 2.0.0 (Future)
+- [ ] Full PWA support
+- [ ] Mobile apps (iOS/Android)
+- [ ] Mod support
+- [ ] Custom card creator
+- [ ] Dungeon editor
 
 ---
 
 <div align="center">
 
-**Made with ⚔️ and 🎵 using [Windsurf](https://codeium.com/windsurf)**
+**Made with ❤️ by [ehgzao](https://github.com/ehgzao)**
 
-*Vibe coded in a single session - October 2025*
+⭐ Star this repo if you enjoy the game! ⭐
 
-[Play Now](https://dungeonscoundrel.netlify.app) • [Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues) • [Request Feature](https://github.com/ehgzao/DungeonScoundrel/issues)
+[🎮 Play Now](https://dungeonscoundrel.netlify.app/) | [📖 Docs](docs/) | [🐛 Report Issue](https://github.com/ehgzao/DungeonScoundrel/issues)
 
 </div>

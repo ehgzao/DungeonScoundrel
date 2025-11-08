@@ -51,6 +51,101 @@
             if (window.emailjs) { emailjs.init('JhH3cSIF6g3y73-Yk'); }
         })();
     </script>
+    
+    <style>
+        /* CSS Variables for Design Tokens */
+        :root {
+            --color-gold: #c9a961;
+            --color-gold-dark: #a68948;
+            --color-gold-light: #d4af37;
+            --color-danger: #ff6b6b;
+            --color-success: #6bcf7f;
+            --color-warning: #ffd93d;
+            --color-info: #4ecdc4;
+            --color-bg-dark: #2a2318;
+            --color-bg-darker: #1a1410;
+            --color-border: #5a4a38;
+            
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+        }
+        
+        /* Shake Animation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        /* Pulse Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(107, 207, 127, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(107, 207, 127, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(107, 207, 127, 0); }
+        }
+        
+        /* Fade In Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Slide In Animation */
+        @keyframes slideInUp {
+            from { 
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Skeleton Loading Animation */
+        @keyframes skeleton-loading {
+            0% { background-position: -200px 0; }
+            100% { background-position: calc(200px + 100%) 0; }
+        }
+        
+        .skeleton {
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.05) 0px,
+                rgba(255, 255, 255, 0.15) 40px,
+                rgba(255, 255, 255, 0.05) 80px
+            );
+            background-size: 200px 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+        
+        /* Smooth transitions */
+        .smooth-transition {
+            transition: all 0.3s ease;
+        }
+        
+        /* Loading spinner */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--color-gold);
+            animation: spin 0.8s linear infinite;
+        }
+    </style>
 
 </head>
 <body>
@@ -76,14 +171,14 @@
         <div style="position: relative; z-index: 4; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px;">
         
         <!-- Title Logo Image -->
-        <div style="text-align: center; margin-bottom: 15px;">
+        <div style="text-align: center; margin-bottom: 12px;">
             <img src="assets/title-logo.png" alt="Dungeon Scoundrel" style="
-                max-width: min(90vw, 900px);
+                max-width: min(85vw, 800px);
                 height: auto;
                 display: block;
                 margin: 0 auto;
-                filter: drop-shadow(0 0 20px rgba(201, 169, 97, 0.5))
-                        drop-shadow(0 8px 30px rgba(0, 0, 0, 0.9));
+                filter: drop-shadow(0 0 18px rgba(201, 169, 97, 0.45))
+                        drop-shadow(0 7px 25px rgba(0, 0, 0, 0.85));
                 image-rendering: crisp-edges;
                 -webkit-user-drag: none;
             ">
@@ -92,23 +187,23 @@
         <!-- Subtitle -->
         <p style="
             font-family: 'Cinzel', serif;
-            font-size: clamp(0.75em, 2vw, 1em);
+            font-size: clamp(0.75em, 1.9vw, 0.95em);
             color: #8b7355;
             text-transform: uppercase;
             letter-spacing: 0.25em;
-            margin: 10px 0 40px 0;
+            margin: 10px 0 30px 0;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
             font-weight: 600;
         ">A Roguelike Card Game</p>
         <!-- Menu Buttons Container -->
-        <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 420px; margin-bottom: 30px;">
-            <button id="btnWelcomeStart" style="
+        <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 400px; margin-bottom: 20px;">
+            <button id="btnWelcomeStart" aria-label="Start a new quest" role="button" style="
                 font-family: 'Cinzel', serif;
-                font-size: clamp(0.95em, 2.5vw, 1.1em);
+                font-size: clamp(0.9em, 2.3vw, 1.05em);
                 font-weight: 600;
                 text-transform: uppercase;
                 letter-spacing: 0.1em;
-                padding: 16px 24px;
+                padding: 14px 22px;
                 background: linear-gradient(180deg, #c9a961 0%, #a68948 100%);
                 border: 2px solid #d4af37;
                 box-shadow: 
@@ -122,43 +217,28 @@
                 text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
             " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.6)'"><span style="font-size: 1.2em;">⚔️</span> Start Quest</button>
             
-            <button id="btnPlayTutorial" class="menu-btn-secondary" style="
+            <button id="btnLearnToPlay" class="menu-btn-secondary" aria-label="Learn how to play the game" role="button" style="
                 font-family: 'Cinzel', serif;
                 font-size: clamp(0.85em, 2.2vw, 1em);
                 font-weight: 500;
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
-                padding: 14px 20px;
+                padding: 12px 18px;
                 background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
                 border: 1px solid #5a4a38;
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
                 color: #c9a961;
                 cursor: pointer;
                 transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🎓</span> Play Tutorial</button>
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">📚</span> Learn to Play</button>
             
-            <button id="btnWelcomeTutorial" class="menu-btn-secondary" style="
+            <button id="btnWelcomeLeaderboard" class="menu-btn-secondary" aria-label="View hall of fame leaderboard" role="button" style="
                 font-family: 'Cinzel', serif;
                 font-size: clamp(0.85em, 2.2vw, 1em);
                 font-weight: 500;
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
-                padding: 14px 20px;
-                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
-                border: 1px solid #5a4a38;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
-                color: #c9a961;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">📖</span> Read Guide</button>
-            
-            <button id="btnWelcomeLeaderboard" class="menu-btn-secondary" style="
-                font-family: 'Cinzel', serif;
-                font-size: clamp(0.85em, 2.2vw, 1em);
-                font-weight: 500;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                padding: 14px 20px;
+                padding: 12px 18px;
                 background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
                 border: 1px solid #5a4a38;
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -173,7 +253,7 @@
                 font-weight: 500;
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
-                padding: 14px 20px;
+                padding: 12px 18px;
                 background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
                 border: 1px solid #5a4a38;
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -182,13 +262,13 @@
                 transition: all 0.2s ease;
             " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🎵</span> Music Chamber</button>
             
-            <button id="btnWelcomeUnlocks" class="menu-btn-secondary" style="
+            <button id="btnWelcomeUnlocks" class="menu-btn-secondary" aria-label="View permanent upgrades" role="button" style="
                 font-family: 'Cinzel', serif;
                 font-size: clamp(0.85em, 2.2vw, 1em);
                 font-weight: 500;
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
-                padding: 14px 20px;
+                padding: 12px 18px;
                 background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
                 border: 1px solid #5a4a38;
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -203,7 +283,7 @@
                 font-weight: 500;
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
-                padding: 14px 20px;
+                padding: 12px 18px;
                 background: linear-gradient(180deg, #4a3d2f 0%, #342820 100%);
                 border: 1px solid #5a4a38;
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -236,7 +316,7 @@
                     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
                     transition: all 0.2s ease;
                 ">Play/Pause</button>
-                <input type="range" id="welcomeMusicVolume" min="0" max="100" value="70" title="Music Volume" style="
+                <input type="range" id="welcomeMusicVolume" min="0" max="100" value="40" title="Music Volume" style="
                     width: 140px;
                     height: 6px;
                     cursor: pointer;
@@ -249,16 +329,16 @@
             </div>
         </div>
         
-        <!-- Bug Report (Bottom Left) -->
+        <!-- Bug Report (Bottom Right, above version) -->
         <div onclick="document.getElementById('bugReportModal').classList.add('active');" style="
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 60px;
+            right: 15px;
             z-index: 10;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
+            gap: 6px;
+            padding: 6px 12px;
             background: linear-gradient(135deg, rgba(61, 51, 40, 0.85) 0%, rgba(42, 35, 24, 0.9) 100%);
             border: 1px solid rgba(201, 169, 97, 0.4);
             border-radius: 6px;
@@ -270,12 +350,12 @@
             transition: all 0.3s ease;
         " onmouseover="this.style.borderColor='rgba(201, 169, 97, 0.8)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(201, 169, 97, 0.4)'; this.style.transform='translateY(0)';" title="Report a bug">
             <span style="
-                font-size: 1.1em;
-                filter: drop-shadow(0 0 4px rgba(201, 169, 97, 0.6));
+                font-size: 0.95em;
+                filter: drop-shadow(0 0 3px rgba(201, 169, 97, 0.5));
             ">🐛</span>
             <span style="
                 font-family: 'Cinzel', serif;
-                font-size: 0.85em;
+                font-size: 0.75em;
                 font-weight: 600;
                 color: #c9a961;
                 text-transform: uppercase;
@@ -287,13 +367,13 @@
         <!-- Version Badge (Bottom Right) -->
         <div onclick="document.getElementById('versionModal').classList.add('active');" style="
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: 15px;
+            right: 15px;
             z-index: 10;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
+            gap: 6px;
+            padding: 6px 12px;
             background: linear-gradient(135deg, rgba(61, 51, 40, 0.85) 0%, rgba(42, 35, 24, 0.9) 100%);
             border: 1px solid rgba(201, 169, 97, 0.4);
             border-radius: 6px;
@@ -305,12 +385,12 @@
             transition: all 0.3s ease;
         " onmouseover="this.style.borderColor='rgba(201, 169, 97, 0.8)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(201, 169, 97, 0.4)'; this.style.transform='translateY(0)';" title="Click to see what's new!">
             <span style="
-                font-size: 1.1em;
-                filter: drop-shadow(0 0 4px rgba(201, 169, 97, 0.6));
+                font-size: 0.95em;
+                filter: drop-shadow(0 0 3px rgba(201, 169, 97, 0.5));
             ">🚀</span>
             <span style="
                 font-family: 'Cinzel', serif;
-                font-size: 0.85em;
+                font-size: 0.75em;
                 font-weight: 600;
                 color: #c9a961;
                 text-transform: uppercase;
@@ -330,11 +410,11 @@
         <!-- TOP BAR (STATS, GOLD, SETTINGS) -->
         <div class="top-bar">
             <div class="stats-group">
-                <div class="stat-display" id="top-bar-health" title="Current / Max Health">
-                    ❤️ <span class="stat-value" id="health">20</span>
+                <div class="stat-display" id="top-bar-health" title="Current / Max Health" role="status" aria-live="polite">
+                    ❤️ <span class="stat-value" id="health" aria-label="Current health">20</span>
                 </div>
-                <div class="stat-display" id="top-bar-gold" title="Gold">
-                    🪙 <span class="stat-value" id="goldAmount">0</span>
+                <div class="stat-display" id="top-bar-gold" title="Gold" role="status">
+                    🪙 <span class="stat-value" id="goldAmount" aria-label="Gold amount">0</span>
                 </div>
                  <!-- Score removed from here -->
                 <div class="stat-display" id="top-bar-dungeon" title="Cards left in Dungeon">
@@ -360,7 +440,7 @@
                 
                 <div class="music-controls">
                     <button class="settings-btn" id="btnMusicToggle" title="Play/Pause Music">⏯️</button>
-                    <input type="range" id="musicVolume" min="0" max="100" value="70" title="Music Volume" 
+                    <input type="range" id="musicVolume" min="0" max="100" value="40" title="Music Volume" 
                            style="width: 80px; height: 20px; vertical-align: middle; margin: 0 5px; cursor: pointer;">
                 </div>
                 
@@ -762,11 +842,74 @@
         </div>
     </div>
     
-    <!-- Modal: Tutorial (Read Guide) -->
+    <!-- Modal: Learn to Play Selection -->
+    <div class="modal-overlay" id="learnToPlayModal" role="dialog" aria-modal="true" aria-labelledby="learnToPlayTitle">
+        <div class="modal-content" style="max-width: 600px; padding: 40px;">
+            <button class="modal-close-btn" onclick="document.getElementById('learnToPlayModal').classList.remove('active');" aria-label="Close learn to play modal">✕</button>
+            <h2 id="learnToPlayTitle" style="text-align: center; color: #c9a961; margin-bottom: 30px; font-size: 2em;">📚 Learn to Play</h2>
+            
+            <p style="text-align: center; color: #c9a961; margin-bottom: 30px; font-size: 1.05em;">
+                Choose how you want to learn:
+            </p>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <button id="btnStartInteractiveTutorial" style="
+                    font-family: 'Cinzel', serif;
+                    font-size: 1em;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    padding: 18px 24px;
+                    background: linear-gradient(180deg, #c9a961 0%, #a68948 100%);
+                    border: 2px solid #d4af37;
+                    border-radius: 8px;
+                    box-shadow: 
+                        0 0 0 1px #8b7355,
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                        0 4px 12px rgba(0, 0, 0, 0.6);
+                    color: #1a1410;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    text-align: left;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 12px rgba(0,0,0,0.6)'">
+                    <div style="font-size: 1.3em; margin-bottom: 8px;">🎓 Interactive Tutorial</div>
+                    <div style="font-size: 0.8em; font-weight: 400; opacity: 0.8; letter-spacing: 0.05em; text-transform: none;">
+                        Play through a guided tutorial with step-by-step instructions
+                    </div>
+                </button>
+                
+                <button id="btnOpenRulesReference" style="
+                    font-family: 'Cinzel', serif;
+                    font-size: 1em;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    padding: 18px 24px;
+                    background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+                    border: 2px solid #5a4a38;
+                    border-radius: 8px;
+                    box-shadow: 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                        0 2px 8px rgba(0, 0, 0, 0.5);
+                    color: #c9a961;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    text-align: left;
+                " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)'">
+                    <div style="font-size: 1.3em; margin-bottom: 8px;">📖 Rules Reference</div>
+                    <div style="font-size: 0.8em; font-weight: 400; opacity: 0.8; letter-spacing: 0.05em; text-transform: none;">
+                        Read the complete game rules and mechanics at your own pace
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal: Rules Reference -->
     <div class="modal-overlay" id="tutorialModal">
         <div class="modal-content">
             <button class="modal-close-btn" onclick="document.getElementById('tutorialModal').classList.remove('active');">✕</button>
-            <h2>📜 How to Play</h2>
+            <h2>📖 Rules Reference</h2>
             
             <div class="tutorial-section">
                 <h3>🎯 Objective</h3>
@@ -1792,6 +1935,186 @@
         
         const storage = new StorageCache();
         
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        
+        // Debounce function - Prevents excessive function calls
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        // Haptic Feedback for mobile devices
+        function hapticFeedback(type = 'light') {
+            if ('vibrate' in navigator) {
+                const patterns = {
+                    light: 10,
+                    medium: 25,
+                    heavy: 50,
+                    success: [10, 50, 10],
+                    error: [50, 25, 50],
+                    impact: 30
+                };
+                navigator.vibrate(patterns[type] || 10);
+            }
+        }
+        
+        // Tooltip System
+        let activeTooltip = null;
+        function showTooltip(element, text, position = 'top') {
+            hideTooltip(); // Hide any existing tooltip
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'custom-tooltip';
+            tooltip.textContent = text;
+            tooltip.style.cssText = `
+                position: absolute;
+                background: rgba(0, 0, 0, 0.95);
+                color: #c9a961;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 0.85em;
+                max-width: 250px;
+                z-index: 10001;
+                pointer-events: none;
+                border: 1px solid #5a4a38;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+                font-family: 'Cinzel', serif;
+                white-space: normal;
+                word-wrap: break-word;
+            `;
+            
+            document.body.appendChild(tooltip);
+            
+            const rect = element.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            
+            if (position === 'top') {
+                tooltip.style.left = (rect.left + rect.width / 2 - tooltipRect.width / 2) + 'px';
+                tooltip.style.top = (rect.top - tooltipRect.height - 10) + 'px';
+            } else if (position === 'bottom') {
+                tooltip.style.left = (rect.left + rect.width / 2 - tooltipRect.width / 2) + 'px';
+                tooltip.style.top = (rect.bottom + 10) + 'px';
+            }
+            
+            activeTooltip = tooltip;
+        }
+        
+        function hideTooltip() {
+            if (activeTooltip) {
+                activeTooltip.remove();
+                activeTooltip = null;
+            }
+        }
+        
+        // Focus Management for modals
+        function trapFocus(element) {
+            const focusableElements = element.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            const firstFocusable = focusableElements[0];
+            const lastFocusable = focusableElements[focusableElements.length - 1];
+            
+            element.addEventListener('keydown', function(e) {
+                if (e.key !== 'Tab') return;
+                
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusable) {
+                        lastFocusable.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusable) {
+                        firstFocusable.focus();
+                        e.preventDefault();
+                    }
+                }
+            });
+            
+            // Focus first element when modal opens
+            if (firstFocusable) {
+                setTimeout(() => firstFocusable.focus(), 100);
+            }
+        }
+        
+        // Loading State Helper
+        function setButtonLoading(button, loading, originalText = '') {
+            if (loading) {
+                button.dataset.originalText = button.innerHTML;
+                button.disabled = true;
+                button.innerHTML = '<span style="opacity: 0.7;">⏳</span> Loading...';
+                button.style.cursor = 'wait';
+            } else {
+                button.disabled = false;
+                button.innerHTML = button.dataset.originalText || originalText;
+                button.style.cursor = 'pointer';
+            }
+        }
+        
+        // Screen Transition Helper
+        function transitionScreen(fromElement, toElement, callback) {
+            if (fromElement) {
+                fromElement.style.opacity = '1';
+                fromElement.style.transition = 'opacity 0.3s ease';
+                fromElement.style.opacity = '0';
+                
+                setTimeout(() => {
+                    fromElement.style.display = 'none';
+                    if (toElement) {
+                        toElement.style.display = 'flex';
+                        toElement.style.opacity = '0';
+                        setTimeout(() => {
+                            toElement.style.transition = 'opacity 0.3s ease';
+                            toElement.style.opacity = '1';
+                        }, 10);
+                    }
+                    if (callback) callback();
+                }, 300);
+            }
+        }
+        
+        // Mobile Orientation Warning
+        function checkMobileOrientation() {
+            if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
+                const orientationWarning = document.getElementById('orientationWarning');
+                if (orientationWarning) {
+                    orientationWarning.style.display = 'flex';
+                }
+            } else {
+                const orientationWarning = document.getElementById('orientationWarning');
+                if (orientationWarning) {
+                    orientationWarning.style.display = 'none';
+                }
+            }
+        }
+        
+        // Add shake animation to element
+        function shakeElement(element) {
+            element.style.animation = 'shake 0.4s ease';
+            setTimeout(() => {
+                element.style.animation = '';
+            }, 400);
+        }
+        
+        // Add pulse animation to element  
+        function pulseElement(element, color = '#6bcf7f') {
+            const originalBorder = element.style.border;
+            element.style.animation = `pulse 0.6s ease`;
+            element.style.border = `2px solid ${color}`;
+            setTimeout(() => {
+                element.style.animation = '';
+                element.style.border = originalBorder;
+            }, 600);
+        }
+        
         // DOM Helpers - Optimizes DOM manipulations
         function createElementFromHTML(html) {
             const template = document.createElement('template');
@@ -1850,10 +2173,14 @@
         
         // Welcome Buttons
         const btnWelcomeStart = document.getElementById('btnWelcomeStart');
-        const btnPlayTutorial = document.getElementById('btnPlayTutorial');
-        const btnWelcomeTutorial = document.getElementById('btnWelcomeTutorial');
+        const btnLearnToPlay = document.getElementById('btnLearnToPlay');
         const btnWelcomeLeaderboard = document.getElementById('btnWelcomeLeaderboard');
         const btnWelcomeUnlocks = document.getElementById('btnWelcomeUnlocks');
+        
+        // Learn to Play Modal Elements
+        const learnToPlayModal = document.getElementById('learnToPlayModal');
+        const btnStartInteractiveTutorial = document.getElementById('btnStartInteractiveTutorial');
+        const btnOpenRulesReference = document.getElementById('btnOpenRulesReference');
         
         // Interactive Tutorial Elements
         const interactiveTutorialModal = document.getElementById('interactiveTutorialModal');
@@ -2294,10 +2621,19 @@
         
         // Welcome Screen Hooks
         btnWelcomeStart.onclick = showNewGameModal;
-        btnPlayTutorial.onclick = startInteractiveTutorial;
-        btnWelcomeTutorial.onclick = showTutorial;
+        btnLearnToPlay.onclick = () => learnToPlayModal.classList.add('active');
         btnWelcomeLeaderboard.onclick = showLeaderboard;
         btnWelcomeUnlocks.onclick = openUnlocks;
+        
+        // Learn to Play Modal Hooks
+        btnStartInteractiveTutorial.onclick = () => {
+            learnToPlayModal.classList.remove('active');
+            startInteractiveTutorial();
+        };
+        btnOpenRulesReference.onclick = () => {
+            learnToPlayModal.classList.remove('active');
+            showTutorial();
+        };
         
         // Soundboard will be hooked later after music is created
         
@@ -3771,20 +4107,24 @@ class DarkAtmosphericMusic {
         const musicVolumeSlider = document.getElementById('musicVolume');
         if (musicVolumeSlider) {
             // Initialize slider background with current value
-            const initialVolume = musicVolumeSlider.value || 70;
+            const initialVolume = musicVolumeSlider.value || 40;
             musicVolumeSlider.style.background = `linear-gradient(to right, #c9a961 0%, #c9a961 ${initialVolume}%, #2a2318 ${initialVolume}%, #2a2318 100%)`;
             
-            // Set initial volume to 70%
+            // Set initial volume to 40%
             music.masterGain.gain.value = initialVolume / 100;
             
-            musicVolumeSlider.oninput = (e) => {
+            // Apply debounce to reduce excessive calls
+            musicVolumeSlider.oninput = debounce((e) => {
                 const volume = e.target.value / 100;
                 const volumePercent = e.target.value;
                 music.masterGain.gain.value = volume;
                 
                 // Update slider background dynamically
                 e.target.style.background = `linear-gradient(to right, #c9a961 0%, #c9a961 ${volumePercent}%, #2a2318 ${volumePercent}%, #2a2318 100%)`;
-            };
+                
+                // Haptic feedback on volume change
+                hapticFeedback('light');
+            }, 50);
         }
 
         // Welcome Screen Music Controls (AFTER music is created)
@@ -3822,7 +4162,8 @@ class DarkAtmosphericMusic {
             const initialVolume = welcomeMusicVolumeSlider.value;
             welcomeMusicVolumeSlider.style.background = `linear-gradient(to right, #c9a961 0%, #c9a961 ${initialVolume}%, #2a2318 ${initialVolume}%, #2a2318 100%)`;
             
-            welcomeMusicVolumeSlider.oninput = (e) => {
+            // Apply debounce to reduce excessive calls
+            welcomeMusicVolumeSlider.oninput = debounce((e) => {
                 const volume = e.target.value / 100;
                 const volumePercent = e.target.value;
                 music.masterGain.gain.value = volume;
@@ -3835,7 +4176,10 @@ class DarkAtmosphericMusic {
                     musicVolumeSlider.value = e.target.value;
                     musicVolumeSlider.style.background = `linear-gradient(to right, #c9a961 0%, #c9a961 ${volumePercent}%, #2a2318 ${volumePercent}%, #2a2318 100%)`;
                 }
-            };
+                
+                // Haptic feedback
+                hapticFeedback('light');
+            }, 50);
         }
         
         // Soundboard Modal
@@ -4027,6 +4371,15 @@ class DarkAtmosphericMusic {
             // Particles
             const color = type === 'heal' ? '#6bcf7f' : (type === 'damage' ? '#ff6b6b' : '#ffd93d');
             createParticles(x, y, color, 15);
+            
+            // Haptic feedback based on type
+            if (type === 'damage') {
+                hapticFeedback('heavy');
+            } else if (type === 'heal') {
+                hapticFeedback('success');
+            } else {
+                hapticFeedback('medium');
+            }
         }
         
         function showCombo(count) {
@@ -4055,6 +4408,15 @@ class DarkAtmosphericMusic {
             document.body.appendChild(comboEl);
             setTimeout(() => comboEl.remove(), 1000);
             
+            // Haptic feedback for combos
+            if (count >= 10) {
+                hapticFeedback('success');
+            } else if (count >= 5) {
+                hapticFeedback('medium');
+            } else {
+                hapticFeedback('light');
+            }
+            
             // Extra particles for high combos
             if (count >= 5) {
                 createParticles(window.innerWidth / 2, window.innerHeight / 2, color, count * 3);
@@ -4065,6 +4427,7 @@ class DarkAtmosphericMusic {
             const gameWrapper = document.getElementById('gameWrapper');
             if (gameWrapper) {
                 gameWrapper.classList.add('shake');
+                hapticFeedback('heavy');
                 setTimeout(() => gameWrapper.classList.remove('shake'), 400);
             }
         }
@@ -4519,7 +4882,13 @@ class DarkAtmosphericMusic {
         
         // Helper: Calculate combo bonus
         function getComboBonus() {
-            let bonus = game.combo >= 2 ? game.combo - 1 : 0;  // 2 combo = +1, 3 combo = +2, etc.
+            if (game.combo === 0) return 0;
+            
+            // Combo God: +2 damage per combo level (stacks with base)
+            // Base: 2 combo = +1, 3 combo = +2, etc.
+            // With Combo God: 2 combo = +2, 3 combo = +4, etc.
+            const comboMultiplier = permanentUnlocks.comboGod ? 2 : 1;
+            let bonus = game.combo >= 2 ? (game.combo - 1) * comboMultiplier : 0;
             
             // Fire Ring: +1 damage per combo stack
             if (game.relics.some(r => r.id === 'ring_fire') && game.combo >= 1) {
@@ -4903,11 +5272,15 @@ class DarkAtmosphericMusic {
         }
 
         function avoidRoom() {
-            if (game.lastActionWasAvoid) {
+            // Four Leaf Clover: Can avoid 2x in a row
+            const hasClover = game.relics.some(r => r.id === 'clover');
+            
+            if (game.lastActionWasAvoid && !hasClover) {
                 showMessage('❌ You cannot avoid 2 dungeons in a row!', 'warning');
                 playSound('error');
                 return;
             }
+            
             // Leather Boots: Avoid costs 2 cards instead of 3
             const avoidCost = game.relics.some(r => r.id === 'leather_boots') ? 2 : 3;
             
@@ -6054,20 +6427,28 @@ class DarkAtmosphericMusic {
             };
             
             if (isVictory) {
-                document.getElementById('btnSubmitScore').addEventListener('click', async (e) => {
+                const btnSubmitScore = document.getElementById('btnSubmitScore');
+                // FIX: Use onclick to prevent memory leak from multiple event listeners
+                btnSubmitScore.onclick = async (e) => {
                     const btn = e.target;
-                    btn.disabled = true;
-                    btn.textContent = 'Submitting...';
+                    setButtonLoading(btn, true);
+                    hapticFeedback('medium');
                     
                     try {
                         await submitScoreToLeaderboard(score, gameTime);
                         btn.textContent = '✅ Submitted!';
+                        btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
+                        hapticFeedback('success');
+                        pulseElement(btn, '#6bcf7f');
                     } catch (err) {
+                        setButtonLoading(btn, false);
                         btn.textContent = 'Submission Failed';
-                        btn.disabled = false;
+                        btn.style.background = 'linear-gradient(180deg, #ff6b6b 0%, #d63031 100%)';
+                        hapticFeedback('error');
+                        shakeElement(btn);
                         console.error("Score submission error:", err);
                     }
-                });
+                };
             }
         }
         
@@ -7156,7 +7537,11 @@ class DarkAtmosphericMusic {
                 return;
             }
             relicsList.innerHTML = game.relics.map(r => `
-                <div class="relic-item ${r.used ? 'used' : ''}">
+                <div class="relic-item ${r.used ? 'used' : ''}" 
+                     title="${r.description}${r.used ? ' (Used)' : ''}"
+                     onmouseenter="showTooltip(this, '${r.description.replace(/'/g, "\\'")}', 'bottom')"
+                     onmouseleave="hideTooltip()"
+                     style="cursor: help;">
                     <div class="relic-name">${r.name}</div>
                     <div class="relic-effect">${r.description}</div>
                 </div>
@@ -7446,11 +7831,17 @@ class DarkAtmosphericMusic {
         }
 
         // Modal open/close functions
-        function showTutorial() { tutorialModal.classList.add('active'); }
+        function showTutorial() { 
+            tutorialModal.classList.add('active'); 
+            trapFocus(tutorialModal);
+            hapticFeedback('light');
+        }
         
         function openUnlocks() { 
             updateUnlocksDisplay();
             unlocksModal.classList.add('active');
+            trapFocus(unlocksModal);
+            hapticFeedback('light');
         }
         
         function updateUnlocksDisplay() { 
@@ -7606,7 +7997,20 @@ class DarkAtmosphericMusic {
 
         async function showLeaderboard(difficulty = 'easy') {
             leaderboardModal.classList.add('active');
+            trapFocus(leaderboardModal);
+            hapticFeedback('light');
             currentLeaderboardDifficulty = difficulty;
+            
+            // Show loading skeleton
+            const leaderboardList = document.getElementById('leaderboardList');
+            leaderboardList.innerHTML = `
+                <div class="skeleton" style="height: 60px; margin-bottom: 10px; border-radius: 6px;"></div>
+                <div class="skeleton" style="height: 60px; margin-bottom: 10px; border-radius: 6px;"></div>
+                <div class="skeleton" style="height: 60px; margin-bottom: 10px; border-radius: 6px;"></div>
+                <div class="skeleton" style="height: 60px; margin-bottom: 10px; border-radius: 6px;"></div>
+                <div class="skeleton" style="height: 60px; margin-bottom: 10px; border-radius: 6px;"></div>
+            `;
+            
             await loadLeaderboardForDifficulty(difficulty);
         }
 
@@ -7963,8 +8367,38 @@ class DarkAtmosphericMusic {
         }, 100);
         
         showWelcomeScreen(); // Show welcome screen on load
+        
+        // Check orientation on load and resize
+        checkMobileOrientation();
+        window.addEventListener('resize', debounce(checkMobileOrientation, 300));
 
     </script>
+    
+    <!-- Mobile Orientation Warning -->
+    <div id="orientationWarning" style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 99999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        text-align: center;
+    ">
+        <div style="font-size: 4em; margin-bottom: 20px;">📱</div>
+        <h2 style="color: #c9a961; font-family: 'Cinzel', serif; margin-bottom: 15px;">
+            Rotate Your Device
+        </h2>
+        <p style="color: #ddd; font-family: 'Cinzel', serif; max-width: 400px; line-height: 1.6;">
+            This game is best experienced in landscape mode. Please rotate your device for the optimal experience.
+        </p>
+        <div style="font-size: 3em; margin-top: 20px; animation: spin 2s linear infinite;">
+            🔄
+        </div>
+    </div>
+    
 </body>
 </html>
 
