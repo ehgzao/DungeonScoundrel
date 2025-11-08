@@ -262,7 +262,7 @@
                 transition: all 0.2s ease;
             " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🎵</span> Music Chamber</button>
             
-            <button id="btnWelcomeUnlocks" class="menu-btn-secondary" aria-label="View permanent upgrades" role="button" style="
+            <button id="btnCodex" class="menu-btn-secondary" aria-label="Open codex (upgrades, relics, achievements)" role="button" style="
                 font-family: 'Cinzel', serif;
                 font-size: clamp(0.85em, 2.2vw, 1em);
                 font-weight: 500;
@@ -275,22 +275,7 @@
                 color: #c9a961;
                 cursor: pointer;
                 transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">⭐</span> Upgrades</button>
-            
-            <button id="btnRelicsGuide" class="menu-btn-secondary" aria-label="View relics glossary" role="button" style="
-                font-family: 'Cinzel', serif;
-                font-size: clamp(0.85em, 2.2vw, 1em);
-                font-weight: 500;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                padding: 12px 18px;
-                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
-                border: 1px solid #5a4a38;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
-                color: #c9a961;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">📖</span> Relics Guide</button>
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">📚</span> Codex</button>
             
             <button id="btnGoogleLogin" class="menu-btn-secondary" style="
                 font-family: 'Cinzel', serif;
@@ -440,8 +425,9 @@
                 </div>
             </div>
             
-            <!-- CENTER GROUP: Timer + Achievements -->
-            <div style="display: flex; gap: 20px; align-items: center; justify-content: center; flex: 1;">
+            <!-- CENTER GROUP: Relics + Timer + Achievements -->
+            <div style="display: flex; gap: 15px; align-items: center; justify-content: center; flex: 1;">
+                <button class="settings-btn btn-highlight" id="btnTopRelics" title="Quick Access to Relics" style="font-size: 1.2em; padding: 8px 12px;">📖</button>
                 <div class="stat-display" id="gameTimer" title="Elapsed Time" style="font-size: 1.1em; font-weight: bold; color: #ffd700;">
                     ⏱️ <span class="stat-value">00:00</span>
                 </div>
@@ -461,7 +447,7 @@
                 
                 <button class="settings-btn" id="btnTopTutorial" title="Open Tutorial">📖</button>
                 <button class="settings-btn" id="btnTopLeaderboard" title="Open Leaderboard">📊</button>
-                <button class="settings-btn btn-highlight" id="btnTopUnlocks" title="Open Unlocks">🔓</button>
+                <button class="settings-btn btn-highlight" id="btnTopCodex" title="Open Codex">📚</button>
                 <button class="settings-btn btn-danger-style" id="btnTopGiveUp" title="Give Up Run" onclick="tryGiveUp();">🏳️</button>
             </div>
         </div>
@@ -1031,7 +1017,7 @@
                 <p>&nbsp;&nbsp;&nbsp;🟠 Legendary (200🪙) - Game-changing!</p>
                 <p>• <strong>⚠️ Shop Penalty:</strong> Each shop visit costs -50 points in final score</p>
                 <p>• <strong>Events:</strong> 🎲 Random encounters after clearing rooms. Make choices!</p>
-                <p>• <strong>Unlocks:</strong> 🔓 Permanent progress that carries over between runs!</p>
+                <p>• <strong>Upgrades:</strong> ⭐ Permanent progress that carries over between runs!</p>
             </div>
             
             <div class="tutorial-section">
@@ -1121,7 +1107,7 @@
     <div class="modal-overlay" id="unlocksModal">
         <div class="modal-content">
             <button class="modal-close-btn" onclick="document.getElementById('unlocksModal').classList.remove('active');">✕</button>
-            <h2>🗝️ Permanent Upgrades</h2>
+            <h2>⭐ Permanent Upgrades</h2>
             <p style="text-align: center; color: #aaa; margin-bottom: 20px;">
                 Progress that continues between runs!
             </p>
@@ -1191,31 +1177,104 @@
         </div>
     </div>
     
-    <!-- Modal: Relics Guide -->
-    <div class="modal-overlay" id="relicsGuideModal">
-        <div class="modal-content" style="max-width: 800px;">
-            <button class="modal-close-btn" onclick="document.getElementById('relicsGuideModal').classList.remove('active');">✕</button>
-            <h2>📖 Relics Guide</h2>
+    <!-- Modal: Codex (Unified) -->
+    <div class="modal-overlay" id="codexModal">
+        <div class="modal-content" style="max-width: 900px;">
+            <button class="modal-close-btn" onclick="document.getElementById('codexModal').classList.remove('active');">✕</button>
+            <h2>📚 CODEX</h2>
             
             <div style="text-align: center; margin-bottom: 20px;">
-                <p style="color: #aaa; font-size: 0.95em;">Complete encyclopedia of all relics in the game</p>
+                <p style="color: #aaa; font-size: 0.95em;">Your complete game encyclopedia</p>
             </div>
             
-            <!-- Rarity Filter -->
-            <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
-                <button onclick="filterRelicsByRarity('all')" class="rarity-filter-btn" data-rarity="all" style="padding: 8px 16px; background: #4ecdc4; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">All</button>
-                <button onclick="filterRelicsByRarity('common')" class="rarity-filter-btn" data-rarity="common" style="padding: 8px 16px; background: #aaa; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">⚪ Common</button>
-                <button onclick="filterRelicsByRarity('uncommon')" class="rarity-filter-btn" data-rarity="uncommon" style="padding: 8px 16px; background: #6bcf7f; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🟢 Uncommon</button>
-                <button onclick="filterRelicsByRarity('rare')" class="rarity-filter-btn" data-rarity="rare" style="padding: 8px 16px; background: #4a9eff; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🔵 Rare</button>
-                <button onclick="filterRelicsByRarity('legendary')" class="rarity-filter-btn" data-rarity="legendary" style="padding: 8px 16px; background: #ff9800; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🟠 Legendary</button>
+            <!-- Tab Navigation -->
+            <div style="display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid #5a4a38; padding-bottom: 0;">
+                <button onclick="switchCodexTab('upgrades')" id="codexTabUpgrades" class="codex-tab active" style="
+                    flex: 1;
+                    padding: 12px 20px;
+                    background: linear-gradient(180deg, #4a3d2f 0%, #342820 100%);
+                    border: 2px solid #d4af37;
+                    border-bottom: none;
+                    border-radius: 8px 8px 0 0;
+                    color: #d4af37;
+                    font-family: 'Cinzel', serif;
+                    font-weight: bold;
+                    font-size: 0.95em;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                ">⭐ UPGRADES</button>
+                
+                <button onclick="switchCodexTab('relics')" id="codexTabRelics" class="codex-tab" style="
+                    flex: 1;
+                    padding: 12px 20px;
+                    background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+                    border: 2px solid #5a4a38;
+                    border-bottom: none;
+                    border-radius: 8px 8px 0 0;
+                    color: #c9a961;
+                    font-family: 'Cinzel', serif;
+                    font-weight: bold;
+                    font-size: 0.95em;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                ">📖 RELICS</button>
+                
+                <button onclick="switchCodexTab('achievements')" id="codexTabAchievements" class="codex-tab" style="
+                    flex: 1;
+                    padding: 12px 20px;
+                    background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+                    border: 2px solid #5a4a38;
+                    border-bottom: none;
+                    border-radius: 8px 8px 0 0;
+                    color: #c9a961;
+                    font-family: 'Cinzel', serif;
+                    font-weight: bold;
+                    font-size: 0.95em;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                ">🏆 ACHIEVEMENTS</button>
             </div>
             
-            <!-- Relics List -->
-            <div id="relicsGlossary" style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
-                <!-- Populated by JavaScript -->
+            <!-- Tab Content: Upgrades -->
+            <div id="codexContentUpgrades" class="codex-content" style="display: block;">
+                <p style="text-align: center; color: #aaa; margin-bottom: 20px;">
+                    Permanent progress that continues between runs!
+                </p>
+                <div id="upgradesList" style="max-height: 450px; overflow-y: auto; padding-right: 10px;">
+                    <!-- Populated by JavaScript -->
+                </div>
             </div>
             
-            <button class="close-modal-btn" onclick="document.getElementById('relicsGuideModal').classList.remove('active');" style="margin-top: 20px;">Close</button>
+            <!-- Tab Content: Relics -->
+            <div id="codexContentRelics" class="codex-content" style="display: none;">
+                <!-- Rarity Filter -->
+                <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
+                    <button onclick="filterRelicsByRarity('all')" class="rarity-filter-btn active" data-rarity="all" style="padding: 8px 16px; background: #4ecdc4; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">All</button>
+                    <button onclick="filterRelicsByRarity('common')" class="rarity-filter-btn" data-rarity="common" style="padding: 8px 16px; background: #aaa; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">⚪ Common</button>
+                    <button onclick="filterRelicsByRarity('uncommon')" class="rarity-filter-btn" data-rarity="uncommon" style="padding: 8px 16px; background: #6bcf7f; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🟢 Uncommon</button>
+                    <button onclick="filterRelicsByRarity('rare')" class="rarity-filter-btn" data-rarity="rare" style="padding: 8px 16px; background: #4a9eff; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🔵 Rare</button>
+                    <button onclick="filterRelicsByRarity('legendary')" class="rarity-filter-btn" data-rarity="legendary" style="padding: 8px 16px; background: #ff9800; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🟠 Legendary</button>
+                </div>
+                <div id="relicsGlossary" style="max-height: 450px; overflow-y: auto; padding-right: 10px;">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Tab Content: Achievements -->
+            <div id="codexContentAchievements" class="codex-content" style="display: none;">
+                <p style="text-align: center; color: #aaa; margin-bottom: 20px;">
+                    <span id="achievementStatsCodex">0/50 Unlocked</span> | 
+                    🥉 <span id="bronzeCountCodex">0/25</span> | 
+                    🥈 <span id="silverCountCodex">0/15</span> | 
+                    🥇 <span id="goldCountCodex">0/9</span> | 
+                    💎 <span id="platinumCountCodex">0/1</span>
+                </p>
+                <div id="achievementsList" style="max-height: 450px; overflow-y: auto; padding-right: 10px;">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+            
+            <button class="close-modal-btn" onclick="document.getElementById('codexModal').classList.remove('active');" style="margin-top: 20px;">Close</button>
         </div>
     </div>
     
