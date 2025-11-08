@@ -14,16 +14,20 @@ Transformar o código de um monolito de 7,220 linhas em uma arquitetura modular,
 
 ## 📊 PROGRESSO
 
-### ✅ FASE 1: ESTRUTURA BASE (Completo)
+### ✅ FASE 1: ESTRUTURA BASE (Completo) 🎉
 - [x] Branch criada: `refactor/architecture-v2`
 - [x] Estrutura de pastas modular criada
 - [x] Mobile CSS extraído para arquivo dedicado
+- [x] **constants.js criado** (220 linhas)
+- [x] **storage.js criado** (180 linhas)
+- [x] **README.md criado** (350 linhas - Documentação completa)
+- [x] Commit: `5812dd0 - refactor: Create modular architecture foundation`
 
-### 🔄 FASE 2: SEPARAÇÃO DE CONCERNS (Em Progresso)
-- [ ] Remover CSS inline do HTML
-- [ ] Linkar mobile.css no HTML
-- [ ] Criar módulos JS
-- [ ] Remover onclick inline
+### 🔄 FASE 2: SISTEMAS INDEPENDENTES (Em Progresso)
+- [ ] Extrair CODEX system → systems/codex.js
+- [ ] Extrair Shop system → systems/shop.js
+- [ ] Extrair Achievements → systems/achievements.js
+- [ ] Extrair Music system → systems/music.js
 
 ### ⏳ FASE 3: MODULARIZAÇÃO
 - [ ] Split game.js → core/game.js
