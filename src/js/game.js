@@ -837,13 +837,13 @@
         const achievementsList = document.getElementById('achievementsList');
         
         // Top Bar Buttons
-        const btnTopSound = document.getElementById('btnTopSound');
+        // btnTopSound removed - redundant with music controls
         const btnMusicPrev = document.getElementById('btnMusicPrev');
         const btnMusicToggle = document.getElementById('btnMusicToggle');
         const btnMusicNext = document.getElementById('btnMusicNext');
-        const btnTopTutorial = document.getElementById('btnTopTutorial');
-        const btnTopLeaderboard = document.getElementById('btnTopLeaderboard');
-        // btnTopUnlocks removed - replaced by btnTopCodex in CODEX system
+        // btnTopTutorial removed - only in main menu
+        // btnTopLeaderboard removed - only in main menu
+        // btnTopCodex removed - redundant with Relics button
         const btnTopGiveUp = document.getElementById('btnTopGiveUp'); // Give Up Button
 
         // Modals
@@ -870,10 +870,9 @@
         document.getElementById('btnCloseUnlocks').onclick = () => unlocksModal.classList.remove('active');
         document.getElementById('btnCloseAchievements').onclick = () => achievementsModal.classList.remove('active');
         
-        // Open Achievements Modal
+        // Open Achievements in CODEX (unified)
         achievementsCompact.onclick = () => {
-            updateAchievementsDisplay();
-            achievementsModal.classList.add('active');
+            openCodex('achievements');
         };
         
         // ============================================
@@ -1579,9 +1578,9 @@
         });
 
         // Top Bar Hooks
-        btnTopTutorial.onclick = showTutorial;
-        btnTopLeaderboard.onclick = showLeaderboard;
-        // btnTopUnlocks.onclick removed - now handled by codex.js
+        // btnTopTutorial removed - only in main menu
+        // btnTopLeaderboard removed - only in main menu
+        // btnTopUnlocks removed - replaced by CODEX system
         btnOpenShop.onclick = openShop;
         
         // Give Up Hooks (ROBUST VERSION)
@@ -2689,12 +2688,7 @@ class DarkAtmosphericMusic {
         const music = new DarkAtmosphericMusic();
 
         // Sound/Music Hooks
-        btnTopSound.onclick = function() {
-            game.settings.soundEnabled = !game.settings.soundEnabled;
-            this.classList.toggle('active', game.settings.soundEnabled);
-            this.textContent = game.settings.soundEnabled ? '🔊' : '🔇';
-            if (game.settings.soundEnabled) playSound('cardFlip');
-        };
+        // btnTopSound removed - redundant with Play/Pause + Volume
         btnMusicToggle.onclick = function() {
             game.settings.musicEnabled = !game.settings.musicEnabled;
             this.classList.toggle('active', game.settings.musicEnabled);
@@ -7113,7 +7107,7 @@ class DarkAtmosphericMusic {
         // Initialize CODEX buttons
         const btnCodex = document.getElementById('btnCodex');
         const btnTopRelics = document.getElementById('btnTopRelics');
-        const btnTopCodex = document.getElementById('btnTopCodex');
+        // btnTopCodex removed - redundant
         if (btnCodex) {
             btnCodex.onclick = () => openCodex('upgrades');
             console.log('[CODEX] Welcome screen button initialized');
@@ -7121,10 +7115,6 @@ class DarkAtmosphericMusic {
         if (btnTopRelics) {
             btnTopRelics.onclick = () => openCodex('relics');
             console.log('[CODEX] In-game Relics button initialized');
-        }
-        if (btnTopCodex) {
-            btnTopCodex.onclick = () => openCodex('upgrades');
-            console.log('[CODEX] In-game Codex button initialized');
         }
         
         // Expose CODEX functions globally
