@@ -145,6 +145,250 @@
             border-top-color: var(--color-gold);
             animation: spin 0.8s linear infinite;
         }
+        
+        /* ======================================== */
+        /* MOBILE LANDSCAPE OPTIMIZATIONS */
+        /* ======================================== */
+        @media only screen and (max-height: 600px) and (orientation: landscape) {
+            /* Welcome Screen - Enable Scroll */
+            #welcomeScreen {
+                height: 100vh !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                padding: 20px 10px !important;
+            }
+            
+            /* Title Logo - Smaller */
+            #welcomeScreen img[alt="Dungeon Scoundrel"] {
+                max-width: 60vw !important;
+                margin-bottom: 10px !important;
+            }
+            
+            /* Subtitle - Smaller */
+            #welcomeScreen p[style*="font-size: clamp(0.9em, 2vw, 1.1em)"] {
+                font-size: 0.8em !important;
+                margin-bottom: 8px !important;
+            }
+            
+            /* Menu Buttons - Compact */
+            #welcomeScreen button {
+                padding: 8px 16px !important;
+                font-size: 0.85em !important;
+                min-height: 35px !important;
+            }
+            
+            /* Game Screen Elements */
+            .top-bar {
+                padding: 5px 10px !important;
+                min-height: 40px !important;
+            }
+            
+            .stat-display {
+                font-size: 0.75em !important;
+                padding: 4px 8px !important;
+            }
+            
+            .achievements-compact {
+                font-size: 0.75em !important;
+                padding: 4px 8px !important;
+            }
+            
+            .settings-btn {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 1.1em !important;
+                padding: 4px !important;
+            }
+            
+            /* Player Class Card - Much Smaller */
+            .left-sidebar {
+                max-width: 120px !important;
+                padding: 8px !important;
+            }
+            
+            .class-portrait-container {
+                max-width: 100px !important;
+                max-height: 120px !important;
+            }
+            
+            .class-name {
+                font-size: 0.9em !important;
+                padding: 4px !important;
+            }
+            
+            .class-ability {
+                font-size: 0.7em !important;
+                padding: 4px !important;
+            }
+            
+            /* Relics Display - Smaller */
+            .relics-panel {
+                max-height: 80px !important;
+            }
+            
+            .relic-item {
+                font-size: 1em !important;
+                padding: 3px !important;
+            }
+            
+            /* Center Area - Cards */
+            .center-area {
+                gap: 8px !important;
+            }
+            
+            .stage-area {
+                padding: 8px !important;
+            }
+            
+            .card {
+                width: 70px !important;
+                height: 95px !important;
+                font-size: 0.7em !important;
+            }
+            
+            .card-name {
+                font-size: 0.65em !important;
+                padding: 2px !important;
+            }
+            
+            .card-value {
+                font-size: 1.3em !important;
+            }
+            
+            /* Right Sidebar - Held Card */
+            .right-sidebar {
+                max-width: 100px !important;
+                padding: 8px !important;
+            }
+            
+            .held-card-container {
+                max-width: 80px !important;
+            }
+            
+            .held-card {
+                width: 75px !important;
+                height: 100px !important;
+            }
+            
+            /* Action Buttons - Smaller */
+            .action-btn {
+                font-size: 0.8em !important;
+                padding: 8px 12px !important;
+                min-height: 35px !important;
+            }
+            
+            /* Modals - Fit Screen */
+            .modal-content {
+                max-width: 95vw !important;
+                max-height: 85vh !important;
+                padding: 15px !important;
+                margin: 10px !important;
+            }
+            
+            .modal-content h2 {
+                font-size: 1.2em !important;
+                margin-bottom: 10px !important;
+            }
+            
+            .modal-content p {
+                font-size: 0.85em !important;
+            }
+            
+            .modal-content button {
+                font-size: 0.85em !important;
+                padding: 8px 12px !important;
+            }
+            
+            /* Class Selection Grid - 2 columns on mobile */
+            .classes-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+            
+            .class-card {
+                padding: 10px !important;
+            }
+            
+            .class-card-portrait {
+                height: 80px !important;
+            }
+            
+            .class-card h3 {
+                font-size: 0.9em !important;
+            }
+            
+            .class-card p {
+                font-size: 0.75em !important;
+            }
+            
+            /* Score Display - Compact */
+            #scoreText {
+                font-size: 1.2em !important;
+            }
+            
+            /* Bottom Stats - Smaller Font */
+            .dungeon-empty-text {
+                font-size: 0.8em !important;
+                padding: 10px !important;
+            }
+            
+            /* Music Volume Slider - Smaller */
+            #musicVolume, #welcomeMusicVolume {
+                width: 60px !important;
+                height: 18px !important;
+            }
+            
+            /* Filter Buttons - Smaller */
+            .rarity-filter-btn,
+            .upgrade-filter-btn,
+            .achievement-filter-btn {
+                padding: 6px 12px !important;
+                font-size: 0.75em !important;
+            }
+            
+            /* CODEX Tabs - Smaller */
+            .codex-tab {
+                padding: 8px 12px !important;
+                font-size: 0.8em !important;
+            }
+            
+            /* Hide Non-Essential Elements on Very Small Screens */
+            @media (max-height: 500px) {
+                .achievements-compact {
+                    display: none !important;
+                }
+                
+                .class-ability {
+                    display: none !important;
+                }
+                
+                #nowPlayingDisplay {
+                    display: none !important;
+                }
+            }
+        }
+        
+        /* Extra Small Mobile Landscape (< 500px height) */
+        @media only screen and (max-height: 500px) and (orientation: landscape) {
+            .top-bar {
+                padding: 3px 8px !important;
+                min-height: 35px !important;
+            }
+            
+            .stat-display, .achievements-compact {
+                font-size: 0.65em !important;
+                padding: 3px 6px !important;
+            }
+            
+            .card {
+                width: 60px !important;
+                height: 85px !important;
+            }
+            
+            .left-sidebar, .right-sidebar {
+                max-width: 100px !important;
+            }
+        }
     </style>
 
 </head>
