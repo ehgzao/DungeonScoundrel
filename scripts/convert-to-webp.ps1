@@ -63,9 +63,10 @@ foreach ($img in $images) {
             $totalSaved += $saved
             $converted++
             
-            Write-Host " ✅ " -ForegroundColor Green -NoNewline
-            Write-Host "Saved $percent% " -ForegroundColor Yellow -NoNewline
-            Write-Host "($([math]::Round($originalSize/1024)) KB → $([math]::Round($webpSize/1024)) KB)" -ForegroundColor Gray
+            $origKB = [math]::Round($originalSize/1024)
+            $webpKB = [math]::Round($webpSize/1024)
+            Write-Host " OK - Saved $percent%" -ForegroundColor Green -NoNewline
+            Write-Host " ($origKB => $webpKB kB)" -ForegroundColor Gray
         } else {
             Write-Host " ❌ Failed" -ForegroundColor Red
         }
