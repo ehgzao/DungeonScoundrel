@@ -38,3 +38,6 @@ backups/
 *.bak
 temp/
 tmp/
+
+# Firebase config (contains API keys)
+src/config/firebase-config.js
