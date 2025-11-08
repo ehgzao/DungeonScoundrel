@@ -177,10 +177,19 @@
                 min-height: 35px !important;
             }
             
+            /* Game Screen - Ensure Visibility */
+            .game-screen {
+                display: flex !important;
+                flex-direction: column !important;
+                height: 100vh !important;
+                overflow: hidden !important;
+            }
+            
             /* Game Screen Elements */
             .top-bar {
                 padding: 5px 10px !important;
                 min-height: 40px !important;
+                flex-shrink: 0 !important;
             }
             
             .stat-display {
@@ -231,13 +240,32 @@
                 padding: 3px !important;
             }
             
-            /* Center Area - Cards */
+            /* Center Area - CRITICAL FIX FOR VISIBILITY */
             .center-area {
-                gap: 8px !important;
+                margin: 0 130px !important; /* Space for sidebars */
+                padding: 5px !important;
+                gap: 5px !important;
+                display: flex !important;
+                flex: 1 !important;
+                height: auto !important;
+                min-height: 200px !important;
+                overflow: visible !important;
             }
             
             .stage-area {
                 padding: 8px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+            }
+            
+            /* Stage Room - Where cards appear */
+            .stage-room {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 5px !important;
+                justify-content: center !important;
+                min-height: 100px !important;
             }
             
             .card {
@@ -419,6 +447,17 @@
             
             .left-sidebar, .right-sidebar {
                 max-width: 100px !important;
+            }
+            
+            /* Even smaller center margin */
+            .center-area {
+                margin: 0 105px !important;
+            }
+            
+            .controls .btn {
+                font-size: 0.75em !important;
+                padding: 8px 12px !important;
+                min-width: 90px !important;
             }
         }
     </style>
