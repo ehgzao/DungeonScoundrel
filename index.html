@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1024, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>🎴 Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- SEO Meta Tags -->
@@ -45,6 +45,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="src/styles/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        (function(){
+            if (window.emailjs) { emailjs.init('JhH3cSIF6g3y73-Yk'); }
+        })();
+    </script>
 
 </head>
 <body>
@@ -114,7 +120,7 @@
                 cursor: pointer;
                 transition: all 0.2s ease;
                 text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
-            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.6)'"><span style="font-size: 1.2em;">⚔️</span> Start Quest</button>
+            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.6)'"><span style="font-size: 1.2em;"></span> Start Quest</button>
             
             <button id="btnPlayTutorial" class="menu-btn-secondary" style="
                 font-family: 'Cinzel', serif;
@@ -129,7 +135,7 @@
                 color: #c9a961;
                 cursor: pointer;
                 transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🎮</span> Play Tutorial</button>
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;"></span> Play Tutorial</button>
             
             <button id="btnWelcomeTutorial" class="menu-btn-secondary" style="
                 font-family: 'Cinzel', serif;
@@ -144,7 +150,7 @@
                 color: #c9a961;
                 cursor: pointer;
                 transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">📜</span> Read Guide</button>
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;"></span> Read Guide</button>
             
             <button id="btnWelcomeLeaderboard" class="menu-btn-secondary" style="
                 font-family: 'Cinzel', serif;
@@ -159,7 +165,7 @@
                 color: #c9a961;
                 cursor: pointer;
                 transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🏆</span> Hall of Fame</button>
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;"></span> Hall of Fame</button>
             
             <button id="btnWelcomeSoundboard" class="menu-btn-secondary" style="
                 font-family: 'Cinzel', serif;
@@ -174,7 +180,7 @@
                 color: #c9a961;
                 cursor: pointer;
                 transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🎼</span> Music Chamber</button>
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;"></span> Music Chamber</button>
             
             <button id="btnWelcomeUnlocks" class="menu-btn-secondary" style="
                 font-family: 'Cinzel', serif;
@@ -189,7 +195,22 @@
                 color: #c9a961;
                 cursor: pointer;
                 transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🗝️</span> Upgrades</button>
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;"></span> Upgrades</button>
+            
+            <button id="btnGoogleLogin" class="menu-btn-secondary" style="
+                font-family: 'Cinzel', serif;
+                font-size: clamp(0.85em, 2.2vw, 1em);
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                padding: 14px 20px;
+                background: linear-gradient(180deg, #4a3d2f 0%, #342820 100%);
+                border: 1px solid #5a4a38;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
+                color: #c9a961;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            " onmouseover="this.style.background='linear-gradient(180deg, #5a4d3f 0%, #443828 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;"></span> Cloud Sync</button>
         </div>
         
         <!-- Music Controls (Minimalist) -->
@@ -203,7 +224,7 @@
                 text-transform: uppercase;
                 letter-spacing: 0.1em;
                 opacity: 0.8;
-            ">🎵 Dark Awakening</div>
+            ">Dark Awakening</div>
             <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
                 <button id="btnWelcomeMusicToggle" title="Play/Pause Music" style="
                     font-size: 1.3em;
@@ -214,7 +235,7 @@
                     cursor: pointer;
                     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
                     transition: all 0.2s ease;
-                ">⏯️</button>
+                ">Play/Pause</button>
                 <input type="range" id="welcomeMusicVolume" min="0" max="100" value="70" title="Music Volume" style="
                     width: 140px;
                     height: 6px;
@@ -228,6 +249,41 @@
             </div>
         </div>
         
+        <!-- Bug Report (Bottom Right, above version) -->
+        <div onclick="document.getElementById('bugReportModal').classList.add('active');" style="
+            position: absolute;
+            bottom: 74px;
+            right: 20px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, rgba(61, 51, 40, 0.85) 0%, rgba(42, 35, 24, 0.9) 100%);
+            border: 1px solid rgba(201, 169, 97, 0.4);
+            border-radius: 6px;
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                0 2px 12px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        " onmouseover="this.style.borderColor='rgba(201, 169, 97, 0.8)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(201, 169, 97, 0.4)'; this.style.transform='translateY(0)';" title="Report a bug">
+            <span style="
+                font-size: 1.1em;
+                filter: drop-shadow(0 0 4px rgba(201, 169, 97, 0.6));
+            "></span>
+            <span style="
+                font-family: 'Cinzel', serif;
+                font-size: 0.85em;
+                font-weight: 600;
+                color: #c9a961;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+            ">Report Bug</span>
+        </div>
+
         <!-- Version Badge (Bottom Right) -->
         <div onclick="document.getElementById('versionModal').classList.add('active');" style="
             position: absolute;
@@ -251,7 +307,7 @@
             <span style="
                 font-size: 1.1em;
                 filter: drop-shadow(0 0 4px rgba(201, 169, 97, 0.6));
-            ">🛡️</span>
+            "></span>
             <span style="
                 font-family: 'Cinzel', serif;
                 font-size: 0.85em;
@@ -1039,6 +1095,134 @@
         </div>
     </div>
     
+    <!-- Modal: Bug Report -->
+    <div class="modal-overlay" id="bugReportModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="modal-close-btn" onclick="document.getElementById('bugReportModal').classList.remove('active');">✕</button>
+            <h2>🐛 Report a Bug</h2>
+            <div style="margin: 10px 0 12px; color: #aaa; font-size: 0.9em;">Describe the bug in detail. Technical info like browser and screen resolution will be sent automatically.</div>
+            <textarea id="bugMessage" placeholder="Describe what happened, steps to reproduce, and expected behavior" style="width: 100%; min-height: 160px; resize: vertical; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 6px; padding: 10px;"></textarea>
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px;">
+                <button class="close-modal-btn" onclick="document.getElementById('bugReportModal').classList.remove('active');">Cancel</button>
+                <button class="close-modal-btn" onclick="sendBugReport();" style="background: linear-gradient(135deg, #6bcf7f, #2fbf71); border: none; color: #102015;">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Bug Report Function (Global Scope)
+        window.sendBugReport = function() {
+            console.log('sendBugReport called');
+            try {
+                const textarea = document.getElementById('bugMessage');
+                if (!textarea) { 
+                    console.error('bugMessage textarea not found');
+                    alert('Bug report unavailable.'); 
+                    return; 
+                }
+                const message = (textarea.value || '').trim();
+                console.log('Message:', message);
+                if (!message) { 
+                    alert('Please describe the bug.'); 
+                    return; 
+                }
+                
+                console.log('Checking emailjs:', window.emailjs);
+                if (!window.emailjs) { 
+                    alert('Email service not loaded. Check console.'); 
+                    return; 
+                }
+                
+                const params = {
+                    from_name: 'Player',
+                    reply_to: 'player@game.com',
+                    message: message,
+                    user_browser: navigator.userAgent,
+                    user_screen: window.innerWidth + 'x' + window.innerHeight,
+                    game_version: 'v1.1.1',
+                    report_date: new Date().toLocaleString(),
+                    // Alternative names in case template uses these
+                    browser: navigator.userAgent,
+                    screen: window.innerWidth + 'x' + window.innerHeight,
+                    version: 'v1.1.1',
+                    date: new Date().toLocaleString()
+                };
+                
+                console.log('Sending email with params:', params);
+                console.log('Service ID: service_tfl51qs, Template ID: template_x3cplm6');
+                
+                emailjs.send('service_tfl51qs', 'template_x3cplm6', params)
+                    .then(function(response) {
+                        console.log('EmailJS SUCCESS:', response);
+                        const modal = document.getElementById('bugReportModal');
+                        if (modal) modal.classList.remove('active');
+                        textarea.value = '';
+                        showBugReportSuccess();
+                    })
+                    .catch(function(err) {
+                        console.error('EmailJS FAILED:', err);
+                        console.error('Error status:', err.status);
+                        console.error('Error text:', err.text);
+                        showBugReportError(err.text || err.status || 'Unknown error');
+                    });
+            } catch (e) {
+                console.error('sendBugReport exception:', e);
+                alert('Unexpected error: ' + e.message);
+            }
+        };
+        
+        // Elegant feedback for bug report
+        function showBugReportSuccess() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.style.zIndex = '10000';
+            overlay.innerHTML = `
+                <div class="modal-content" style="max-width: 450px; border: 3px solid #6bcf7f; animation: modalSlideIn 0.3s ease;">
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 4em; margin-bottom: 15px;">✅</div>
+                        <h2 style="color: #6bcf7f; margin: 0 0 15px 0;">Bug Report Sent!</h2>
+                        <p style="color: #ddd; font-size: 1.1em; line-height: 1.6; margin: 0 0 20px 0;">
+                            Thank you for helping improve Dungeon Scoundrel!<br>
+                            Your report has been received.
+                        </p>
+                        <button class="close-modal-btn" onclick="this.closest('.modal-overlay').remove();" style="background: linear-gradient(135deg, #6bcf7f, #2fbf71); border: none; color: #102015; font-size: 1.1em; padding: 12px 32px;">
+                            Got it!
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            setTimeout(() => overlay.remove(), 5000);
+        }
+        
+        function showBugReportError(errorMsg) {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.style.zIndex = '10000';
+            overlay.innerHTML = `
+                <div class="modal-content" style="max-width: 450px; border: 3px solid #ff6b6b; animation: modalSlideIn 0.3s ease;">
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 4em; margin-bottom: 15px;">❌</div>
+                        <h2 style="color: #ff6b6b; margin: 0 0 15px 0;">Failed to Send</h2>
+                        <p style="color: #ddd; font-size: 1em; line-height: 1.6; margin: 0 0 10px 0;">
+                            Could not send the bug report.
+                        </p>
+                        <p style="color: #aaa; font-size: 0.9em; margin: 0 0 20px 0;">
+                            Error: ${errorMsg}
+                        </p>
+                        <button class="close-modal-btn" onclick="this.closest('.modal-overlay').remove();" style="font-size: 1.1em; padding: 12px 32px;">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+        
+        // Check EmailJS on page load
+        console.log('EmailJS loaded?', !!window.emailjs);
+    </script>
+    
     <!-- Modal: Give Up -->
     <div class="modal-overlay" id="giveUpModal">
         <div class="modal-content" style="max-width: 500px; border: 3px solid #ff6b6b;">
@@ -1067,11 +1251,55 @@
     <!-- ============================================ -->
     <script type="module">
         // ============================================
+        // GLOBAL ERROR HANDLER (Prevent White Screen)
+        // ============================================
+        window.addEventListener('error', function(e) {
+            console.error('Global error caught:', e.error);
+            // Show user-friendly error instead of white screen
+            if (!document.querySelector('.error-overlay')) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-overlay';
+                errorDiv.style.cssText = `
+                    position: fixed; inset: 0; z-index: 99999;
+                    background: linear-gradient(180deg, #1a1410 0%, #0d0a08 100%);
+                    display: flex; align-items: center; justify-content: center;
+                    padding: 20px; font-family: 'Cinzel', serif;
+                `;
+                errorDiv.innerHTML = `
+                    <div style="max-width: 500px; text-align: center; color: #ddd;">
+                        <div style="font-size: 4em; margin-bottom: 20px;">⚠️</div>
+                        <h2 style="color: #ff6b6b; margin: 0 0 15px 0;">Game Error</h2>
+                        <p style="line-height: 1.6; margin-bottom: 20px;">
+                            Something went wrong. Please try refreshing the page.
+                        </p>
+                        <button onclick="location.reload()" style="
+                            padding: 12px 32px; font-size: 1.1em;
+                            background: linear-gradient(135deg, #c9a961, #a68948);
+                            border: 2px solid #d4af37; color: #1a1410;
+                            cursor: pointer; font-family: 'Cinzel', serif;
+                            text-transform: uppercase; letter-spacing: 0.1em;
+                        ">Reload Game</button>
+                        <p style="margin-top: 20px; font-size: 0.85em; color: #888;">
+                            Error: ${e.message || 'Unknown error'}
+                        </p>
+                    </div>
+                `;
+                document.body.appendChild(errorDiv);
+            }
+            return true; // Prevent default error handling
+        });
+        
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Unhandled promise rejection:', e.reason);
+            e.preventDefault();
+        });
+        
+        // ============================================
         // FIREBASE IMPORTS
         // ============================================
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, addDoc, collection, query, getDocs, limit, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, addDoc, collection, query, getDocs, getDoc, setDoc, limit, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // ============================================
         // FIREBASE INITIALIZATION
@@ -1087,11 +1315,12 @@
             appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
             // setLogLevel('debug'); // Useful for debugging
             
+            // Anonymous auth for leaderboard - handled separately from Google Auth
             onAuthStateChanged(auth, async (user) => {
-                if (user) {
+                if (user && !user.isAnonymous) {
                     userId = user.uid;
                     console.log("Firebase Auth: User signed in:", userId);
-                } else {
+                } else if (!user) {
                     try {
                         const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
                         if (token) {
@@ -1111,6 +1340,274 @@
             console.error("Firebase initialization failed:", e);
             // The game continues offline if Firebase fails
         }
+        
+        // ============================================
+        // GOOGLE AUTH & CLOUD SAVE SYSTEM
+        // ============================================
+        let currentUser = null;
+        const googleProvider = new GoogleAuthProvider();
+        
+        // Listen to Google auth state changes (separate from anonymous auth)
+        let isLoadingCloudProgress = false;
+        try {
+            onAuthStateChanged(auth, async (user) => {
+                try {
+                    // Only handle non-anonymous users for cloud sync
+                    if (user && !user.isAnonymous) {
+                        currentUser = user;
+                        console.log('User logged in:', user.displayName || user.email);
+                        updateAuthUI(user);
+                        
+                        // Prevent race condition
+                        if (!isLoadingCloudProgress) {
+                            isLoadingCloudProgress = true;
+                            try {
+                                await loadCloudProgress();
+                            } finally {
+                                isLoadingCloudProgress = false;
+                            }
+                        }
+                    } else if (!user || user.isAnonymous) {
+                        currentUser = null;
+                        console.log('User logged out or anonymous');
+                        updateAuthUI(null);
+                    }
+                } catch (error) {
+                    console.error('Auth state change error:', error);
+                    isLoadingCloudProgress = false;
+                }
+            });
+        } catch (error) {
+            console.error('Failed to set up auth listener:', error);
+        }
+        
+        // Sign in with Google
+        async function signInWithGoogle() {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                console.log('Google sign-in successful:', user.displayName);
+                showAuthFeedback('success', `Welcome, ${user.displayName}!`);
+                return user;
+            } catch (error) {
+                console.error('Google sign-in error:', error);
+                showAuthFeedback('error', 'Failed to sign in with Google');
+                throw error;
+            }
+        }
+        
+        // Sign out
+        async function signOutUser() {
+            try {
+                await signOut(auth);
+                showAuthFeedback('success', 'Signed out successfully');
+            } catch (error) {
+                console.error('Sign out error:', error);
+                showAuthFeedback('error', 'Failed to sign out');
+            }
+        }
+        
+        // Save progress to cloud
+        async function saveProgressToCloud() {
+            if (!currentUser || !db) {
+                console.log('Cloud save skipped: no user or db');
+                return false;
+            }
+            
+            try {
+                // Get data safely with fallbacks
+                const permanentStats = loadPermanentStats() || {};
+                const unlocks = loadUnlocks() || [];
+                const achievements = loadAchievements() || [];
+                
+                const progressData = {
+                    permanentStats: permanentStats,
+                    unlocks: unlocks,
+                    achievements: achievements,
+                    lastSaved: new Date().toISOString(),
+                    gameVersion: 'v1.1.1'
+                };
+                
+                const userDocRef = doc(db, 'users', currentUser.uid);
+                await setDoc(userDocRef, {
+                    displayName: currentUser.displayName || 'Player',
+                    email: currentUser.email || '',
+                    progress: progressData,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+                
+                console.log('Progress saved to cloud');
+                return true;
+            } catch (error) {
+                console.error('Cloud save error:', error);
+                showAuthFeedback('error', 'Cloud save failed: ' + error.message);
+                return false;
+            }
+        }
+        
+        // Load progress from cloud
+        async function loadCloudProgress() {
+            if (!currentUser || !db) {
+                console.log('Cloud load skipped: no user or db');
+                return false;
+            }
+            
+            try {
+                const userDocRef = doc(db, 'users', currentUser.uid);
+                const docSnap = await getDoc(userDocRef);
+                
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const progress = data.progress;
+                    
+                    if (progress) {
+                        // Ask user if they want to load cloud save
+                        const shouldLoad = await confirmCloudLoad(progress.lastSaved);
+                        if (shouldLoad) {
+                            // Save to localStorage
+                            if (progress.permanentStats) {
+                                localStorage.setItem('permanentStats', JSON.stringify(progress.permanentStats));
+                            }
+                            if (progress.unlocks) {
+                                localStorage.setItem('unlockedCards', JSON.stringify(progress.unlocks));
+                            }
+                            if (progress.achievements) {
+                                localStorage.setItem('achievements', JSON.stringify(progress.achievements));
+                            }
+                            
+                            // Reload page to apply changes
+                            location.reload();
+                        }
+                    }
+                }
+                return true;
+            } catch (error) {
+                console.error('Cloud load error:', error);
+                return false;
+            }
+        }
+        
+        // Confirm cloud load with user
+        function confirmCloudLoad(lastSaved) {
+            return new Promise((resolve) => {
+                const overlay = document.createElement('div');
+                overlay.className = 'modal-overlay active';
+                overlay.style.zIndex = '10000';
+                overlay.innerHTML = `
+                    <div class="modal-content" style="max-width: 500px; border: 3px solid #4ecdc4;">
+                        <h2 style="color: #4ecdc4; margin-top: 0;">☁️ Cloud Save Found</h2>
+                        <p style="color: #ddd; line-height: 1.6;">
+                            A saved game was found in the cloud.<br>
+                            <strong>Last saved:</strong> ${new Date(lastSaved).toLocaleString()}
+                        </p>
+                        <p style="color: #aaa; font-size: 0.9em;">
+                            Loading this will replace your current local progress.
+                        </p>
+                        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                            <button class="close-modal-btn" id="btnLoadCloud" style="background: linear-gradient(135deg, #4ecdc4, #2fb3b1); border: none; color: #102015;">
+                                Load Cloud Save
+                            </button>
+                            <button class="close-modal-btn" id="btnKeepLocal">
+                                Keep Local
+                            </button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+                
+                document.getElementById('btnLoadCloud').onclick = () => {
+                    overlay.remove();
+                    resolve(true);
+                };
+                document.getElementById('btnKeepLocal').onclick = () => {
+                    overlay.remove();
+                    resolve(false);
+                };
+            });
+        }
+        
+        // Update UI based on auth state
+        function updateAuthUI(user) {
+            const loginBtn = document.getElementById('btnGoogleLogin');
+            if (!loginBtn) return;
+            
+            if (user) {
+                loginBtn.innerHTML = `
+                    <span style="font-size: 1.1em;"></span> Cloud Sync
+                `;
+                loginBtn.onclick = () => showUserMenu(user);
+            } else {
+                loginBtn.innerHTML = `
+                    <span style="font-size: 1.1em;"></span> Cloud Sync
+                `;
+                loginBtn.onclick = signInWithGoogle;
+            }
+        }
+        
+        // Show user menu
+        function showUserMenu(user) {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.style.zIndex = '10000';
+            overlay.innerHTML = `
+                <div class="modal-content" style="max-width: 450px;">
+                    <button class="modal-close-btn" onclick="this.closest('.modal-overlay').remove();">✕</button>
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">👤</div>
+                        <h2 style="margin: 0 0 5px 0;">${user.displayName || 'Player'}</h2>
+                        <p style="color: #aaa; font-size: 0.9em; margin: 0 0 20px 0;">${user.email}</p>
+                        
+                        <button class="close-modal-btn" id="btnSaveToCloud" style="width: 100%; margin-bottom: 10px; background: linear-gradient(135deg, #4ecdc4, #2fb3b1); border: none; color: #102015;">
+                            ☁️ Save to Cloud
+                        </button>
+                        <button class="close-modal-btn" id="btnSignOut" style="width: 100%; background: linear-gradient(135deg, #ff6b6b, #ee5a52); border: none; color: #fff;">
+                            🚪 Sign Out
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            
+            document.getElementById('btnSaveToCloud').onclick = async () => {
+                const success = await saveProgressToCloud();
+                if (success) {
+                    showAuthFeedback('success', 'Progress saved to cloud!');
+                } else {
+                    showAuthFeedback('error', 'Failed to save to cloud');
+                }
+                overlay.remove();
+            };
+            
+            document.getElementById('btnSignOut').onclick = async () => {
+                await signOutUser();
+                overlay.remove();
+            };
+        }
+        
+        // Show auth feedback
+        function showAuthFeedback(type, message) {
+            const color = type === 'success' ? '#6bcf7f' : '#ff6b6b';
+            const icon = type === 'success' ? '✅' : '❌';
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.style.zIndex = '10000';
+            overlay.innerHTML = `
+                <div class="modal-content" style="max-width: 400px; border: 3px solid ${color};">
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">${icon}</div>
+                        <p style="color: #ddd; font-size: 1.1em; margin: 0;">${message}</p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            setTimeout(() => overlay.remove(), 2000);
+        }
+        
+        // Make functions globally accessible
+        window.signInWithGoogle = signInWithGoogle;
+        window.signOutUser = signOutUser;
+        window.saveProgressToCloud = saveProgressToCloud;
         
         // ============================================
         // OPTIMIZATION HELPERS
@@ -2686,7 +3183,11 @@ class DarkAtmosphericMusic {
         this.currentContext = 'menu'; // menu, gameplay, shop, victory, defeat
         this.oscillators = [];
         this.intervals = [];
+        this.timeouts = []; // Track timeouts too!
         this.gainNodes = [];
+        
+        // Create reverb buffer ONCE to save memory
+        this.reverbBuffer = this.createReverbBuffer();
         
         this.contextNames = {
             menu: '🏰 Dark Awakening',
@@ -2695,6 +3196,22 @@ class DarkAtmosphericMusic {
             victory: '👑 Triumph in Darkness',
             defeat: '💀 The Final Darkness'
         };
+    }
+    
+    createReverbBuffer() {
+        const reverbTime = 2.0;
+        const reverbDecay = 2.0;
+        const sampleRate = this.context.sampleRate;
+        const length = sampleRate * reverbTime;
+        const impulse = this.context.createBuffer(2, length, sampleRate);
+        
+        for (let channel = 0; channel < 2; channel++) {
+            const channelData = impulse.getChannelData(channel);
+            for (let i = 0; i < length; i++) {
+                channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, reverbDecay);
+            }
+        }
+        return impulse;
     }
     
     getCurrentTrackName() {
@@ -2715,10 +3232,24 @@ class DarkAtmosphericMusic {
     }
     
     stopAll() {
-        this.oscillators.forEach(osc => { try { osc.stop(); } catch(e) {} });
+        // Clear all oscillators
+        this.oscillators.forEach(osc => {
+            try {
+                osc.stop();
+                osc.disconnect();
+            } catch(e) {}
+        });
+        
+        // Clear all intervals
         this.intervals.forEach(id => clearInterval(id));
+        
+        // Clear all timeouts
+        this.timeouts.forEach(id => clearTimeout(id));
+        
+        // Clear arrays
         this.oscillators = [];
         this.intervals = [];
+        this.timeouts = [];
         this.gainNodes = [];
     }
     
@@ -2745,7 +3276,8 @@ class DarkAtmosphericMusic {
             0.001,
             this.context.currentTime + duration
         );
-        setTimeout(callback, duration * 1000);
+        const timeoutId = setTimeout(callback, duration * 1000);
+        this.timeouts.push(timeoutId);
     }
     
     fadeIn(duration) {
@@ -2893,7 +3425,7 @@ class DarkAtmosphericMusic {
         ];
         
         fanfare.forEach(note => {
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
                 if (!this.isPlaying) return;
                 this.playNote(note.freq, 0.20, note.duration, 'square');
                 this.playNote(note.freq * 2, 0.12, note.duration, 'triangle');
@@ -2901,22 +3433,25 @@ class DarkAtmosphericMusic {
                 // Percussão triunfante e rápida
                 this.playDarkPercussion(80);
             }, note.time * 1000);
+            this.timeouts.push(timeoutId);
         });
         
         // Arpejo final celebratório
         const arpeggio = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
         arpeggio.forEach((freq, index) => {
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
                 if (!this.isPlaying) return;
                 this.playNote(freq, 0.15, 0.3, 'sine');
             }, (3000 + index * 150));
+            this.timeouts.push(timeoutId);
         });
         
         // Drone victorioso
-        setTimeout(() => {
+        const droneTimeoutId = setTimeout(() => {
             if (!this.isPlaying) return;
             this.playDrone(523.25, 0.12, 'triangle');
         }, 2000);
+        this.timeouts.push(droneTimeoutId);
     }
     
     // ============================================
@@ -2933,27 +3468,31 @@ class DarkAtmosphericMusic {
         ];
         
         descent.forEach(note => {
-            setTimeout(() => {
+            const timeoutId = setTimeout(() => {
                 if (!this.isPlaying) return;
                 this.playNote(note.freq, 0.15, 0.8, 'sine');
             }, note.time * 1000);
+            this.timeouts.push(timeoutId);
         });
         
         // Bells fúnebres
-        setTimeout(() => {
+        const bell1TimeoutId = setTimeout(() => {
             if (!this.isPlaying) return;
             this.playBell(523.25, 0.08, 3.0); // C5
         }, 1000);
+        this.timeouts.push(bell1TimeoutId);
         
-        setTimeout(() => {
+        const bell2TimeoutId = setTimeout(() => {
             if (!this.isPlaying) return;
             this.playBell(392, 0.08, 3.0); // G4
         }, 2000);
+        this.timeouts.push(bell2TimeoutId);
         
         // Fade to silence
-        setTimeout(() => {
+        const fadeTimeoutId = setTimeout(() => {
             this.fadeOut(2.0, () => {});
         }, 3000);
+        this.timeouts.push(fadeTimeoutId);
     }
     
     // ============================================
@@ -2990,20 +3529,8 @@ class DarkAtmosphericMusic {
         const gain = this.context.createGain();
         const reverb = this.context.createConvolver();
         
-        // Criar impulse response simples para reverb
-        const reverbTime = 2.0;
-        const reverbDecay = 2.0;
-        const sampleRate = this.context.sampleRate;
-        const length = sampleRate * reverbTime;
-        const impulse = this.context.createBuffer(2, length, sampleRate);
-        
-        for (let channel = 0; channel < 2; channel++) {
-            const channelData = impulse.getChannelData(channel);
-            for (let i = 0; i < length; i++) {
-                channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, reverbDecay);
-            }
-        }
-        reverb.buffer = impulse;
+        // Reuse pre-created reverb buffer (CRITICAL FIX for memory leak)
+        reverb.buffer = this.reverbBuffer;
         
         osc.type = waveType;
         osc.frequency.value = freq;
@@ -7256,6 +7783,42 @@ class DarkAtmosphericMusic {
                     </div>
                 `;
             }).join('');
+        }
+
+        // ============================================
+        // BUG REPORT (EmailJS)
+        // ============================================
+        const EMAILJS_SERVICE_ID = 'service_1zs9c54';
+        const EMAILJS_TEMPLATE_ID = 'template_x3cplm6';
+        const GAME_VERSION = 'v1.1.1';
+        function sendBugReport() {
+            try {
+                const textarea = document.getElementById('bugMessage');
+                if (!textarea) { alert('Bug report unavailable.'); return; }
+                const message = (textarea.value || '').trim();
+                if (!message) { alert('Please describe the bug.'); return; }
+                if (!window.emailjs) { alert('Email service not loaded.'); return; }
+                const params = {
+                    from_name: 'Player',
+                    reply_to: '',
+                    message: message,
+                    browser: navigator.userAgent,
+                    screen: `${window.innerWidth}x${window.innerHeight}`,
+                    version: GAME_VERSION,
+                    date: new Date().toLocaleString()
+                };
+                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+                    .then(() => {
+                        document.getElementById('bugReportModal')?.classList.remove('active');
+                        textarea.value = '';
+                        alert('Bug report sent. Thank you!');
+                    })
+                    .catch(() => {
+                        alert('Failed to send the bug report. Try again later.');
+                    });
+            } catch (e) {
+                alert('Unexpected error while sending.');
+            }
         }
 
         // ============================================
