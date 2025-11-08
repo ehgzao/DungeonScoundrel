@@ -277,6 +277,21 @@
                 transition: all 0.2s ease;
             " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">⭐</span> Upgrades</button>
             
+            <button id="btnRelicsGuide" class="menu-btn-secondary" aria-label="View relics glossary" role="button" style="
+                font-family: 'Cinzel', serif;
+                font-size: clamp(0.85em, 2.2vw, 1em);
+                font-weight: 500;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                padding: 12px 18px;
+                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+                border: 1px solid #5a4a38;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
+                color: #c9a961;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">📖</span> Relics Guide</button>
+            
             <button id="btnGoogleLogin" class="menu-btn-secondary" style="
                 font-family: 'Cinzel', serif;
                 font-size: clamp(0.85em, 2.2vw, 1em);
@@ -1173,6 +1188,34 @@
             </div>
             
             <button class="close-modal-btn" id="btnCloseSoundboard" style="margin-top: 20px;">Close</button>
+        </div>
+    </div>
+    
+    <!-- Modal: Relics Guide -->
+    <div class="modal-overlay" id="relicsGuideModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <button class="modal-close-btn" onclick="document.getElementById('relicsGuideModal').classList.remove('active');">✕</button>
+            <h2>📖 Relics Guide</h2>
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="color: #aaa; font-size: 0.95em;">Complete encyclopedia of all relics in the game</p>
+            </div>
+            
+            <!-- Rarity Filter -->
+            <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
+                <button onclick="filterRelicsByRarity('all')" class="rarity-filter-btn" data-rarity="all" style="padding: 8px 16px; background: #4ecdc4; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">All</button>
+                <button onclick="filterRelicsByRarity('common')" class="rarity-filter-btn" data-rarity="common" style="padding: 8px 16px; background: #aaa; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">⚪ Common</button>
+                <button onclick="filterRelicsByRarity('uncommon')" class="rarity-filter-btn" data-rarity="uncommon" style="padding: 8px 16px; background: #6bcf7f; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🟢 Uncommon</button>
+                <button onclick="filterRelicsByRarity('rare')" class="rarity-filter-btn" data-rarity="rare" style="padding: 8px 16px; background: #4a9eff; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🔵 Rare</button>
+                <button onclick="filterRelicsByRarity('legendary')" class="rarity-filter-btn" data-rarity="legendary" style="padding: 8px 16px; background: #ff9800; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🟠 Legendary</button>
+            </div>
+            
+            <!-- Relics List -->
+            <div id="relicsGlossary" style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
+                <!-- Populated by JavaScript -->
+            </div>
+            
+            <button class="close-modal-btn" onclick="document.getElementById('relicsGuideModal').classList.remove('active');" style="margin-top: 20px;">Close</button>
         </div>
     </div>
     
