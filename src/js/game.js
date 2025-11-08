@@ -3623,7 +3623,7 @@ class DarkAtmosphericMusic {
             
             // Update player info display
             if (game.playerClass) {
-                document.getElementById('playerAvatar').src = `assets/avatar-${game.playerClass}.jpg`;
+                document.getElementById('playerAvatar').src = `assets/images/avatar-${game.playerClass}.jpg`;
                 document.getElementById('playerNameDisplay').textContent = sanitizePlayerName(playerNameInput.value);
                 document.getElementById('playerClassDisplay').textContent = game.classData.name;
                 
