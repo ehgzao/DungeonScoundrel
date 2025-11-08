@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- OPÇÃO A: Masmorra com tochas (SEM goblin) -->
+  
+  <!-- Background escuro -->
+  <rect width="100" height="100" fill="#1a1410" rx="15"/>
+  
+  <!-- Arcos góticos de pedra -->
+  <path d="M 20,80 Q 20,40 35,30 Q 50,20 65,30 Q 80,40 80,80 Z" 
+        fill="#3d2817" stroke="#2c2416" stroke-width="2"/>
+  
+  <!-- Porta central escura -->
+  <rect x="40" y="50" width="20" height="30" rx="10" 
+        fill="#0a0806" stroke="#2c2416" stroke-width="1"/>
+  
+  <!-- Tocha esquerda -->
+  <g transform="translate(25, 35)">
+    <!-- Suporte da tocha -->
+    <rect x="-2" y="0" width="4" height="30" fill="#2c2416"/>
+    <circle cx="0" cy="2" r="3" fill="#3d2817"/>
+    <!-- Fogo -->
+    <ellipse cx="0" cy="-3" rx="6" ry="8" fill="#ff8800" opacity="0.9"/>
+    <ellipse cx="0" cy="-5" rx="4" ry="6" fill="#ffaa00" opacity="0.8"/>
+    <ellipse cx="0" cy="-7" rx="2" ry="4" fill="#ffdd00" opacity="0.9"/>
+    <!-- Brilho -->
+    <circle cx="0" cy="-5" r="10" fill="#ff8800" opacity="0.2"/>
+  </g>
+  
+  <!-- Tocha direita -->
+  <g transform="translate(75, 35)">
+    <!-- Suporte da tocha -->
+    <rect x="-2" y="0" width="4" height="30" fill="#2c2416"/>
+    <circle cx="0" cy="2" r="3" fill="#3d2817"/>
+    <!-- Fogo -->
+    <ellipse cx="0" cy="-3" rx="6" ry="8" fill="#ff8800" opacity="0.9"/>
+    <ellipse cx="0" cy="-5" rx="4" ry="6" fill="#ffaa00" opacity="0.8"/>
+    <ellipse cx="0" cy="-7" rx="2" ry="4" fill="#ffdd00" opacity="0.9"/>
+    <!-- Brilho -->
+    <circle cx="0" cy="-5" r="10" fill="#ff8800" opacity="0.2"/>
+  </g>
+  
+  <!-- Ossos no chão -->
+  <g opacity="0.7">
+    <rect x="15" y="82" width="12" height="2" rx="1" fill="#e8d5b5"/>
+    <rect x="73" y="84" width="10" height="2" rx="1" fill="#e8d5b5"/>
+    <circle cx="30" cy="88" r="2.5" fill="#e8d5b5"/>
+    <circle cx="68" cy="87" r="2" fill="#e8d5b5"/>
+  </g>
+  
+  <!-- Carta de baralho no centro (10 de espadas) -->
+  <g transform="translate(50, 60)">
+    <rect x="-10" y="-15" width="20" height="25" rx="2" 
+          fill="#f5e6d3" stroke="#3d2817" stroke-width="1.5"/>
+    <!-- Símbolo 10 -->
+    <text x="0" y="-5" text-anchor="middle" font-size="10" font-weight="bold" fill="#8b3a3a">10</text>
+    <!-- Espadas pequeno -->
+    <path d="M 0,-2 L -2,2 L -1,2 L -1,4 L 1,4 L 1,2 L 2,2 Z" 
+          fill="#8b3a3a" transform="translate(0, 2)"/>
+  </g>
+  
+  <!-- Detalhes decorativos (cantos) -->
+  <circle cx="10" cy="10" r="2" fill="#d4af37" opacity="0.5"/>
+  <circle cx="90" cy="10" r="2" fill="#d4af37" opacity="0.5"/>
+</svg>

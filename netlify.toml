@@ -1,7 +1,7 @@
 # Netlify configuration for Dungeon Scoundrel
 
 [build]
-  publish = "."
+  publish = "public"
   command = "echo 'No build needed - static site'"
   
   [build.environment]

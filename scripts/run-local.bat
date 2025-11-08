@@ -39,5 +39,6 @@ echo ║ Press CTRL+C to stop the server                                ║
 echo ╚════════════════════════════════════════════════════════════════╝
 echo.
 
-REM Start Python HTTP server
-python -m http.server 8080
+REM Start Python HTTP server from public/ directory
+cd ..
+python -m http.server 8080 --directory public
