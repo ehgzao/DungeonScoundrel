@@ -779,7 +779,7 @@
         const btnWelcomeStart = document.getElementById('btnWelcomeStart');
         const btnLearnToPlay = document.getElementById('btnLearnToPlay');
         const btnWelcomeLeaderboard = document.getElementById('btnWelcomeLeaderboard');
-        const btnWelcomeUnlocks = document.getElementById('btnWelcomeUnlocks');
+        // btnWelcomeUnlocks removed - replaced by btnCodex in CODEX system
         
         // Learn to Play Modal Elements
         const learnToPlayModal = document.getElementById('learnToPlayModal');
@@ -843,7 +843,7 @@
         const btnMusicNext = document.getElementById('btnMusicNext');
         const btnTopTutorial = document.getElementById('btnTopTutorial');
         const btnTopLeaderboard = document.getElementById('btnTopLeaderboard');
-        const btnTopUnlocks = document.getElementById('btnTopUnlocks');
+        // btnTopUnlocks removed - replaced by btnTopCodex in CODEX system
         const btnTopGiveUp = document.getElementById('btnTopGiveUp'); // Give Up Button
 
         // Modals
@@ -892,7 +892,7 @@
                         <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; margin: 20px 0;">
                             <p style="font-size: 1.2em; color: #6bcf7f;"><strong>🎯 Goal:</strong> Clear all 50 cards from the dungeon deck without dying!</p>
                         </div>
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Crect fill='%232c2416' width='200' height='100'/%3E%3Ctext x='100' y='55' text-anchor='middle' fill='%23d4af37' font-size='40' font-family='serif'%3E🎴🗡️🏰%3C/text%3E%3C/svg%3E" alt="Game Preview" style="width: 100%; max-width: 300px; margin: 20px auto; border-radius: 8px;">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Crect fill='%232c2416' width='200' height='100'/%3E%3Ctext x='100' y='55' text-anchor='middle' fill='%23d4af37' font-size='40' font-family='serif'%3E%3C/text%3E%3C/svg%3E" alt="Game Preview" style="width: 100%; max-width: 300px; margin: 20px auto; border-radius: 8px;">
                     </div>
                 `
             },
@@ -1227,7 +1227,7 @@
         btnWelcomeStart.onclick = showNewGameModal;
         btnLearnToPlay.onclick = () => learnToPlayModal.classList.add('active');
         btnWelcomeLeaderboard.onclick = showLeaderboard;
-        btnWelcomeUnlocks.onclick = openUnlocks;
+        // btnWelcomeUnlocks.onclick removed - now handled by codex.js
         
         // Learn to Play Modal Hooks
         btnStartInteractiveTutorial.onclick = () => {
@@ -1506,7 +1506,7 @@
                             <div style="color: #ff6b6b; font-weight: bold; font-size: 1.2em; margin-bottom: 10px;">
                                 CLASS LOCKED
                             </div>
-                            <div style="color: #ffd700; font-size: 1.1em;">
+                            <div style="color: #ffd93d; font-size: 1.1em;">
                                 ${classData.unlockRequirement}
                             </div>
                         </div>
@@ -1581,7 +1581,7 @@
         // Top Bar Hooks
         btnTopTutorial.onclick = showTutorial;
         btnTopLeaderboard.onclick = showLeaderboard;
-        btnTopUnlocks.onclick = openUnlocks;
+        // btnTopUnlocks.onclick removed - now handled by codex.js
         btnOpenShop.onclick = openShop;
         
         // Give Up Hooks (ROBUST VERSION)
