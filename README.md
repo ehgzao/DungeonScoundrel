@@ -8,7 +8,7 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge-id/deploy-status)](https://dungeonscoundrel.netlify.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-1.1.2-blue.svg)](https://github.com/ehgzao/DungeonScoundrel/releases)
+[![Version](https://img.shields.io/badge/version-1.3.0-blue.svg)](https://github.com/ehgzao/DungeonScoundrel/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 [🎮 Play Now](https://dungeonscoundrel.netlify.app/) | [📖 Documentation](docs/) | [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues) | [✨ Request Feature](https://github.com/ehgzao/DungeonScoundrel/issues)
