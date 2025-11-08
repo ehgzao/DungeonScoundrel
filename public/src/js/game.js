@@ -6271,6 +6271,12 @@ class DarkAtmosphericMusic {
             let lifetimeStats = saved ? JSON.parse(saved) : {};
             lifetimeStats.eventsCompleted = (lifetimeStats.eventsCompleted || 0) + 1;
             localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
+        }
+        
+        function updateShopDisplay() {
+            // Clear existing items
+            shopItems.innerHTML = '';
+            shopGoldAmount.textContent = game.gold;
             
             // Check for shop discount (unlocks + relics)
             let discount = 1.0;
@@ -7049,8 +7055,8 @@ class DarkAtmosphericMusic {
         }
         
         function populateCodexAchievements() {
-            const achievementsList = document.getElementById('achievementsList');
-            if (!achievementsList) return;
+            const achievementsListCodex = document.getElementById('achievementsListCodex');
+            if (!achievementsListCodex) return;
             
             // Load unlocked achievements
             const unlockedIds = loadAchievements();
@@ -7069,7 +7075,7 @@ class DarkAtmosphericMusic {
                 });
                 html += `</div></div>`;
             });
-            achievementsList.innerHTML = html;
+            achievementsListCodex.innerHTML = html;
             
             // Update stats
             const unlockedCount = unlockedIds.length;
