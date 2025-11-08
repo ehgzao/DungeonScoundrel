@@ -3,6 +3,10 @@
 [build]
   publish = "."
   command = "echo 'No build needed - static site'"
+  
+  [build.environment]
+    # Disable secrets scanning - Firebase API keys are public by design
+    SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
 
 [[redirects]]
   from = "/*"
