@@ -7057,6 +7057,10 @@ class DarkAtmosphericMusic {
         function populateCodexAchievements() {
             const achievementsList = document.getElementById('achievementsList');
             if (!achievementsList) return;
+            
+            // Load unlocked achievements
+            const unlockedIds = loadAchievements();
+            
             const categories = ['bronze', 'silver', 'gold', 'platinum'];
             const tierColors = {bronze: '#cd7f32', silver: '#c0c0c0', gold: '#ffd700', platinum: '#e5e4e2'};
             const tierIcons = {bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎'};
@@ -7066,19 +7070,21 @@ class DarkAtmosphericMusic {
                 if (tierAchievements.length === 0) return;
                 html += `<div style="margin-bottom: 20px;"><h3 style="color: ${tierColors[tier]}; text-transform: uppercase; margin-bottom: 10px; font-family: 'Cinzel', serif; letter-spacing: 0.05em;">${tierIcons[tier]} ${tier} (${tierAchievements.length})</h3><div style="display: grid; gap: 8px;">`;
                 tierAchievements.forEach(achievement => {
-                    const unlocked = playerAchievements[achievement.id];
+                    const unlocked = unlockedIds.includes(achievement.id);
                     html += `<div style="background: ${unlocked ? 'rgba(107, 207, 127, 0.1)' : 'rgba(90, 74, 56, 0.3)'}; border: 2px solid ${unlocked ? '#6bcf7f' : '#5a4a38'}; border-radius: 6px; padding: 10px 12px; opacity: ${unlocked ? '1' : '0.6'}; transition: all 0.2s ease;" onmouseover="this.style.borderColor='${unlocked ? '#d4af37' : '#6b5a48'}'" onmouseout="this.style.borderColor='${unlocked ? '#6bcf7f' : '#5a4a38'}'"><div style="font-weight: bold; margin-bottom: 4px; color: ${unlocked ? '#6bcf7f' : '#c9a961'};">${unlocked ? '✅' : '🔒'} ${achievement.name}</div><div style="font-size: 0.85em; color: #bbb;">${achievement.description}</div></div>`;
                 });
                 html += `</div></div>`;
             });
             achievementsList.innerHTML = html;
-            const unlockedCount = Object.keys(playerAchievements).length;
+            
+            // Update stats
+            const unlockedCount = unlockedIds.length;
             const statsElement = document.getElementById('achievementStatsCodex');
             if (statsElement) statsElement.textContent = `${unlockedCount}/50 Unlocked`;
-            const bronzeCount = ACHIEVEMENTS.filter(a => a.tier === 'bronze' && playerAchievements[a.id]).length;
-            const silverCount = ACHIEVEMENTS.filter(a => a.tier === 'silver' && playerAchievements[a.id]).length;
-            const goldCount = ACHIEVEMENTS.filter(a => a.tier === 'gold' && playerAchievements[a.id]).length;
-            const platinumCount = ACHIEVEMENTS.filter(a => a.tier === 'platinum' && playerAchievements[a.id]).length;
+            const bronzeCount = ACHIEVEMENTS.filter(a => a.tier === 'bronze' && unlockedIds.includes(a.id)).length;
+            const silverCount = ACHIEVEMENTS.filter(a => a.tier === 'silver' && unlockedIds.includes(a.id)).length;
+            const goldCount = ACHIEVEMENTS.filter(a => a.tier === 'gold' && unlockedIds.includes(a.id)).length;
+            const platinumCount = ACHIEVEMENTS.filter(a => a.tier === 'platinum' && unlockedIds.includes(a.id)).length;
             const bronzeEl = document.getElementById('bronzeCountCodex');
             const silverEl = document.getElementById('silverCountCodex');
             const goldEl = document.getElementById('goldCountCodex');

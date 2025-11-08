@@ -427,21 +427,13 @@
             
             <!-- CENTER GROUP: Relics + Timer + Achievements -->
             <div style="display: flex; gap: 15px; align-items: center; justify-content: center; flex: 1;">
-                <button class="settings-btn btn-highlight" id="btnTopRelics" title="📖 Quick access to Relics encyclopedia - View all relics, their effects, and rarities" style="
-                    font-size: 0.9em; 
-                    padding: 8px 14px; 
-                    display: flex; 
-                    align-items: center; 
-                    gap: 6px;
-                    font-family: 'Cinzel', serif;
-                    font-weight: 600;
-                    letter-spacing: 0.05em;
-                    text-transform: uppercase;
-                "><span style="font-size: 1.3em;">📖</span> Relics</button>
+                <div class="achievements-compact" id="btnTopRelics" title="📖 Quick access to Relics encyclopedia - View all relics, their effects, and rarities" style="cursor: pointer; transition: all 0.2s ease;">
+                    📖 <span class="achievement-counter">Relics</span>
+                </div>
                 <div class="stat-display" id="gameTimer" title="Elapsed Time" style="font-size: 1.1em; font-weight: bold; color: #ffd700;">
                     ⏱️ <span class="stat-value">00:00</span>
                 </div>
-                <div class="achievements-compact" id="achievementsCompact" title="Click to view all achievements">
+                <div class="achievements-compact" id="achievementsCompact" title="Click to view all achievements" style="cursor: pointer;">
                     🏆 <span class="achievement-counter" id="achievementCounter">0/50</span>
                 </div>
             </div>
