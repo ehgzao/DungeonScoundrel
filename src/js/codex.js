@@ -73,36 +73,52 @@ function switchCodexTab(tabName) {
  */
 function populateUpgradesList() {
     const upgradesList = document.getElementById('upgradesList');
-    if (!upgradesList) return;
-    
-    // Check if UNLOCKS array exists
-    if (typeof UNLOCKS === 'undefined') {
-        upgradesList.innerHTML = '<p style="text-align: center; color: #aaa;">Upgrades data not available</p>';
+    if (!upgradesList) {
+        console.warn('[CODEX] upgradesList element not found');
         return;
     }
     
-    upgradesList.innerHTML = UNLOCKS.map(unlock => {
-        const isUnlocked = permanentUnlocks[unlock.id];
-        const canUnlock = !isUnlocked && unlock.check();
-        
-        return `
-        <div class="unlock-item ${isUnlocked ? 'unlocked' : (canUnlock ? '' : 'locked')}">
-            <div class="item-info">
-                <div class="item-name">${unlock.name}</div>
-                <div class="item-description">${unlock.description}</div>
-                <div class="unlock-requirement">
-                    ${isUnlocked ? '✅ UNLOCKED' : 
-                      (canUnlock ? '✨ READY TO UNLOCK!' : `🔒 ${unlock.requirement}`)}
+    // Check if UNLOCKS array exists
+    if (typeof UNLOCKS === 'undefined' || !window.UNLOCKS) {
+        console.warn('[CODEX] UNLOCKS data not available');
+        upgradesList.innerHTML = '<p style="text-align: center; color: #aaa;">Upgrades data not available. Please start a game first.</p>';
+        return;
+    }
+    
+    // Check if permanentUnlocks exists
+    if (typeof permanentUnlocks === 'undefined' || !window.permanentUnlocks) {
+        console.warn('[CODEX] permanentUnlocks not available');
+        upgradesList.innerHTML = '<p style="text-align: center; color: #aaa;">Loading upgrades data...</p>';
+        return;
+    }
+    
+    try {
+        upgradesList.innerHTML = UNLOCKS.map(unlock => {
+            const isUnlocked = permanentUnlocks[unlock.id];
+            const canUnlock = !isUnlocked && (typeof unlock.check === 'function' ? unlock.check() : false);
+            
+            return `
+            <div class="unlock-item ${isUnlocked ? 'unlocked' : (canUnlock ? '' : 'locked')}">
+                <div class="item-info">
+                    <div class="item-name">${unlock.name}</div>
+                    <div class="item-description">${unlock.description}</div>
+                    <div class="unlock-requirement">
+                        ${isUnlocked ? '✅ UNLOCKED' : 
+                          (canUnlock ? '✨ READY TO UNLOCK!' : `🔒 ${unlock.requirement}`)}
+                    </div>
                 </div>
+                ${!isUnlocked && canUnlock ? `
+                    <button class="buy-btn" onclick="unlockUpgradeWrapper('${unlock.id}')">
+                        Unlock
+                    </button>
+                ` : ''}
             </div>
-            ${!isUnlocked && canUnlock ? `
-                <button class="buy-btn" onclick="unlockUpgradeWrapper('${unlock.id}')">
-                    Unlock
-                </button>
-            ` : ''}
-        </div>
-        `;
-    }).join('');
+            `;
+        }).join('');
+    } catch (error) {
+        console.error('[CODEX] Error populating upgrades:', error);
+        upgradesList.innerHTML = '<p style="text-align: center; color: #ff6b6b;">Error loading upgrades. Please refresh the page.</p>';
+    }
 }
 
 /**
@@ -111,11 +127,15 @@ function populateUpgradesList() {
  */
 function populateRelicsGlossary(rarityFilter = 'all') {
     const glossary = document.getElementById('relicsGlossary');
-    if (!glossary) return;
+    if (!glossary) {
+        console.warn('[CODEX] relicsGlossary element not found');
+        return;
+    }
     
     // Check if RELICS array exists
-    if (typeof RELICS === 'undefined') {
-        glossary.innerHTML = '<p style="text-align: center; color: #aaa;">Relics data not available</p>';
+    if (typeof RELICS === 'undefined' || !window.RELICS) {
+        console.warn('[CODEX] RELICS data not available');
+        glossary.innerHTML = '<p style="text-align: center; color: #aaa;">Relics data not available. Please start a game first.</p>';
         return;
     }
     
@@ -205,11 +225,15 @@ function createRelicCard(relic, colors) {
  */
 function populateAchievementsList() {
     const achievementsList = document.getElementById('achievementsList');
-    if (!achievementsList) return;
+    if (!achievementsList) {
+        console.warn('[CODEX] achievementsList element not found');
+        return;
+    }
     
     // Check if ACHIEVEMENTS array exists
-    if (typeof ACHIEVEMENTS === 'undefined') {
-        achievementsList.innerHTML = '<p style="text-align: center; color: #aaa;">Achievements data not available</p>';
+    if (typeof ACHIEVEMENTS === 'undefined' || !window.ACHIEVEMENTS) {
+        console.warn('[CODEX] ACHIEVEMENTS data not available');
+        achievementsList.innerHTML = '<p style="text-align: center; color: #aaa;">Achievements data not available. Please start a game first.</p>';
         return;
     }
     
@@ -323,16 +347,10 @@ function filterRelicsByRarity(rarity) {
 // ============================================
 
 // Wait for DOM and game to be ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeCodex);
-} else {
-    initializeCodex();
-}
-
 function initializeCodex() {
     console.log('[CODEX] Initializing CODEX system...');
     
-    // Set up button event listeners
+    // Set up button event listeners with null safety
     const btnCodex = document.getElementById('btnCodex');
     const btnTopRelics = document.getElementById('btnTopRelics');
     const btnTopCodex = document.getElementById('btnTopCodex');
@@ -340,19 +358,34 @@ function initializeCodex() {
     if (btnCodex) {
         btnCodex.onclick = () => openCodex('upgrades');
         console.log('[CODEX] Welcome screen button initialized');
+    } else {
+        console.warn('[CODEX] btnCodex not found - will retry later');
     }
     
     if (btnTopRelics) {
         btnTopRelics.onclick = () => openCodex('relics');
         console.log('[CODEX] In-game Relics button initialized');
+    } else {
+        console.warn('[CODEX] btnTopRelics not found - OK if not in game yet');
     }
     
     if (btnTopCodex) {
         btnTopCodex.onclick = () => openCodex('upgrades');
         console.log('[CODEX] In-game Codex button initialized');
+    } else {
+        console.warn('[CODEX] btnTopCodex not found - OK if not in game yet');
     }
     
     console.log('[CODEX] Initialization complete');
+}
+
+// Initialize after DOM is fully loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(initializeCodex, 100); // Small delay to ensure game.js elements exist
+    });
+} else {
+    setTimeout(initializeCodex, 100); // Small delay to ensure game.js elements exist
 }
 
 // ============================================
