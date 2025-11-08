@@ -1967,9 +1967,10 @@
             }
         }
         
-        // Tooltip System
+        // Tooltip System (Global scope for inline HTML handlers)
         let activeTooltip = null;
-        function showTooltip(element, text, position = 'top') {
+        
+        window.showTooltip = function(element, text, position = 'top') {
             hideTooltip(); // Hide any existing tooltip
             
             const tooltip = document.createElement('div');
@@ -2006,14 +2007,14 @@
             }
             
             activeTooltip = tooltip;
-        }
+        };
         
-        function hideTooltip() {
+        window.hideTooltip = function() {
             if (activeTooltip) {
                 activeTooltip.remove();
                 activeTooltip = null;
             }
-        }
+        };
         
         // Focus Management for modals
         function trapFocus(element) {
