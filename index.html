@@ -1470,6 +1470,13 @@
                 return false;
             }
             
+            // Check if we already asked in this session
+            const askedKey = `cloudSaveAsked_${currentUser.uid}`;
+            if (sessionStorage.getItem(askedKey)) {
+                console.log('Cloud save already checked this session');
+                return false;
+            }
+            
             try {
                 const userDocRef = doc(db, 'users', currentUser.uid);
                 const docSnap = await getDoc(userDocRef);
@@ -1479,6 +1486,9 @@
                     const progress = data.progress;
                     
                     if (progress) {
+                        // Mark as asked in this session
+                        sessionStorage.setItem(askedKey, 'true');
+                        
                         // Ask user if they want to load cloud save
                         const shouldLoad = await confirmCloudLoad(progress.lastSaved);
                         if (shouldLoad) {
@@ -1496,11 +1506,19 @@
                             // Reload page to apply changes
                             location.reload();
                         }
+                    } else {
+                        // No cloud save found, mark as asked
+                        sessionStorage.setItem(askedKey, 'true');
                     }
+                } else {
+                    // No document found, mark as asked
+                    sessionStorage.setItem(askedKey, 'true');
                 }
                 return true;
             } catch (error) {
                 console.error('Cloud load error:', error);
+                // Mark as asked even on error to prevent loop
+                sessionStorage.setItem(askedKey, 'true');
                 return false;
             }
         }
