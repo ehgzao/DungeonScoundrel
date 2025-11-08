@@ -1,0 +1,331 @@
+/* ============================================ */
+/* MOBILE LANDSCAPE OPTIMIZATIONS */
+/* Dungeon Scoundrel - Mobile Responsive Styles */
+/* ============================================ */
+
+/* Mobile Landscape - Screens < 600px height */
+@media only screen and (max-height: 600px) and (orientation: landscape) {
+    
+    /* ========== WELCOME SCREEN ========== */
+    #welcomeScreen {
+        height: 100vh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        padding: 20px 10px !important;
+    }
+    
+    #welcomeScreen img[alt="Dungeon Scoundrel"] {
+        max-width: 60vw !important;
+        margin-bottom: 10px !important;
+    }
+    
+    #welcomeScreen p {
+        font-size: 0.8em !important;
+        margin-bottom: 8px !important;
+    }
+    
+    #welcomeScreen button {
+        padding: 8px 16px !important;
+        font-size: 0.85em !important;
+        min-height: 35px !important;
+    }
+    
+    /* ========== GAME SCREEN ========== */
+    .game-screen {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100vh !important;
+        width: 100vw !important;
+        overflow: hidden !important;
+    }
+    
+    /* ========== TOP BAR ========== */
+    .top-bar {
+        padding: 5px 10px !important;
+        min-height: 40px !important;
+        flex-shrink: 0 !important;
+        width: 100% !important;
+    }
+    
+    .stat-display {
+        font-size: 0.75em !important;
+        padding: 4px 8px !important;
+    }
+    
+    .achievements-compact {
+        font-size: 0.75em !important;
+        padding: 4px 8px !important;
+    }
+    
+    .settings-btn {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 1.1em !important;
+        padding: 4px !important;
+    }
+    
+    /* ========== GAME CONTENT AREA ========== */
+    .game-content {
+        display: flex !important;
+        flex: 1 !important;
+        width: 100% !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+    
+    /* ========== LEFT SIDEBAR (Player) ========== */
+    .left-sidebar {
+        max-width: 120px !important;
+        min-width: 110px !important;
+        padding: 8px !important;
+        flex-shrink: 0 !important;
+    }
+    
+    .class-portrait-container {
+        max-width: 100px !important;
+        max-height: 120px !important;
+    }
+    
+    .class-name {
+        font-size: 0.9em !important;
+        padding: 4px !important;
+    }
+    
+    .class-ability {
+        font-size: 0.7em !important;
+        padding: 4px !important;
+    }
+    
+    .relics-panel {
+        max-height: 80px !important;
+    }
+    
+    .relic-item {
+        font-size: 1em !important;
+        padding: 3px !important;
+    }
+    
+    /* ========== CENTER AREA (CRITICAL) ========== */
+    .center-area {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 5px !important;
+        gap: 5px !important;
+        overflow: visible !important;
+        min-width: 0 !important; /* Allow shrinking */
+    }
+    
+    .stage-area {
+        padding: 8px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        flex: 1 !important;
+    }
+    
+    .stage-room {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 5px !important;
+        justify-content: center !important;
+        min-height: 100px !important;
+    }
+    
+    .card {
+        width: 70px !important;
+        height: 95px !important;
+        font-size: 0.7em !important;
+    }
+    
+    .card-name {
+        font-size: 0.65em !important;
+        padding: 2px !important;
+    }
+    
+    .card-value {
+        font-size: 1.3em !important;
+    }
+    
+    /* ========== RIGHT SIDEBAR (Held Card) ========== */
+    .right-sidebar {
+        max-width: 100px !important;
+        min-width: 90px !important;
+        padding: 8px !important;
+        flex-shrink: 0 !important;
+    }
+    
+    .held-card-container {
+        max-width: 80px !important;
+    }
+    
+    .held-card {
+        width: 75px !important;
+        height: 100px !important;
+    }
+    
+    /* ========== CONTROLS (Buttons) ========== */
+    .controls {
+        display: flex !important;
+        position: static !important;
+        gap: 10px !important;
+        justify-content: center !important;
+        margin: 10px auto !important;
+        padding: 8px !important;
+        width: 100% !important;
+        flex-wrap: wrap !important;
+    }
+    
+    .controls .btn {
+        font-size: 0.85em !important;
+        padding: 10px 16px !important;
+        min-height: 40px !important;
+        min-width: 110px !important;
+        flex: 0 1 auto !important;
+    }
+    
+    .action-btn {
+        font-size: 0.8em !important;
+        padding: 8px 12px !important;
+        min-height: 35px !important;
+    }
+    
+    /* ========== BOTTOM BAR ========== */
+    .bottom-bar {
+        min-height: auto !important;
+        padding: 8px !important;
+        flex-shrink: 0 !important;
+    }
+    
+    .center-stage {
+        padding: 8px !important;
+        gap: 8px !important;
+    }
+    
+    /* ========== MODALS ========== */
+    .modal-content {
+        max-width: 95vw !important;
+        max-height: 85vh !important;
+        padding: 15px !important;
+        margin: 10px !important;
+    }
+    
+    .modal-content h2 {
+        font-size: 1.2em !important;
+        margin-bottom: 10px !important;
+    }
+    
+    .modal-content p {
+        font-size: 0.85em !important;
+    }
+    
+    .modal-content button {
+        font-size: 0.85em !important;
+        padding: 8px 12px !important;
+    }
+    
+    /* ========== CLASS SELECTION ========== */
+    .classes-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+    
+    .class-card {
+        padding: 10px !important;
+    }
+    
+    .class-card-portrait {
+        height: 80px !important;
+    }
+    
+    .class-card h3 {
+        font-size: 0.9em !important;
+    }
+    
+    .class-card p {
+        font-size: 0.75em !important;
+    }
+    
+    /* ========== MISC ========== */
+    #scoreText {
+        font-size: 1.2em !important;
+    }
+    
+    .dungeon-empty-text {
+        font-size: 0.8em !important;
+        padding: 10px !important;
+    }
+    
+    #musicVolume, #welcomeMusicVolume {
+        width: 60px !important;
+        height: 18px !important;
+    }
+    
+    /* ========== CODEX SYSTEM ========== */
+    .rarity-filter-btn,
+    .upgrade-filter-btn,
+    .achievement-filter-btn {
+        padding: 6px 12px !important;
+        font-size: 0.75em !important;
+    }
+    
+    .codex-tab {
+        padding: 8px 12px !important;
+        font-size: 0.8em !important;
+    }
+    
+    /* ========== HIDE NON-ESSENTIAL ========== */
+    @media (max-height: 500px) {
+        .achievements-compact {
+            display: none !important;
+        }
+        
+        .class-ability {
+            display: none !important;
+        }
+        
+        #nowPlayingDisplay {
+            display: none !important;
+        }
+    }
+}
+
+/* ============================================ */
+/* EXTRA SMALL MOBILE LANDSCAPE (< 500px) */
+/* ============================================ */
+@media only screen and (max-height: 500px) and (orientation: landscape) {
+    .top-bar {
+        padding: 3px 8px !important;
+        min-height: 35px !important;
+    }
+    
+    .stat-display, .achievements-compact {
+        font-size: 0.65em !important;
+        padding: 3px 6px !important;
+    }
+    
+    .card {
+        width: 60px !important;
+        height: 85px !important;
+    }
+    
+    .left-sidebar, .right-sidebar {
+        max-width: 100px !important;
+        min-width: 85px !important;
+    }
+    
+    .controls .btn {
+        font-size: 0.75em !important;
+        padding: 8px 12px !important;
+        min-width: 90px !important;
+    }
+}
+
+/* ============================================ */
+/* MOBILE PORTRAIT WARNING */
+/* ============================================ */
+@media only screen and (orientation: portrait) and (max-width: 768px) {
+    #orientationWarning {
+        display: flex !important;
+    }
+}
