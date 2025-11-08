@@ -7110,6 +7110,89 @@ class DarkAtmosphericMusic {
             });
         }
         
+        function filterUpgradesByStatus(status) {
+            const upgradesList = document.getElementById('upgradesList');
+            if (!upgradesList) return;
+            
+            let filteredUnlocks = UNLOCKS;
+            
+            if (status === 'unlocked') {
+                filteredUnlocks = UNLOCKS.filter(u => permanentUnlocks[u.id]);
+            } else if (status === 'available') {
+                filteredUnlocks = UNLOCKS.filter(u => !permanentUnlocks[u.id] && u.check());
+            } else if (status === 'locked') {
+                filteredUnlocks = UNLOCKS.filter(u => !permanentUnlocks[u.id] && !u.check());
+            }
+            
+            upgradesList.innerHTML = filteredUnlocks.map(unlock => {
+                const isUnlocked = permanentUnlocks[unlock.id];
+                const canUnlock = !isUnlocked && unlock.check();
+                return `<div class="unlock-item ${isUnlocked ? 'unlocked' : (canUnlock ? '' : 'locked')}"><div class="item-info"><div class="item-name">${unlock.name}</div><div class="item-description">${unlock.description}</div><div class="unlock-requirement">${isUnlocked ? '✅ UNLOCKED' : (canUnlock ? '✨ READY TO UNLOCK!' : `🔒 ${unlock.requirement}`)}</div></div>${!isUnlocked && canUnlock ? `<button class="buy-btn" onclick="unlockUpgradeWrapper('${unlock.id}')">Unlock</button>` : ''}</div>`;
+            }).join('');
+            
+            // Update button styles
+            document.querySelectorAll('.upgrade-filter-btn').forEach(btn => {
+                if (btn.dataset.status === status) {
+                    btn.classList.add('active');
+                    btn.style.opacity = '1';
+                    btn.style.transform = 'scale(1.05)';
+                } else {
+                    btn.classList.remove('active');
+                    btn.style.opacity = '0.6';
+                    btn.style.transform = 'scale(1)';
+                }
+            });
+        }
+        
+        function filterAchievementsByTier(tier) {
+            const achievementsListCodex = document.getElementById('achievementsListCodex');
+            if (!achievementsListCodex) return;
+            
+            const unlockedIds = loadAchievements();
+            let filteredAchievements = tier === 'all' ? ACHIEVEMENTS : ACHIEVEMENTS.filter(a => a.tier === tier);
+            
+            const tierColors = {bronze: '#cd7f32', silver: '#c0c0c0', gold: '#ffd700', platinum: '#e5e4e2'};
+            const tierIcons = {bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎'};
+            
+            let html = '';
+            
+            if (tier === 'all') {
+                const categories = ['bronze', 'silver', 'gold', 'platinum'];
+                categories.forEach(t => {
+                    const tierAchievements = ACHIEVEMENTS.filter(a => a.tier === t);
+                    if (tierAchievements.length === 0) return;
+                    html += `<div style="margin-bottom: 20px;"><h3 style="color: ${tierColors[t]}; text-transform: uppercase; margin-bottom: 10px; font-family: 'Cinzel', serif; letter-spacing: 0.05em;">${tierIcons[t]} ${t} (${tierAchievements.length})</h3><div style="display: grid; gap: 8px;">`;
+                    tierAchievements.forEach(achievement => {
+                        const unlocked = unlockedIds.includes(achievement.id);
+                        html += `<div style="background: ${unlocked ? 'rgba(107, 207, 127, 0.1)' : 'rgba(90, 74, 56, 0.3)'}; border: 2px solid ${unlocked ? '#6bcf7f' : '#5a4a38'}; border-radius: 6px; padding: 10px 12px; opacity: ${unlocked ? '1' : '0.6'}; transition: all 0.2s ease;" onmouseover="this.style.borderColor='${unlocked ? '#d4af37' : '#6b5a48'}'" onmouseout="this.style.borderColor='${unlocked ? '#6bcf7f' : '#5a4a38'}'"><div style="font-weight: bold; margin-bottom: 4px; color: ${unlocked ? '#6bcf7f' : '#c9a961'};">${unlocked ? '✅' : '🔒'} ${achievement.icon} ${achievement.title}</div><div style="font-size: 0.85em; color: #bbb;">${achievement.description}</div></div>`;
+                    });
+                    html += `</div></div>`;
+                });
+            } else {
+                html += '<div style="display: grid; gap: 8px;">';
+                filteredAchievements.forEach(achievement => {
+                    const unlocked = unlockedIds.includes(achievement.id);
+                    html += `<div style="background: ${unlocked ? 'rgba(107, 207, 127, 0.1)' : 'rgba(90, 74, 56, 0.3)'}; border: 2px solid ${unlocked ? '#6bcf7f' : '#5a4a38'}; border-radius: 6px; padding: 10px 12px; opacity: ${unlocked ? '1' : '0.6'}; transition: all 0.2s ease;" onmouseover="this.style.borderColor='${unlocked ? '#d4af37' : '#6b5a48'}'" onmouseout="this.style.borderColor='${unlocked ? '#6bcf7f' : '#5a4a38'}'"><div style="font-weight: bold; margin-bottom: 4px; color: ${unlocked ? '#6bcf7f' : '#c9a961'};">${unlocked ? '✅' : '🔒'} ${achievement.icon} ${achievement.title}</div><div style="font-size: 0.85em; color: #bbb;">${achievement.description}</div></div>`;
+                });
+                html += '</div>';
+            }
+            
+            achievementsListCodex.innerHTML = html;
+            
+            // Update button styles
+            document.querySelectorAll('.achievement-filter-btn').forEach(btn => {
+                if (btn.dataset.tier === tier) {
+                    btn.classList.add('active');
+                    btn.style.opacity = '1';
+                    btn.style.transform = 'scale(1.05)';
+                } else {
+                    btn.classList.remove('active');
+                    btn.style.opacity = '0.6';
+                    btn.style.transform = 'scale(1)';
+                }
+            });
+        }
+        
         // Initialize CODEX buttons
         const btnCodex = document.getElementById('btnCodex');
         const btnTopRelics = document.getElementById('btnTopRelics');
@@ -7127,6 +7210,8 @@ class DarkAtmosphericMusic {
         window.openCodex = openCodex;
         window.switchCodexTab = switchCodexTab;
         window.filterRelicsByRarity = filterCodexRelicsByRarity;
+        window.filterUpgradesByStatus = filterUpgradesByStatus;
+        window.filterAchievementsByTier = filterAchievementsByTier;
         console.log('[CODEX] System initialized successfully');
 
         

@@ -1234,9 +1234,16 @@
             
             <!-- Tab Content: Upgrades -->
             <div id="codexContentUpgrades" class="codex-content" style="display: block;">
-                <p style="text-align: center; color: #aaa; margin-bottom: 20px;">
+                <p style="text-align: center; color: #aaa; margin-bottom: 15px;">
                     Permanent progress that continues between runs!
                 </p>
+                <!-- Status Filter -->
+                <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
+                    <button onclick="filterUpgradesByStatus('all')" class="upgrade-filter-btn active" data-status="all" style="padding: 8px 16px; background: #4ecdc4; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 1; transition: all 0.2s ease;">All</button>
+                    <button onclick="filterUpgradesByStatus('unlocked')" class="upgrade-filter-btn" data-status="unlocked" style="padding: 8px 16px; background: #6bcf7f; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">✅ Unlocked</button>
+                    <button onclick="filterUpgradesByStatus('available')" class="upgrade-filter-btn" data-status="available" style="padding: 8px 16px; background: #ffd93d; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">✨ Available</button>
+                    <button onclick="filterUpgradesByStatus('locked')" class="upgrade-filter-btn" data-status="locked" style="padding: 8px 16px; background: #888; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">🔒 Locked</button>
+                </div>
                 <div id="upgradesList" style="max-height: 450px; overflow-y: auto; padding-right: 10px;">
                     <!-- Populated by JavaScript -->
                 </div>
@@ -1259,13 +1266,21 @@
             
             <!-- Tab Content: Achievements -->
             <div id="codexContentAchievements" class="codex-content" style="display: none;">
-                <p style="text-align: center; color: #aaa; margin-bottom: 20px;">
+                <p style="text-align: center; color: #aaa; margin-bottom: 15px;">
                     <span id="achievementStatsCodex">0/50 Unlocked</span> | 
                     🥉 <span id="bronzeCountCodex">0/25</span> | 
                     🥈 <span id="silverCountCodex">0/15</span> | 
                     🥇 <span id="goldCountCodex">0/9</span> | 
                     💎 <span id="platinumCountCodex">0/1</span>
                 </p>
+                <!-- Tier Filter -->
+                <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
+                    <button onclick="filterAchievementsByTier('all')" class="achievement-filter-btn active" data-tier="all" style="padding: 8px 16px; background: #4ecdc4; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 1; transition: all 0.2s ease;">All</button>
+                    <button onclick="filterAchievementsByTier('bronze')" class="achievement-filter-btn" data-tier="bronze" style="padding: 8px 16px; background: #cd7f32; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">🥉 Bronze</button>
+                    <button onclick="filterAchievementsByTier('silver')" class="achievement-filter-btn" data-tier="silver" style="padding: 8px 16px; background: #c0c0c0; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">🥈 Silver</button>
+                    <button onclick="filterAchievementsByTier('gold')" class="achievement-filter-btn" data-tier="gold" style="padding: 8px 16px; background: #ffd700; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">🥇 Gold</button>
+                    <button onclick="filterAchievementsByTier('platinum')" class="achievement-filter-btn" data-tier="platinum" style="padding: 8px 16px; background: #e5e4e2; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">💎 Platinum</button>
+                </div>
                 <div id="achievementsListCodex" style="max-height: 450px; overflow-y: auto; padding-right: 10px;">
                     <!-- Populated by JavaScript -->
                 </div>
