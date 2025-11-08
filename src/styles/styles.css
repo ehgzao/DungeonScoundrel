@@ -48,17 +48,6 @@
             width: 100vw;
             overflow: hidden; /* Prevents scrolling of the whole page */
         }
-        
-        /* Desktop: Scale down to 85% for better fit */
-        @media (min-width: 1024px) {
-            body {
-                zoom: 0.85;
-                transform: scale(0.85);
-                transform-origin: 0 0;
-                -moz-transform: scale(0.85);
-                -moz-transform-origin: 0 0;
-            }
-        }
 
         /* Main game container - now hidden by default */
         .game-wrapper {
