@@ -6269,34 +6269,14 @@ class DarkAtmosphericMusic {
             });
             
             // Disable game buttons while event is active
-            btnDrawRoom.disabled = true;
-            btnAvoidRoom.disabled = true;
-            eventModal.classList.add('active');
-        }
-        
-        function openShop() {
-            updateShopDisplay();
-            // Disable game buttons
-            btnDrawRoom.disabled = true;
-            btnAvoidRoom.disabled = true;
-            shopModal.classList.add('active');
             
-            // Switch to shop music
-            music.switchContext('shop');
+            eventModal.classList.remove('active');
             
-            // Track shop visit for score penalty AND achievements
-            game.stats.shopsVisited = (game.stats.shopsVisited || 0) + 1;
-            
+            // Track event completion for achievement
             const saved = localStorage.getItem('scoundrel_lifetime_stats');
             let lifetimeStats = saved ? JSON.parse(saved) : {};
-            lifetimeStats.shopsVisited = (lifetimeStats.shopsVisited || 0) + 1;
+            lifetimeStats.eventsCompleted = (lifetimeStats.eventsCompleted || 0) + 1;
             localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
-            checkAchievements();
-        }
-
-        function updateShopDisplay() {
-            shopGoldAmount.textContent = game.gold;
-            shopItems.innerHTML = ''; // Clear shop
             
             // Check for shop discount (unlocks + relics)
             let discount = 1.0;
