@@ -277,6 +277,38 @@
                 min-height: 35px !important;
             }
             
+            /* CRITICAL: Control Buttons Must Be Visible */
+            .controls {
+                display: flex !important;
+                position: static !important;
+                gap: 10px !important;
+                justify-content: center !important;
+                margin: 10px auto !important;
+                padding: 8px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            
+            .controls .btn {
+                font-size: 0.85em !important;
+                padding: 10px 16px !important;
+                min-height: 40px !important;
+                min-width: 110px !important;
+                flex: 0 1 auto !important;
+            }
+            
+            /* Bottom Bar - Compact */
+            .bottom-bar {
+                min-height: auto !important;
+                padding: 8px !important;
+            }
+            
+            /* Center Stage - More Compact */
+            .center-stage {
+                padding: 8px !important;
+                gap: 8px !important;
+            }
+            
             /* Modals - Fit Screen */
             .modal-content {
                 max-width: 95vw !important;
