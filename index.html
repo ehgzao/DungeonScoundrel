@@ -1391,8 +1391,26 @@
                 return user;
             } catch (error) {
                 console.error('Google sign-in error:', error);
-                showAuthFeedback('error', 'Failed to sign in with Google');
-                throw error;
+                
+                // Handle specific error cases
+                let errorMessage = 'Failed to sign in';
+                
+                if (error.code === 'auth/popup-closed-by-user') {
+                    errorMessage = 'Sign in cancelled';
+                    console.log('User closed the popup');
+                    return; // Don't show error for user cancellation
+                } else if (error.code === 'auth/popup-blocked') {
+                    errorMessage = 'Popup blocked by browser. Please allow popups for this site.';
+                } else if (error.code === 'auth/cancelled-popup-request') {
+                    console.log('Popup request cancelled');
+                    return; // Don't show error
+                } else if (error.code === 'auth/unauthorized-domain') {
+                    errorMessage = 'This domain is not authorized. Contact support.';
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    errorMessage = 'Google sign-in is not enabled. Contact support.';
+                }
+                
+                showAuthFeedback('error', errorMessage);
             }
         }
         
@@ -1586,22 +1604,64 @@
         
         // Show auth feedback
         function showAuthFeedback(type, message) {
-            const color = type === 'success' ? '#6bcf7f' : '#ff6b6b';
-            const icon = type === 'success' ? '✅' : '❌';
+            const isSuccess = type === 'success';
+            const color = isSuccess ? '#6bcf7f' : '#ff6b6b';
+            const icon = isSuccess ? '✅' : '⚠️'; // Changed X to warning icon
+            const duration = isSuccess ? 2000 : 3000; // Error stays longer
             
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay active';
             overlay.style.zIndex = '10000';
             overlay.innerHTML = `
-                <div class="modal-content" style="max-width: 400px; border: 3px solid ${color};">
-                    <div style="text-align: center; padding: 20px;">
-                        <div style="font-size: 3em; margin-bottom: 10px;">${icon}</div>
-                        <p style="color: #ddd; font-size: 1.1em; margin: 0;">${message}</p>
+                <div class="modal-content" style="
+                    max-width: 420px; 
+                    border: 2px solid ${color};
+                    background: linear-gradient(180deg, #2a2318 0%, #1a1410 100%);
+                    box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+                    animation: modalSlideIn 0.3s ease;
+                ">
+                    <div style="text-align: center; padding: 30px 20px;">
+                        <div style="font-size: 3.5em; margin-bottom: 15px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));">${icon}</div>
+                        <p style="
+                            color: ${color}; 
+                            font-size: 1.15em; 
+                            font-weight: 600;
+                            margin: 0 0 10px 0;
+                            font-family: 'Cinzel', serif;
+                            text-transform: uppercase;
+                            letter-spacing: 0.05em;
+                        ">${isSuccess ? 'Success' : 'Notice'}</p>
+                        <p style="
+                            color: #ddd; 
+                            font-size: 1em; 
+                            margin: 0;
+                            line-height: 1.5;
+                        ">${message}</p>
+                        ${!isSuccess ? `
+                            <button onclick="this.closest('.modal-overlay').remove()" style="
+                                margin-top: 20px;
+                                padding: 10px 24px;
+                                background: linear-gradient(135deg, #c9a961, #a68948);
+                                border: 2px solid #d4af37;
+                                color: #1a1410;
+                                font-family: 'Cinzel', serif;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                letter-spacing: 0.1em;
+                                cursor: pointer;
+                                border-radius: 4px;
+                                font-size: 0.9em;
+                            ">OK</button>
+                        ` : ''}
                     </div>
                 </div>
             `;
             document.body.appendChild(overlay);
-            setTimeout(() => overlay.remove(), 2000);
+            
+            // Auto-close for success, manual close for errors
+            if (isSuccess) {
+                setTimeout(() => overlay.remove(), duration);
+            }
         }
         
         // Make functions globally accessible
@@ -7581,7 +7641,42 @@ class DarkAtmosphericMusic {
 
             } catch (e) {
                 console.error("Error fetching leaderboard:", e);
-                listDiv.innerHTML = `<p style="text-align: center; color: #ff6b6b;">Error loading: ${e.message}</p>`;
+                
+                // Better error messaging
+                let errorMsg = 'Could not load leaderboard';
+                let helpText = '';
+                
+                if (e.code === 'permission-denied' || e.message.includes('permission')) {
+                    errorMsg = 'Leaderboard Temporarily Unavailable';
+                    helpText = 'The developer is configuring the database. Try again in a few minutes!';
+                } else if (e.code === 'unavailable') {
+                    errorMsg = 'Connection Issue';
+                    helpText = 'Check your internet connection and try again.';
+                } else {
+                    helpText = e.message || 'Unknown error';
+                }
+                
+                listDiv.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <div style="font-size: 3em; margin-bottom: 15px;">⚠️</div>
+                        <p style="color: #ffd93d; font-size: 1.2em; margin-bottom: 10px;">${errorMsg}</p>
+                        <p style="color: #aaa; font-size: 0.95em; line-height: 1.6;">${helpText}</p>
+                        <button onclick="loadLeaderboardForDifficulty('${difficulty}')" style="
+                            margin-top: 20px;
+                            padding: 10px 24px;
+                            background: linear-gradient(135deg, #c9a961, #a68948);
+                            border: 2px solid #d4af37;
+                            color: #1a1410;
+                            font-family: 'Cinzel', serif;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            letter-spacing: 0.1em;
+                            cursor: pointer;
+                            border-radius: 4px;
+                            font-size: 0.9em;
+                        ">Try Again</button>
+                    </div>
+                `;
             }
         }
 
