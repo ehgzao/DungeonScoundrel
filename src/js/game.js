@@ -6404,6 +6404,26 @@ class DarkAtmosphericMusic {
             }
         }
         
+        function openShop() {
+            updateShopDisplay();
+            // Disable game buttons
+            btnDrawRoom.disabled = true;
+            btnAvoidRoom.disabled = true;
+            shopModal.classList.add('active');
+            
+            // Switch to shop music
+            music.switchContext('shop');
+            
+            // Track shop visit for score penalty AND achievements
+            game.stats.shopsVisited = (game.stats.shopsVisited || 0) + 1;
+            
+            const saved = localStorage.getItem('scoundrel_lifetime_stats');
+            let lifetimeStats = saved ? JSON.parse(saved) : {};
+            lifetimeStats.shopsVisited = (lifetimeStats.shopsVisited || 0) + 1;
+            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
+            checkAchievements();
+        }
+        
         function closeShop() {
             shopModal.classList.remove('active');
             // Return to gameplay music
