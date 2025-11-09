@@ -5570,6 +5570,30 @@ class DarkAtmosphericMusic {
                     <div class="card-suit">${card.suit}</div>
                 `;
                 
+                // DAMAGE PREVIEW for monster cards
+                if (type === 'monster' && card.numValue > 0) {
+                    const baseWeapon = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
+                    const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+                    const berserkBonus = game.berserkStacks > 0 ? 5 : 0;
+                    const totalDamage = baseWeapon + powerBonus + berserkBonus;
+                    const netDamage = card.numValue - totalDamage;
+                    
+                    const dmgBadge = document.createElement('div');
+                    dmgBadge.style.cssText = 'position:absolute;top:5px;left:5px;padding:4px 8px;border-radius:8px;font-size:0.75em;font-weight:bold;box-shadow:0 2px 4px rgba(0,0,0,0.3);color:#fff;';
+                    
+                    if (totalDamage === 0) {
+                        dmgBadge.textContent = '✊ 0';
+                        dmgBadge.style.background = 'linear-gradient(135deg,#999,#666)';
+                    } else if (netDamage <= 0) {
+                        dmgBadge.textContent = `⚔️ ${totalDamage}`;
+                        dmgBadge.style.background = 'linear-gradient(135deg,#6bcf7f,#2fbf71)';
+                    } else {
+                        dmgBadge.textContent = `⚔️ ${totalDamage} (-${netDamage})`;
+                        dmgBadge.style.background = 'linear-gradient(135deg,#ff6b6b,#ee5a52)';
+                    }
+                    cardEl.appendChild(dmgBadge);
+                }
+                
                 // Bell relic: Show gold value on cards
                 if (game.relics.some(r => r.id === 'bell') && card.numValue > 0) {
                     const goldBadge = document.createElement('div');
