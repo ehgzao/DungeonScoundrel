@@ -2838,55 +2838,70 @@ class DarkAtmosphericMusic {
             };
         }
         
+        // Helper: Update all soundboard buttons to PLAY state
+        function updateSoundboardButtons() {
+            ['Menu', 'Gameplay', 'Shop', 'Victory', 'Defeat'].forEach(theme => {
+                const btn = document.getElementById(`btnPlay${theme}`);
+                if (btn) {
+                    const isCurrentTheme = music.currentContext === theme.toLowerCase();
+                    const isPlaying = music.isPlaying && isCurrentTheme;
+                    btn.innerHTML = isPlaying ? '⏸️ PAUSE' : '▶️ PLAY';
+                }
+            });
+        }
+        
         if (btnCloseSoundboard) {
             btnCloseSoundboard.onclick = () => {
                 soundboardModal.classList.remove('active');
-                // CRITICAL FIX: Stop music when closing soundboard!
+                
+                // COMPLETE FIX: Stop music AND return to menu theme
                 music.stop();
-                console.log('[MUSIC] Soundboard closed, music stopped.');
+                music.switchContext('menu');
+                music.start();
+                
+                // Update all buttons to PLAY state
+                updateSoundboardButtons();
+                updateWelcomeMusicButton();
+                
+                console.log('[MUSIC] Soundboard closed, returned to menu theme.');
             };
         }
         
-        // Soundboard Buttons
-        document.getElementById('btnPlayMenu')?.addEventListener('click', () => {
-            game.settings.musicEnabled = true;
-            music.switchContext('menu');
-            if (!music.isPlaying) music.start();
-            playSound('cardFlip');
-            updateWelcomeMusicButton();
-        });
+        // Soundboard Buttons - REWRITTEN with toggle functionality
+        const setupSoundboardButton = (btnId, context) => {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            
+            btn.addEventListener('click', () => {
+                const isCurrentContext = music.currentContext === context;
+                const isPlaying = music.isPlaying;
+                
+                if (isPlaying && isCurrentContext) {
+                    // PAUSE current theme
+                    music.stop();
+                    btn.innerHTML = '▶️ PLAY';
+                } else {
+                    // PLAY this theme
+                    game.settings.musicEnabled = true;
+                    music.switchContext(context);
+                    music.start();
+                    updateSoundboardButtons(); // Update ALL buttons
+                }
+                
+                playSound('cardFlip');
+                updateWelcomeMusicButton();
+            });
+        };
         
-        document.getElementById('btnPlayGameplay')?.addEventListener('click', () => {
-            game.settings.musicEnabled = true;
-            music.switchContext('gameplay');
-            if (!music.isPlaying) music.start();
-            playSound('cardFlip');
-            updateWelcomeMusicButton();
-        });
+        // Setup all soundboard buttons
+        setupSoundboardButton('btnPlayMenu', 'menu');
+        setupSoundboardButton('btnPlayGameplay', 'gameplay');
+        setupSoundboardButton('btnPlayShop', 'shop');
+        setupSoundboardButton('btnPlayVictory', 'victory');
+        setupSoundboardButton('btnPlayDefeat', 'defeat');
         
-        document.getElementById('btnPlayShop')?.addEventListener('click', () => {
-            game.settings.musicEnabled = true;
-            music.switchContext('shop');
-            if (!music.isPlaying) music.start();
-            playSound('cardFlip');
-            updateWelcomeMusicButton();
-        });
-        
-        document.getElementById('btnPlayVictory')?.addEventListener('click', () => {
-            game.settings.musicEnabled = true;
-            music.switchContext('victory');
-            if (!music.isPlaying) music.start();
-            playSound('cardFlip');
-            updateWelcomeMusicButton();
-        });
-        
-        document.getElementById('btnPlayDefeat')?.addEventListener('click', () => {
-            game.settings.musicEnabled = true;
-            music.switchContext('defeat');
-            if (!music.isPlaying) music.start();
-            playSound('cardFlip');
-            updateWelcomeMusicButton();
-        });
+        // Initialize button states
+        updateSoundboardButtons();
         
         // Initialize welcome music button state
         updateWelcomeMusicButton();
