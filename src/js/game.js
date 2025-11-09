@@ -4028,12 +4028,17 @@ class DarkAtmosphericMusic {
         function showTutorialStep(step) {
             console.log('[TUTORIAL] Showing step:', step.id);
             
-            // Remove ALL previous tutorial elements (more aggressive cleanup)
-            document.querySelectorAll('#tutorialOverlay, #tutorialSpotlight, #tutorialModal').forEach(el => el.remove());
+            // AGGRESSIVE CLEANUP - Remove ALL tutorial elements immediately
+            const oldOverlays = document.querySelectorAll('[id^="tutorialOverlay"], [id^="tutorialSpotlight"], [id^="tutorialModal"], .tutorial-spotlight-element');
+            oldOverlays.forEach(el => {
+                console.log('[TUTORIAL] Removing old element:', el.id || el.className);
+                el.remove();
+            });
             
-            // Create overlay
+            // Create NEW unique overlay
+            const overlayId = 'tutorialOverlay_' + Date.now();
             const overlay = document.createElement('div');
-            overlay.id = 'tutorialOverlay';
+            overlay.id = overlayId;
             overlay.style.cssText = `
                 position: fixed;
                 top: 0;
@@ -4045,10 +4050,10 @@ class DarkAtmosphericMusic {
                 pointer-events: all;
             `;
             
-            // Add overlay to body first
+            // Add overlay to body
             document.body.appendChild(overlay);
             
-            // Wait for UI to be fully rendered (double requestAnimationFrame + delay)
+            // Wait for UI to be fully rendered
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     setTimeout(() => {
@@ -4058,50 +4063,53 @@ class DarkAtmosphericMusic {
                             if (targetElement) {
                                 const rect = targetElement.getBoundingClientRect();
                                 
-                                console.log('[TUTORIAL] Spotlight target:', step.highlight, 'Element:', targetElement, 'Rect:', rect, 'Visible:', targetElement.offsetParent !== null);
+                                console.log('[TUTORIAL] Spotlight target:', step.highlight, 'Rect:', rect);
                         
-                        // Validate rect has reasonable dimensions
-                        const isValidRect = rect.width > 0 && rect.height > 0 && rect.width < window.innerWidth && rect.height < window.innerHeight;
+                                // Validate rect has reasonable dimensions
+                                const isValidRect = rect.width > 0 && rect.height > 0 && rect.width < window.innerWidth && rect.height < window.innerHeight;
                         
-                        if (isValidRect) {
-                            // Ensure minimum size for spotlight
-                            const minWidth = 80;
-                            const minHeight = 60;
-                            const finalWidth = Math.max(rect.width + 20, minWidth);
-                            const finalHeight = Math.max(rect.height + 20, minHeight);
+                                if (isValidRect) {
+                                    // Ensure minimum size for spotlight
+                                    const minWidth = 80;
+                                    const minHeight = 60;
+                                    const finalWidth = Math.max(rect.width + 20, minWidth);
+                                    const finalHeight = Math.max(rect.height + 20, minHeight);
                             
-                            // Create spotlight
-                            const spotlight = document.createElement('div');
-                            spotlight.className = 'tutorial-spotlight-element';
-                            spotlight.style.cssText = `
-                                position: fixed;
-                                top: ${rect.top - 10}px;
-                                left: ${rect.left - 10}px;
-                                width: ${finalWidth}px;
-                                height: ${finalHeight}px;
-                                border: 3px solid #ffd700;
-                                border-radius: 8px;
-                                box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 30px #ffd700;
-                                z-index: 10001;
-                                pointer-events: none;
-                                animation: tutorialPulse 2s infinite;
-                            `;
-                            // Add spotlight to body (not overlay) for correct z-index layering
-                            document.body.appendChild(spotlight);
-                        } else {
-                            console.warn('[TUTORIAL] Invalid rect for spotlight:', rect);
+                                    // Create spotlight with UNIQUE ID
+                                    const spotlightId = 'tutorialSpotlight_' + Date.now();
+                                    const spotlight = document.createElement('div');
+                                    spotlight.id = spotlightId;
+                                    spotlight.className = 'tutorial-spotlight-element';
+                                    spotlight.style.cssText = `
+                                        position: fixed;
+                                        top: ${rect.top - 10}px;
+                                        left: ${rect.left - 10}px;
+                                        width: ${finalWidth}px;
+                                        height: ${finalHeight}px;
+                                        border: 3px solid #ffd700;
+                                        border-radius: 8px;
+                                        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 30px #ffd700;
+                                        z-index: 10001;
+                                        pointer-events: none;
+                                        animation: tutorialPulse 2s infinite;
+                                    `;
+                                    document.body.appendChild(spotlight);
+                                    console.log('[TUTORIAL] Spotlight created:', spotlightId);
+                                } else {
+                                    console.warn('[TUTORIAL] Invalid rect for spotlight:', rect);
+                                }
+                            } else {
+                                console.warn('[TUTORIAL] Target element not found:', step.highlight);
+                            }
                         }
-                    } else {
-                        console.warn('[TUTORIAL] Target element not found:', step.highlight);
-                    }
-                }
-                    }, 50); // Wait 50ms for UI
+                    }, 50);
                 });
             });
             
-            // Create modal
+            // Create modal with UNIQUE ID
+            const modalId = 'tutorialModal_' + Date.now();
             const modal = document.createElement('div');
-            modal.id = 'tutorialModal';
+            modal.id = modalId;
             modal.style.cssText = `
                 position: fixed;
                 ${step.position === 'center' ? 'top: 50%; left: 50%; transform: translate(-50%, -50%);' : ''}
@@ -4150,7 +4158,8 @@ class DarkAtmosphericMusic {
                     }
                 } else {
                     // Remove all tutorial elements before completing
-                    document.querySelectorAll('#tutorialOverlay, .tutorial-spotlight-element, #tutorialModal').forEach(el => el.remove());
+                    const allTutorialElements = document.querySelectorAll('[id^="tutorialOverlay"], [id^="tutorialSpotlight"], [id^="tutorialModal"], .tutorial-spotlight-element');
+                    allTutorialElements.forEach(el => el.remove());
                     completeTutorial();
                 }
             };
@@ -4158,7 +4167,8 @@ class DarkAtmosphericMusic {
             if (skipBtn) {
                 skipBtn.onclick = () => {
                     // Remove all tutorial elements
-                    document.querySelectorAll('#tutorialOverlay, .tutorial-spotlight-element, #tutorialModal').forEach(el => el.remove());
+                    const allTutorialElements = document.querySelectorAll('[id^="tutorialOverlay"], [id^="tutorialSpotlight"], [id^="tutorialModal"], .tutorial-spotlight-element');
+                    allTutorialElements.forEach(el => el.remove());
                     completeTutorial();
                 };
             }
@@ -4167,8 +4177,12 @@ class DarkAtmosphericMusic {
         function completeTutorial() {
             inGameTutorialActive = false;
             
-            // Final cleanup: remove any remaining tutorial elements
-            document.querySelectorAll('#tutorialOverlay, .tutorial-spotlight-element, #tutorialModal').forEach(el => el.remove());
+            // Final cleanup: remove any remaining tutorial elements with ALL selectors
+            const allTutorialElements = document.querySelectorAll('[id^="tutorialOverlay"], [id^="tutorialSpotlight"], [id^="tutorialModal"], .tutorial-spotlight-element');
+            allTutorialElements.forEach(el => {
+                console.log('[TUTORIAL] Final cleanup removing:', el.id || el.className);
+                el.remove();
+            });
             
             localStorage.setItem('dungeon_scoundrel_tutorial_completed', 'true');
             showMessage('🎓 Tutorial completed! Good luck in the dungeon!', 'success');
