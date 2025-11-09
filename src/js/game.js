@@ -43,6 +43,16 @@
         });
         
         // ============================================
+        // MODULAR ARCHITECTURE IMPORTS
+        // ============================================
+        import { STORAGE_KEYS, DIFFICULTIES, CLASSES, SPECIAL_CARDS, SUITS, VALUES } from './utils/constants.js';
+        import { storage, shuffleArray, randomElement, formatTime, clamp, debounce } from './utils/storage.js';
+        import { initializeModalManager } from './ui/modals.js';
+        import { initializeMusicSystem } from './systems/music.js';
+        
+        console.log('[GAME] Modular architecture imports loaded successfully');
+
+        // ============================================
         // FIREBASE IMPORTS
         // ============================================
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
