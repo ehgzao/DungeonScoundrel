@@ -1219,8 +1219,11 @@
             
             // First-time player: Suggest Easy difficulty
             const hasPlayedBefore = localStorage.getItem('dungeon_scoundrel_played_before');
+            console.log('[EASY MODAL] hasPlayedBefore:', hasPlayedBefore);
+            console.log('[EASY MODAL] Should show Easy suggestion:', !hasPlayedBefore);
             
             if (!hasPlayedBefore) {
+                console.log('[EASY MODAL] ✅ Showing Easy suggestion...');
                 // Remove previous suggestions
                 const oldSuggestion = document.querySelector('.difficulty-suggestion');
                 if (oldSuggestion) oldSuggestion.remove();
@@ -4048,8 +4051,14 @@ class DarkAtmosphericMusic {
             // Only show tutorial if:
             // 1. Tutorial not completed yet
             // 2. Difficulty is Easy
-            if (!localStorage.getItem('dungeon_scoundrel_tutorial_completed') && game.difficulty === 'easy') {
-                console.log('[TUTORIAL] Starting in-game tutorial...');
+            const tutorialCompleted = localStorage.getItem('dungeon_scoundrel_tutorial_completed');
+            console.log('[TUTORIAL] Checking conditions...');
+            console.log('[TUTORIAL]   - tutorial_completed:', tutorialCompleted);
+            console.log('[TUTORIAL]   - game.difficulty:', game.difficulty);
+            console.log('[TUTORIAL]   - Should start:', !tutorialCompleted && game.difficulty === 'easy');
+            
+            if (!tutorialCompleted && game.difficulty === 'easy') {
+                console.log('[TUTORIAL] ✅ Starting in-game tutorial...');
                 inGameTutorialActive = true;
                 inGameTutorialStep = 0;
                 
@@ -4060,6 +4069,8 @@ class DarkAtmosphericMusic {
                 }
                 
                 showTutorialStep(IN_GAME_TUTORIAL_STEPS[0]);
+            } else {
+                console.log('[TUTORIAL] ❌ Tutorial not started - conditions not met');
             }
         }
 

@@ -150,6 +150,9 @@
         /* Mobile CSS now in: src/styles/mobile.css */
     </style>
 
+    <!-- Google reCAPTCHA v2 Invisible -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 <body>
 
@@ -332,10 +335,30 @@
             </div>
         </div>
         
-        <!-- Bug Report (Bottom Right, above version) -->
-        <div onclick="document.getElementById('bugReportModal').classList.add('active');" style="
+        <!-- Game Credits -->
+        <div style="
             position: absolute;
-            bottom: 60px;
+            bottom: 90px;
+            right: 15px;
+            z-index: 10;
+            padding: 4px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.7em;
+            color: rgba(201, 169, 97, 0.6);
+            text-align: right;
+            letter-spacing: 0.05em;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+            pointer-events: none;
+        ">
+            a game by <span style="color: rgba(201, 169, 97, 0.85); font-weight: 600;">Gab Lima</span>
+        </div>
+        
+        <!-- Bug Report (Bottom Right, above version) -->
+        <button onclick="document.getElementById('bugReportModal').classList.add('active');" style="
+            position: absolute;
+            bottom: 50px;
             right: 15px;
             z-index: 10;
             display: flex;
@@ -370,7 +393,7 @@
         <!-- Version Badge (Bottom Right) -->
         <div onclick="document.getElementById('versionModal').classList.add('active');" style="
             position: absolute;
-            bottom: 15px;
+            bottom: 10px;
             right: 15px;
             z-index: 10;
             display: flex;
@@ -668,7 +691,7 @@
                     <br>• <strong>🟡 Normal:</strong> Balanced (30%)
                     <br>• <strong>🔴 Hard:</strong> Less gold & events (20%)
                     <br><br><strong>↩️ Undo:</strong> Available on Easy & Normal only
-                    <br><br><strong>👹 Boss Battles:</strong> Every 10 rooms!
+                    <br><br><strong>👹 Boss Battles:</strong> 2 Minibosses (room 15 & 25) + Final Boss!
                     <br><br><strong>Higher difficulty = Bigger score multiplier!</strong>
                 </div>
             </div>
@@ -1381,7 +1404,15 @@
             <textarea id="bugMessage" placeholder="Describe what happened, steps to reproduce, and expected behavior" style="width: 100%; min-height: 160px; resize: vertical; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 6px; padding: 10px;"></textarea>
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px;">
                 <button class="close-modal-btn" onclick="document.getElementById('bugReportModal').classList.remove('active');">Cancel</button>
-                <button class="close-modal-btn" onclick="sendBugReport();" style="background: linear-gradient(135deg, #6bcf7f, #2fbf71); border: none; color: #102015;">Send</button>
+                <button 
+                    id="bugReportSubmit"
+                    class="g-recaptcha close-modal-btn" 
+                    data-sitekey="6LfESgcsAAAAADjQ3D_Sz8WOKELi1ig3foL0eie4"
+                    data-callback="sendBugReport"
+                    data-action="submit"
+                    style="background: linear-gradient(135deg, #6bcf7f, #2fbf71); border: none; color: #102015; cursor: pointer;">
+                    Send
+                </button>
             </div>
         </div>
     </div>
@@ -1537,7 +1568,7 @@
     <!-- ============================================ -->
     <!-- GAME SCRIPT (includes CODEX system)
     <!-- ============================================ -->
-        <script type="module" src="src/js/game.js"></script>
+        <script type="module" src="../src/js/game.js"></script>
     
     <!-- Mobile Orientation Warning -->
     <div id="orientationWarning" style="
