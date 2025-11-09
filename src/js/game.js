@@ -3598,7 +3598,67 @@ class DarkAtmosphericMusic {
             }
             
             // TOTAL: 26 monsters + 9 weapons + 9 potions + 6 specials = 50 cards
-            return shuffleDeck(deck);
+            let finalDeck = shuffleDeck(deck);
+            
+            // EASY MODE BALANCING: First 10 rooms should be beginner-friendly
+            if (game.difficulty === 'easy' && game.stats.roomsCleared < 10) {
+                finalDeck = balanceEasyModeDeck(finalDeck);
+            }
+            
+            return finalDeck;
+        }
+        
+        function balanceEasyModeDeck(deck) {
+            // EASY MODE: 70% monstros <5 damage, 70% armas 4-8 damage (first 10 rooms)
+            let balanced = [...deck];
+            
+            // Find all monsters and weapons
+            const monsters = balanced.filter(c => c.suitName === 'clubs' || c.suitName === 'spades');
+            const weapons = balanced.filter(c => c.suitName === 'diamonds');
+            
+            // Balance monsters: 70% should be <5 damage
+            const targetLowMonsters = Math.floor(monsters.length * 0.70);
+            const lowMonsters = monsters.filter(c => c.numValue < 5);
+            const highMonsters = monsters.filter(c => c.numValue >= 5);
+            
+            if (lowMonsters.length < targetLowMonsters && highMonsters.length > 0) {
+                // Replace high monsters with low ones
+                const toReplace = Math.min(targetLowMonsters - lowMonsters.length, highMonsters.length);
+                for (let i = 0; i < toReplace; i++) {
+                    const highMonster = highMonsters[i];
+                    const index = balanced.indexOf(highMonster);
+                    // Replace with random low monster (2, 3, 4)
+                    const newValue = [2, 3, 4][Math.floor(Math.random() * 3)];
+                    balanced[index] = {
+                        ...highMonster,
+                        value: newValue.toString(),
+                        numValue: newValue
+                    };
+                }
+            }
+            
+            // Balance weapons: 70% should be 4-8 damage
+            const targetMidWeapons = Math.floor(weapons.length * 0.70);
+            const midWeapons = weapons.filter(c => c.numValue >= 4 && c.numValue <= 8);
+            const offWeapons = weapons.filter(c => c.numValue < 4 || c.numValue > 8);
+            
+            if (midWeapons.length < targetMidWeapons && offWeapons.length > 0) {
+                // Replace off-range weapons with mid-range ones
+                const toReplace = Math.min(targetMidWeapons - midWeapons.length, offWeapons.length);
+                for (let i = 0; i < toReplace; i++) {
+                    const offWeapon = offWeapons[i];
+                    const index = balanced.indexOf(offWeapon);
+                    // Replace with random mid weapon (4, 5, 6, 7, 8)
+                    const newValue = [4, 5, 6, 7, 8][Math.floor(Math.random() * 5)];
+                    balanced[index] = {
+                        ...offWeapon,
+                        value: newValue.toString(),
+                        numValue: newValue
+                    };
+                }
+            }
+            
+            return balanced;
         }
 
         function shuffleDeck(deck) {
@@ -3609,10 +3669,6 @@ class DarkAtmosphericMusic {
             }
             return shuffled;
         }
-
-        // ============================================
-        // MAIN GAME LOGIC
-        // ============================================
 
         function startGame() {
             // 1. Load Stats and Unlocks
