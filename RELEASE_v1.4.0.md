@@ -63,7 +63,7 @@ First-Time Experience:
 - Fixed: Spotlight system no longer blocks interaction with highlighted elements
 - Fixed: Keyboard shortcuts no longer leak through during tutorial
 - Fixed: ESC key behavior during tutorial (now opens confirmation modal)
-- Fixed: Tutorial modals without dark overlay (now all have consistent background)
+- Fixed: Tutorial modals without dark overlay (now all steps have consistent background)
 - Fixed: Combat Basics step now properly highlights the card area
 - Fixed/New: Cloud saves now work as should! Connect with your Google account and play cross-device
 
