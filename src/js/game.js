@@ -43,16 +43,6 @@
         });
         
         // ============================================
-        // MODULAR ARCHITECTURE IMPORTS
-        // ============================================
-        import { STORAGE_KEYS, DIFFICULTIES, CLASSES, SPECIAL_CARDS, SUITS, VALUES } from './utils/constants.js';
-        import { storage, shuffleArray, randomElement, formatTime, clamp, debounce } from './utils/storage.js';
-        import { initializeModalManager } from './ui/modals.js';
-        import { initializeMusicSystem } from './systems/music.js';
-        
-        console.log('[GAME] Modular architecture imports loaded successfully');
-
-        // ============================================
         // FIREBASE IMPORTS
         // ============================================
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -452,25 +442,118 @@
         window.signInWithGoogle = signInWithGoogle;
         window.signOutUser = signOutUser;
         window.saveProgressToCloud = saveProgressToCloud;
+        
         // ============================================
         // OPTIMIZATION HELPERS
         // ============================================
-
-        // Storage - REMOVED (now using modular utils/storage.js)
-        // The storage module is imported at the top and provides:
-        // - storage.get(key, defaultValue)
-        // - storage.set(key, value)
-        // - storage.update(key, updater)
-        // - storage.remove(key)
-        // - storage.has(key)
-        // - storage.clear()
-
+        
+        // Storage Cache - Optimizes localStorage operations with error handling
+        class StorageCache {
+            constructor() {
+                this.cache = {};
+                this.storageAvailable = this.checkStorageAvailability();
+            }
+            
+            checkStorageAvailability() {
+                try {
+                    const test = '__storage_test__';
+                    localStorage.setItem(test, test);
+                    localStorage.removeItem(test);
+                    return true;
+                } catch(e) {
+                    console.warn('LocalStorage not available:', e);
+                    return false;
+                }
+            }
+            
+            get(key, defaultValue = {}) {
+                if (!this.storageAvailable) return defaultValue;
+                
+                if (this.cache[key] === undefined) {
+                    try {
+                        const data = localStorage.getItem(key);
+                        this.cache[key] = data ? JSON.parse(data) : defaultValue;
+                    } catch(e) {
+                        console.error(`Error reading ${key}:`, e);
+                        this.cache[key] = defaultValue;
+                    }
+                }
+                return this.cache[key];
+            }
+            
+            set(key, value) {
+                if (!this.storageAvailable) {
+                    console.warn('Storage not available, using cache only');
+                    this.cache[key] = value;
+                    return false;
+                }
+                
+                this.cache[key] = value;
+                try {
+                    localStorage.setItem(key, JSON.stringify(value));
+                    return true;
+                } catch(e) {
+                    if (e.name === 'QuotaExceededError') {
+                        console.error('Storage quota exceeded');
+                        // Try to clear old data
+                        this.clearOldData();
+                    } else {
+                        console.error(`Error saving ${key}:`, e);
+                    }
+                    return false;
+                }
+            }
+            
+            update(key, updater) {
+                const current = this.get(key);
+                const updated = updater(current);
+                this.set(key, updated);
+                return updated;
+            }
+            
+            invalidate(key) {
+                delete this.cache[key];
+            }
+            
+            clearCache() {
+                this.cache = {};
+            }
+            
+            clearOldData() {
+                // Clear non-essential data if quota exceeded
+                try {
+                    const keysToPreserve = ['scoundrel_lifetime_stats', 'scoundrel_unlocks'];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key && !keysToPreserve.includes(key)) {
+                            localStorage.removeItem(key);
+                            delete this.cache[key];
+                        }
+                    }
+                } catch(e) {
+                    console.error('Error clearing old data:', e);
+                }
+            }
+        }
+        
+        const storage = new StorageCache();
+        
         // ============================================
         // UTILITY FUNCTIONS
         // ============================================
         
-        // Debounce - REMOVED (now using modular utils/storage.js)
-        // The debounce function is imported from storage.js
+        // Debounce function - Prevents excessive function calls
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
         
         // Haptic Feedback for mobile devices
         function hapticFeedback(type = 'light') {
@@ -666,8 +749,21 @@
             container.appendChild(fragment);
         }
         
-        // Modal Manager - REMOVED (now using modular ui/modals.js)
-        // The modalManager is initialized later from the modular system
+        // Modal Manager - Simplified modal management
+        const modalManager = {
+            open(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) modal.classList.add('active');
+            },
+            close(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) modal.classList.remove('active');
+            },
+            toggle(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) modal.classList.toggle('active');
+            }
+        };
         
         console.log('✅ Optimization helpers loaded!');
         
@@ -1105,19 +1201,6 @@
 
         // Permanent Stats (LocalStorage)
         let permanentStats = {};
-        
-        // ============================================
-        // MODULAR SYSTEMS INITIALIZATION
-        // ============================================
-        // Initialize modal manager for centralized modal control
-        const modalManager = initializeModalManager();
-        window.modalManager = modalManager; // Global access for compatibility
-        
-        // Initialize music system for background music
-        const musicSystem = initializeMusicSystem();
-        window.music = musicSystem; // Global access for compatibility
-        
-        console.log('[GAME] ✅ Modular systems initialized successfully');
         
         // ============================================
         // INITIALIZATION AND SCREEN FLOW LOGIC
@@ -3918,95 +4001,6 @@ class DarkAtmosphericMusic {
             checkGameState();
             checkAchievements();
         }
-        
-        /**
-         * Calculate total player damage with ALL modifiers
-         * Returns object with damage value and breakdown for tooltip
-         * @param {boolean} includeRandomEffects - Include thunder/crit chances in calculation
-         * @returns {Object} { total, breakdown: { base, bonuses, multipliers } }
-         */
-        function calculateTotalDamage(includeRandomEffects = false) {
-            const breakdown = {
-                base: 0,
-                bonuses: [],
-                multipliers: []
-            };
-            
-            // Base weapon damage
-            const baseWeapon = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
-            breakdown.base = baseWeapon;
-            
-            // Power bonus from relics
-            const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
-            if (powerBonus > 0) breakdown.bonuses.push({ name: 'Power Relics', value: powerBonus });
-            
-            // Berserk bonus
-            const berserkBonus = getBerserkBonus();
-            if (berserkBonus > 0) breakdown.bonuses.push({ name: '🔥 Berserk', value: berserkBonus });
-            
-            // Bloodlust bonus
-            const bloodlustBonus = getBloodlustBonus();
-            if (bloodlustBonus > 0) breakdown.bonuses.push({ name: 'Bloodlust', value: bloodlustBonus });
-            
-            // Combo bonus
-            const comboBonus = getComboBonus();
-            if (comboBonus > 0) breakdown.bonuses.push({ name: `Combo x${game.combo}`, value: comboBonus });
-            
-            // Power Gauntlet: +3 first attack
-            let gauntletBonus = 0;
-            if (game.relics.some(r => r.id === 'gauntlet') && !game.firstAttackDone) {
-                gauntletBonus = 3;
-                breakdown.bonuses.push({ name: '🥊 First Strike', value: 3 });
-            }
-            
-            // Class bonuses
-            let classBonus = 0;
-            if (game.classAbilityActive && game.classAbilityCounter > 0) {
-                if (game.playerClass === 'dancer') {
-                    classBonus = 2;
-                    breakdown.bonuses.push({ name: 'Dancer Ability', value: 2 });
-                }
-            }
-            
-            // Sum all additive bonuses
-            const totalAdditive = baseWeapon + powerBonus + berserkBonus + bloodlustBonus + comboBonus + gauntletBonus + classBonus;
-            
-            // Multiplicative effects
-            let finalDamage = totalAdditive;
-            
-            // Double Damage card effect
-            if (game.doubleDamage) {
-                breakdown.multipliers.push({ name: '⚡ Double Power', mult: 2 });
-                finalDamage *= 2;
-            }
-            
-            // Class multipliers
-            if (game.classAbilityActive && game.classAbilityCounter > 0) {
-                if (game.playerClass === 'rogue') {
-                    breakdown.multipliers.push({ name: '🗡️ Shadow Strike', mult: 2 });
-                    finalDamage *= 2;
-                } else if (game.playerClass === 'berserker' && game.rageStrikeActive) {
-                    breakdown.multipliers.push({ name: '⚔️ Rage Strike', mult: 3 });
-                    finalDamage *= 3;
-                }
-            }
-            
-            // Thunder Gauntlet (20% chance) - only if including random
-            if (includeRandomEffects && game.relics.some(r => r.id === 'warrior')) {
-                breakdown.multipliers.push({ name: '⚡ Thunder (20%)', mult: 2 });
-            }
-            
-            // Critical Strike (10% chance) - only if including random
-            if (includeRandomEffects && permanentUnlocks.criticalStrike) {
-                breakdown.multipliers.push({ name: '💥 Crit (10%)', mult: 3 });
-            }
-            
-            return {
-                total: Math.floor(finalDamage),
-                breakdown: breakdown,
-                hasRandom: game.relics.some(r => r.id === 'warrior') || permanentUnlocks.criticalStrike
-            };
-        }
 
         function handleMonster(monster, index) {
             const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
@@ -6120,12 +6114,6 @@ class DarkAtmosphericMusic {
             if (randomRelic.effect === 'bigHealth') { game.maxHealth += 10; game.health += 10; }
             if (randomRelic.effect === 'tinyHealth') { game.maxHealth += 1; game.health += 1; }
             
-            // Apply immediate gold effects (Charm relic)
-            if (randomRelic.effect === 'startGold') { 
-                earnGold(10);
-                showMessage('✨ Charm bonus: +10 gold!', 'success');
-            }
-            
             const rarityColors = { common: '⚪', uncommon: '🟢', rare: '🔵', legendary: '🟠' };
             showMessage(`${rarityColors[rarity]} Relic: ${randomRelic.name}!`, 'success');
             updateRelicsDisplay();
@@ -6326,17 +6314,10 @@ class DarkAtmosphericMusic {
                 const itemEl = document.createElement('div');
                 itemEl.className = 'shop-item';
                 
-                // Check if item requires a weapon (weapon-related items)
-                const weaponRequiredItems = ['repair_weapon', 'weapon_upgrade', 'weapon_big_upgrade'];
-                const needsWeapon = weaponRequiredItems.includes(item.id);
-                const hasWeapon = game.equippedWeapon !== null;
-                const weaponBlocked = needsWeapon && !hasWeapon;
-                
-                // Add visual indicator if can't afford OR weapon blocked
+                // Add visual indicator if can't afford
                 const canAfford = game.gold >= finalPrice;
-                const canBuy = canAfford && !weaponBlocked;
-                const affordClass = canBuy ? '' : 'cannot-afford';
-                const priceColor = canBuy ? '#ffd700' : '#ff6b6b';
+                const affordClass = canAfford ? '' : 'cannot-afford';
+                const priceColor = canAfford ? '#ffd700' : '#ff6b6b';
                 
                 // Show original price if discount OR price increased
                 let priceDisplayHTML = '';
@@ -6351,33 +6332,22 @@ class DarkAtmosphericMusic {
                     priceDisplayHTML = `<span style="text-decoration: line-through; opacity: 0.5;">${item.price}</span> `;
                 }
                 
-                // Build warning message if blocked
-                let warningMessage = '';
-                if (weaponBlocked) {
-                    warningMessage = '<span style="color: #ff6b6b; font-size: 0.9em;">⚔️ Requires weapon equipped!</span>';
-                } else if (!canAfford) {
-                    warningMessage = '<span style="color: #ff6b6b; font-size: 0.9em;">(Need ' + (finalPrice - game.gold) + ' more)</span>';
-                }
-                
                 itemEl.innerHTML = `
                     <div class="item-info ${affordClass}">
                         <div class="item-name">${item.name}</div>
                         <div class="item-description">${item.description}</div>
                         <div class="item-price" style="color: ${priceColor}; font-weight: bold;">
                             ${priceDisplayHTML}${finalPrice} 🪙
-                            ${warningMessage}
+                            ${!canAfford ? ' <span style="color: #ff6b6b; font-size: 0.9em;">(Need ' + (finalPrice - game.gold) + ' more)</span>' : ''}
                         </div>
                     </div>
-                    <button class="buy-btn" data-item-id="${item.id}" data-price="${finalPrice}">
-                        ${weaponBlocked ? '⚔️ Need Weapon' : (canAfford ? 'Buy' : '🔒 Locked')}
-                    </button>
+                    <button class="buy-btn" data-item-id="${item.id}" data-price="${finalPrice}">${canAfford ? 'Buy' : '🔒 Locked'}</button>
                 `;
                 
                 const buyBtn = itemEl.querySelector('.buy-btn');
-                if (!canBuy) {
+                if (!canAfford) {
                     buyBtn.disabled = true;
                     buyBtn.style.opacity = '0.5';
-                    buyBtn.style.cursor = 'not-allowed';
                 }
                 
                 buyBtn.onclick = () => buyItem(item, finalPrice);
