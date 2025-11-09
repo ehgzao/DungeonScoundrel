@@ -421,7 +421,7 @@
                     text-transform: uppercase;
                     letter-spacing: 0.08em;
                     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-                ">v1.3.1</span>
+                ">v1.4.0</span>
             </div>
         </div>
         
@@ -1320,74 +1320,76 @@
     <div class="modal-overlay" id="versionModal">
         <div class="modal-content" style="max-width: 700px;">
             <button class="modal-close-btn" onclick="document.getElementById('versionModal').classList.remove('active');">✕</button>
-            <h2>🚀 What's New in v1.3.1</h2>
+            <h2>🚀 What's New in v1.4.0</h2>
             
             <div style="text-align: center; margin-bottom: 20px;">
-                <p style="color: #6bcf7f; font-size: 1.2em; font-weight: bold;">🖼️ WebP Optimization + Fixes!</p>
-                <p style="color: #aaa; font-size: 0.9em;">Released: November 8, 2025</p>
+                <p style="color: #6bcf7f; font-size: 1.2em; font-weight: bold;">🎓 Tutorial Update!</p>
+                <p style="color: #aaa; font-size: 0.9em;">Released: November 9, 2025</p>
             </div>
             
             <div style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
-                <!-- WebP Optimization -->
+                <!-- Tutorial System -->
                 <div style="background: rgba(107, 207, 127, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #6bcf7f;">
-                    <h3 style="color: #6bcf7f; margin-top: 0;">🖼️ WebP Image Optimization</h3>
+                    <h3 style="color: #6bcf7f; margin-top: 0;">🎓 Complete Tutorial System</h3>
                     <ul style="color: #ddd; line-height: 1.8;">
-                        <li><strong>-80% Asset Size:</strong> 8 MB saved with WebP conversion</li>
-                        <li><strong>-81% First Load:</strong> From 11 MB to 2.1 MB</li>
-                        <li><strong>-99% Return Visits:</strong> Only 80 KB HTML (JS cached)</li>
-                        <li><strong>Faster Loading:</strong> Especially on mobile networks</li>
+                        <li><strong>13-Step Interactive Tutorial:</strong> Learn the game step-by-step!</li>
+                        <li><strong>Auto-Trigger on Easy:</strong> First-time players get guided onboarding</li>
+                        <li><strong>Skip Anytime:</strong> Skip tutorial with confirmation modal</li>
+                        <li><strong>Covers Everything:</strong> Health, Gold, Combat, Held Cards, Codex, Score</li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ffd700;">
+                    <h3 style="color: #ffd700; margin-top: 0;">🔦 Advanced Spotlight System</h3>
+                    <ul style="color: #ddd; line-height: 1.8;">
+                        <li><strong>Golden Pulsing Borders:</strong> Highlights important UI elements</li>
+                        <li><strong>Dark Overlay:</strong> Focuses attention on tutorial step</li>
+                        <li><strong>Non-Blocking:</strong> Elements remain interactive during spotlight</li>
+                        <li><strong>Box-Shadow Cutout:</strong> Modern CSS technique for clean highlights</li>
                     </ul>
                 </div>
                 
                 <div style="background: rgba(78, 205, 196, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #4ecdc4;">
-                    <h3 style="color: #4ecdc4; margin-top: 0;">📱 Mobile Compatibility</h3>
+                    <h3 style="color: #4ecdc4; margin-top: 0;">⌨️ Keyboard Control Protection</h3>
                     <ul style="color: #ddd; line-height: 1.8;">
-                        <li><strong>Responsive Viewport:</strong> Text now readable on mobile</li>
-                        <li><strong>Desktop Scaling:</strong> 85% zoom for comfortable view</li>
-                        <li><strong>Touch Optimized:</strong> Better mobile experience</li>
-                    </ul>
-                </div>
-                
-                <div style="background: rgba(255, 217, 61, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ffd93d;">
-                    <h3 style="color: #ffd93d; margin-top: 0;">✨ UX Improvements</h3>
-                    <ul style="color: #ddd; line-height: 1.8;">
-                        <li><strong>Friendly Error Messages:</strong> ⚠️ instead of ❌</li>
-                        <li><strong>Helpful Instructions:</strong> Clear error explanations</li>
-                        <li><strong>Retry Buttons:</strong> Easy error recovery</li>
-                        <li><strong>Smart Modals:</strong> Auto-close success, manual errors</li>
+                        <li><strong>Tutorial Lock:</strong> Blocks shortcuts during tutorial</li>
+                        <li><strong>Allowed Keys:</strong> Space, Arrow Keys, Escape only</li>
+                        <li><strong>ESC Confirmation:</strong> Opens skip modal instead of closing</li>
+                        <li><strong>Auto-Restore:</strong> All shortcuts work after tutorial ends</li>
                     </ul>
                 </div>
                 
                 <div style="background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ff6b6b;">
                     <h3 style="color: #ff6b6b; margin-top: 0;">🐛 Bug Fixes</h3>
                     <ul style="color: #ddd; line-height: 1.8;">
-                        <li><strong>Avatar Images:</strong> Fixed missing player avatars in-game</li>
-                        <li><strong>Logo Display:</strong> Converted title-logo to WebP</li>
-                        <li><strong>Image Paths:</strong> All asset references corrected</li>
-                        <li><strong>Git Author:</strong> Fixed to Gabriel Lima</li>
+                        <li><strong>Spotlight Blocking:</strong> Fixed elements being hidden by overlay</li>
+                        <li><strong>Keyboard Leaks:</strong> Shortcuts no longer work during tutorial</li>
+                        <li><strong>Modal Overlay:</strong> All tutorial modals now have dark background</li>
+                        <li><strong>Codebase:</strong> Consolidated to single source of truth (port 8080)</li>
                     </ul>
                 </div>
                 
                 <div style="background: rgba(212, 175, 55, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #d4af37;">
-                    <h3 style="color: #d4af37; margin-top: 0;">🔒 Security</h3>
+                    <h3 style="color: #d4af37; margin-top: 0;">✨ UI Improvements</h3>
                     <ul style="color: #ddd; line-height: 1.8;">
-                        <li><strong>Firestore Rules:</strong> Secure with data validation</li>
-                        <li><strong>Anti-cheat:</strong> Scores can't be edited</li>
-                        <li><strong>Privacy:</strong> Cloud saves protected</li>
+                        <li><strong>Bottom-Right Alignment:</strong> Fixed spacing with flexbox</li>
+                        <li><strong>Codex Highlight:</strong> Tutorial now points to RELICS button</li>
+                        <li><strong>Debug Logs:</strong> Console tracking for tutorial state</li>
+                        <li><strong>New Tutorial Steps:</strong> Held Cards, Codex, Score System</li>
                     </ul>
                 </div>
             </div>
             
             <div style="text-align: center; margin-top: 20px; padding: 15px; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
-                <p style="color: #ffd700; font-weight: bold; margin: 0;">🚀 81% Faster Loading!</p>
-                <p style="color: #aaa; font-size: 0.9em; margin-top: 10px;">8 MB saved • WebP optimized • All images fixed</p>
+                <p style="color: #ffd700; font-weight: bold; margin: 0;">🎓 Better Onboarding for New Players!</p>
+                <p style="color: #aaa; font-size: 0.9em; margin-top: 10px;">13 tutorial steps • Spotlight system • Keyboard protection • Skip anytime</p>
             </div>
             
             <div style="text-align: center; margin-top: 15px; padding: 12px; background: rgba(78, 205, 196, 0.08); border-radius: 8px;">
                 <p style="color: #4ecdc4; font-weight: bold; margin: 0; font-size: 0.95em;">🙏 Special Thanks</p>
                 <p style="color: #aaa; font-size: 0.85em; margin-top: 8px; line-height: 1.6;">
-                    Thanks to all players who reported mobile issues!<br>
-                    <span style="font-size: 0.9em;">Your feedback made this update possible! 🎮✨</span>
+                    Thanks to all new players who requested better onboarding!<br>
+                    <span style="font-size: 0.9em;">Your feedback drives improvement! 🎮✨</span>
                 </p>
             </div>
             
@@ -1447,12 +1449,12 @@
                     message: message,
                     user_browser: navigator.userAgent,
                     user_screen: window.innerWidth + 'x' + window.innerHeight,
-                    game_version: 'v1.3.1',
+                    game_version: 'v1.4.0',
                     report_date: new Date().toLocaleString(),
                     // Alternative names in case template uses these
                     browser: navigator.userAgent,
                     screen: window.innerWidth + 'x' + window.innerHeight,
-                    version: 'v1.3.1',
+                    version: 'v1.4.0',
                     date: new Date().toLocaleString()
                 };
                 

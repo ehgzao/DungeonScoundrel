@@ -5,6 +5,127 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-01-09 - 🎓 Tutorial Update
+
+### 🎯 Major Features
+
+#### **Complete In-Game Tutorial System** 🎓
+- **13-Step Interactive Tutorial** for first-time players on Easy difficulty
+  - Welcome screen with game introduction
+  - Health system explanation
+  - Gold and economy basics
+  - Merchant button walkthrough
+  - Weapon equipping tutorial
+  - Drawing rooms mechanic (with auto-draw)
+  - Card types breakdown (♠️♣️♦️♥️✨)
+  - Combat basics with room highlighting
+  - **NEW**: Held Cards mechanic (unique feature!)
+  - **NEW**: Codex system (Relics & Upgrades)
+  - **NEW**: Score system and competition
+  - Strategy tips with best practices
+  - Final encouragement message
+
+#### **Advanced Spotlight System** 🔦
+- **Box-Shadow Cutout Technique**: Highlights elements without blocking interaction
+  - Dark overlay (85% opacity) on entire screen
+  - Golden pulsing border around target elements
+  - Target elements remain fully visible and interactive
+  - Smooth animations with `tutorialPulse` keyframe
+- **Smart Element Detection**: Verifies element visibility before creating spotlight
+- **Debug Logging**: Console logs for tracking spotlight creation
+
+#### **Keyboard Control System** ⌨️
+- **Tutorial Mode Protection**: Blocks all keyboard shortcuts during tutorial
+  - Allowed keys: `Space`, Arrow keys (`←→↑↓`), `Escape`
+  - Blocked keys: `D`, `A`, `Q`, `U`, `S`, `1-5` (all game shortcuts)
+  - Console feedback: `[TUTORIAL] Key blocked: {key}`
+- **ESC Key Behavior**: Opens skip confirmation modal instead of closing immediately
+- **Post-Tutorial**: All shortcuts restored after completion
+
+### 🎨 UI/UX Improvements
+
+#### **Modal System Enhancements**
+- **Universal Dark Overlay**: All tutorial modals now have consistent dark background
+  - Previously: Only spotlighted modals had overlay
+  - Now: All 13 steps have overlay for visual consistency
+- **Better Positioning**: Modals adapt to spotlight location
+  - `top`, `bottom`, `left`, `top-right`, `center` positions
+  - Prevents overlap with highlighted elements
+
+#### **Bottom-Right UI Alignment** ✨
+- **Flexbox Container**: Fixed spacing for bottom-right buttons
+  - "a game by Gab Lima" credits
+  - Bug Report button
+  - Version badge
+  - Consistent 15px gap between elements
+
+#### **Tutorial Flow**
+- **localStorage Integration**: Tutorial shows only once per player
+  - Key: `dungeon_scoundrel_tutorial_completed`
+  - Works alongside `dungeon_scoundrel_played_before` for Easy suggestion
+- **Skip Functionality**: Players can skip tutorial at any step
+  - Confirmation modal prevents accidental skips
+  - "Keep Learning" vs "Skip Tutorial" options
+
+### 🔧 Technical Improvements
+
+#### **Codebase Consolidation** 📁
+- **Single Source of Truth**: All code now in `public/` folder
+  - Eliminated duplicate `src/js/game.js` and `index.html` in root
+  - Single development server on port **8080** only
+  - No more confusion between multiple versions
+- **Development Documentation**: Created `DEVELOPMENT.md`
+  - Clear workflow: Edit → Test → Commit → Deploy
+  - Port 8080 as canonical development port
+  - Browser cache management instructions
+
+#### **Tutorial Architecture**
+- **Modular Step System**: Each tutorial step is a self-contained object
+  - `id`, `title`, `text`, `highlight`, `position`, `buttonText`, `action`
+  - Easy to add, remove, or reorder steps
+  - Supports custom actions (e.g., auto-clicking Draw Room)
+- **Cleanup System**: Removes all tutorial elements before showing next step
+  - Prevents overlay stacking
+  - Clears previous spotlights and highlights
+  - Resets z-index and styles
+
+#### **Debug & Logging** 🐛
+- **Tutorial State Tracking**: Console logs for every tutorial action
+  - `[TUTORIAL] ✅ Started on Easy!`
+  - `[TUTORIAL] Showing step: {stepId}`
+  - `[TUTORIAL] 🎯 Creating spotlight for: {selector}`
+  - `[TUTORIAL] ⚠️ Element not found: {selector}`
+- **Spotlight Validation**: Checks element existence and visibility
+  - Logs when elements have 0 dimensions
+  - Prevents invisible spotlights
+
+### 🐛 Bug Fixes
+
+- **Fixed**: Spotlight blocking highlighted elements (changed from overlay to box-shadow)
+- **Fixed**: Keyboard shortcuts working during tutorial (added blocking system)
+- **Fixed**: ESC key closing tutorial immediately (now opens confirmation)
+- **Fixed**: Some modals appearing without dark overlay (now universal)
+- **Fixed**: Tutorial modal using undefined `overlay` variable (changed to `document.body`)
+- **Fixed**: Combat Basics step had no spotlight (now highlights `#room`)
+- **Fixed**: Duplicate game files causing confusion (consolidated to `public/`)
+
+### 📝 Documentation
+
+- **Created**: `DEVELOPMENT.md` - Complete development workflow guide
+- **Created**: `reset-tutorial.js` - Helper script for testing tutorial
+- **Updated**: Tutorial shows Codex via top **RELICS** button highlight
+- **Improved**: Clear instructions for localStorage management
+
+### 🎮 Player Experience
+
+- **First-Time Players**: Now receive comprehensive onboarding
+- **Easy Mode**: Tutorial automatically triggers for first Easy playthrough
+- **Difficulty Suggestion**: Modal suggests Easy for first-time players
+- **No Interruption**: Tutorial can be skipped with confirmation
+- **Replayable**: Clear localStorage to replay tutorial anytime
+
+---
+
 ## [1.3.1] - 2025-01-08 - 🖼️ WebP Optimization + Fixes
 
 ### 🎯 Major Improvements
