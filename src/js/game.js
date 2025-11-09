@@ -2447,12 +2447,8 @@ class DarkAtmosphericMusic {
         }, 1600); // Mais frequente
         this.intervals.push(bellTimer);
         
-        // Percussão sutil para ritmo
-        const percTimer = setInterval(() => {
-            if (!this.isPlaying) return;
-            this.playDarkPercussion(800);
-        }, 800);
-        this.intervals.push(percTimer);
+        // REMOVED: Percussão interval removido - causava chiado após vitória
+        // A música dark já tem atmosfera suficiente sem percussão contínua
     }
     
     // ============================================
