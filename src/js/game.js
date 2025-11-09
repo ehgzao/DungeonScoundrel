@@ -4044,23 +4044,34 @@ class DarkAtmosphericMusic {
                 if (targetElement) {
                     const rect = targetElement.getBoundingClientRect();
                     
-                    // Create spotlight
-                    const spotlight = document.createElement('div');
-                    spotlight.id = 'tutorialSpotlight';
-                    spotlight.style.cssText = `
-                        position: fixed;
-                        top: ${rect.top - 10}px;
-                        left: ${rect.left - 10}px;
-                        width: ${rect.width + 20}px;
-                        height: ${rect.height + 20}px;
-                        border: 3px solid #ffd700;
-                        border-radius: 8px;
-                        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 30px #ffd700;
-                        z-index: 9999;
-                        pointer-events: none;
-                        animation: tutorialPulse 2s infinite;
-                    `;
-                    document.body.appendChild(spotlight);
+                    // Validate rect has reasonable dimensions
+                    const isValidRect = rect.width > 0 && rect.height > 0 && rect.width < window.innerWidth && rect.height < window.innerHeight;
+                    
+                    if (isValidRect) {
+                        // Ensure minimum size for spotlight
+                        const minWidth = 60;
+                        const minHeight = 40;
+                        const finalWidth = Math.max(rect.width + 20, minWidth);
+                        const finalHeight = Math.max(rect.height + 20, minHeight);
+                        
+                        // Create spotlight
+                        const spotlight = document.createElement('div');
+                        spotlight.id = 'tutorialSpotlight';
+                        spotlight.style.cssText = `
+                            position: fixed;
+                            top: ${rect.top - 10}px;
+                            left: ${rect.left - 10}px;
+                            width: ${finalWidth}px;
+                            height: ${finalHeight}px;
+                            border: 3px solid #ffd700;
+                            border-radius: 8px;
+                            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 30px #ffd700;
+                            z-index: 9999;
+                            pointer-events: none;
+                            animation: tutorialPulse 2s infinite;
+                        `;
+                        document.body.appendChild(spotlight);
+                    }
                 }
             }
             
@@ -4705,7 +4716,8 @@ class DarkAtmosphericMusic {
             }
             
             // Track if weapon was used for ATTACK (not just defense)
-            let weaponWasUsed = true;
+            // If dodge is active, weapon is not used (even if perfect kill)
+            let weaponWasUsed = !game.dodgeActive;
             
             playSound('attack');
             
@@ -4723,7 +4735,6 @@ class DarkAtmosphericMusic {
                         game.dodgeCounter = 0;
                     }
                 }
-                weaponWasUsed = false; // Dodge = no weapon used
                 playSound('special');
                 addLog(`Dodged attack from ${monster.value}${monster.suit}!`, 'heal');
                 showMessage('🛡️ Dodged! No damage!', 'success');
