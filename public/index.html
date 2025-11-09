@@ -2253,29 +2253,43 @@
                 const screenInfo = getScreenInfo();
                 
                 const params = {
+                    // MESSAGE TYPE FLAG
+                    message_type: 'BUG_REPORT',
+                    message_type_bug: 'block',
+                    message_type_contact: 'none',
+                    message_type_bug_class: 'header-bug',
+                    message_type_contact_class: '',
+                    message_border_color: 'rgba(255,107,107,0.1)',
+                    message_bg_color: 'rgba(255,107,107,0.1)',
+                    user_email_display: userEmailValue ? 'block' : 'none',
+                    
+                    // BASIC INFO
                     from_name: 'Player',
                     reply_to: userEmailValue || 'hello@dungeonscoundrel.com',
                     message: message,
-                    user_browser: browserInfo.full,
-                    user_screen: screenInfo.resolution,
                     game_version: 'v1.4.0',
                     report_date: new Date().toLocaleString(),
-                    // Alternative names in case template uses these
+                    
+                    // BROWSER INFO
+                    user_browser: browserInfo.full,
+                    user_screen: screenInfo.resolution,
                     browser: browserInfo.full,
                     screen: screenInfo.resolution,
-                    version: 'v1.4.0',
-                    date: new Date().toLocaleString(),
-                    // Enhanced debugging info
                     browser_name: browserInfo.name,
                     browser_version: browserInfo.version,
                     browser_os: browserInfo.os,
                     screen_viewport: screenInfo.viewport,
                     screen_device: screenInfo.device,
                     screen_pixel_ratio: screenInfo.pixelRatio,
-                    // User email for copy (always included, empty if not provided)
+                    
+                    // USER EMAIL
                     user_email: userEmailValue,
                     send_copy: userEmailValue ? 'Yes' : 'No',
-                    copy_message: userEmailValue ? '📧 A copy of this report has been sent to your email.' : ''
+                    copy_message: userEmailValue ? '📧 A copy of this report has been sent to your email.' : '',
+                    
+                    // LEGACY FIELDS
+                    version: 'v1.4.0',
+                    date: new Date().toLocaleString()
                 };
                 
                 console.log('Sending email with params:', params);
@@ -2511,8 +2525,23 @@
                     'other': '📝 Other'
                 };
                 
+                // Get browser info
+                const browserInfo = getBrowserInfo();
+                const screenInfo = getScreenInfo();
+                
                 // Prepare EmailJS params
                 const params = {
+                    // MESSAGE TYPE FLAG
+                    message_type: 'CONTACT',
+                    message_type_bug: 'none',
+                    message_type_contact: 'block',
+                    message_type_bug_class: '',
+                    message_type_contact_class: 'header-contact',
+                    message_border_color: 'rgba(107,207,255,0.1)',
+                    message_bg_color: 'rgba(107,207,255,0.1)',
+                    user_email_display: 'none',
+                    
+                    // CONTACT INFO
                     from_name: name,
                     reply_to: email,
                     subject: subjectLabels[subject] || subject,
@@ -2521,8 +2550,21 @@
                     contact_name: name,
                     contact_subject: subject,
                     send_date: new Date().toLocaleString(),
-                    user_browser: navigator.userAgent,
-                    user_screen: `${window.innerWidth}x${window.innerHeight}`
+                    
+                    // BROWSER INFO
+                    user_browser: browserInfo.full,
+                    user_screen: screenInfo.resolution,
+                    browser: browserInfo.full,
+                    screen: screenInfo.resolution,
+                    browser_name: browserInfo.name,
+                    browser_version: browserInfo.version,
+                    browser_os: browserInfo.os,
+                    screen_viewport: screenInfo.viewport,
+                    screen_device: screenInfo.device,
+                    screen_pixel_ratio: screenInfo.pixelRatio,
+                    
+                    // LEGACY FIELDS
+                    report_date: new Date().toLocaleString()
                 };
                 
                 console.log('Sending contact message:', params);

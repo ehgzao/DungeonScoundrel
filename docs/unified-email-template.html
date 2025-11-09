@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1410; color: #ddd; }
+        .container { max-width: 600px; margin: 20px auto; padding: 20px; background: #2a1f1a; border-radius: 8px; border: 2px solid #5a4a38; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header-bug { color: #ff6b6b; }
+        .header-contact { color: #6bcfff; }
+        .section { margin: 15px 0; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 6px; }
+        .label { color: #6bcf7f; font-weight: bold; }
+        .value { color: #ddd; white-space: pre-wrap; }
+        .bug-alert { background: rgba(255,0,0,0.1); border: 2px solid #ff6b6b; padding: 15px; border-radius: 6px; text-align: center; margin-bottom: 20px; }
+        .contact-alert { background: rgba(107,207,255,0.1); border: 2px solid #6bcfff; padding: 15px; border-radius: 6px; text-align: center; margin-bottom: 20px; }
+        .bug-message { background: rgba(255,107,107,0.1); border-left: 4px solid #ff6b6b; }
+        .contact-message { background: rgba(107,207,255,0.1); border-left: 4px solid #6bcfff; }
+        .tech-info { background: rgba(107,207,127,0.1); border-left: 4px solid #6bcf7f; }
+        .email-info { background: rgba(255, 215, 0, 0.1); border-left: 4px solid #ffd700; }
+        .contact-info { background: rgba(255, 215, 0, 0.1); border-left: 4px solid #ffd700; }
+        .type-badge { display: inline-block; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9em; margin: 10px 0; }
+        .type-bug { background: #ff6b6b; color: #1a1410; }
+        .type-contact { background: #6bcfff; color: #1a1410; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- TYPE INDICATOR: Bug Report -->
+        <div class="bug-alert" style="display: {{message_type_bug}};">
+            <h2 style="color: #ff6b6b; margin: 0;">🚨 BUG REPORT RECEIVED</h2>
+            <p style="margin: 5px 0 0 0; color: #ffaaaa;">Technical issue reported by player</p>
+            <span class="type-badge type-bug">BUG REPORT</span>
+        </div>
+        
+        <!-- TYPE INDICATOR: Contact Message -->
+        <div class="contact-alert" style="display: {{message_type_contact}};">
+            <h2 style="color: #6bcfff; margin: 0;">📧 CONTACT MESSAGE RECEIVED</h2>
+            <p style="margin: 5px 0 0 0; color: #aaccff;">Player reaching out for communication</p>
+            <span class="type-badge type-contact">CONTACT MESSAGE</span>
+        </div>
+        
+        <!-- HEADER -->
+        <div class="header">
+            <h1 class="{{message_type_bug_class}}{{message_type_contact_class}}">
+                <span style="display: {{message_type_bug}};">🐛 Dungeon Scoundrel Bug Report</span>
+                <span style="display: {{message_type_contact}};">📧 Dungeon Scoundrel Contact</span>
+            </h1>
+            <p>
+                <span style="display: {{message_type_bug}};">Version {{game_version}} - {{report_date}}</span>
+                <span style="display: {{message_type_contact}};">{{subject}} - {{send_date}}</span>
+            </p>
+        </div>
+        
+        <!-- CONTACT INFO (Only for Contact Messages) -->
+        <div class="section contact-info" style="display: {{message_type_contact}};">
+            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                <div class="label">👤 Name:</div>
+                <div class="value">{{from_name}}</div>
+                
+                <div class="label">📧 Email:</div>
+                <div class="value">{{reply_to}}</div>
+                
+                <div class="label">📋 Subject:</div>
+                <div class="value">{{subject}}</div>
+                
+                <div class="label">📅 Date:</div>
+                <div class="value">{{send_date}}</div>
+                
+                <div class="label">🏷️ Type:</div>
+                <div class="value">{{contact_subject}}</div>
+            </div>
+        </div>
+        
+        <!-- MESSAGE CONTENT -->
+        <div class="section" style="border-left: 4px solid {{message_border_color}}; background: {{message_bg_color}};">
+            <div class="label">
+                <span style="display: {{message_type_bug}};">📝 Bug Description:</span>
+                <span style="display: {{message_type_contact}};">💬 Message:</span>
+            </div>
+            <div class="value" style="margin-top: 10px; line-height: 1.6;">{{message}}</div>
+        </div>
+        
+        <!-- EMAIL INFO (For Bug Reports with user email) -->
+        <div class="section email-info" style="display: {{user_email_display}};">
+            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px;">
+                <div class="label">📧 Copy sent to:</div>
+                <div class="value">{{user_email}}</div>
+                
+                <div class="label">📧 Reply to:</div>
+                <div class="value">{{reply_to}}</div>
+            </div>
+        </div>
+        
+        <!-- TECHNICAL INFORMATION -->
+        <div class="section tech-info">
+            <h3 style="color: #6bcf7f; margin-top: 0;">🖥️ Technical Information</h3>
+            
+            <div style="display: grid; grid-template-columns: 150px 1fr; gap: 10px;">
+                <!-- Common fields -->
+                <div class="label">Message Type:</div>
+                <div class="value">{{message_type}}</div>
+                
+                <div class="label">Browser:</div>
+                <div class="value">{{browser_name}} {{browser_version}}</div>
+                
+                <div class="label">Operating System:</div>
+                <div class="value">{{browser_os}}</div>
+                
+                <div class="label">Full Browser:</div>
+                <div class="value">{{user_browser}}</div>
+                
+                <div class="label">Screen Resolution:</div>
+                <div class="value">{{user_screen}}</div>
+                
+                <div class="label">Browser Window:</div>
+                <div class="value">{{screen_viewport}}</div>
+                
+                <div class="label">Device Type:</div>
+                <div class="value">{{screen_device}}</div>
+                
+                <div class="label">Pixel Ratio:</div>
+                <div class="value">{{screen_pixel_ratio}}</div>
+                
+                <!-- Bug Report specific -->
+                <div style="display: {{message_type_bug}};">
+                    <div class="label">Game Version:</div>
+                    <div class="value">{{game_version}}</div>
+                </div>
+                
+                <div style="display: {{message_type_bug}};">
+                    <div class="label">Send Copy:</div>
+                    <div class="value">{{send_copy}}</div>
+                </div>
+                
+                <!-- Contact specific -->
+                <div style="display: {{message_type_contact}};">
+                    <div class="label">Contact Type:</div>
+                    <div class="value">{{contact_subject}}</div>
+                </div>
+                
+                <div class="label">Date:</div>
+                <div class="value">{{report_date}}{{send_date}}</div>
+            </div>
+        </div>
+        
+        <!-- ACTION REQUIRED (Bug Reports) -->
+        <div class="section" style="display: {{message_type_bug}}; background: rgba(255,215,0,0.1); border-left: 4px solid #ffd700;">
+            <div style="text-align: center;">
+                <div style="font-size: 1.2em; font-weight: bold; color: #ff6b6b; margin-bottom: 10px;">
+                    🔍 Action Required
+                </div>
+                <div style="color: #aaa; font-size: 0.9em;">
+                    Please investigate this bug report and consider a fix for the next update
+                </div>
+            </div>
+        </div>
+        
+        <!-- PRIORITY INDICATOR (Contact Messages) -->
+        <div class="section" style="display: {{message_type_contact}}; background: rgba(107,207,255,0.1); border-left: 4px solid #6bcfff;">
+            <div style="text-align: center;">
+                <div style="font-size: 1.2em; font-weight: bold; color: #6bcfff; margin-bottom: 10px;">
+                    💬 {{subject}}
+                </div>
+                <div style="color: #aaa; font-size: 0.9em;">
+                    Player communication - please respond to: {{reply_to}}
+                </div>
+            </div>
+        </div>
+        
+        <!-- FOOTER -->
+        <div style="text-align: center; margin-top: 20px; color: #aaa; font-size: 0.9em;">
+            <p>🎮 Thank you for helping improve Dungeon Scoundrel!</p>
+            <p style="color: #ffd700; margin-top: 10px;">
+                <span style="display: {{message_type_bug}};">{{copy_message}}</span>
+                <span style="display: {{message_type_contact}};">Please respond to: {{reply_to}}</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -30,8 +30,9 @@ const CONFIG = {
   PROCESSED_LABEL: 'Processed/DungeonScoundrel',
   
   // Filtros de busca
-  BUG_REPORT_SEARCH: 'from:lima.ehg@gmail.com subject:"BUG FOUND" is:unread',
-  WAITLIST_SEARCH: 'from:lima.ehg@gmail.com subject:"Mobile Waitlist" is:unread'
+  BUG_REPORT_SEARCH: 'from:lima.ehg@gmail.com (subject:"BUG REPORT" OR subject:"CONTACT MESSAGE") is:unread',
+  WAITLIST_SEARCH: 'from:lima.ehg@gmail.com subject:"Mobile Waitlist" is:unread',
+  CONTACT_SHEET: 'Contact Messages'
 };
 
 // ============================================
@@ -60,8 +61,11 @@ function processBugReports() {
   // Criar cabeçalhos se não existirem
   if (sheet.getLastRow() === 0) {
     sheet.appendRow([
+      'Tipo',
       'Data/Hora',
+      'Nome',
       'Email Usuário',
+      'Assunto',
       'Mensagem',
       'Browser',
       'Versão Browser',
@@ -73,7 +77,7 @@ function processBugReports() {
       'Versão Jogo',
       'Email Completo'
     ]);
-    sheet.getRange(1, 1, 1, 12).setFontWeight('bold').setBackground('#ffd700');
+    sheet.getRange(1, 1, 1, 15).setFontWeight('bold').setBackground('#ffd700');
   }
   
   threads.forEach(thread => {
@@ -94,13 +98,28 @@ function processBugReports() {
 function parseBugReport(message) {
   const body = message.getPlainBody();
   const date = message.getDate();
+  const subject = message.getSubject();
   
-  // Extrair dados usando regex
-  const userEmail = extractField(body, /Copy sent to:\s*([^\s]+@[^\s]+)/i) || 
-                   extractField(body, /user_email[:\s]+([^\s]+@[^\s]+)/i) || 
+  // Detectar tipo de mensagem
+  const messageType = extractField(body, /Message Type:\s*([^\n]+)/i) || 
+                     (subject.includes('BUG REPORT') ? 'BUG_REPORT' : 'CONTACT');
+  
+  // Extrair dados comuns
+  const userName = extractField(body, /Name:\s*([^\n]+)/i) || 
+                  extractField(body, /from_name[:\s]+"([^"]+)"/i) ||
+                  'Player';
+  
+  const userEmail = extractField(body, /Email:\s*([^\s]+@[^\s]+)/i) ||
+                   extractField(body, /Copy sent to:\s*([^\s]+@[^\s]+)/i) || 
+                   extractField(body, /reply_to[:\s]+"([^"]+@[^"]+)"/i) ||
                    'N/A';
   
-  const bugMessage = extractField(body, /Bug Description:\s*([^\n]+(?:\n(?!\w+:)[^\n]+)*)/i) || 
+  const contactSubject = extractField(body, /Subject:\s*([^\n]+)/i) || 
+                        extractField(body, /subject[:\s]+"([^"]+)"/i) ||
+                        'N/A';
+  
+  const bugMessage = extractField(body, /Message:\s*([^\n]+(?:\n(?!\w+:)[^\n]+)*)/i) ||
+                    extractField(body, /Bug Description:\s*([^\n]+(?:\n(?!\w+:)[^\n]+)*)/i) || 
                     extractField(body, /message[:\s]+"([^"]+)"/i) ||
                     'N/A';
   
@@ -114,8 +133,11 @@ function parseBugReport(message) {
   const gameVersion = extractField(body, /Version\s+([^\s]+)/i) || 'v1.4.0';
   
   return [
+    messageType,
     date,
+    userName,
     userEmail,
+    contactSubject,
     bugMessage,
     browserName,
     browserVersion,
