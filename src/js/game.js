@@ -4020,13 +4020,8 @@ class DarkAtmosphericMusic {
         function showTutorialStep(step) {
             console.log('[TUTORIAL] Showing step:', step.id);
             
-            // Remove previous overlay if exists
-            const existingOverlay = document.getElementById('tutorialOverlay');
-            if (existingOverlay) existingOverlay.remove();
-            
-            // Remove previous spotlight if exists
-            const existingSpotlight = document.getElementById('tutorialSpotlight');
-            if (existingSpotlight) existingSpotlight.remove();
+            // Remove ALL previous tutorial elements (more aggressive cleanup)
+            document.querySelectorAll('#tutorialOverlay, #tutorialSpotlight, #tutorialModal').forEach(el => el.remove());
             
             // Create overlay
             const overlay = document.createElement('div');
@@ -4060,7 +4055,7 @@ class DarkAtmosphericMusic {
                         
                         // Create spotlight
                         const spotlight = document.createElement('div');
-                        spotlight.id = 'tutorialSpotlight';
+                        spotlight.className = 'tutorial-spotlight-element'; // Add class for easier cleanup
                         spotlight.style.cssText = `
                             position: fixed;
                             top: ${rect.top - 10}px;
@@ -4074,7 +4069,8 @@ class DarkAtmosphericMusic {
                             pointer-events: none;
                             animation: tutorialPulse 2s infinite;
                         `;
-                        document.body.appendChild(spotlight);
+                        // Add spotlight to overlay so it's removed together
+                        overlay.appendChild(spotlight);
                     }
                 }
             }
@@ -4118,12 +4114,7 @@ class DarkAtmosphericMusic {
                 // Execute action if exists
                 if (step.action) step.action();
                 
-                // Remove overlay and spotlight
-                overlay.remove();
-                const spotlight = document.getElementById('tutorialSpotlight');
-                if (spotlight) spotlight.remove();
-                
-                // Next step
+                // Next step (showTutorialStep will handle cleanup)
                 inGameTutorialStep++;
                 if (inGameTutorialStep < IN_GAME_TUTORIAL_STEPS.length) {
                     // Delay for card draw animation
@@ -4133,15 +4124,16 @@ class DarkAtmosphericMusic {
                         showTutorialStep(IN_GAME_TUTORIAL_STEPS[inGameTutorialStep]);
                     }
                 } else {
+                    // Remove all tutorial elements before completing
+                    document.querySelectorAll('#tutorialOverlay, .tutorial-spotlight-element, #tutorialModal').forEach(el => el.remove());
                     completeTutorial();
                 }
             };
             
             if (skipBtn) {
                 skipBtn.onclick = () => {
-                    overlay.remove();
-                    const spotlight = document.getElementById('tutorialSpotlight');
-                    if (spotlight) spotlight.remove();
+                    // Remove all tutorial elements
+                    document.querySelectorAll('#tutorialOverlay, .tutorial-spotlight-element, #tutorialModal').forEach(el => el.remove());
                     completeTutorial();
                 };
             }
@@ -4149,6 +4141,10 @@ class DarkAtmosphericMusic {
 
         function completeTutorial() {
             inGameTutorialActive = false;
+            
+            // Final cleanup: remove any remaining tutorial elements
+            document.querySelectorAll('#tutorialOverlay, .tutorial-spotlight-element, #tutorialModal').forEach(el => el.remove());
+            
             localStorage.setItem('dungeon_scoundrel_tutorial_completed', 'true');
             showMessage('🎓 Tutorial completed! Good luck in the dungeon!', 'success');
             console.log('[TUTORIAL] Tutorial completed!');
