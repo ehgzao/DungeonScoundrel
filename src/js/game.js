@@ -2599,7 +2599,7 @@ class DarkAtmosphericMusic {
         osc.start(now);
         osc.stop(now + duration);
         
-        this.oscillators.push(osc);
+        // REMOVED: Não rastreamos notes temporárias (param automaticamente)
     }
     
     playBell(freq, volume, duration) {
@@ -2624,7 +2624,7 @@ class DarkAtmosphericMusic {
             osc.start(now);
             osc.stop(now + duration);
             
-            this.oscillators.push(osc);
+            // REMOVED: Não rastreamos bells temporários (param automaticamente)
         });
     }
     
@@ -2646,7 +2646,7 @@ class DarkAtmosphericMusic {
         osc.start(now);
         osc.stop(now + duration);
         
-        this.oscillators.push(osc);
+        // REMOVED: Não rastreamos bass temporário (para automaticamente)
     }
     
     playAtmosphericPad(freqs, volume) {
@@ -2692,11 +2692,13 @@ class DarkAtmosphericMusic {
             kickGain.gain.setValueAtTime(0.15, this.context.currentTime);
             kickGain.gain.exponentialRampToValueAtTime(0.001, this.context.currentTime + 0.1);
             
-            kick.start(this.context.currentTime);
-            kick.stop(this.context.currentTime + 0.1);
+            const startTime = this.context.currentTime;
+            kick.start(startTime);
+            kick.stop(startTime + 0.1);
             
-            // CRITICAL FIX: Track oscillators so stopAll() can clean them!
-            this.oscillators.push(kick);
+            // REMOVED: Não rastreamos oscillators temporários!
+            // Eles param automaticamente em 0.1s
+            // Rastrear causa conflitos com stopAll()
         }, interval);
         
         this.intervals.push(percTimer);
