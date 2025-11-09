@@ -2457,11 +2457,23 @@ class DarkAtmosphericMusic {
                 this.playNote(note.freq, 0.20, note.duration, 'square');
                 this.playNote(note.freq * 2, 0.12, note.duration, 'triangle');
                 this.playBell(note.freq, 0.08, note.duration * 2);
-                // Percussão triunfante e rápida
-                this.playDarkPercussion(80);
             }, note.time * 1000);
             this.timeouts.push(timeoutId);
         });
+        
+        // Percussão triunfante - ÚNICA VEZ, não em loop infinito
+        const percTimeoutId = setTimeout(() => {
+            if (!this.isPlaying) return;
+            // Play percussion hits during victory fanfare only
+            for (let i = 0; i < 4; i++) {
+                const hitTimeout = setTimeout(() => {
+                    if (!this.isPlaying) return;
+                    this.playPercussiveBass(60, 0.15, 0.1);
+                }, i * 600);
+                this.timeouts.push(hitTimeout);
+            }
+        }, 0);
+        this.timeouts.push(percTimeoutId);
         
         // Arpejo final celebratório
         const arpeggio = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
