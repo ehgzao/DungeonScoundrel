@@ -3895,7 +3895,38 @@ class DarkAtmosphericMusic {
             btnDrawRoom.disabled = false;
             btnAvoidRoom.disabled = false;
             
-            // Start Timer
+            // Timer functions
+            function pauseTimer() {
+                if (game.gameTimerInterval) {
+                    clearInterval(game.gameTimerInterval);
+                    game.gameTimerInterval = null;
+                    game.gameTimerPausedAt = Date.now();
+                }
+            }
+            
+            function resumeTimer() {
+                if (!game.gameTimerInterval) {
+                    // Add paused duration to start time
+                    if (game.gameTimerPausedAt) {
+                        const pausedDuration = Date.now() - game.gameTimerPausedAt;
+                        game.gameStartTime += pausedDuration;
+                        game.gameTimerPausedAt = null;
+                    }
+                    
+                    game.gameTimerInterval = setInterval(() => {
+                        const elapsed = Math.floor((Date.now() - game.gameStartTime) / 1000);
+                        const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+                        const seconds = (elapsed % 60).toString().padStart(2, '0');
+                        gameTimer.textContent = `⏱️ ${minutes}:${seconds}`;
+                    }, 1000);
+                }
+            }
+            
+            // Store timer functions globally
+            window.pauseGameTimer = pauseTimer;
+            window.resumeGameTimer = resumeTimer;
+            
+            // Start Timer (will be paused if tutorial starts)
             if (game.gameTimerInterval) clearInterval(game.gameTimerInterval);
             game.gameTimerInterval = setInterval(() => {
                 const elapsed = Math.floor((Date.now() - game.gameStartTime) / 1000);
@@ -3922,9 +3953,10 @@ class DarkAtmosphericMusic {
         // ============================================
         // IN-GAME TUTORIAL SYSTEM
         // ============================================
-
+        // In-game tutorial system
         let inGameTutorialActive = false;
         let inGameTutorialStep = 0;
+        let tutorialSpotlightTimeout = null; // Store timeout ID to cancel if needed
 
         const IN_GAME_TUTORIAL_STEPS = [
             {
@@ -4014,19 +4046,33 @@ class DarkAtmosphericMusic {
         ];
 
         function checkAndStartTutorial() {
-            const hasSeenTutorial = localStorage.getItem('dungeon_scoundrel_tutorial_completed');
-            
-            // Only start if: first time AND difficulty is Easy
-            if (!hasSeenTutorial && !inGameTutorialActive && game.difficulty === 'easy') {
+            // Only show tutorial if:
+            // 1. Tutorial not completed yet
+            // 2. Difficulty is Easy
+            if (!localStorage.getItem('dungeon_scoundrel_tutorial_completed') && game.difficulty === 'easy') {
                 console.log('[TUTORIAL] Starting in-game tutorial...');
                 inGameTutorialActive = true;
                 inGameTutorialStep = 0;
+                
+                // PAUSE TIMER during tutorial
+                if (window.pauseGameTimer) {
+                    window.pauseGameTimer();
+                    console.log('[TUTORIAL] Timer paused');
+                }
+                
                 showTutorialStep(IN_GAME_TUTORIAL_STEPS[0]);
             }
         }
 
         function showTutorialStep(step) {
             console.log('[TUTORIAL] Showing step:', step.id);
+            
+            // CRITICAL: Cancel any pending spotlight creation
+            if (tutorialSpotlightTimeout) {
+                clearTimeout(tutorialSpotlightTimeout);
+                tutorialSpotlightTimeout = null;
+                console.log('[TUTORIAL] Cancelled pending spotlight timeout');
+            }
             
             // AGGRESSIVE CLEANUP - Remove ALL tutorial elements immediately
             const oldOverlays = document.querySelectorAll('[id^="tutorialOverlay"], [id^="tutorialSpotlight"], [id^="tutorialModal"], .tutorial-spotlight-element');
@@ -4056,7 +4102,7 @@ class DarkAtmosphericMusic {
             // Wait for UI to be fully rendered
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                    setTimeout(() => {
+                    tutorialSpotlightTimeout = setTimeout(() => {
                         // Highlight element if specified
                         if (step.highlight) {
                             const targetElement = document.querySelector(step.highlight);
@@ -4166,10 +4212,46 @@ class DarkAtmosphericMusic {
             
             if (skipBtn) {
                 skipBtn.onclick = () => {
-                    // Remove all tutorial elements
-                    const allTutorialElements = document.querySelectorAll('[id^="tutorialOverlay"], [id^="tutorialSpotlight"], [id^="tutorialModal"], .tutorial-spotlight-element');
-                    allTutorialElements.forEach(el => el.remove());
-                    completeTutorial();
+                    // Show confirmation modal
+                    const confirmModal = document.createElement('div');
+                    confirmModal.id = 'tutorialSkipConfirm';
+                    confirmModal.style.cssText = `
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        background: linear-gradient(180deg, #2d2d2d 0%, #1a1a1a 100%);
+                        border: 3px solid #ff4444;
+                        border-radius: 15px;
+                        padding: 30px;
+                        z-index: 10003;
+                        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+                        text-align: center;
+                        max-width: 450px;
+                    `;
+                    
+                    confirmModal.innerHTML = `
+                        <h2 style="color: #ff4444; margin-bottom: 20px; font-size: 1.6em;">⚠️ Skip Tutorial?</h2>
+                        <p style="color: #e0e0e0; line-height: 1.6; margin-bottom: 25px;">Are you SURE you want to skip the tutorial? This is your first time playing and learning the basics will greatly help your survival!</p>
+                        <div style="display: flex; gap: 15px; justify-content: center;">
+                            <button class="btn btn-secondary" id="cancelSkip" style="min-width: 120px;">Keep Learning</button>
+                            <button class="btn btn-danger" id="confirmSkip" style="min-width: 120px; background: #ff4444;">Skip Tutorial</button>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(confirmModal);
+                    
+                    document.getElementById('cancelSkip').onclick = () => {
+                        confirmModal.remove();
+                    };
+                    
+                    document.getElementById('confirmSkip').onclick = () => {
+                        confirmModal.remove();
+                        // Remove all tutorial elements
+                        const allTutorialElements = document.querySelectorAll('[id^="tutorialOverlay"], [id^="tutorialSpotlight"], [id^="tutorialModal"], .tutorial-spotlight-element');
+                        allTutorialElements.forEach(el => el.remove());
+                        completeTutorial();
+                    };
                 };
             }
         }
@@ -4183,6 +4265,12 @@ class DarkAtmosphericMusic {
                 console.log('[TUTORIAL] Final cleanup removing:', el.id || el.className);
                 el.remove();
             });
+            
+            // RESUME TIMER after tutorial
+            if (window.resumeGameTimer) {
+                window.resumeGameTimer();
+                console.log('[TUTORIAL] Timer resumed');
+            }
             
             localStorage.setItem('dungeon_scoundrel_tutorial_completed', 'true');
             showMessage('🎓 Tutorial completed! Good luck in the dungeon!', 'success');
@@ -4230,29 +4318,41 @@ class DarkAtmosphericMusic {
                 }
             }
 
-            // Check if it's a boss room (every 10 rooms)
+            // NEW BOSS SYSTEM: 2 Minibosses (room 15 and 25) + Final Boss mandatory
             const nextRoomNumber = game.stats.roomsCleared + 1;
-            const isBossRoom = nextRoomNumber % 10 === 0;
+            const isMiniboss1 = nextRoomNumber === 15;
+            const isMiniboss2 = nextRoomNumber === 25;
             
-            // Warn player about upcoming boss
-            if (nextRoomNumber === 9) {
-                showMessage('⚠️ BOSS APPROACHING! Prepare for battle in the next room!', 'warning');
+            // Warn player about upcoming miniboss
+            if (nextRoomNumber === 14) {
+                showMessage('⚠️ MINIBOSS APPROACHING! Prepare for a tough fight!', 'warning');
+            } else if (nextRoomNumber === 24) {
+                showMessage('⚠️ FINAL MINIBOSS APPROACHING! Get ready!', 'warning');
             }
             
-            if (isBossRoom) {
-                // BOSS BATTLE!
-                const bossNumber = Math.floor(nextRoomNumber / 10);
-                const bossHP = 15; // Fixed boss HP
+            if (isMiniboss1 || isMiniboss2) {
+                // MINIBOSS BATTLE with difficulty scaling
+                const minibossNumber = isMiniboss1 ? 1 : 2;
                 
-                // Boss names and flavor
-                const bossNames = [
+                // HP scales with difficulty
+                const difficultyHPMap = {
+                    easy: { miniboss1: 12, miniboss2: 18 },
+                    normal: { miniboss1: 15, miniboss2: 22 },
+                    hard: { miniboss1: 20, miniboss2: 28 },
+                    endless: { miniboss1: 15, miniboss2: 22 }
+                };
+                
+                const bossHP = isMiniboss1 
+                    ? difficultyHPMap[game.difficulty].miniboss1 
+                    : difficultyHPMap[game.difficulty].miniboss2;
+                
+                // Miniboss names and flavor
+                const minibossData = [
                     { name: 'The Forgotten Knight', flavor: 'A hollow warrior bound by ancient curses...' },
-                    { name: 'The Crimson Warden', flavor: 'Guardian of the deeper dungeons, covered in blood of the fallen.' },
-                    { name: 'The Shadow Lord', flavor: 'Darkness incarnate. Few have lived to speak of this encounter.' },
-                    { name: 'The Abyss Keeper', flavor: 'The final horror. The one who devours all hope.' }
+                    { name: 'The Crimson Warden', flavor: 'Guardian of the deeper dungeons, covered in blood of the fallen.' }
                 ];
                 
-                const boss = bossNames[Math.min(bossNumber - 1, bossNames.length - 1)];
+                const boss = minibossData[minibossNumber - 1];
                 
                 const bossCard = {
                     suit: '👹',
@@ -4260,7 +4360,8 @@ class DarkAtmosphericMusic {
                     numValue: bossHP,
                     maxHP: bossHP, // Store max HP for HP bar
                     isBoss: true,
-                    bossNumber: bossNumber,
+                    isMiniboss: true,
+                    bossNumber: minibossNumber,
                     bossName: boss.name,
                     bossFlavor: boss.flavor
                 };
@@ -4276,10 +4377,10 @@ class DarkAtmosphericMusic {
                 game.lastActionWasAvoid = false;
                 
                 playSound('special');
-                addLog(`⚠️ BOSS BATTLE! ${boss.name} has ${bossHP} HP!`, 'danger');
-                showMessage(`👹 BOSS: ${boss.name}`, 'danger');
+                addLog(`⚠️ MINIBOSS #${minibossNumber} BATTLE! ${boss.name} has ${bossHP} HP!`, 'danger');
+                showMessage(`👹 MINIBOSS: ${boss.name}`, 'danger');
                 
-                // Show boss intro with flavor
+                // Show miniboss intro with flavor
                 setTimeout(() => {
                     showMessage(boss.flavor, 'info');
                 }, 1000);
