@@ -6346,10 +6346,11 @@ class DarkAtmosphericMusic {
             SHOP_ITEMS.forEach((item, itemIndex) => {
                 // Old Key: First item is FREE (once per game)
                 let finalPrice;
+                let basePrice = Math.floor(item.price * discount);
+                
                 if (hasOldKey && itemIndex === 0) {
                     finalPrice = 0;
                 } else {
-                    const basePrice = Math.floor(item.price * discount);
                     finalPrice = Math.floor(basePrice * game.shopPriceMultiplier);
                 }
                 const itemEl = document.createElement('div');
