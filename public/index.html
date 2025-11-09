@@ -155,12 +155,239 @@
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
         }
+        
+        /* Mobile Waitlist Modal */
+        #mobileWaitlistModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1410 0%, #2a1f1a 100%);
+            z-index: 10000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        #mobileWaitlistModal.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .waitlist-container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(42, 31, 26, 0.95);
+            border: 2px solid #5a4a38;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        
+        .waitlist-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .waitlist-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8em;
+            color: #ffd700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .waitlist-subtitle {
+            font-size: 1.1em;
+            color: #ddd;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .waitlist-form {
+            margin-top: 30px;
+        }
+        
+        .waitlist-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(201,169,97,0.3);
+            border-radius: 6px;
+            color: #ddd;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .waitlist-input:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .waitlist-checkbox-group {
+            text-align: left;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 6px;
+        }
+        
+        .waitlist-checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: #ddd;
+            font-size: 0.9em;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+        
+        .waitlist-checkbox-label input[type="checkbox"] {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            accent-color: #ffd700;
+            cursor: pointer;
+        }
+        
+        .waitlist-checkbox-label.required::after {
+            content: " *";
+            color: #ff6b6b;
+        }
+        
+        .waitlist-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(180deg, #5a4d3f 0%, #443828 100%);
+            border: 2px solid #5a4a38;
+            border-radius: 8px;
+            color: #ffd700;
+            font-family: 'Cinzel', serif;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .waitlist-btn:hover {
+            background: linear-gradient(180deg, #6a5d4f 0%, #544838 100%);
+            border-color: #6b5a48;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+        }
+        
+        .waitlist-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .waitlist-desktop-link {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(90, 74, 56, 0.5);
+            color: #aaa;
+            font-size: 0.85em;
+        }
+        
+        .waitlist-desktop-link a {
+            color: #6bcf7f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .waitlist-validation {
+            color: #ff6b6b;
+            font-size: 0.85em;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .waitlist-success {
+            display: none;
+            padding: 20px;
+            background: rgba(107, 207, 127, 0.2);
+            border: 2px solid #6bcf7f;
+            border-radius: 8px;
+            color: #6bcf7f;
+            margin-top: 20px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
     </style>
 
     <!-- Simple anti-spam validation (no external dependencies) -->
 
 </head>
 <body>
+
+    <!-- ============================================ -->
+    <!-- MOBILE WAITLIST MODAL
+    <!-- ============================================ -->
+    <div id="mobileWaitlistModal">
+        <div class="waitlist-container">
+            <div class="waitlist-icon">📱</div>
+            <h1 class="waitlist-title">Coming Soon to Mobile!</h1>
+            <p class="waitlist-subtitle">
+                Dungeon Scoundrel is being optimized for mobile devices. 
+                <strong>Play now on desktop</strong> for the best experience!
+            </p>
+            
+            <div class="waitlist-form">
+                <p style="color: #ffd700; margin-bottom: 20px; font-weight: 600;">
+                    🎮 Be the first to know when mobile version launches!
+                </p>
+                
+                <input 
+                    type="email" 
+                    id="waitlistEmail" 
+                    class="waitlist-input" 
+                    placeholder="your.email@example.com"
+                    autocomplete="email"
+                >
+                
+                <div class="waitlist-checkbox-group">
+                    <label class="waitlist-checkbox-label required">
+                        <input type="checkbox" id="waitlistPrivacy" required>
+                        <span>I accept the <a href="#" style="color: #ffd700;">Privacy Policy</a> and consent to the processing of my personal data in accordance with LGPD</span>
+                    </label>
+                    
+                    <label class="waitlist-checkbox-label required">
+                        <input type="checkbox" id="waitlistMarketing" required>
+                        <span>I want to receive tips, news, and updates about Dungeon Scoundrel</span>
+                    </label>
+                </div>
+                
+                <div id="waitlistValidation" class="waitlist-validation"></div>
+                
+                <button class="waitlist-btn" onclick="joinWaitlist()">
+                    ✨ Join Waitlist
+                </button>
+                
+                <div id="waitlistSuccess" class="waitlist-success">
+                    <strong>🎉 Success!</strong><br>
+                    You're on the list! We'll notify you as soon as the mobile version is ready.
+                </div>
+            </div>
+            
+            <div class="waitlist-desktop-link">
+                <p>Want to play now?</p>
+                <p><a href="#" onclick="dismissMobileWarning()">Continue to desktop version →</a></p>
+            </div>
+        </div>
+    </div>
 
     <!-- ============================================ -->
     <!-- WELCOME SCREEN
@@ -1463,6 +1690,154 @@
     </div>
     
     <script>
+        // ============================================
+        // MOBILE DETECTION & WAITLIST SYSTEM
+        // ============================================
+        
+        // Detect if device is mobile
+        function isMobileDevice() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+            const isMobile = mobileRegex.test(userAgent);
+            const isSmallScreen = window.innerWidth <= 768;
+            return isMobile || isSmallScreen;
+        }
+        
+        // Check if user dismissed mobile warning
+        function hasDismissedMobileWarning() {
+            const dismissed = localStorage.getItem('dismissedMobileWarning');
+            if (!dismissed) return false;
+            
+            // Check if dismissed more than 7 days ago
+            const dismissedTime = parseInt(dismissed);
+            const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+            return dismissedTime > sevenDaysAgo;
+        }
+        
+        // Show mobile waitlist modal
+        function showMobileWaitlist() {
+            if (isMobileDevice() && !hasDismissedMobileWarning()) {
+                document.getElementById('mobileWaitlistModal').classList.add('active');
+                // Prevent scrolling on body
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        // Dismiss mobile warning
+        function dismissMobileWarning() {
+            localStorage.setItem('dismissedMobileWarning', Date.now().toString());
+            document.getElementById('mobileWaitlistModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Join waitlist function
+        window.joinWaitlist = function() {
+            const emailInput = document.getElementById('waitlistEmail');
+            const privacyCheckbox = document.getElementById('waitlistPrivacy');
+            const marketingCheckbox = document.getElementById('waitlistMarketing');
+            const validationDiv = document.getElementById('waitlistValidation');
+            const successDiv = document.getElementById('waitlistSuccess');
+            const submitBtn = event.target;
+            
+            // Clear previous validation
+            validationDiv.style.display = 'none';
+            
+            // Get values
+            const email = emailInput.value.trim();
+            
+            // Validate email
+            if (!email) {
+                validationDiv.textContent = 'Please enter your email address.';
+                validationDiv.style.display = 'block';
+                emailInput.focus();
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                validationDiv.textContent = 'Please enter a valid email address.';
+                validationDiv.style.display = 'block';
+                emailInput.focus();
+                return;
+            }
+            
+            // Validate checkboxes
+            if (!privacyCheckbox.checked) {
+                validationDiv.textContent = 'You must accept the Privacy Policy to continue.';
+                validationDiv.style.display = 'block';
+                return;
+            }
+            
+            if (!marketingCheckbox.checked) {
+                validationDiv.textContent = 'You must accept to receive updates to join the waitlist.';
+                validationDiv.style.display = 'block';
+                return;
+            }
+            
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Joining...';
+            
+            // Prepare EmailJS params
+            const params = {
+                from_name: 'Mobile Waitlist',
+                reply_to: email,
+                user_email: email,
+                signup_date: new Date().toLocaleString(),
+                privacy_accepted: 'Yes',
+                marketing_accepted: 'Yes',
+                device_info: navigator.userAgent,
+                screen_size: `${window.innerWidth}x${window.innerHeight}`,
+                message: `New mobile waitlist signup from ${email}`
+            };
+            
+            console.log('Sending waitlist signup:', params);
+            
+            // Send via EmailJS
+            if (window.emailjs) {
+                emailjs.send('service_tfl51qs', 'template_x3cplm6', params)
+                    .then(function(response) {
+                        console.log('Waitlist signup SUCCESS:', response);
+                        
+                        // Show success message
+                        successDiv.style.display = 'block';
+                        emailInput.value = '';
+                        privacyCheckbox.checked = false;
+                        marketingCheckbox.checked = false;
+                        
+                        // Store in localStorage to prevent duplicate signups
+                        localStorage.setItem('waitlistSignup', email);
+                        
+                        // Auto-dismiss after 3 seconds
+                        setTimeout(() => {
+                            dismissMobileWarning();
+                        }, 3000);
+                        
+                    }, function(error) {
+                        console.error('Waitlist signup FAILED:', error);
+                        validationDiv.textContent = 'Failed to join waitlist. Please try again.';
+                        validationDiv.style.display = 'block';
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = '✨ Join Waitlist';
+                    });
+            } else {
+                console.error('EmailJS not loaded');
+                validationDiv.textContent = 'Email service not available. Please try again later.';
+                validationDiv.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = '✨ Join Waitlist';
+            }
+        };
+        
+        // Show modal on page load if mobile
+        window.addEventListener('DOMContentLoaded', function() {
+            showMobileWaitlist();
+        });
+        
+        // ============================================
+        // BUG REPORT SYSTEM
+        // ============================================
+        
         // Anti-bot protection storage
         let bugReportAttempts = JSON.parse(localStorage.getItem('bugReportAttempts') || '[]');
         let lastBugReportTime = parseInt(localStorage.getItem('lastBugReportTime') || '0');
