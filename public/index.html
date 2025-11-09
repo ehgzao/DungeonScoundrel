@@ -1402,7 +1402,13 @@
             <button class="modal-close-btn" onclick="document.getElementById('bugReportModal').classList.remove('active'); hideHumanVerification();">✕</button>
             <h2>🐛 Report a Bug</h2>
             <div style="margin: 10px 0 12px; color: #aaa; font-size: 0.9em;">Describe the bug in detail. Technical info like browser and screen resolution will be sent automatically.</div>
-            <textarea id="bugMessage" placeholder="Describe what happened, steps to reproduce, and expected behavior" style="width: 100%; min-height: 160px; resize: vertical; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 6px; padding: 10px;"></textarea>
+            <textarea id="bugMessage" placeholder="Describe what happened, steps to reproduce, and expected behavior" style="width: 100%; min-height: 160px; resize: vertical; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 6px; padding: 10px;" oninput="updateCharacterCount()"></textarea>
+            
+            <!-- Character counter and validation -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 0.85em;">
+                <div id="validationMessage" style="color: #ff6b6b; display: none;"></div>
+                <div id="characterCount" style="color: #aaa;">0 / 2000</div>
+            </div>
             
             <!-- Human Verification Section -->
             <div id="humanVerification" style="margin-top: 15px; padding: 12px; background: rgba(107, 207, 127, 0.1); border: 1px solid rgba(107, 207, 127, 0.3); border-radius: 6px; display: none;">
@@ -1460,6 +1466,48 @@
         // Hide human verification
         function hideHumanVerification() {
             document.getElementById('humanVerification').style.display = 'none';
+            // Also clear validation messages
+            const validationDiv = document.getElementById('validationMessage');
+            if (validationDiv) validationDiv.style.display = 'none';
+        }
+        
+        // Update character count and validation
+        function updateCharacterCount() {
+            const textarea = document.getElementById('bugMessage');
+            const countDiv = document.getElementById('characterCount');
+            const validationDiv = document.getElementById('validationMessage');
+            
+            const length = textarea.value.length;
+            countDiv.textContent = `${length} / 2000`;
+            
+            // Visual feedback for character count
+            if (length > 2000) {
+                countDiv.style.color = '#ff6b6b';
+                textarea.style.borderColor = '#ff6b6b';
+                validationDiv.textContent = 'Message too long (max 2000 characters)';
+                validationDiv.style.display = 'block';
+            } else if (length < 10 && length > 0) {
+                countDiv.style.color = '#ffd700';
+                textarea.style.borderColor = '#ffd700';
+                validationDiv.textContent = 'Please provide more details (min 10 characters)';
+                validationDiv.style.display = 'block';
+            } else if (length >= 10) {
+                countDiv.style.color = '#6bcf7f';
+                textarea.style.borderColor = 'rgba(201,169,97,0.3)';
+                validationDiv.style.display = 'none';
+            } else {
+                countDiv.style.color = '#aaa';
+                textarea.style.borderColor = 'rgba(201,169,97,0.3)';
+                validationDiv.style.display = 'none';
+            }
+        }
+        
+        // Show rate limit message inline
+        function showRateLimitMessage(message) {
+            const validationDiv = document.getElementById('validationMessage');
+            validationDiv.textContent = message;
+            validationDiv.style.color = '#ffd700';
+            validationDiv.style.display = 'block';
         }
         
         // Bug Report Function (Global Scope)
@@ -1471,7 +1519,7 @@
                 // RATE LIMITING: Max 1 report per 5 minutes
                 if (now - lastBugReportTime < 5 * 60 * 1000) {
                     const remainingTime = Math.ceil((5 * 60 * 1000 - (now - lastBugReportTime)) / 1000 / 60);
-                    alert(`Please wait ${remainingTime} minutes before sending another bug report.`);
+                    showRateLimitMessage(`Please wait ${remainingTime} minutes before sending another bug report.`);
                     return;
                 }
                 
@@ -1482,7 +1530,7 @@
                 ).length;
                 
                 if (todayAttempts >= 3) {
-                    alert('Daily limit reached. You can send up to 3 bug reports per day.');
+                    showRateLimitMessage('Daily limit reached. You can send up to 3 bug reports per day.');
                     return;
                 }
                 
@@ -1510,23 +1558,26 @@
                 const textarea = document.getElementById('bugMessage');
                 if (!textarea) { 
                     console.error('bugMessage textarea not found');
-                    alert('Bug report unavailable.'); 
+                    showRateLimitMessage('Bug report system unavailable. Please try again later.');
                     return; 
                 }
                 const message = (textarea.value || '').trim();
                 console.log('Message:', message);
                 
-                // Simple anti-spam validation
+                // Simple anti-spam validation (visual feedback already handled by updateCharacterCount)
                 if (!message) { 
-                    alert('Please describe the bug.'); 
+                    showRateLimitMessage('Please describe the bug.');
+                    textarea.focus();
                     return; 
                 }
                 if (message.length < 10) {
-                    alert('Please provide more details (at least 10 characters).');
+                    showRateLimitMessage('Please provide more details (at least 10 characters).');
+                    textarea.focus();
                     return;
                 }
                 if (message.length > 2000) {
-                    alert('Message too long. Please keep it under 2000 characters.');
+                    showRateLimitMessage('Message too long. Please keep it under 2000 characters.');
+                    textarea.focus();
                     return;
                 }
                 
@@ -1534,13 +1585,14 @@
                 const spamWords = ['viagra', 'casino', 'lottery', 'winner', 'click here', 'free money'];
                 const lowerMessage = message.toLowerCase();
                 if (spamWords.some(word => lowerMessage.includes(word))) {
-                    alert('Message contains inappropriate content.');
+                    showRateLimitMessage('Message contains inappropriate content.');
+                    textarea.focus();
                     return;
                 }
                 
                 console.log('Checking emailjs:', window.emailjs);
                 if (!window.emailjs) { 
-                    alert('Email service not loaded. Check console.'); 
+                    showRateLimitMessage('Email service not loaded. Please refresh the page and try again.');
                     return; 
                 }
                 
