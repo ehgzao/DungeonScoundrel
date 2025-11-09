@@ -4065,9 +4065,9 @@ class DarkAtmosphericMusic {
             {
                 id: 'codex',
                 title: '📖 Codex (Relics & Upgrades)',
-                text: 'Look for the 📚 CODEX button in the main menu to see all relics and permanent upgrades!\n\nRelics give you powerful passive bonuses. Upgrades make you stronger for all future runs. Unlock them by completing challenges!',
-                highlight: '.sidebar-left',
-                position: 'left',
+                text: 'Click the 📖 RELICS button at the top to see all relics and permanent upgrades!\n\nRelics give you powerful passive bonuses. Upgrades make you stronger for all future runs. Unlock them by completing challenges!',
+                highlight: '#btnTopRelics',
+                position: 'top',
                 buttonText: 'Got it!'
             },
             {
@@ -4139,38 +4139,59 @@ class DarkAtmosphericMusic {
                 el.style.boxShadow = '';
             });
             
+            // ALWAYS create dark overlay (even without spotlight)
+            const darkOverlay = document.createElement('div');
+            darkOverlay.className = 'tutorial-overlay';
+            darkOverlay.style.cssText = `
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.85);
+                z-index: 9998;
+                pointer-events: none;
+            `;
+            document.body.appendChild(darkOverlay);
+            
             // SPOTLIGHT element if specified (CUTOUT approach using box-shadow)
             if (step.highlight) {
                 const targetElement = document.querySelector(step.highlight);
                 if (targetElement) {
                     const rect = targetElement.getBoundingClientRect();
                     
-                    // Create spotlight with box-shadow cutout effect
-                    const spotlight = document.createElement('div');
-                    spotlight.className = 'tutorial-spotlight';
-                    spotlight.style.cssText = `
-                        position: fixed;
-                        top: ${rect.top - 8}px;
-                        left: ${rect.left - 8}px;
-                        width: ${rect.width + 16}px;
-                        height: ${rect.height + 16}px;
-                        border: 4px solid #ffd700;
-                        border-radius: 8px;
-                        box-shadow: 
-                            0 0 20px rgba(255, 215, 0, 0.8),
-                            0 0 0 9999px rgba(0, 0, 0, 0.85);
-                        z-index: 9999;
-                        pointer-events: none;
-                        animation: tutorialPulse 2s infinite;
-                    `;
-                    document.body.appendChild(spotlight);
+                    console.log('[TUTORIAL] 🎯 Creating spotlight for:', step.highlight, 'Rect:', rect);
                     
-                    // Make target element interactive and above spotlight
-                    targetElement.style.position = 'relative';
-                    targetElement.style.zIndex = '10000';
-                    targetElement.classList.add('tutorial-highlighted');
-                    
-                    console.log('[TUTORIAL] Spotlight created for:', step.highlight);
+                    // Only create spotlight if element is visible (has dimensions)
+                    if (rect.width > 0 && rect.height > 0) {
+                        // Create spotlight with box-shadow cutout effect
+                        const spotlight = document.createElement('div');
+                        spotlight.className = 'tutorial-spotlight';
+                        spotlight.style.cssText = `
+                            position: fixed;
+                            top: ${rect.top - 8}px;
+                            left: ${rect.left - 8}px;
+                            width: ${rect.width + 16}px;
+                            height: ${rect.height + 16}px;
+                            border: 4px solid #ffd700;
+                            border-radius: 8px;
+                            box-shadow: 
+                                0 0 20px rgba(255, 215, 0, 0.8),
+                                0 0 0 9999px rgba(0, 0, 0, 0.85);
+                            z-index: 9999;
+                            pointer-events: none;
+                            animation: tutorialPulse 2s infinite;
+                        `;
+                        document.body.appendChild(spotlight);
+                        
+                        // Make target element interactive and above spotlight
+                        targetElement.style.position = 'relative';
+                        targetElement.style.zIndex = '10000';
+                        targetElement.classList.add('tutorial-highlighted');
+                        
+                        console.log('[TUTORIAL] ✅ Spotlight created successfully');
+                    } else {
+                        console.warn('[TUTORIAL] ⚠️ Element not visible (0 dimensions):', step.highlight);
+                    }
+                } else {
+                    console.warn('[TUTORIAL] ⚠️ Element not found:', step.highlight);
                 }
             }
             
