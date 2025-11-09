@@ -3918,6 +3918,95 @@ class DarkAtmosphericMusic {
             checkGameState();
             checkAchievements();
         }
+        
+        /**
+         * Calculate total player damage with ALL modifiers
+         * Returns object with damage value and breakdown for tooltip
+         * @param {boolean} includeRandomEffects - Include thunder/crit chances in calculation
+         * @returns {Object} { total, breakdown: { base, bonuses, multipliers } }
+         */
+        function calculateTotalDamage(includeRandomEffects = false) {
+            const breakdown = {
+                base: 0,
+                bonuses: [],
+                multipliers: []
+            };
+            
+            // Base weapon damage
+            const baseWeapon = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
+            breakdown.base = baseWeapon;
+            
+            // Power bonus from relics
+            const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+            if (powerBonus > 0) breakdown.bonuses.push({ name: 'Power Relics', value: powerBonus });
+            
+            // Berserk bonus
+            const berserkBonus = getBerserkBonus();
+            if (berserkBonus > 0) breakdown.bonuses.push({ name: '🔥 Berserk', value: berserkBonus });
+            
+            // Bloodlust bonus
+            const bloodlustBonus = getBloodlustBonus();
+            if (bloodlustBonus > 0) breakdown.bonuses.push({ name: 'Bloodlust', value: bloodlustBonus });
+            
+            // Combo bonus
+            const comboBonus = getComboBonus();
+            if (comboBonus > 0) breakdown.bonuses.push({ name: `Combo x${game.combo}`, value: comboBonus });
+            
+            // Power Gauntlet: +3 first attack
+            let gauntletBonus = 0;
+            if (game.relics.some(r => r.id === 'gauntlet') && !game.firstAttackDone) {
+                gauntletBonus = 3;
+                breakdown.bonuses.push({ name: '🥊 First Strike', value: 3 });
+            }
+            
+            // Class bonuses
+            let classBonus = 0;
+            if (game.classAbilityActive && game.classAbilityCounter > 0) {
+                if (game.playerClass === 'dancer') {
+                    classBonus = 2;
+                    breakdown.bonuses.push({ name: 'Dancer Ability', value: 2 });
+                }
+            }
+            
+            // Sum all additive bonuses
+            const totalAdditive = baseWeapon + powerBonus + berserkBonus + bloodlustBonus + comboBonus + gauntletBonus + classBonus;
+            
+            // Multiplicative effects
+            let finalDamage = totalAdditive;
+            
+            // Double Damage card effect
+            if (game.doubleDamage) {
+                breakdown.multipliers.push({ name: '⚡ Double Power', mult: 2 });
+                finalDamage *= 2;
+            }
+            
+            // Class multipliers
+            if (game.classAbilityActive && game.classAbilityCounter > 0) {
+                if (game.playerClass === 'rogue') {
+                    breakdown.multipliers.push({ name: '🗡️ Shadow Strike', mult: 2 });
+                    finalDamage *= 2;
+                } else if (game.playerClass === 'berserker' && game.rageStrikeActive) {
+                    breakdown.multipliers.push({ name: '⚔️ Rage Strike', mult: 3 });
+                    finalDamage *= 3;
+                }
+            }
+            
+            // Thunder Gauntlet (20% chance) - only if including random
+            if (includeRandomEffects && game.relics.some(r => r.id === 'warrior')) {
+                breakdown.multipliers.push({ name: '⚡ Thunder (20%)', mult: 2 });
+            }
+            
+            // Critical Strike (10% chance) - only if including random
+            if (includeRandomEffects && permanentUnlocks.criticalStrike) {
+                breakdown.multipliers.push({ name: '💥 Crit (10%)', mult: 3 });
+            }
+            
+            return {
+                total: Math.floor(finalDamage),
+                breakdown: breakdown,
+                hasRandom: game.relics.some(r => r.id === 'warrior') || permanentUnlocks.criticalStrike
+            };
+        }
 
         function handleMonster(monster, index) {
             const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
