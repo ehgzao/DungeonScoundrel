@@ -3946,10 +3946,18 @@ class DarkAtmosphericMusic {
             {
                 id: 'gold',
                 title: '💰 Gold',
-                text: 'You earn gold by clearing rooms. Use it to buy items at the merchant!',
+                text: 'You earn gold by clearing rooms. Save it to buy items that will help you survive!',
                 highlight: '#goldAmount',
                 position: 'top-right',
                 buttonText: 'Next'
+            },
+            {
+                id: 'merchant',
+                title: '🏺 Merchant',
+                text: 'Click the MERCHANT button to buy healing potions, weapons, and powerful relics. Spend your gold wisely to survive the dungeon!',
+                highlight: '#btnOpenShop',
+                position: 'left',
+                buttonText: 'Got it!'
             },
             {
                 id: 'weapon',
@@ -4037,43 +4045,59 @@ class DarkAtmosphericMusic {
                 pointer-events: all;
             `;
             
-            // Highlight element if specified
-            if (step.highlight) {
-                const targetElement = document.querySelector(step.highlight);
-                if (targetElement) {
-                    const rect = targetElement.getBoundingClientRect();
-                    
-                    // Validate rect has reasonable dimensions
-                    const isValidRect = rect.width > 0 && rect.height > 0 && rect.width < window.innerWidth && rect.height < window.innerHeight;
-                    
-                    if (isValidRect) {
-                        // Ensure minimum size for spotlight
-                        const minWidth = 60;
-                        const minHeight = 40;
-                        const finalWidth = Math.max(rect.width + 20, minWidth);
-                        const finalHeight = Math.max(rect.height + 20, minHeight);
+            // Add overlay to body first
+            document.body.appendChild(overlay);
+            
+            // Wait for UI to be fully rendered (double requestAnimationFrame + delay)
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        // Highlight element if specified
+                        if (step.highlight) {
+                            const targetElement = document.querySelector(step.highlight);
+                            if (targetElement) {
+                                const rect = targetElement.getBoundingClientRect();
+                                
+                                console.log('[TUTORIAL] Spotlight target:', step.highlight, 'Element:', targetElement, 'Rect:', rect, 'Visible:', targetElement.offsetParent !== null);
                         
-                        // Create spotlight
-                        const spotlight = document.createElement('div');
-                        spotlight.className = 'tutorial-spotlight-element'; // Add class for easier cleanup
-                        spotlight.style.cssText = `
-                            position: fixed;
-                            top: ${rect.top - 10}px;
-                            left: ${rect.left - 10}px;
-                            width: ${finalWidth}px;
-                            height: ${finalHeight}px;
-                            border: 3px solid #ffd700;
-                            border-radius: 8px;
-                            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 30px #ffd700;
-                            z-index: 9999;
-                            pointer-events: none;
-                            animation: tutorialPulse 2s infinite;
-                        `;
-                        // Add spotlight to overlay so it's removed together
-                        overlay.appendChild(spotlight);
+                        // Validate rect has reasonable dimensions
+                        const isValidRect = rect.width > 0 && rect.height > 0 && rect.width < window.innerWidth && rect.height < window.innerHeight;
+                        
+                        if (isValidRect) {
+                            // Ensure minimum size for spotlight
+                            const minWidth = 80;
+                            const minHeight = 60;
+                            const finalWidth = Math.max(rect.width + 20, minWidth);
+                            const finalHeight = Math.max(rect.height + 20, minHeight);
+                            
+                            // Create spotlight
+                            const spotlight = document.createElement('div');
+                            spotlight.className = 'tutorial-spotlight-element';
+                            spotlight.style.cssText = `
+                                position: fixed;
+                                top: ${rect.top - 10}px;
+                                left: ${rect.left - 10}px;
+                                width: ${finalWidth}px;
+                                height: ${finalHeight}px;
+                                border: 3px solid #ffd700;
+                                border-radius: 8px;
+                                box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 30px #ffd700;
+                                z-index: 10001;
+                                pointer-events: none;
+                                animation: tutorialPulse 2s infinite;
+                            `;
+                            // Add spotlight to body (not overlay) for correct z-index layering
+                            document.body.appendChild(spotlight);
+                        } else {
+                            console.warn('[TUTORIAL] Invalid rect for spotlight:', rect);
+                        }
+                    } else {
+                        console.warn('[TUTORIAL] Target element not found:', step.highlight);
                     }
                 }
-            }
+                    }, 50); // Wait 50ms for UI
+                });
+            });
             
             // Create modal
             const modal = document.createElement('div');
@@ -4084,12 +4108,13 @@ class DarkAtmosphericMusic {
                 ${step.position === 'top' ? 'top: 120px; left: 50%; transform: translateX(-50%);' : ''}
                 ${step.position === 'bottom' ? 'bottom: 100px; left: 50%; transform: translateX(-50%);' : ''}
                 ${step.position === 'top-right' ? 'top: 120px; right: 30px;' : ''}
+                ${step.position === 'left' ? 'top: 50%; left: 30px; transform: translateY(-50%);' : ''}
                 max-width: 500px;
                 background: linear-gradient(180deg, #2d2d2d 0%, #1a1a1a 100%);
                 border: 3px solid #ffd700;
                 border-radius: 15px;
                 padding: 25px;
-                z-index: 10000;
+                z-index: 10002;
                 box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
                 text-align: center;
             `;
