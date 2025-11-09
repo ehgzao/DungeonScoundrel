@@ -1410,6 +1410,27 @@
                 <div id="characterCount" style="color: #aaa;">0 / 2000</div>
             </div>
             
+            <!-- Optional email for copy -->
+            <div style="margin-top: 15px; padding: 12px; background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 6px;">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: #ddd;">
+                    <input 
+                        type="checkbox" 
+                        id="sendCopyCheckbox" 
+                        onchange="toggleEmailField()"
+                        style="width: 16px; height: 16px; accent-color: #ffd700;"
+                    >
+                    <span style="font-size: 0.9em;">Send me a copy of this bug report</span>
+                </label>
+                <input 
+                    type="email" 
+                    id="userEmail" 
+                    placeholder="your.email@example.com" 
+                    style="width: 100%; margin-top: 10px; padding: 8px; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 4px; display: none;"
+                    oninput="validateEmail()"
+                >
+                <div id="emailValidation" style="color: #ff6b6b; font-size: 0.8em; margin-top: 5px; display: none;"></div>
+            </div>
+            
             <!-- Human Verification Section -->
             <div id="humanVerification" style="margin-top: 15px; padding: 12px; background: rgba(107, 207, 127, 0.1); border: 1px solid rgba(107, 207, 127, 0.3); border-radius: 6px; display: none;">
                 <div style="color: #6bcf7f; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
@@ -1469,6 +1490,51 @@
             // Also clear validation messages
             const validationDiv = document.getElementById('validationMessage');
             if (validationDiv) validationDiv.style.display = 'none';
+            
+            // Reset email field
+            document.getElementById('sendCopyCheckbox').checked = false;
+            document.getElementById('userEmail').style.display = 'none';
+            document.getElementById('emailValidation').style.display = 'none';
+        }
+        
+        // Toggle email field visibility
+        function toggleEmailField() {
+            const checkbox = document.getElementById('sendCopyCheckbox');
+            const emailField = document.getElementById('userEmail');
+            const emailValidation = document.getElementById('emailValidation');
+            
+            if (checkbox.checked) {
+                emailField.style.display = 'block';
+                setTimeout(() => emailField.focus(), 100);
+            } else {
+                emailField.style.display = 'none';
+                emailField.value = '';
+                emailValidation.style.display = 'none';
+                emailField.style.borderColor = 'rgba(201,169,97,0.3)';
+            }
+        }
+        
+        // Validate email format
+        function validateEmail() {
+            const emailField = document.getElementById('userEmail');
+            const emailValidation = document.getElementById('emailValidation');
+            const email = emailField.value.trim();
+            
+            if (!email) {
+                emailValidation.style.display = 'none';
+                emailField.style.borderColor = 'rgba(201,169,97,0.3)';
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailRegex.test(email)) {
+                emailValidation.style.display = 'none';
+                emailField.style.borderColor = '#6bcf7f';
+            } else {
+                emailValidation.textContent = 'Please enter a valid email address';
+                emailValidation.style.display = 'block';
+                emailField.style.borderColor = '#ff6b6b';
+            }
         }
         
         // Update character count and validation
@@ -1678,13 +1744,33 @@
                     return; 
                 }
                 
+                // Check if user wants email copy and validate
+                const sendCopyCheckbox = document.getElementById('sendCopyCheckbox');
+                const userEmail = document.getElementById('userEmail');
+                let userEmailValue = '';
+                
+                if (sendCopyCheckbox.checked) {
+                    userEmailValue = userEmail.value.trim();
+                    if (!userEmailValue) {
+                        showRateLimitMessage('Please enter your email address or uncheck "Send me a copy".');
+                        userEmail.focus();
+                        return;
+                    }
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(userEmailValue)) {
+                        showRateLimitMessage('Please enter a valid email address.');
+                        userEmail.focus();
+                        return;
+                    }
+                }
+                
                 // Better browser and screen detection
                 const browserInfo = getBrowserInfo();
                 const screenInfo = getScreenInfo();
                 
                 const params = {
                     from_name: 'Player',
-                    reply_to: 'player@game.com',
+                    reply_to: userEmailValue || 'player@game.com',
                     message: message,
                     user_browser: browserInfo.full,
                     user_screen: screenInfo.resolution,
@@ -1701,7 +1787,9 @@
                     browser_os: browserInfo.os,
                     screen_viewport: screenInfo.viewport,
                     screen_device: screenInfo.device,
-                    screen_pixel_ratio: screenInfo.pixelRatio
+                    screen_pixel_ratio: screenInfo.pixelRatio,
+                    // User email for copy
+                    user_email: userEmailValue
                 };
                 
                 console.log('Sending email with params:', params);
