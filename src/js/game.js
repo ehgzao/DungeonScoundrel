@@ -6031,6 +6031,12 @@ class DarkAtmosphericMusic {
             if (randomRelic.effect === 'bigHealth') { game.maxHealth += 10; game.health += 10; }
             if (randomRelic.effect === 'tinyHealth') { game.maxHealth += 1; game.health += 1; }
             
+            // Apply immediate gold effects (Charm relic)
+            if (randomRelic.effect === 'startGold') { 
+                earnGold(10);
+                showMessage('✨ Charm bonus: +10 gold!', 'success');
+            }
+            
             const rarityColors = { common: '⚪', uncommon: '🟢', rare: '🔵', legendary: '🟠' };
             showMessage(`${rarityColors[rarity]} Relic: ${randomRelic.name}!`, 'success');
             updateRelicsDisplay();
@@ -6231,10 +6237,17 @@ class DarkAtmosphericMusic {
                 const itemEl = document.createElement('div');
                 itemEl.className = 'shop-item';
                 
-                // Add visual indicator if can't afford
+                // Check if item requires a weapon (weapon-related items)
+                const weaponRequiredItems = ['repair_weapon', 'weapon_upgrade', 'weapon_big_upgrade'];
+                const needsWeapon = weaponRequiredItems.includes(item.id);
+                const hasWeapon = game.equippedWeapon !== null;
+                const weaponBlocked = needsWeapon && !hasWeapon;
+                
+                // Add visual indicator if can't afford OR weapon blocked
                 const canAfford = game.gold >= finalPrice;
-                const affordClass = canAfford ? '' : 'cannot-afford';
-                const priceColor = canAfford ? '#ffd700' : '#ff6b6b';
+                const canBuy = canAfford && !weaponBlocked;
+                const affordClass = canBuy ? '' : 'cannot-afford';
+                const priceColor = canBuy ? '#ffd700' : '#ff6b6b';
                 
                 // Show original price if discount OR price increased
                 let priceDisplayHTML = '';
@@ -6249,22 +6262,33 @@ class DarkAtmosphericMusic {
                     priceDisplayHTML = `<span style="text-decoration: line-through; opacity: 0.5;">${item.price}</span> `;
                 }
                 
+                // Build warning message if blocked
+                let warningMessage = '';
+                if (weaponBlocked) {
+                    warningMessage = '<span style="color: #ff6b6b; font-size: 0.9em;">⚔️ Requires weapon equipped!</span>';
+                } else if (!canAfford) {
+                    warningMessage = '<span style="color: #ff6b6b; font-size: 0.9em;">(Need ' + (finalPrice - game.gold) + ' more)</span>';
+                }
+                
                 itemEl.innerHTML = `
                     <div class="item-info ${affordClass}">
                         <div class="item-name">${item.name}</div>
                         <div class="item-description">${item.description}</div>
                         <div class="item-price" style="color: ${priceColor}; font-weight: bold;">
                             ${priceDisplayHTML}${finalPrice} 🪙
-                            ${!canAfford ? ' <span style="color: #ff6b6b; font-size: 0.9em;">(Need ' + (finalPrice - game.gold) + ' more)</span>' : ''}
+                            ${warningMessage}
                         </div>
                     </div>
-                    <button class="buy-btn" data-item-id="${item.id}" data-price="${finalPrice}">${canAfford ? 'Buy' : '🔒 Locked'}</button>
+                    <button class="buy-btn" data-item-id="${item.id}" data-price="${finalPrice}">
+                        ${weaponBlocked ? '⚔️ Need Weapon' : (canAfford ? 'Buy' : '🔒 Locked')}
+                    </button>
                 `;
                 
                 const buyBtn = itemEl.querySelector('.buy-btn');
-                if (!canAfford) {
+                if (!canBuy) {
                     buyBtn.disabled = true;
                     buyBtn.style.opacity = '0.5';
+                    buyBtn.style.cursor = 'not-allowed';
                 }
                 
                 buyBtn.onclick = () => buyItem(item, finalPrice);
