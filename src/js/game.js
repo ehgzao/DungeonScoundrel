@@ -2694,6 +2694,9 @@ class DarkAtmosphericMusic {
             
             kick.start(this.context.currentTime);
             kick.stop(this.context.currentTime + 0.1);
+            
+            // CRITICAL FIX: Track oscillators so stopAll() can clean them!
+            this.oscillators.push(kick);
         }, interval);
         
         this.intervals.push(percTimer);
