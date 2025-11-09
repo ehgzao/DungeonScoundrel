@@ -5248,26 +5248,26 @@ class DarkAtmosphericMusic {
                 overlay.innerHTML = `
                     <div class="modal-content" style="max-width: 600px; border: 3px solid #ffd700;">
                         <button class="modal-close-btn" id="btnEncouragingClose1">✕</button>
-                        <h1 style="color: #ffd700;">⚔️ DON'T GIVE UP!</h1>
+                        <h1 style="color: #ffd700;">DON'T GIVE UP!</h1>
                         <div style="text-align: left; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 8px; margin: 20px 0;">
-                            <p style="font-size: 1.1em; color: #ddd; margin-bottom: 15px;">💀 <strong style="color: #ff6b6b;">Death is just the beginning.</strong> This game is intentionally challenging!</p>
+                            <p style="font-size: 1.1em; color: #ddd; margin-bottom: 15px;"><strong style="color: #ff6b6b;">Death is just the beginning.</strong> This game is intentionally challenging!</p>
                             
-                            <p style="font-size: 1em; color: #c9a961; margin-bottom: 10px;">🎯 <strong>Tips for Success:</strong></p>
+                            <p style="font-size: 1em; color: #c9a961; margin-bottom: 10px;"><strong>Tips for Success:</strong></p>
                             <ul style="color: #aaa; line-height: 1.8; margin-left: 20px;">
-                                <li>🛡️ <strong style="color: #6bcf7f;">Always equip weapons</strong> before fighting monsters</li>
-                                <li>💰 <strong style="color: #ffd93d;">Visit the Shop (S)</strong> to buy relics and upgrades</li>
-                                <li>🗝️ <strong style="color: #d4af37;">Unlock permanent upgrades</strong> that carry between runs</li>
-                                <li>📌 <strong style="color: #a8edea;">Hold cards (right-click)</strong> for strategic plays</li>
-                                <li>⚔️ <strong style="color: #ff6b6b;">Start on Easy</strong> to learn the mechanics</li>
-                                <li>🎓 <strong style="color: #c9a961;">Read the Tutorial</strong> for detailed strategies</li>
+                                <li><strong style="color: #6bcf7f;">Always equip weapons</strong> before fighting monsters</li>
+                                <li><strong style="color: #ffd93d;">Visit the Shop (S)</strong> to buy relics and upgrades</li>
+                                <li><strong style="color: #d4af37;">Unlock permanent upgrades</strong> that carry between runs</li>
+                                <li><strong style="color: #a8edea;">Hold cards (right-click)</strong> for strategic plays</li>
+                                <li><strong style="color: #ff6b6b;">Start on Easy</strong> to learn the mechanics</li>
+                                <li><strong style="color: #c9a961;">Read the Tutorial</strong> for detailed strategies</li>
                             </ul>
                             
-                            <p style="font-size: 1em; color: #6bcf7f; margin-top: 20px; text-align: center;">✨ Each death makes you stronger! Keep trying! ✨</p>
+                            <p style="font-size: 1em; color: #6bcf7f; margin-top: 20px; text-align: center;">Each death makes you stronger! Keep trying!</p>
                         </div>
                         
                         <div style="text-align: center; padding: 20px 15px; margin: 15px 0; background: linear-gradient(135deg, rgba(78, 205, 196, 0.15) 0%, rgba(107, 207, 127, 0.15) 100%); border-radius: 12px; border: 2px solid rgba(212, 175, 55, 0.3); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);">
                             <p style="font-family: 'Cinzel Decorative', 'Cinzel', serif; font-size: 1.3em; font-weight: 700; color: #ffd700; margin: 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.8); letter-spacing: 0.05em; line-height: 1.4;">
-                                🌟 Dreams never get old 🌟
+                                Dreams never get old
                             </p>
                             <p style="font-family: 'Cinzel', serif; font-size: 0.95em; font-style: italic; color: #c9a961; margin: 8px 0 0 0; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6); letter-spacing: 0.03em;">
                                 Os sonhos não envelhecem
@@ -5275,7 +5275,7 @@ class DarkAtmosphericMusic {
                         </div>
                         
                         <div class="modal-controls">
-                            <button class="btn btn-primary" id="btnEncouragingOK1">💪 I'LL TRY AGAIN!</button>
+                            <button class="btn btn-primary" id="btnEncouragingOK1">I'LL TRY AGAIN!</button>
                         </div>
                     </div>
                 `;
@@ -5296,12 +5296,12 @@ class DarkAtmosphericMusic {
                         
                         <div style="padding: 40px 30px;">
                             <h1 style="font-family: 'Cinzel Decorative', 'Cinzel', serif; font-size: 2.5em; font-weight: 900; color: #ffd700; margin: 0 0 30px 0; text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.8); letter-spacing: 0.08em; line-height: 1.3;">
-                                ⚔️ DON'T GIVE UP
+                                DON'T GIVE UP
                             </h1>
                             
                             <div style="padding: 35px 25px; margin: 30px 0; background: linear-gradient(135deg, rgba(78, 205, 196, 0.2) 0%, rgba(107, 207, 127, 0.2) 100%); border-radius: 16px; border: 3px solid rgba(212, 175, 55, 0.5); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 215, 0, 0.1);">
                                 <p style="font-family: 'Cinzel Decorative', 'Cinzel', serif; font-size: 2em; font-weight: 700; color: #ffd700; margin: 0; text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 0 3px 6px rgba(0, 0, 0, 0.9); letter-spacing: 0.06em; line-height: 1.5;">
-                                    🌟 DREAMS NEVER GET OLD 🌟
+                                    DREAMS NEVER GET OLD
                                 </p>
                                 <p style="font-family: 'Cinzel', serif; font-size: 1.2em; font-style: italic; color: #c9a961; margin: 20px 0 0 0; text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7); letter-spacing: 0.04em;">
                                     Os sonhos não envelhecem
@@ -5310,7 +5310,7 @@ class DarkAtmosphericMusic {
                         </div>
                         
                         <div class="modal-controls">
-                            <button class="btn btn-primary" id="btnEncouragingOK2" style="font-size: 1.1em; padding: 14px 28px;">💪 KEEP FIGHTING!</button>
+                            <button class="btn btn-primary" id="btnEncouragingOK2" style="font-size: 1.1em; padding: 14px 28px;">KEEP FIGHTING!</button>
                         </div>
                     </div>
                 `;
