@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1410; color: #ddd; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: #2a1f1a; border-radius: 8px; border: 2px solid #5a4a38; padding: 30px; }
+        .header-with-logo { display: flex; align-items: center; gap: 15px; justify-content: center; margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; }
+        .logo { width: 60px; height: 60px; border-radius: 8px; background: #2a1f1a; padding: 8px; border: 2px solid #ffd700; }
+        .header-text { text-align: center; }
+        .header { text-align: center; color: #ffd700; margin-bottom: 25px; }
+        .header h1 { margin: 0; font-size: 2em; }
+        .section { margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 6px; border-left: 4px solid #ffd700; }
+        .label { color: #6bcf7f; font-weight: bold; margin-bottom: 5px; }
+        .value { color: #ddd; margin-bottom: 10px; }
+        .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(90, 74, 56, 0.5); color: #aaa; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER WITH LOGO -->
+        <div class="header-with-logo">
+            <img src="https://www.dungeonscoundrel.com/favicon.svg" alt="Dungeon Scoundrel" class="logo">
+            <div class="header-text">
+                <h1 style="margin: 0; font-size: 1.8em; color: #ffd700;">📱 Mobile Waitlist</h1>
+                <p style="margin: 5px 0 0 0; color: #aaa; font-size: 0.9em;">Dungeon Scoundrel</p>
+            </div>
+        </div>
+        
+        <div class="header">
+            <h2 style="color: #6bcf7f; margin: 10px 0;">🎉 New Signup Received!</h2>
+            <p style="color: #aaa; margin: 10px 0 0 0;">{{signup_date}}</p>
+        </div>
+        
+        <div class="section">
+            <div class="label">📧 Email Address:</div>
+            <div class="value" style="font-size: 1.2em; color: #ffd700;">{{user_email}}</div>
+        </div>
+        
+        <div class="section">
+            <div class="label">✅ LGPD Consents:</div>
+            <div class="value">
+                <strong>Privacy Policy:</strong> {{privacy_accepted}}<br>
+                <strong>Marketing Communications:</strong> {{marketing_accepted}}
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="label">📱 Device Information:</div>
+            <div class="value">
+                <strong>Screen Size:</strong> {{screen_size}}<br>
+                <strong>User Agent:</strong><br>
+                <span style="font-size: 0.85em; color: #aaa;">{{device_info}}</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🎮 <strong>Dungeon Scoundrel</strong> - Mobile Waitlist</p>
+            <p style="color: #6bcf7f; margin-top: 10px;">Remember to add this email to your mobile launch list!</p>
+        </div>
+    </div>
+</body>
+</html>

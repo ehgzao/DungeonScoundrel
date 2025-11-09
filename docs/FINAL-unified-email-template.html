@@ -4,6 +4,9 @@
     <style>
         body { font-family: Arial, sans-serif; background: #1a1410; color: #ddd; }
         .container { max-width: 600px; margin: 20px auto; padding: 20px; background: #2a1f1a; border-radius: 8px; border: 2px solid #5a4a38; }
+        .header-with-logo { display: flex; align-items: center; gap: 15px; justify-content: center; margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; }
+        .logo { width: 60px; height: 60px; border-radius: 8px; background: #2a1f1a; padding: 8px; border: 2px solid #ffd700; }
+        .header-text { text-align: center; }
         .header { text-align: center; margin-bottom: 20px; }
         .header-bug { color: #ff6b6b; }
         .header-contact { color: #6bcfff; }
@@ -24,6 +27,18 @@
 </head>
 <body>
     <div class="container">
+        <!-- HEADER WITH LOGO -->
+        <div class="header-with-logo">
+            <img src="https://www.dungeonscoundrel.com/favicon.svg" alt="Dungeon Scoundrel" class="logo">
+            <div class="header-text">
+                <h1 style="margin: 0; font-size: 1.5em;">
+                    <span style="display: {{message_type_bug}}; color: #ff6b6b;">🐛 Bug Report</span>
+                    <span style="display: {{message_type_contact}}; color: #6bcfff;">📧 Contact Message</span>
+                </h1>
+                <p style="margin: 5px 0 0 0; color: #ffd700; font-size: 0.9em;">Dungeon Scoundrel</p>
+            </div>
+        </div>
+        
         <!-- TYPE INDICATOR: Bug Report -->
         <div class="bug-alert" style="display: {{message_type_bug}};">
             <h2 style="color: #ff6b6b; margin: 0;">🚨 BUG REPORT RECEIVED</h2>
@@ -38,13 +53,9 @@
             <span class="type-badge type-contact">CONTACT MESSAGE</span>
         </div>
         
-        <!-- HEADER -->
+        <!-- VERSION/DATE INFO -->
         <div class="header">
-            <h1 class="{{message_type_bug_class}}{{message_type_contact_class}}">
-                <span style="display: {{message_type_bug}};">🐛 Dungeon Scoundrel Bug Report</span>
-                <span style="display: {{message_type_contact}};">📧 Dungeon Scoundrel Contact</span>
-            </h1>
-            <p>
+            <p style="color: #aaa; font-size: 0.9em; margin: 0;">
                 <span style="display: {{message_type_bug}};">Version {{game_version}} - {{report_date}}</span>
                 <span style="display: {{message_type_contact}};">{{subject}} - {{send_date}}</span>
             </p>

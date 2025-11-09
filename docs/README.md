@@ -1,6 +1,10 @@
-# 📚 Documentation Index
+# 📚 Dungeon Scoundrel - Documentation
 
-Welcome to the **Dungeon Scoundrel** documentation!
+Welcome to the Dungeon Scoundrel documentation! This folder contains all the technical documentation, guides, and resources for the project.
+
+**Last Updated:** 09/11/2025  
+**Version:** 1.4.0  
+**Author:** Gabriel Lima
 
 ---
 
