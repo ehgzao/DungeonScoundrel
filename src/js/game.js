@@ -5290,6 +5290,23 @@ class DarkAtmosphericMusic {
                 if (oldIndicator) oldIndicator.remove();
             }
             
+            // Berserk stacks indicator
+            if (game.berserkStacks > 0) {
+                const berserkIndicator = document.createElement('div');
+                berserkIndicator.style.cssText = 'position: fixed; top: 160px; right: 20px; background: linear-gradient(135deg, #ff6b6b, #ee5a52); color: #fff; padding: 10px 15px; border-radius: 8px; font-weight: bold; z-index: 100; box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4); animation: pulse 1s infinite;';
+                berserkIndicator.id = 'berserkIndicator';
+                berserkIndicator.innerHTML = `🔥 BERSERK x${game.berserkStacks}<br><small>+5 damage per attack</small>`;
+                
+                // Remove old indicator
+                const oldBerserk = document.getElementById('berserkIndicator');
+                if (oldBerserk) oldBerserk.remove();
+                
+                document.body.appendChild(berserkIndicator);
+            } else {
+                const oldBerserk = document.getElementById('berserkIndicator');
+                if (oldBerserk) oldBerserk.remove();
+            }
+            
             // Undo button visibility (Easy/Normal only)
             const btnUndo = document.getElementById('btnUndo');
             if (btnUndo && (game.difficulty === 'easy' || game.difficulty === 'normal')) {
