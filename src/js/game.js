@@ -1236,13 +1236,14 @@
                     easyBtn.style.boxShadow = '0 0 20px rgba(107, 207, 127, 0.8)';
                 }
                 
-                // Add suggestion message
+                // Add suggestion message BEFORE difficulty selector
                 const suggestionMsg = document.createElement('div');
                 suggestionMsg.className = 'difficulty-suggestion';
-                suggestionMsg.style.cssText = 'position: relative; z-index: 10000; text-align: center; color: #6bcf7f; font-size: 0.95em; margin-top: 10px; padding: 8px; background: rgba(107, 207, 127, 0.1); border-radius: 8px; border: 1px solid rgba(107, 207, 127, 0.3);';
+                suggestionMsg.style.cssText = 'position: relative; z-index: 10000; text-align: center; color: #6bcf7f; font-size: 0.95em; margin-bottom: 15px; padding: 10px 15px; background: rgba(107, 207, 127, 0.15); border-radius: 8px; border: 2px solid rgba(107, 207, 127, 0.4); box-shadow: 0 4px 12px rgba(107, 207, 127, 0.3);';
                 suggestionMsg.innerHTML = '<strong>First time?</strong> We recommend starting on <strong>Easy</strong> to learn the mechanics!<br><small style="color: #aaa;">(You can choose any difficulty)</small>';
                 
-                difficultySelector.parentElement.appendChild(suggestionMsg);
+                // Insert BEFORE the difficulty selector
+                difficultySelector.parentElement.insertBefore(suggestionMsg, difficultySelector);
             }
         }
         
