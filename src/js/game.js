@@ -759,21 +759,8 @@
             container.appendChild(fragment);
         }
         
-        // Modal Manager - Simplified modal management
-        const modalManager = {
-            open(modalId) {
-                const modal = document.getElementById(modalId);
-                if (modal) modal.classList.add('active');
-            },
-            close(modalId) {
-                const modal = document.getElementById(modalId);
-                if (modal) modal.classList.remove('active');
-            },
-            toggle(modalId) {
-                const modal = document.getElementById(modalId);
-                if (modal) modal.classList.toggle('active');
-            }
-        };
+        // Modal Manager - REMOVED (now using modular ui/modals.js)
+        // The modalManager is initialized later from the modular system
         
         console.log('✅ Optimization helpers loaded!');
         
@@ -1211,6 +1198,19 @@
 
         // Permanent Stats (LocalStorage)
         let permanentStats = {};
+        
+        // ============================================
+        // MODULAR SYSTEMS INITIALIZATION
+        // ============================================
+        // Initialize modal manager for centralized modal control
+        const modalManager = initializeModalManager();
+        window.modalManager = modalManager; // Global access for compatibility
+        
+        // Initialize music system for background music
+        const musicSystem = initializeMusicSystem();
+        window.music = musicSystem; // Global access for compatibility
+        
+        console.log('[GAME] ✅ Modular systems initialized successfully');
         
         // ============================================
         // INITIALIZATION AND SCREEN FLOW LOGIC
