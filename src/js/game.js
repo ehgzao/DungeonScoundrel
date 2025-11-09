@@ -1239,7 +1239,7 @@
                 // Add suggestion message
                 const suggestionMsg = document.createElement('div');
                 suggestionMsg.className = 'difficulty-suggestion';
-                suggestionMsg.style.cssText = 'text-align: center; color: #6bcf7f; font-size: 0.95em; margin-top: 10px; padding: 8px; background: rgba(107, 207, 127, 0.1); border-radius: 8px; border: 1px solid rgba(107, 207, 127, 0.3);';
+                suggestionMsg.style.cssText = 'position: relative; z-index: 10000; text-align: center; color: #6bcf7f; font-size: 0.95em; margin-top: 10px; padding: 8px; background: rgba(107, 207, 127, 0.1); border-radius: 8px; border: 1px solid rgba(107, 207, 127, 0.3);';
                 suggestionMsg.innerHTML = '<strong>First time?</strong> We recommend starting on <strong>Easy</strong> to learn the mechanics!<br><small style="color: #aaa;">(You can choose any difficulty)</small>';
                 
                 difficultySelector.parentElement.appendChild(suggestionMsg);
@@ -5506,25 +5506,34 @@ class DarkAtmosphericMusic {
                 
                 const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
                 const berserkBonus = game.berserkStacks > 0 ? 5 : 0;
+                const bloodlustBonus = getBloodlustBonus(); // Berserker passive
+                const comboBonus = getComboBonus(); // Combo damage
                 
-                if (powerBonus > 0 || game.doubleDamage || berserkBonus > 0) {
+                // Calculate TOTAL damage including all buffs
+                const baseDamage = game.equippedWeapon.numValue;
+                const totalBuffs = powerBonus + berserkBonus + bloodlustBonus + comboBonus;
+                const damageBeforeDouble = baseDamage + totalBuffs;
+                const finalDamage = game.doubleDamage ? damageBeforeDouble * 2 : damageBeforeDouble;
+                
+                // Show badge if there's any buff or modifier active
+                if (powerBonus > 0 || game.doubleDamage || berserkBonus > 0 || bloodlustBonus > 0 || comboBonus > 0) {
                     const badge = document.createElement('div');
                     badge.style.cssText = 'position:absolute;top:5px;right:5px;background:#ffd93d;color:#000;padding:3px 8px;border-radius:10px;font-size:0.8em;font-weight:bold;';
                     
-                    // Show all active bonuses
-                    if (game.doubleDamage) {
-                        const totalDamage = game.equippedWeapon.numValue + powerBonus + berserkBonus;
-                        badge.textContent = `2x (${totalDamage})`;
-                    } else {
-                        const totalBonus = powerBonus + berserkBonus;
-                        badge.textContent = `+${totalBonus}`;
-                    }
+                    // Show FINAL damage value
+                    badge.textContent = `${finalDamage}`;
                     
                     // Red background when Berserk is active for visibility
                     if (berserkBonus > 0) {
                         badge.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a52)';
                         badge.style.color = '#fff';
                         badge.style.boxShadow = '0 2px 8px rgba(255, 107, 107, 0.4)';
+                    }
+                    // Purple background when Power (2x) is active
+                    else if (game.doubleDamage) {
+                        badge.style.background = 'linear-gradient(135deg, #a78bfa, #8b5cf6)';
+                        badge.style.color = '#fff';
+                        badge.style.boxShadow = '0 2px 8px rgba(139, 92, 246, 0.4)';
                     }
                     
                     cardEl.appendChild(badge);
