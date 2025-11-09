@@ -4180,8 +4180,7 @@ class DarkAtmosphericMusic {
                 </div>
             `;
             
-            overlay.appendChild(modal);
-            document.body.appendChild(overlay);
+            document.body.appendChild(modal);
             
             // Button handlers
             const nextBtn = document.getElementById('tutorialNext');
