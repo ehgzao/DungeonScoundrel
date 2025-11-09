@@ -1788,8 +1788,10 @@
                     screen_viewport: screenInfo.viewport,
                     screen_device: screenInfo.device,
                     screen_pixel_ratio: screenInfo.pixelRatio,
-                    // User email for copy
-                    user_email: userEmailValue
+                    // User email for copy (always included, empty if not provided)
+                    user_email: userEmailValue,
+                    send_copy: userEmailValue ? 'Yes' : 'No',
+                    copy_message: userEmailValue ? '📧 A copy of this report has been sent to your email.' : ''
                 };
                 
                 console.log('Sending email with params:', params);
