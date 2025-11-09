@@ -1410,10 +1410,43 @@
     </div>
     
     <script>
+        // Anti-bot protection storage
+        let bugReportAttempts = JSON.parse(localStorage.getItem('bugReportAttempts') || '[]');
+        let lastBugReportTime = parseInt(localStorage.getItem('lastBugReportTime') || '0');
+        
         // Bug Report Function (Global Scope)
         window.sendBugReport = function() {
             console.log('sendBugReport called');
             try {
+                const now = Date.now();
+                
+                // RATE LIMITING: Max 1 report per 5 minutes
+                if (now - lastBugReportTime < 5 * 60 * 1000) {
+                    const remainingTime = Math.ceil((5 * 60 * 1000 - (now - lastBugReportTime)) / 1000 / 60);
+                    alert(`Please wait ${remainingTime} minutes before sending another bug report.`);
+                    return;
+                }
+                
+                // DAILY LIMIT: Max 3 reports per day
+                const today = new Date().toDateString();
+                const todayAttempts = bugReportAttempts.filter(attempt => 
+                    new Date(attempt).toDateString() === today
+                ).length;
+                
+                if (todayAttempts >= 3) {
+                    alert('Daily limit reached. You can send up to 3 bug reports per day.');
+                    return;
+                }
+                
+                // HUMAN VERIFICATION: Simple math challenge
+                const num1 = Math.floor(Math.random() * 10) + 1;
+                const num2 = Math.floor(Math.random() * 10) + 1;
+                const answer = prompt(`Human verification: What is ${num1} + ${num2}?`);
+                
+                if (!answer || parseInt(answer) !== (num1 + num2)) {
+                    alert('Incorrect answer. Please try again.');
+                    return;
+                }
                 const textarea = document.getElementById('bugMessage');
                 if (!textarea) { 
                     console.error('bugMessage textarea not found');
@@ -1472,6 +1505,19 @@
                 emailjs.send('service_tfl51qs', 'template_x3cplm6', params)
                     .then(function(response) {
                         console.log('EmailJS SUCCESS:', response);
+                        
+                        // Update rate limiting data
+                        lastBugReportTime = now;
+                        bugReportAttempts.push(now);
+                        
+                        // Keep only last 30 days of attempts
+                        const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000);
+                        bugReportAttempts = bugReportAttempts.filter(time => time > thirtyDaysAgo);
+                        
+                        // Save to localStorage
+                        localStorage.setItem('lastBugReportTime', lastBugReportTime.toString());
+                        localStorage.setItem('bugReportAttempts', JSON.stringify(bugReportAttempts));
+                        
                         const modal = document.getElementById('bugReportModal');
                         if (modal) modal.classList.remove('active');
                         textarea.value = '';
