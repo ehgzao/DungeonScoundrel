@@ -1785,6 +1785,25 @@
                 </div>
             </div>
             
+            <!-- Human Verification Section -->
+            <div id="contactHumanVerification" style="margin-top: 15px; padding: 12px; background: rgba(107, 207, 127, 0.1); border: 1px solid rgba(107, 207, 127, 0.3); border-radius: 6px; display: none;">
+                <div style="color: #6bcf7f; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                    🤖 <span>Human Verification</span>
+                </div>
+                <div style="color: #ddd; font-size: 0.9em; margin-bottom: 10px;">
+                    Please solve this simple math problem to verify you're human:
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span id="contactMathQuestion" style="color: #ffd700; font-size: 1.1em; font-weight: bold;"></span>
+                    <input 
+                        type="number" 
+                        id="contactMathAnswer" 
+                        placeholder="Answer"
+                        style="width: 80px; padding: 6px; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 4px; text-align: center;"
+                    >
+                </div>
+            </div>
+            
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px;">
                 <button class="close-modal-btn" onclick="document.getElementById('contactModal').classList.remove('active'); resetContactForm();">Cancel</button>
                 <button 
@@ -2391,6 +2410,28 @@
         let lastContactTime = parseInt(localStorage.getItem('lastContactTime') || '0');
         let contactAttempts = JSON.parse(localStorage.getItem('contactAttempts') || '[]');
         
+        // Contact form anti-bot
+        let contactMathAnswer = 0;
+        let contactAttemptCount = 0;
+        
+        // Show human verification for contact
+        function showContactHumanVerification() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            contactMathAnswer = num1 + num2;
+            
+            document.getElementById('contactMathQuestion').textContent = `${num1} + ${num2} = ?`;
+            document.getElementById('contactHumanVerification').style.display = 'block';
+            document.getElementById('contactMathAnswer').value = '';
+        }
+        
+        // Hide human verification for contact
+        function hideContactHumanVerification() {
+            document.getElementById('contactHumanVerification').style.display = 'none';
+            document.getElementById('contactMathAnswer').value = '';
+            contactAttemptCount = 0;
+        }
+        
         // Update character count for contact message
         function updateContactCharacterCount() {
             const textarea = document.getElementById('contactMessage');
@@ -2447,6 +2488,7 @@
             document.getElementById('contactMessage').value = '';
             document.getElementById('contactCharacterCount').textContent = '0 / 2000';
             document.getElementById('contactValidationMessage').style.display = 'none';
+            hideContactHumanVerification();
             
             const submitBtn = document.getElementById('contactSubmit');
             submitBtn.disabled = false;
@@ -2462,6 +2504,27 @@
                 const subject = document.getElementById('contactSubject').value;
                 const message = document.getElementById('contactMessage').value.trim();
                 const validation = document.getElementById('contactValidationMessage');
+                
+                // Anti-bot protection: Show math verification after 3 attempts
+                contactAttemptCount++;
+                if (contactAttemptCount >= 3) {
+                    const userAnswer = parseInt(document.getElementById('contactMathAnswer').value);
+                    
+                    if (!document.getElementById('contactHumanVerification').style.display || 
+                        document.getElementById('contactHumanVerification').style.display === 'none') {
+                        showContactHumanVerification();
+                        validation.textContent = 'Please complete the human verification below.';
+                        validation.style.display = 'block';
+                        return;
+                    }
+                    
+                    if (isNaN(userAnswer) || userAnswer !== contactMathAnswer) {
+                        validation.textContent = 'Incorrect answer. Please try again.';
+                        validation.style.display = 'block';
+                        showContactHumanVerification(); // Generate new question
+                        return;
+                    }
+                }
                 
                 // Rate limiting: 5 minutes between messages
                 const fiveMinutes = 5 * 60 * 1000;
