@@ -4465,6 +4465,9 @@ class DarkAtmosphericMusic {
                 showMessage(`🔥 Berserk +5 damage! (${game.berserkStacks} left)`, 'info');
             }
             
+            // Track if weapon was used for ATTACK (not just defense)
+            let weaponWasUsed = true;
+            
             playSound('attack');
             
             // Dodge (dodgeMaster: avoids 2 attacks instead of 1)
@@ -4481,12 +4484,14 @@ class DarkAtmosphericMusic {
                         game.dodgeCounter = 0;
                     }
                 }
+                weaponWasUsed = false; // Dodge = no weapon used
                 playSound('special');
                 addLog(`Dodged attack from ${monster.value}${monster.suit}!`, 'heal');
                 showMessage('🛡️ Dodged! No damage!', 'success');
             }
             // Priest Divine Blessing - 15% chance to dodge
             else if (damage > 0 && game.classData && game.classData.passive.divineBlessing && Math.random() < 0.15) {
+                weaponWasUsed = false; // Divine Blessing = no weapon used
                 playSound('special');
                 addLog(`Divine Blessing! Dodged attack from ${monster.value}${monster.suit}!`, 'heal');
                 showMessage('🕊️ Divine Blessing! No damage!', 'success');
@@ -4511,6 +4516,7 @@ class DarkAtmosphericMusic {
                 createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 30);
                 
                 if (remaining <= 0) {
+                    weaponWasUsed = false; // Mirror blocked all = no weapon used
                     game.combo++;
                     game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
                 } else {
@@ -4522,6 +4528,7 @@ class DarkAtmosphericMusic {
                 let cloakRelic = game.relics.find(r => r.id === 'cloak' && !r.usedThisRoom);
                 if (cloakRelic) {
                     cloakRelic.usedThisRoom = true;
+                    weaponWasUsed = false; // Cloak = no weapon used
                     showMessage(`🧥 Cloak protected you! No damage this turn!`, 'success');
                     playSound('special');
                     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 30);
@@ -4603,8 +4610,8 @@ class DarkAtmosphericMusic {
             
             if (game.doubleDamage) game.doubleDamage = false;
             
-            // Weapon durability system
-            if (game.equippedWeapon && game.equippedWeapon.durability < 999) {
+            // Weapon durability system - ONLY if weapon was actually USED
+            if (weaponWasUsed && game.equippedWeapon && game.equippedWeapon.durability < 999) {
                 game.equippedWeapon.durability--;
                 
                 if (game.equippedWeapon.durability <= 0) {
