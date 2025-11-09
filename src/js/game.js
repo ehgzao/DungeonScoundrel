@@ -3956,7 +3956,6 @@ class DarkAtmosphericMusic {
         // In-game tutorial system
         let inGameTutorialActive = false;
         let inGameTutorialStep = 0;
-        let tutorialSpotlightTimeout = null; // Store timeout ID to cancel if needed
 
         const IN_GAME_TUTORIAL_STEPS = [
             {
@@ -4067,116 +4066,60 @@ class DarkAtmosphericMusic {
         function showTutorialStep(step) {
             console.log('[TUTORIAL] Showing step:', step.id);
             
-            // CRITICAL: Cancel any pending spotlight creation
-            if (tutorialSpotlightTimeout) {
-                clearTimeout(tutorialSpotlightTimeout);
-                tutorialSpotlightTimeout = null;
-                console.log('[TUTORIAL] Cancelled pending spotlight timeout');
-            }
-            
-            // AGGRESSIVE CLEANUP - Remove ALL tutorial elements immediately
-            const oldOverlays = document.querySelectorAll('[id^="tutorialOverlay"], [id^="tutorialSpotlight"], [id^="tutorialModal"], .tutorial-spotlight-element');
-            oldOverlays.forEach(el => {
-                console.log('[TUTORIAL] Removing old element:', el.id || el.className);
+            // CLEANUP - Remove ALL previous tutorial elements
+            document.querySelectorAll('.tutorial-overlay, .tutorial-spotlight, .tutorial-modal').forEach(el => {
                 el.remove();
             });
             
-            // Restore z-index of previously boosted elements
-            const boostedElements = document.querySelectorAll('[data-tutorial-boosted="true"]');
-            boostedElements.forEach(el => {
-                el.removeAttribute('data-tutorial-boosted');
-                el.style.zIndex = '';
-                el.style.position = '';
-                console.log('[TUTORIAL] Restored z-index for:', el.id || el.className);
-            });
-            
-            // Create NEW unique overlay
-            const overlayId = 'tutorialOverlay_' + Date.now();
+            // 1. Create OVERLAY (dark background)
             const overlay = document.createElement('div');
-            overlay.id = overlayId;
+            overlay.className = 'tutorial-overlay';
             overlay.style.cssText = `
                 position: fixed;
                 top: 0;
                 left: 0;
-                width: 100vw;
-                height: 100vh;
+                width: 100%;
+                height: 100%;
                 background: rgba(0, 0, 0, 0.85);
                 z-index: 9998;
-                pointer-events: all;
+                pointer-events: none;
             `;
-            
-            // Add overlay to body
             document.body.appendChild(overlay);
             
-            // Wait for UI to be fully rendered
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    tutorialSpotlightTimeout = setTimeout(() => {
-                        // Highlight element if specified
-                        if (step.highlight) {
-                            const targetElement = document.querySelector(step.highlight);
-                            if (targetElement) {
-                                const rect = targetElement.getBoundingClientRect();
-                                
-                                console.log('[TUTORIAL] Spotlight target:', step.highlight, 'Rect:', rect);
-                        
-                                // Validate rect has reasonable dimensions
-                                const isValidRect = rect.width > 0 && rect.height > 0 && rect.width < window.innerWidth && rect.height < window.innerHeight;
-                        
-                                if (isValidRect) {
-                                    // Ensure minimum size for spotlight
-                                    const minWidth = 80;
-                                    const minHeight = 60;
-                                    const finalWidth = Math.max(rect.width + 20, minWidth);
-                                    const finalHeight = Math.max(rect.height + 20, minHeight);
-                            
-                                    // CRITICAL: Boost z-index of highlighted element to appear ABOVE spotlight overlay
-                                    const originalZIndex = targetElement.style.zIndex;
-                                    const originalPosition = targetElement.style.position;
-                                    targetElement.style.position = targetElement.style.position || 'relative';
-                                    targetElement.style.zIndex = '10002'; // Above spotlight (10001)
-                                    targetElement.setAttribute('data-tutorial-boosted', 'true');
-                                    console.log('[TUTORIAL] Boosted z-index for:', step.highlight);
-                            
-                                    // Create spotlight with UNIQUE ID
-                                    const spotlightId = 'tutorialSpotlight_' + Date.now();
-                                    const spotlight = document.createElement('div');
-                                    spotlight.id = spotlightId;
-                                    spotlight.className = 'tutorial-spotlight-element';
-                                    spotlight.style.cssText = `
-                                        position: fixed;
-                                        top: ${rect.top - 10}px;
-                                        left: ${rect.left - 10}px;
-                                        width: ${finalWidth}px;
-                                        height: ${finalHeight}px;
-                                        border: 3px solid #ffd700;
-                                        border-radius: 8px;
-                                        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 30px #ffd700;
-                                        z-index: 10001;
-                                        pointer-events: none;
-                                        animation: tutorialPulse 2s infinite;
-                                    `;
-                                    document.body.appendChild(spotlight);
-                                    console.log('[TUTORIAL] Spotlight created:', spotlightId);
-                                    
-                                    // Store original values to restore later
-                                    spotlight.setAttribute('data-original-z', originalZIndex);
-                                    spotlight.setAttribute('data-original-pos', originalPosition);
-                                } else {
-                                    console.warn('[TUTORIAL] Invalid rect for spotlight:', rect);
-                                }
-                            } else {
-                                console.warn('[TUTORIAL] Target element not found:', step.highlight);
-                            }
-                        }
-                    }, 50);
-                });
-            });
+            // 2. SPOTLIGHT element if specified (SIMPLE approach)
+            if (step.highlight) {
+                const targetElement = document.querySelector(step.highlight);
+                if (targetElement) {
+                    // Make target element visible above overlay
+                    targetElement.style.position = 'relative';
+                    targetElement.style.zIndex = '9999';
+                    targetElement.classList.add('tutorial-highlighted');
+                    
+                    // Create spotlight border around element
+                    const spotlight = document.createElement('div');
+                    spotlight.className = 'tutorial-spotlight';
+                    const rect = targetElement.getBoundingClientRect();
+                    spotlight.style.cssText = `
+                        position: fixed;
+                        top: ${rect.top - 8}px;
+                        left: ${rect.left - 8}px;
+                        width: ${rect.width + 16}px;
+                        height: ${rect.height + 16}px;
+                        border: 4px solid #ffd700;
+                        border-radius: 8px;
+                        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+                        z-index: 10000;
+                        pointer-events: none;
+                        animation: tutorialPulse 2s infinite;
+                    `;
+                    document.body.appendChild(spotlight);
+                    console.log('[TUTORIAL] Spotlight created for:', step.highlight);
+                }
+            }
             
-            // Create modal with UNIQUE ID
-            const modalId = 'tutorialModal_' + Date.now();
+            // 3. Create MODAL (text explanation)
             const modal = document.createElement('div');
-            modal.id = modalId;
+            modal.className = 'tutorial-modal';
             modal.style.cssText = `
                 position: fixed;
                 ${step.position === 'center' ? 'top: 50%; left: 50%; transform: translate(-50%, -50%);' : ''}
@@ -4189,9 +4132,10 @@ class DarkAtmosphericMusic {
                 border: 3px solid #ffd700;
                 border-radius: 15px;
                 padding: 25px;
-                z-index: 10003;
+                z-index: 10001;
                 box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
                 text-align: center;
+                pointer-events: all;
             `;
             
             modal.innerHTML = `
@@ -4245,10 +4189,11 @@ class DarkAtmosphericMusic {
                         border: 3px solid #ff4444;
                         border-radius: 15px;
                         padding: 30px;
-                        z-index: 10004;
+                        z-index: 10002;
                         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
                         text-align: center;
                         max-width: 450px;
+                        pointer-events: all;
                     `;
                     
                     confirmModal.innerHTML = `
@@ -4268,9 +4213,6 @@ class DarkAtmosphericMusic {
                     
                     document.getElementById('confirmSkip').onclick = () => {
                         confirmModal.remove();
-                        // Remove all tutorial elements
-                        const allTutorialElements = document.querySelectorAll('[id^="tutorialOverlay"], [id^="tutorialSpotlight"], [id^="tutorialModal"], .tutorial-spotlight-element');
-                        allTutorialElements.forEach(el => el.remove());
                         completeTutorial();
                     };
                 };
@@ -4280,23 +4222,19 @@ class DarkAtmosphericMusic {
         function completeTutorial() {
             inGameTutorialActive = false;
             
-            // Final cleanup: remove any remaining tutorial elements with ALL selectors
-            const allTutorialElements = document.querySelectorAll('[id^="tutorialOverlay"], [id^="tutorialSpotlight"], [id^="tutorialModal"], .tutorial-spotlight-element');
-            allTutorialElements.forEach(el => {
-                console.log('[TUTORIAL] Final cleanup removing:', el.id || el.className);
+            // Cleanup ALL tutorial elements
+            document.querySelectorAll('.tutorial-overlay, .tutorial-spotlight, .tutorial-modal').forEach(el => {
                 el.remove();
             });
             
-            // Restore ALL boosted z-indexes
-            const boostedElements = document.querySelectorAll('[data-tutorial-boosted="true"]');
-            boostedElements.forEach(el => {
-                el.removeAttribute('data-tutorial-boosted');
+            // Restore highlighted elements
+            document.querySelectorAll('.tutorial-highlighted').forEach(el => {
+                el.classList.remove('tutorial-highlighted');
                 el.style.zIndex = '';
                 el.style.position = '';
-                console.log('[TUTORIAL] Final restore z-index for:', el.id || el.className);
             });
             
-            // RESUME TIMER after tutorial
+            // Resume timer
             if (window.resumeGameTimer) {
                 window.resumeGameTimer();
                 console.log('[TUTORIAL] Timer resumed');
