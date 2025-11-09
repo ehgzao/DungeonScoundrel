@@ -626,6 +626,37 @@
                 ">Report Bug</span>
             </button>
 
+            <!-- Contact Button -->
+            <button onclick="document.getElementById('contactModal').classList.add('active');" style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 12px;
+                background: linear-gradient(135deg, rgba(61, 51, 40, 0.85) 0%, rgba(42, 35, 24, 0.9) 100%);
+                border: 1px solid rgba(201, 169, 97, 0.4);
+                border-radius: 6px;
+                box-shadow: 
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                    0 2px 12px rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(4px);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            " onmouseover="this.style.borderColor='rgba(201, 169, 97, 0.8)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(201, 169, 97, 0.4)'; this.style.transform='translateY(0)';" title="Contact developer">
+                <span style="
+                    font-size: 0.95em;
+                    filter: drop-shadow(0 0 3px rgba(201, 169, 97, 0.5));
+                ">📧</span>
+                <span style="
+                    font-family: 'Cinzel', serif;
+                    font-size: 0.75em;
+                    font-weight: 600;
+                    color: #c9a961;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+                ">Contact</span>
+            </button>
+
             <!-- Version Badge -->
             <div onclick="document.getElementById('versionModal').classList.add('active');" style="
                 display: flex;
@@ -1689,6 +1720,84 @@
         </div>
     </div>
     
+    <!-- Modal: Contact -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="modal-close-btn" onclick="document.getElementById('contactModal').classList.remove('active'); resetContactForm();">✕</button>
+            <h2>📧 Contact Developer</h2>
+            <div style="margin: 10px 0 12px; color: #aaa; font-size: 0.9em;">Get in touch for feedback, suggestions, partnerships, or questions!</div>
+            
+            <!-- Name Field -->
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; color: #c9a961; font-size: 0.9em; margin-bottom: 6px; font-weight: 600;">Your Name *</label>
+                <input 
+                    type="text" 
+                    id="contactName" 
+                    placeholder="John Doe" 
+                    style="width: 100%; padding: 10px; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 6px;"
+                    oninput="validateContactForm()"
+                >
+            </div>
+            
+            <!-- Email Field -->
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; color: #c9a961; font-size: 0.9em; margin-bottom: 6px; font-weight: 600;">Your Email *</label>
+                <input 
+                    type="email" 
+                    id="contactEmail" 
+                    placeholder="your.email@example.com" 
+                    style="width: 100%; padding: 10px; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 6px;"
+                    oninput="validateContactForm()"
+                >
+            </div>
+            
+            <!-- Subject Dropdown -->
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; color: #c9a961; font-size: 0.9em; margin-bottom: 6px; font-weight: 600;">Subject *</label>
+                <select 
+                    id="contactSubject" 
+                    style="width: 100%; padding: 10px; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 6px; cursor: pointer;"
+                    onchange="validateContactForm()"
+                >
+                    <option value="">Select a subject...</option>
+                    <option value="feedback">💬 Feedback</option>
+                    <option value="suggestion">💡 Feature Suggestion</option>
+                    <option value="partnership">🤝 Partnership</option>
+                    <option value="question">❓ Question</option>
+                    <option value="other">📝 Other</option>
+                </select>
+            </div>
+            
+            <!-- Message Field -->
+            <div style="margin-bottom: 12px;">
+                <label style="display: block; color: #c9a961; font-size: 0.9em; margin-bottom: 6px; font-weight: 600;">Message *</label>
+                <textarea 
+                    id="contactMessage" 
+                    placeholder="Your message here..." 
+                    style="width: 100%; min-height: 140px; resize: vertical; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 6px; padding: 10px;"
+                    oninput="updateContactCharacterCount()"
+                ></textarea>
+                
+                <!-- Character counter -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 0.85em;">
+                    <div id="contactValidationMessage" style="color: #ff6b6b; display: none;"></div>
+                    <div id="contactCharacterCount" style="color: #aaa;">0 / 2000</div>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px;">
+                <button class="close-modal-btn" onclick="document.getElementById('contactModal').classList.remove('active'); resetContactForm();">Cancel</button>
+                <button 
+                    id="contactSubmit"
+                    class="close-modal-btn" 
+                    onclick="sendContactMessage()"
+                    style="background: linear-gradient(135deg, #6bcf7f, #2fbf71); border: none; color: #102015; cursor: pointer;">
+                    Send Message
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <script>
         // ============================================
         // MOBILE DETECTION & WAITLIST SYSTEM
@@ -2259,6 +2368,238 @@
         
         // Check EmailJS on page load
         console.log('EmailJS loaded?', !!window.emailjs);
+        
+        // ============================================
+        // CONTACT FORM SYSTEM
+        // ============================================
+        
+        // Contact form rate limiting
+        let lastContactTime = parseInt(localStorage.getItem('lastContactTime') || '0');
+        let contactAttempts = JSON.parse(localStorage.getItem('contactAttempts') || '[]');
+        
+        // Update character count for contact message
+        function updateContactCharacterCount() {
+            const textarea = document.getElementById('contactMessage');
+            const counter = document.getElementById('contactCharacterCount');
+            const validation = document.getElementById('contactValidationMessage');
+            
+            if (!textarea || !counter) return;
+            
+            const length = textarea.value.length;
+            const maxLength = 2000;
+            
+            counter.textContent = `${length} / ${maxLength}`;
+            
+            if (length > maxLength) {
+                counter.style.color = '#ff6b6b';
+                validation.textContent = 'Message is too long';
+                validation.style.display = 'block';
+            } else if (length < 10 && length > 0) {
+                counter.style.color = '#ffd93d';
+                validation.textContent = 'Message is too short (minimum 10 characters)';
+                validation.style.display = 'block';
+            } else {
+                counter.style.color = '#aaa';
+                validation.style.display = 'none';
+            }
+        }
+        
+        // Validate contact form
+        function validateContactForm() {
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const subject = document.getElementById('contactSubject').value;
+            const message = document.getElementById('contactMessage').value.trim();
+            
+            const submitBtn = document.getElementById('contactSubmit');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            const isValid = name.length >= 2 && 
+                          emailRegex.test(email) && 
+                          subject !== '' && 
+                          message.length >= 10 && 
+                          message.length <= 2000;
+            
+            submitBtn.disabled = !isValid;
+            submitBtn.style.opacity = isValid ? '1' : '0.5';
+            submitBtn.style.cursor = isValid ? 'pointer' : 'not-allowed';
+        }
+        
+        // Reset contact form
+        function resetContactForm() {
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactSubject').value = '';
+            document.getElementById('contactMessage').value = '';
+            document.getElementById('contactCharacterCount').textContent = '0 / 2000';
+            document.getElementById('contactValidationMessage').style.display = 'none';
+            
+            const submitBtn = document.getElementById('contactSubmit');
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+        }
+        
+        // Send contact message
+        window.sendContactMessage = function() {
+            try {
+                const now = Date.now();
+                const name = document.getElementById('contactName').value.trim();
+                const email = document.getElementById('contactEmail').value.trim();
+                const subject = document.getElementById('contactSubject').value;
+                const message = document.getElementById('contactMessage').value.trim();
+                const validation = document.getElementById('contactValidationMessage');
+                
+                // Rate limiting: 5 minutes between messages
+                const fiveMinutes = 5 * 60 * 1000;
+                if (now - lastContactTime < fiveMinutes) {
+                    const remainingTime = Math.ceil((fiveMinutes - (now - lastContactTime)) / 60000);
+                    validation.textContent = `Please wait ${remainingTime} minute(s) before sending another message.`;
+                    validation.style.display = 'block';
+                    return;
+                }
+                
+                // Daily limit: 5 messages per day
+                const oneDayAgo = now - (24 * 60 * 60 * 1000);
+                contactAttempts = contactAttempts.filter(time => time > oneDayAgo);
+                
+                if (contactAttempts.length >= 5) {
+                    validation.textContent = 'Daily limit reached (5 messages per day). Please try again tomorrow.';
+                    validation.style.display = 'block';
+                    return;
+                }
+                
+                // Validate fields
+                if (name.length < 2) {
+                    validation.textContent = 'Please enter your name.';
+                    validation.style.display = 'block';
+                    return;
+                }
+                
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    validation.textContent = 'Please enter a valid email address.';
+                    validation.style.display = 'block';
+                    return;
+                }
+                
+                if (!subject) {
+                    validation.textContent = 'Please select a subject.';
+                    validation.style.display = 'block';
+                    return;
+                }
+                
+                if (message.length < 10) {
+                    validation.textContent = 'Message must be at least 10 characters.';
+                    validation.style.display = 'block';
+                    return;
+                }
+                
+                if (message.length > 2000) {
+                    validation.textContent = 'Message is too long (max 2000 characters).';
+                    validation.style.display = 'block';
+                    return;
+                }
+                
+                validation.style.display = 'none';
+                
+                // Get subject label
+                const subjectLabels = {
+                    'feedback': '💬 Feedback',
+                    'suggestion': '💡 Feature Suggestion',
+                    'partnership': '🤝 Partnership',
+                    'question': '❓ Question',
+                    'other': '📝 Other'
+                };
+                
+                // Prepare EmailJS params
+                const params = {
+                    from_name: name,
+                    reply_to: email,
+                    subject: subjectLabels[subject] || subject,
+                    message: message,
+                    contact_email: email,
+                    contact_name: name,
+                    contact_subject: subject,
+                    send_date: new Date().toLocaleString(),
+                    user_browser: navigator.userAgent,
+                    user_screen: `${window.innerWidth}x${window.innerHeight}`
+                };
+                
+                console.log('Sending contact message:', params);
+                
+                // Send via EmailJS (using bug report template for now)
+                emailjs.send('service_tfl51qs', 'template_x3cplm6', params)
+                    .then(function(response) {
+                        console.log('Contact message SUCCESS:', response);
+                        
+                        // Update rate limiting
+                        lastContactTime = now;
+                        contactAttempts.push(now);
+                        localStorage.setItem('lastContactTime', lastContactTime.toString());
+                        localStorage.setItem('contactAttempts', JSON.stringify(contactAttempts));
+                        
+                        // Close modal and reset form
+                        document.getElementById('contactModal').classList.remove('active');
+                        resetContactForm();
+                        showContactSuccess();
+                    })
+                    .catch(function(err) {
+                        console.error('Contact message FAILED:', err);
+                        showContactError(err.text || err.status || 'Unknown error');
+                    });
+                    
+            } catch (e) {
+                console.error('sendContactMessage exception:', e);
+                alert('Unexpected error: ' + e.message);
+            }
+        };
+        
+        // Show success message
+        function showContactSuccess() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.style.zIndex = '10000';
+            overlay.innerHTML = `
+                <div class="modal-content" style="max-width: 450px; border: 3px solid #6bcf7f; animation: modalSlideIn 0.3s ease;">
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 4em; margin-bottom: 15px;">✅</div>
+                        <h2 style="color: #6bcf7f; margin: 0 0 15px 0;">Message Sent!</h2>
+                        <p style="color: #ddd; font-size: 1.1em; line-height: 1.6; margin: 0 0 20px 0;">
+                            Thank you for reaching out! I'll get back to you as soon as possible.
+                        </p>
+                        <button class="close-modal-btn" onclick="this.closest('.modal-overlay').remove();" style="font-size: 1.1em; padding: 12px 32px;">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+        
+        // Show error message
+        function showContactError(errorMsg) {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.style.zIndex = '10000';
+            overlay.innerHTML = `
+                <div class="modal-content" style="max-width: 450px; border: 3px solid #ff6b6b; animation: modalSlideIn 0.3s ease;">
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 4em; margin-bottom: 15px;">❌</div>
+                        <h2 style="color: #ff6b6b; margin: 0 0 15px 0;">Failed to Send</h2>
+                        <p style="color: #ddd; font-size: 1em; line-height: 1.6; margin: 0 0 10px 0;">
+                            Could not send your message.
+                        </p>
+                        <p style="color: #aaa; font-size: 0.9em; margin: 0 0 20px 0;">
+                            Error: ${errorMsg}
+                        </p>
+                        <button class="close-modal-btn" onclick="this.closest('.modal-overlay').remove();" style="font-size: 1.1em; padding: 12px 32px;">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
     </script>
     
     <!-- Modal: Give Up -->
