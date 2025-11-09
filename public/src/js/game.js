@@ -4050,14 +4050,38 @@ class DarkAtmosphericMusic {
                 id: 'combat',
                 title: '⚔️ Combat Basics',
                 text: 'Click a MONSTER card to attack it! Your weapon damage is subtracted from the monster\'s HP. If the monster has more HP than your weapon, you take the difference as damage.',
-                highlight: null,
-                position: 'center',
+                highlight: '#room',
+                position: 'top',
                 buttonText: 'Ready to Fight!'
+            },
+            {
+                id: 'held_card',
+                title: '✋ Held Cards (Unique Mechanic!)',
+                text: 'Right-click a card to HOLD it! This is a unique mechanic in Dungeon Scoundrel.\n\nHeld cards are saved for later and won\'t clutter your room. Perfect for saving strong weapons or potions for when you really need them!',
+                highlight: '#holdAreaContainer',
+                position: 'left',
+                buttonText: 'Great Tip!'
+            },
+            {
+                id: 'codex',
+                title: '📖 Codex (Relics & Upgrades)',
+                text: 'Look for the 📚 CODEX button in the main menu to see all relics and permanent upgrades!\n\nRelics give you powerful passive bonuses. Upgrades make you stronger for all future runs. Unlock them by completing challenges!',
+                highlight: '.sidebar-left',
+                position: 'left',
+                buttonText: 'Got it!'
+            },
+            {
+                id: 'score',
+                title: '🏆 Score System',
+                text: 'Your SCORE is the ultimate challenge! Points are earned by:\n\n• Defeating monsters\n• Finding relics\n• Clearing rooms quickly\n• Avoiding damage\n\nCompete for the highest score! Can you master the dungeon?',
+                highlight: '#mainScoreDisplay',
+                position: 'top',
+                buttonText: 'I\'ll Do My Best!'
             },
             {
                 id: 'strategy',
                 title: '🧠 Strategy Tips',
-                text: '1. Always equip a weapon first!\n2. Use potions when HP is low\n3. Save strong weapons for tough monsters\n4. Clear the room before drawing a new one',
+                text: '1. Always equip a weapon first!\n2. Use potions when HP is low\n3. Save strong weapons for tough monsters\n4. Clear the room before drawing a new one\n5. Use held cards wisely!',
                 highlight: null,
                 position: 'center',
                 buttonText: 'Almost Ready!'
