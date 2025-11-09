@@ -148,6 +148,13 @@
         }
         
         /* Mobile CSS now in: src/styles/mobile.css */
+        
+        /* Shake animation for incorrect answers */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
     </style>
 
     <!-- Simple anti-spam validation (no external dependencies) -->
@@ -1392,12 +1399,31 @@
     <!-- Modal: Bug Report -->
     <div class="modal-overlay" id="bugReportModal">
         <div class="modal-content" style="max-width: 600px;">
-            <button class="modal-close-btn" onclick="document.getElementById('bugReportModal').classList.remove('active');">✕</button>
+            <button class="modal-close-btn" onclick="document.getElementById('bugReportModal').classList.remove('active'); hideHumanVerification();">✕</button>
             <h2>🐛 Report a Bug</h2>
             <div style="margin: 10px 0 12px; color: #aaa; font-size: 0.9em;">Describe the bug in detail. Technical info like browser and screen resolution will be sent automatically.</div>
             <textarea id="bugMessage" placeholder="Describe what happened, steps to reproduce, and expected behavior" style="width: 100%; min-height: 160px; resize: vertical; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 6px; padding: 10px;"></textarea>
+            
+            <!-- Human Verification Section -->
+            <div id="humanVerification" style="margin-top: 15px; padding: 12px; background: rgba(107, 207, 127, 0.1); border: 1px solid rgba(107, 207, 127, 0.3); border-radius: 6px; display: none;">
+                <div style="color: #6bcf7f; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                    🤖 <span>Human Verification</span>
+                </div>
+                <div style="color: #ddd; font-size: 0.9em; margin-bottom: 10px;">
+                    Please solve this simple math problem to verify you're human:
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span id="mathQuestion" style="color: #ffd700; font-size: 1.1em; font-weight: bold;"></span>
+                    <input 
+                        type="number" 
+                        id="mathAnswer" 
+                        placeholder="Answer"
+                        style="width: 80px; padding: 6px; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 4px; text-align: center;"
+                    >
+                </div>
+            </div>
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px;">
-                <button class="close-modal-btn" onclick="document.getElementById('bugReportModal').classList.remove('active');">Cancel</button>
+                <button class="close-modal-btn" onclick="document.getElementById('bugReportModal').classList.remove('active'); hideHumanVerification();">Cancel</button>
                 <button 
                     id="bugReportSubmit"
                     class="close-modal-btn" 
@@ -1413,6 +1439,28 @@
         // Anti-bot protection storage
         let bugReportAttempts = JSON.parse(localStorage.getItem('bugReportAttempts') || '[]');
         let lastBugReportTime = parseInt(localStorage.getItem('lastBugReportTime') || '0');
+        let currentMathAnswer = 0;
+        
+        // Show human verification when needed
+        function showHumanVerification() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            currentMathAnswer = num1 + num2;
+            
+            document.getElementById('mathQuestion').textContent = `${num1} + ${num2} = ?`;
+            document.getElementById('mathAnswer').value = '';
+            document.getElementById('humanVerification').style.display = 'block';
+            
+            // Focus on answer input
+            setTimeout(() => {
+                document.getElementById('mathAnswer').focus();
+            }, 100);
+        }
+        
+        // Hide human verification
+        function hideHumanVerification() {
+            document.getElementById('humanVerification').style.display = 'none';
+        }
         
         // Bug Report Function (Global Scope)
         window.sendBugReport = function() {
@@ -1438,13 +1486,25 @@
                     return;
                 }
                 
-                // HUMAN VERIFICATION: Simple math challenge
-                const num1 = Math.floor(Math.random() * 10) + 1;
-                const num2 = Math.floor(Math.random() * 10) + 1;
-                const answer = prompt(`Human verification: What is ${num1} + ${num2}?`);
+                // Check if human verification is needed
+                const verificationDiv = document.getElementById('humanVerification');
+                if (verificationDiv.style.display === 'none' || !verificationDiv.style.display) {
+                    // First click - show verification
+                    showHumanVerification();
+                    return;
+                }
                 
-                if (!answer || parseInt(answer) !== (num1 + num2)) {
-                    alert('Incorrect answer. Please try again.');
+                // HUMAN VERIFICATION: Check answer
+                const userAnswer = parseInt(document.getElementById('mathAnswer').value);
+                if (!userAnswer || userAnswer !== currentMathAnswer) {
+                    // Shake the input field for visual feedback
+                    const answerInput = document.getElementById('mathAnswer');
+                    answerInput.style.animation = 'shake 0.5s';
+                    answerInput.style.borderColor = '#ff6b6b';
+                    setTimeout(() => {
+                        answerInput.style.animation = '';
+                        answerInput.style.borderColor = 'rgba(201,169,97,0.3)';
+                    }, 500);
                     return;
                 }
                 const textarea = document.getElementById('bugMessage');
@@ -1518,9 +1578,11 @@
                         localStorage.setItem('lastBugReportTime', lastBugReportTime.toString());
                         localStorage.setItem('bugReportAttempts', JSON.stringify(bugReportAttempts));
                         
+                        // Clean up and close modal
                         const modal = document.getElementById('bugReportModal');
                         if (modal) modal.classList.remove('active');
                         textarea.value = '';
+                        hideHumanVerification(); // Reset verification for next time
                         showBugReportSuccess();
                     })
                     .catch(function(err) {
