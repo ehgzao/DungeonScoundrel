@@ -3914,7 +3914,240 @@ class DarkAtmosphericMusic {
             
             // Switch to gameplay music
             music.switchContext('gameplay');
+            
+            // Start in-game tutorial if first time on Easy
+            setTimeout(() => checkAndStartTutorial(), 500);
         }
+
+        // ============================================
+        // IN-GAME TUTORIAL SYSTEM
+        // ============================================
+
+        let inGameTutorialActive = false;
+        let inGameTutorialStep = 0;
+
+        const IN_GAME_TUTORIAL_STEPS = [
+            {
+                id: 'welcome',
+                title: '🎴 Welcome to Dungeon Scoundrel!',
+                text: 'You\'re about to enter a dark dungeon where every card counts. Let me show you the basics!',
+                highlight: null,
+                position: 'center',
+                buttonText: 'Let\'s Start!'
+            },
+            {
+                id: 'health',
+                title: '❤️ Your Health',
+                text: 'This is your HP. If it reaches 0, game over! Heal with potions (♥ Hearts) and avoid damage.',
+                highlight: '#health',
+                position: 'top-right',
+                buttonText: 'Got it!'
+            },
+            {
+                id: 'gold',
+                title: '💰 Gold',
+                text: 'You earn gold by clearing rooms. Use it to buy items at the merchant!',
+                highlight: '#goldAmount',
+                position: 'top-right',
+                buttonText: 'Next'
+            },
+            {
+                id: 'weapon',
+                title: '⚔️ Weapons',
+                text: 'You need a weapon to fight monsters! Equip weapons (♦ Diamonds) from the cards you draw.',
+                highlight: '#equippedWeapon',
+                position: 'top',
+                buttonText: 'Next'
+            },
+            {
+                id: 'draw',
+                title: '🎲 Drawing Rooms',
+                text: 'Click "Draw Room" to draw 4 cards. Each room is a new challenge!',
+                highlight: '#btnDrawRoom',
+                position: 'bottom',
+                buttonText: 'Draw My First Room!',
+                action: () => {
+                    // Auto-click draw room
+                    document.getElementById('btnDrawRoom').click();
+                }
+            },
+            {
+                id: 'cards',
+                title: '🃏 Understanding Cards',
+                text: '♠️♣️ = Monsters (damage you)\n♦️ = Weapons (equip to fight)\n♥️ = Potions (heal you)\n✨ = Special (powerful effects)',
+                highlight: '#room',
+                position: 'bottom',
+                buttonText: 'I Understand!'
+            },
+            {
+                id: 'combat',
+                title: '⚔️ Combat Basics',
+                text: 'Click a MONSTER card to attack it! Your weapon damage is subtracted from the monster\'s HP. If the monster has more HP than your weapon, you take the difference as damage.',
+                highlight: null,
+                position: 'center',
+                buttonText: 'Ready to Fight!'
+            },
+            {
+                id: 'strategy',
+                title: '🧠 Strategy Tips',
+                text: '1. Always equip a weapon first!\n2. Use potions when HP is low\n3. Save strong weapons for tough monsters\n4. Clear the room before drawing a new one',
+                highlight: null,
+                position: 'center',
+                buttonText: 'Almost Ready!'
+            },
+            {
+                id: 'finish',
+                title: '🏆 You\'re Ready!',
+                text: 'That\'s all you need to know! The dungeon is yours to conquer. Good luck, Scoundrel!',
+                highlight: null,
+                position: 'center',
+                buttonText: 'Start My Adventure!'
+            }
+        ];
+
+        function checkAndStartTutorial() {
+            const hasSeenTutorial = localStorage.getItem('dungeon_scoundrel_tutorial_completed');
+            
+            // Only start if: first time AND difficulty is Easy
+            if (!hasSeenTutorial && !inGameTutorialActive && game.difficulty === 'easy') {
+                console.log('[TUTORIAL] Starting in-game tutorial...');
+                inGameTutorialActive = true;
+                inGameTutorialStep = 0;
+                showTutorialStep(IN_GAME_TUTORIAL_STEPS[0]);
+            }
+        }
+
+        function showTutorialStep(step) {
+            console.log('[TUTORIAL] Showing step:', step.id);
+            
+            // Remove previous overlay if exists
+            const existingOverlay = document.getElementById('tutorialOverlay');
+            if (existingOverlay) existingOverlay.remove();
+            
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'tutorialOverlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.85);
+                z-index: 9998;
+                pointer-events: all;
+            `;
+            
+            // Highlight element if specified
+            if (step.highlight) {
+                const targetElement = document.querySelector(step.highlight);
+                if (targetElement) {
+                    const rect = targetElement.getBoundingClientRect();
+                    
+                    // Create spotlight
+                    const spotlight = document.createElement('div');
+                    spotlight.id = 'tutorialSpotlight';
+                    spotlight.style.cssText = `
+                        position: fixed;
+                        top: ${rect.top - 10}px;
+                        left: ${rect.left - 10}px;
+                        width: ${rect.width + 20}px;
+                        height: ${rect.height + 20}px;
+                        border: 3px solid #ffd700;
+                        border-radius: 8px;
+                        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 30px #ffd700;
+                        z-index: 9999;
+                        pointer-events: none;
+                        animation: tutorialPulse 2s infinite;
+                    `;
+                    document.body.appendChild(spotlight);
+                }
+            }
+            
+            // Create modal
+            const modal = document.createElement('div');
+            modal.id = 'tutorialModal';
+            modal.style.cssText = `
+                position: fixed;
+                ${step.position === 'center' ? 'top: 50%; left: 50%; transform: translate(-50%, -50%);' : ''}
+                ${step.position === 'top' ? 'top: 120px; left: 50%; transform: translateX(-50%);' : ''}
+                ${step.position === 'bottom' ? 'bottom: 100px; left: 50%; transform: translateX(-50%);' : ''}
+                ${step.position === 'top-right' ? 'top: 120px; right: 30px;' : ''}
+                max-width: 500px;
+                background: linear-gradient(180deg, #2d2d2d 0%, #1a1a1a 100%);
+                border: 3px solid #ffd700;
+                border-radius: 15px;
+                padding: 25px;
+                z-index: 10000;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+                text-align: center;
+            `;
+            
+            modal.innerHTML = `
+                <h2 style="color: #ffd700; margin-bottom: 15px; font-size: 1.5em;">${step.title}</h2>
+                <p style="color: #e0e0e0; line-height: 1.6; white-space: pre-line; margin-bottom: 20px;">${step.text}</p>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    ${inGameTutorialStep > 0 ? '<button class="btn btn-secondary" id="tutorialSkip">Skip Tutorial</button>' : ''}
+                    <button class="btn btn-primary" id="tutorialNext">${step.buttonText}</button>
+                </div>
+            `;
+            
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            // Button handlers
+            const nextBtn = document.getElementById('tutorialNext');
+            const skipBtn = document.getElementById('tutorialSkip');
+            
+            nextBtn.onclick = () => {
+                // Execute action if exists
+                if (step.action) step.action();
+                
+                // Remove overlay and spotlight
+                overlay.remove();
+                const spotlight = document.getElementById('tutorialSpotlight');
+                if (spotlight) spotlight.remove();
+                
+                // Next step
+                inGameTutorialStep++;
+                if (inGameTutorialStep < IN_GAME_TUTORIAL_STEPS.length) {
+                    // Delay for card draw animation
+                    if (step.action) {
+                        setTimeout(() => showTutorialStep(IN_GAME_TUTORIAL_STEPS[inGameTutorialStep]), 1000);
+                    } else {
+                        showTutorialStep(IN_GAME_TUTORIAL_STEPS[inGameTutorialStep]);
+                    }
+                } else {
+                    completeTutorial();
+                }
+            };
+            
+            if (skipBtn) {
+                skipBtn.onclick = () => {
+                    overlay.remove();
+                    const spotlight = document.getElementById('tutorialSpotlight');
+                    if (spotlight) spotlight.remove();
+                    completeTutorial();
+                };
+            }
+        }
+
+        function completeTutorial() {
+            inGameTutorialActive = false;
+            localStorage.setItem('dungeon_scoundrel_tutorial_completed', 'true');
+            showMessage('🎓 Tutorial completed! Good luck in the dungeon!', 'success');
+            console.log('[TUTORIAL] Tutorial completed!');
+        }
+
+        // Add CSS animation for pulse
+        const tutorialStyle = document.createElement('style');
+        tutorialStyle.textContent = `
+            @keyframes tutorialPulse {
+                0%, 100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 30px #ffd700; }
+                50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 50px #ffd700, 0 0 70px #ffd700; }
+            }
+        `;
+        document.head.appendChild(tutorialStyle);
 
         function drawRoom() {
             if (game.dungeon.length === 0) {
