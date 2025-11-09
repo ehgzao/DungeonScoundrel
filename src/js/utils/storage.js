@@ -75,6 +75,19 @@ export const storage = {
      */
     has(key) {
         return localStorage.getItem(key) !== null;
+    },
+
+    /**
+     * Update item with a transform function
+     * @param {string} key - Storage key
+     * @param {Function} updater - Function that receives current value and returns updated value
+     * @returns {*} Updated value
+     */
+    update(key, updater) {
+        const current = this.get(key, {});
+        const updated = updater(current);
+        this.set(key, updated);
+        return updated;
     }
 };
 

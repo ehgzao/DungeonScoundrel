@@ -452,118 +452,25 @@
         window.signInWithGoogle = signInWithGoogle;
         window.signOutUser = signOutUser;
         window.saveProgressToCloud = saveProgressToCloud;
-        
         // ============================================
         // OPTIMIZATION HELPERS
         // ============================================
-        
-        // Storage Cache - Optimizes localStorage operations with error handling
-        class StorageCache {
-            constructor() {
-                this.cache = {};
-                this.storageAvailable = this.checkStorageAvailability();
-            }
-            
-            checkStorageAvailability() {
-                try {
-                    const test = '__storage_test__';
-                    localStorage.setItem(test, test);
-                    localStorage.removeItem(test);
-                    return true;
-                } catch(e) {
-                    console.warn('LocalStorage not available:', e);
-                    return false;
-                }
-            }
-            
-            get(key, defaultValue = {}) {
-                if (!this.storageAvailable) return defaultValue;
-                
-                if (this.cache[key] === undefined) {
-                    try {
-                        const data = localStorage.getItem(key);
-                        this.cache[key] = data ? JSON.parse(data) : defaultValue;
-                    } catch(e) {
-                        console.error(`Error reading ${key}:`, e);
-                        this.cache[key] = defaultValue;
-                    }
-                }
-                return this.cache[key];
-            }
-            
-            set(key, value) {
-                if (!this.storageAvailable) {
-                    console.warn('Storage not available, using cache only');
-                    this.cache[key] = value;
-                    return false;
-                }
-                
-                this.cache[key] = value;
-                try {
-                    localStorage.setItem(key, JSON.stringify(value));
-                    return true;
-                } catch(e) {
-                    if (e.name === 'QuotaExceededError') {
-                        console.error('Storage quota exceeded');
-                        // Try to clear old data
-                        this.clearOldData();
-                    } else {
-                        console.error(`Error saving ${key}:`, e);
-                    }
-                    return false;
-                }
-            }
-            
-            update(key, updater) {
-                const current = this.get(key);
-                const updated = updater(current);
-                this.set(key, updated);
-                return updated;
-            }
-            
-            invalidate(key) {
-                delete this.cache[key];
-            }
-            
-            clearCache() {
-                this.cache = {};
-            }
-            
-            clearOldData() {
-                // Clear non-essential data if quota exceeded
-                try {
-                    const keysToPreserve = ['scoundrel_lifetime_stats', 'scoundrel_unlocks'];
-                    for (let i = 0; i < localStorage.length; i++) {
-                        const key = localStorage.key(i);
-                        if (key && !keysToPreserve.includes(key)) {
-                            localStorage.removeItem(key);
-                            delete this.cache[key];
-                        }
-                    }
-                } catch(e) {
-                    console.error('Error clearing old data:', e);
-                }
-            }
-        }
-        
-        const storage = new StorageCache();
-        
+
+        // Storage - REMOVED (now using modular utils/storage.js)
+        // The storage module is imported at the top and provides:
+        // - storage.get(key, defaultValue)
+        // - storage.set(key, value)
+        // - storage.update(key, updater)
+        // - storage.remove(key)
+        // - storage.has(key)
+        // - storage.clear()
+
         // ============================================
         // UTILITY FUNCTIONS
         // ============================================
         
-        // Debounce function - Prevents excessive function calls
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
+        // Debounce - REMOVED (now using modular utils/storage.js)
+        // The debounce function is imported from storage.js
         
         // Haptic Feedback for mobile devices
         function hapticFeedback(type = 'light') {
