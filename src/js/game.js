@@ -3080,6 +3080,9 @@ class DarkAtmosphericMusic {
             const comboEl = document.createElement('div');
             comboEl.className = 'combo-counter';
             
+            // Calculate combo damage bonus
+            const comboBonus = getComboBonus();
+            
             // Different messages and colors based on combo count
             let message = `${count}x COMBO!`;
             let color = '#ffd93d'; // Default yellow
@@ -3093,6 +3096,11 @@ class DarkAtmosphericMusic {
             } else if (count >= 5) {
                 message = `${count}x GREAT!`;
                 color = '#6bcf7f'; // Green for great
+            }
+            
+            // Add damage bonus to message if > 0
+            if (comboBonus > 0) {
+                message += ` (+${comboBonus} dmg)`;
             }
             
             comboEl.textContent = message;
@@ -5865,7 +5873,7 @@ class DarkAtmosphericMusic {
             { id: 'compass', name: '🧭 Compass', description: '10% more events', rarity: 'common', effect: 'moreEvents' },
             { id: 'dice', name: '🎲 Lucky Dice', description: 'Shop items 5% cheaper', rarity: 'common', effect: 'tinyDiscount' },
             { id: 'feather', name: '🪶 Light Feather', description: 'Hold 2 cards instead of 1', rarity: 'common', effect: 'extraHold' },
-            { id: 'candle', name: '🕯️ Candle', description: 'See 1 extra card in deck', rarity: 'common', effect: 'peek' },
+            { id: 'candle', name: '🕯️ Candle', description: 'Reveal the next card in deck (top-left counter)', rarity: 'common', effect: 'peek' },
             { id: 'rope', name: '🪢 Rope', description: 'Start with 1 extra HP', rarity: 'common', effect: 'tinyHealth' },
             { id: 'stone', name: '🪨 Stone', description: 'Reduce first damage by 1', rarity: 'common', effect: 'firstShield' },
             { id: 'herb', name: '🌱 Herb', description: 'Potions usable twice per dungeon', rarity: 'common', effect: 'doublePot' },
@@ -6385,16 +6393,38 @@ class DarkAtmosphericMusic {
                 relicsList.innerHTML = '<div class="relic-effect">No relics yet.</div>';
                 return;
             }
-            relicsList.innerHTML = game.relics.map(r => `
-                <div class="relic-item ${r.used ? 'used' : ''}" 
-                     title="${r.description}${r.used ? ' (Used)' : ''}"
-                     onmouseenter="showTooltip(this, '${r.description.replace(/'/g, "\\'")}', 'bottom')"
-                     onmouseleave="hideTooltip()"
-                     style="cursor: help;">
-                    <div class="relic-name">${r.name}</div>
-                    <div class="relic-effect">${r.description}</div>
-                </div>
-            `).join('');
+            relicsList.innerHTML = game.relics.map(r => {
+                let dynamicInfo = '';
+                let dynamicDesc = r.description;
+                
+                // Add dynamic info for Mirror Shield
+                if (game.mirrorShield > 0 && (r.id === 'shield' || r.name.includes('Mirror'))) {
+                    dynamicInfo = ` (${game.mirrorShield} shield remaining)`;
+                    dynamicDesc += ` | Shield: ${game.mirrorShield} damage`;
+                }
+                
+                // Add dynamic info for Mirror Shard
+                if (r.id === 'mirror_shard') {
+                    if (r.usedThisRoom) {
+                        dynamicInfo = ' (Used this room)';
+                        dynamicDesc += ' | Used this room';
+                    } else {
+                        dynamicInfo = ' (Ready)';
+                        dynamicDesc += ' | Ready to reflect';
+                    }
+                }
+                
+                return `
+                    <div class="relic-item ${r.used ? 'used' : ''}" 
+                         title="${dynamicDesc}${r.used ? ' (Used)' : ''}"
+                         onmouseenter="showTooltip(this, '${dynamicDesc.replace(/'/g, "\\'")}', 'bottom')"
+                         onmouseleave="hideTooltip()"
+                         style="cursor: help;">
+                        <div class="relic-name">${r.name}${dynamicInfo}</div>
+                        <div class="relic-effect">${r.description}</div>
+                    </div>
+                `;
+            }).join('');
         }
 
         function getRelicBonus(type) {
