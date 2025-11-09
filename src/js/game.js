@@ -4682,6 +4682,12 @@ class DarkAtmosphericMusic {
             
             game.equippedWeapon.durability = game.equippedWeapon.maxDurability;
             
+            // Master Smith: +1 damage when equipping weapon
+            if (game.relics.some(r => r.id === 'master_smith')) {
+                game.equippedWeapon.numValue += 1;
+                showMessage('🔨 Master Smith enhanced your weapon (+1 damage)!', 'success');
+            }
+            
             // Check for Durable Weapons relic
             if (game.relics.some(r => r.id === 'durable_weapons')) {
                 game.equippedWeapon.maxDurability = 999; // Infinite durability
