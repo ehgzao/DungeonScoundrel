@@ -1510,6 +1510,88 @@
             validationDiv.style.display = 'block';
         }
         
+        // Enhanced browser detection
+        function getBrowserInfo() {
+            const ua = navigator.userAgent;
+            let browserName = 'Unknown';
+            let browserVersion = 'Unknown';
+            let os = 'Unknown';
+            
+            // Browser detection
+            if (ua.includes('Firefox/')) {
+                browserName = 'Firefox';
+                browserVersion = ua.match(/Firefox\/(\d+)/)?.[1] || 'Unknown';
+            } else if (ua.includes('Chrome/') && !ua.includes('Edg/')) {
+                browserName = 'Chrome';
+                browserVersion = ua.match(/Chrome\/(\d+)/)?.[1] || 'Unknown';
+            } else if (ua.includes('Edg/')) {
+                browserName = 'Edge';
+                browserVersion = ua.match(/Edg\/(\d+)/)?.[1] || 'Unknown';
+            } else if (ua.includes('Safari/') && !ua.includes('Chrome')) {
+                browserName = 'Safari';
+                browserVersion = ua.match(/Version\/(\d+)/)?.[1] || 'Unknown';
+            } else if (ua.includes('Opera/') || ua.includes('OPR/')) {
+                browserName = 'Opera';
+                browserVersion = ua.match(/(?:Opera|OPR)\/(\d+)/)?.[1] || 'Unknown';
+            }
+            
+            // OS detection
+            if (ua.includes('Windows')) {
+                os = 'Windows';
+                if (ua.includes('Windows NT 10.0')) os = 'Windows 10/11';
+                else if (ua.includes('Windows NT 6.1')) os = 'Windows 7';
+            } else if (ua.includes('Mac OS')) {
+                os = 'macOS';
+                const macVersion = ua.match(/Mac OS X ([0-9_]+)/)?.[1]?.replace(/_/g, '.');
+                if (macVersion) os = `macOS ${macVersion}`;
+            } else if (ua.includes('Linux')) {
+                os = 'Linux';
+            } else if (ua.includes('Android')) {
+                os = 'Android';
+                const androidVersion = ua.match(/Android (\d+)/)?.[1];
+                if (androidVersion) os = `Android ${androidVersion}`;
+            } else if (ua.includes('iOS') || ua.includes('iPhone') || ua.includes('iPad')) {
+                os = 'iOS';
+                const iosVersion = ua.match(/OS (\d+_\d+)/)?.[1]?.replace(/_/g, '.');
+                if (iosVersion) os = `iOS ${iosVersion}`;
+            }
+            
+            return {
+                name: browserName,
+                version: browserVersion,
+                os: os,
+                full: `${browserName} ${browserVersion} on ${os}`
+            };
+        }
+        
+        // Enhanced screen detection
+        function getScreenInfo() {
+            const screenWidth = window.screen.width;
+            const screenHeight = window.screen.height;
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const pixelRatio = window.devicePixelRatio || 1;
+            
+            // Device type detection
+            let deviceType = 'Desktop';
+            if (window.innerWidth <= 768) {
+                deviceType = 'Mobile';
+            } else if (window.innerWidth <= 1024) {
+                deviceType = 'Tablet';
+            }
+            
+            return {
+                resolution: `${screenWidth}x${screenHeight}`,
+                viewport: `${viewportWidth}x${viewportHeight}`,
+                device: deviceType,
+                pixelRatio: pixelRatio,
+                screenWidth: screenWidth,
+                screenHeight: screenHeight,
+                viewportWidth: viewportWidth,
+                viewportHeight: viewportHeight
+            };
+        }
+        
         // Bug Report Function (Global Scope)
         window.sendBugReport = function() {
             console.log('sendBugReport called');
@@ -1596,22 +1678,35 @@
                     return; 
                 }
                 
+                // Better browser and screen detection
+                const browserInfo = getBrowserInfo();
+                const screenInfo = getScreenInfo();
+                
                 const params = {
                     from_name: 'Player',
                     reply_to: 'player@game.com',
                     message: message,
-                    user_browser: navigator.userAgent,
-                    user_screen: window.innerWidth + 'x' + window.innerHeight,
+                    user_browser: browserInfo.full,
+                    user_screen: screenInfo.resolution,
                     game_version: 'v1.4.0',
                     report_date: new Date().toLocaleString(),
                     // Alternative names in case template uses these
-                    browser: navigator.userAgent,
-                    screen: window.innerWidth + 'x' + window.innerHeight,
+                    browser: browserInfo.full,
+                    screen: screenInfo.resolution,
                     version: 'v1.4.0',
-                    date: new Date().toLocaleString()
+                    date: new Date().toLocaleString(),
+                    // Enhanced debugging info
+                    browser_name: browserInfo.name,
+                    browser_version: browserInfo.version,
+                    browser_os: browserInfo.os,
+                    screen_viewport: screenInfo.viewport,
+                    screen_device: screenInfo.device,
+                    screen_pixel_ratio: screenInfo.pixelRatio
                 };
                 
                 console.log('Sending email with params:', params);
+                console.log('Browser Info:', browserInfo);
+                console.log('Screen Info:', screenInfo);
                 console.log('Service ID: service_tfl51qs, Template ID: template_x3cplm6');
                 
                 emailjs.send('service_tfl51qs', 'template_x3cplm6', params)
