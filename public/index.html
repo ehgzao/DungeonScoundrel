@@ -150,8 +150,7 @@
         /* Mobile CSS now in: src/styles/mobile.css */
     </style>
 
-    <!-- Google reCAPTCHA v2 Invisible -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- Simple anti-spam validation (no external dependencies) -->
 
 </head>
 <body>
@@ -1401,10 +1400,8 @@
                 <button class="close-modal-btn" onclick="document.getElementById('bugReportModal').classList.remove('active');">Cancel</button>
                 <button 
                     id="bugReportSubmit"
-                    class="g-recaptcha close-modal-btn" 
-                    data-sitekey="6LfESgcsAAAAADjQ3D_Sz8WOKELi1ig3foL0eie4"
-                    data-callback="sendBugReport"
-                    data-action="submit"
+                    class="close-modal-btn" 
+                    onclick="sendBugReport()"
                     style="background: linear-gradient(135deg, #6bcf7f, #2fbf71); border: none; color: #102015; cursor: pointer;">
                     Send
                 </button>
@@ -1425,9 +1422,27 @@
                 }
                 const message = (textarea.value || '').trim();
                 console.log('Message:', message);
+                
+                // Simple anti-spam validation
                 if (!message) { 
                     alert('Please describe the bug.'); 
                     return; 
+                }
+                if (message.length < 10) {
+                    alert('Please provide more details (at least 10 characters).');
+                    return;
+                }
+                if (message.length > 2000) {
+                    alert('Message too long. Please keep it under 2000 characters.');
+                    return;
+                }
+                
+                // Simple spam detection
+                const spamWords = ['viagra', 'casino', 'lottery', 'winner', 'click here', 'free money'];
+                const lowerMessage = message.toLowerCase();
+                if (spamWords.some(word => lowerMessage.includes(word))) {
+                    alert('Message contains inappropriate content.');
+                    return;
                 }
                 
                 console.log('Checking emailjs:', window.emailjs);
