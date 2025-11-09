@@ -1793,9 +1793,9 @@
             
             console.log('Sending waitlist signup:', params);
             
-            // Send via EmailJS
+            // Send via EmailJS (using waitlist template)
             if (window.emailjs) {
-                emailjs.send('service_tfl51qs', 'template_x3cplm6', params)
+                emailjs.send('service_tfl51qs', 'template_hif1mc1', params)
                     .then(function(response) {
                         console.log('Waitlist signup SUCCESS:', response);
                         
