@@ -5038,27 +5038,49 @@ class DarkAtmosphericMusic {
             
             if (isVictory) {
                 const btnSubmitScore = document.getElementById('btnSubmitScore');
-                // FIX: Use onclick to prevent memory leak from multiple event listeners
-                btnSubmitScore.onclick = async (e) => {
-                    const btn = e.target;
+                
+                // AUTO-SUBMIT: Enviar automaticamente sem input do player
+                (async () => {
+                    const btn = btnSubmitScore;
                     setButtonLoading(btn, true);
+                    btn.textContent = '📤 Sending...';
                     hapticFeedback('medium');
                     
                     try {
                         await submitScoreToLeaderboard(score, gameTime);
-                        btn.textContent = '✅ Submitted!';
+                        btn.textContent = '✅ Score Submitted!';
                         btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
+                        btn.disabled = true; // Prevent re-submission
                         hapticFeedback('success');
                         pulseElement(btn, '#6bcf7f');
+                        console.log(`✅ Score ${score} auto-submitted to leaderboard!`);
                     } catch (err) {
                         setButtonLoading(btn, false);
-                        btn.textContent = 'Submission Failed';
+                        btn.textContent = '❌ Submission Failed';
                         btn.style.background = 'linear-gradient(180deg, #ff6b6b 0%, #d63031 100%)';
                         hapticFeedback('error');
                         shakeElement(btn);
                         console.error("Score submission error:", err);
+                        
+                        // Allow manual retry on error
+                        btn.disabled = false;
+                        btn.textContent = '🔄 Retry Submit';
+                        btn.onclick = async () => {
+                            setButtonLoading(btn, true);
+                            try {
+                                await submitScoreToLeaderboard(score, gameTime);
+                                btn.textContent = '✅ Score Submitted!';
+                                btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
+                                btn.disabled = true;
+                                hapticFeedback('success');
+                            } catch (retryErr) {
+                                setButtonLoading(btn, false);
+                                btn.textContent = '❌ Failed Again';
+                                console.error("Retry failed:", retryErr);
+                            }
+                        };
                     }
-                };
+                })();
             }
         }
         
