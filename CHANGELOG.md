@@ -57,6 +57,7 @@ During tutorial, keyboard shortcuts are intelligently blocked:
 - **Fixed**: ESC key behavior during tutorial (now opens confirmation modal)
 - **Fixed**: Tutorial modals without dark overlay (now all steps have consistent background)
 - **Fixed**: Combat Basics tutorial step now properly highlights the card area
+- **Fixed/New**: Cloud saves now work as should! Connect with your Google account and play cross-device
 
 ### 🎮 Player Impact
 
