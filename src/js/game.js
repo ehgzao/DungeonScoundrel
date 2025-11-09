@@ -1214,8 +1214,38 @@
 
         function showNewGameModal() {
             newGameModal.classList.add('active');
+            
+            // First-time player: Suggest Easy difficulty
+            const hasPlayedBefore = localStorage.getItem('dungeon_scoundrel_played_before');
+            
+            if (!hasPlayedBefore) {
+                // Remove previous suggestions
+                const oldSuggestion = document.querySelector('.difficulty-suggestion');
+                if (oldSuggestion) oldSuggestion.remove();
+                
+                // Select Easy by default
+                difficultySelector.querySelectorAll('.difficulty-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                const easyBtn = difficultySelector.querySelector('.difficulty-btn[data-difficulty="easy"]');
+                if (easyBtn) {
+                    easyBtn.classList.add('selected');
+                    
+                    // Add pulsing highlight animation
+                    easyBtn.style.animation = 'pulse 1.5s ease-in-out 3';
+                    easyBtn.style.boxShadow = '0 0 20px rgba(107, 207, 127, 0.8)';
+                }
+                
+                // Add suggestion message
+                const suggestionMsg = document.createElement('div');
+                suggestionMsg.className = 'difficulty-suggestion';
+                suggestionMsg.style.cssText = 'text-align: center; color: #6bcf7f; font-size: 0.95em; margin-top: 10px; padding: 8px; background: rgba(107, 207, 127, 0.1); border-radius: 8px; border: 1px solid rgba(107, 207, 127, 0.3);';
+                suggestionMsg.innerHTML = '<strong>First time?</strong> We recommend starting on <strong>Easy</strong> to learn the mechanics!<br><small style="color: #aaa;">(You can choose any difficulty)</small>';
+                
+                difficultySelector.parentElement.appendChild(suggestionMsg);
+            }
         }
-
+        
         function showGameUI() {
             welcomeScreen.style.display = 'none';
             newGameModal.classList.remove('active');
@@ -3706,6 +3736,9 @@ class DarkAtmosphericMusic {
         }
 
         function startGame() {
+            // Mark that player has played before (for first-time Easy suggestion)
+            localStorage.setItem('dungeon_scoundrel_played_before', 'true');
+            
             // 1. Load Stats and Unlocks
             loadPermanentStats();
             loadUnlocks();
