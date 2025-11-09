@@ -7053,7 +7053,23 @@ class DarkAtmosphericMusic {
         function populateCodexUpgrades() {
             const upgradesList = document.getElementById('upgradesList');
             if (!upgradesList) return;
-            upgradesList.innerHTML = UNLOCKS.map(unlock => {
+            
+            // AUTO-SORT: Available first, then unlocked, then locked
+            const sortedUnlocks = [...UNLOCKS].sort((a, b) => {
+                const aUnlocked = permanentUnlocks[a.id];
+                const bUnlocked = permanentUnlocks[b.id];
+                const aAvailable = !aUnlocked && a.check();
+                const bAvailable = !bUnlocked && b.check();
+                
+                // Priority: Available > Unlocked > Locked
+                if (aAvailable && !bAvailable) return -1;
+                if (!aAvailable && bAvailable) return 1;
+                if (aUnlocked && !bUnlocked && !bAvailable) return -1;
+                if (!aUnlocked && bUnlocked && !aAvailable) return 1;
+                return 0;
+            });
+            
+            upgradesList.innerHTML = sortedUnlocks.map(unlock => {
                 const isUnlocked = permanentUnlocks[unlock.id];
                 const canUnlock = !isUnlocked && unlock.check();
                 return `<div class="unlock-item ${isUnlocked ? 'unlocked' : (canUnlock ? '' : 'locked')}"><div class="item-info"><div class="item-name">${unlock.name}</div><div class="item-description">${unlock.description}</div><div class="unlock-requirement">${isUnlocked ? '✅ UNLOCKED' : (canUnlock ? '✨ READY TO UNLOCK!' : `🔒 ${unlock.requirement}`)}</div></div>${!isUnlocked && canUnlock ? `<button class="buy-btn" onclick="unlockUpgradeWrapper('${unlock.id}')">Unlock</button>` : ''}</div>`;
@@ -7063,6 +7079,7 @@ class DarkAtmosphericMusic {
         function populateCodexRelics(rarityFilter = 'all') {
             const glossary = document.getElementById('relicsGlossary');
             if (!glossary) return;
+            
             let filteredRelics = rarityFilter === 'all' ? RELICS : RELICS.filter(r => r.rarity === rarityFilter);
             const rarityOrder = ['common', 'uncommon', 'rare', 'legendary'];
             const rarityColors = {common: {bg: 'rgba(170, 170, 170, 0.1)', border: '#aaa', emoji: '⚪', name: 'Common'}, uncommon: {bg: 'rgba(107, 207, 127, 0.1)', border: '#6bcf7f', emoji: '🟢', name: 'Uncommon'}, rare: {bg: 'rgba(74, 158, 255, 0.1)', border: '#4a9eff', emoji: '🔵', name: 'Rare'}, legendary: {bg: 'rgba(255, 152, 0, 0.1)', border: '#ff9800', emoji: '🟠', name: 'Legendary'}};
