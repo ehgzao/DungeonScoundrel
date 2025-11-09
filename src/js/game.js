@@ -5466,10 +5466,28 @@ class DarkAtmosphericMusic {
                 cardEl.classList.add('equipped');
                 
                 const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
-                if (powerBonus > 0 || game.doubleDamage) {
+                const berserkBonus = game.berserkStacks > 0 ? 5 : 0;
+                
+                if (powerBonus > 0 || game.doubleDamage || berserkBonus > 0) {
                     const badge = document.createElement('div');
                     badge.style.cssText = 'position:absolute;top:5px;right:5px;background:#ffd93d;color:#000;padding:3px 8px;border-radius:10px;font-size:0.8em;font-weight:bold;';
-                    badge.textContent = game.doubleDamage ? `2x (${game.equippedWeapon.numValue + powerBonus})` : `+${powerBonus}`;
+                    
+                    // Show all active bonuses
+                    if (game.doubleDamage) {
+                        const totalDamage = game.equippedWeapon.numValue + powerBonus + berserkBonus;
+                        badge.textContent = `2x (${totalDamage})`;
+                    } else {
+                        const totalBonus = powerBonus + berserkBonus;
+                        badge.textContent = `+${totalBonus}`;
+                    }
+                    
+                    // Red background when Berserk is active for visibility
+                    if (berserkBonus > 0) {
+                        badge.style.background = 'linear-gradient(135deg, #ff6b6b, #ee5a52)';
+                        badge.style.color = '#fff';
+                        badge.style.boxShadow = '0 2px 8px rgba(255, 107, 107, 0.4)';
+                    }
+                    
                     cardEl.appendChild(badge);
                 }
                 
