@@ -1779,45 +1779,10 @@
                     showMessage('💥 Choose a card to OBLITERATE (left-click)!', 'warning');
                     game.obliterateMode = true;
                     playSound('special');
+                    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 35);
                 } else {
                     showMessage('💥 No cards to obliterate!', 'warning');
                 }
-            } },
-            { id: 'lucky_draw', name: '🎲 Lucky Draw', description: 'Draw until you get a weapon', effect: () => {
-                let drawnCards = [];
-                let foundWeapon = false;
-                let attempts = 0;
-                const maxAttempts = Math.min(10, game.dungeon.length);
-                
-                while (!foundWeapon && attempts < maxAttempts && game.dungeon.length > 0) {
-                    const card = game.dungeon.shift();
-                    drawnCards.push(card);
-                    attempts++;
-                    if (card.suitName === 'diamonds') {
-                        foundWeapon = true;
-                    }
-                }
-                
-                game.room.push(...drawnCards);
-                
-                if (foundWeapon) {
-                    showMessage(`🎲 Lucky Draw! Found weapon in ${attempts} cards!`, 'success');
-                    earnGold(5);
-                } else {
-                    showMessage('🎲 Lucky Draw! No weapon found, but +10 gold!', 'info');
-                    earnGold(10);
-                }
-                
-                playSound('cardDraw');
-                createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 25);
-                updateUI();
-            } },
-            { id: 'mirror_shield', name: '🪞 Mirror', description: 'Reflect next 10 damage (this dungeon only)', effect: () => {
-                const mirrorAmount = permanentUnlocks.mirrorMaster ? 15 : 10;
-                game.mirrorShield = mirrorAmount;
-                showMessage('🪞 Mirror Shield! Next ' + mirrorAmount + ' damage reflected!', 'success');
-                playSound('special');
-                createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 35);
             } },
             { id: 'gamble', name: '🎰 Gamble', description: '50% chance: +15 HP or -10 HP', effect: () => {
                 const win = Math.random() < 0.5;
@@ -1842,6 +1807,59 @@
                 let lifetimeStats = saved ? JSON.parse(saved) : {};
                 lifetimeStats.gambleCards = (lifetimeStats.gambleCards || 0) + 1;
                 localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
+            } },
+            { id: 'lucky_draw', name: '🎲 Lucky Draw', description: 'Draw 3 cards with favorable odds', effect: () => {
+                // BALANCED: Draw exactly 3 cards with controlled probabilities
+                // 40% potion, 40% weapon, 20% monster (much better than random!)
+                const drawnCards = [];
+                const cardsToDraw = Math.min(3, game.dungeon.length);
+                
+                for (let i = 0; i < cardsToDraw; i++) {
+                    if (game.dungeon.length === 0) break;
+                    
+                    // Find cards by type in dungeon
+                    const potions = game.dungeon.filter(c => c.suitName === 'hearts');
+                    const weapons = game.dungeon.filter(c => c.suitName === 'diamonds');
+                    const monsters = game.dungeon.filter(c => c.suitName === 'clubs' || c.suitName === 'spades');
+                    
+                    let selectedCard = null;
+                    const roll = Math.random();
+                    
+                    // 40% chance for potion
+                    if (roll < 0.40 && potions.length > 0) {
+                        selectedCard = potions[Math.floor(Math.random() * potions.length)];
+                    }
+                    // 40% chance for weapon (cumulative 0.40-0.80)
+                    else if (roll < 0.80 && weapons.length > 0) {
+                        selectedCard = weapons[Math.floor(Math.random() * weapons.length)];
+                    }
+                    // 20% chance for monster OR fallback if preferred types unavailable
+                    else if (monsters.length > 0) {
+                        selectedCard = monsters[Math.floor(Math.random() * monsters.length)];
+                    }
+                    // Fallback: draw any card if specific type unavailable
+                    else {
+                        selectedCard = game.dungeon[Math.floor(Math.random() * game.dungeon.length)];
+                    }
+                    
+                    if (selectedCard) {
+                        const index = game.dungeon.indexOf(selectedCard);
+                        game.dungeon.splice(index, 1);
+                        drawnCards.push(selectedCard);
+                    }
+                }
+                
+                game.room.push(...drawnCards);
+                
+                const weaponCount = drawnCards.filter(c => c.suitName === 'diamonds').length;
+                const potionCount = drawnCards.filter(c => c.suitName === 'hearts').length;
+                
+                showMessage(`🎲 Lucky Draw! Drew ${drawnCards.length} cards (${weaponCount}⚔️ ${potionCount}❤️)`, 'success');
+                earnGold(5);
+                
+                playSound('cardDraw');
+                createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 25);
+                updateUI();
             } }
         ];
         
