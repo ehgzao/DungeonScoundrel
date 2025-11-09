@@ -4081,6 +4081,15 @@ class DarkAtmosphericMusic {
                 el.remove();
             });
             
+            // Restore z-index of previously boosted elements
+            const boostedElements = document.querySelectorAll('[data-tutorial-boosted="true"]');
+            boostedElements.forEach(el => {
+                el.removeAttribute('data-tutorial-boosted');
+                el.style.zIndex = '';
+                el.style.position = '';
+                console.log('[TUTORIAL] Restored z-index for:', el.id || el.className);
+            });
+            
             // Create NEW unique overlay
             const overlayId = 'tutorialOverlay_' + Date.now();
             const overlay = document.createElement('div');
@@ -4121,6 +4130,14 @@ class DarkAtmosphericMusic {
                                     const finalWidth = Math.max(rect.width + 20, minWidth);
                                     const finalHeight = Math.max(rect.height + 20, minHeight);
                             
+                                    // CRITICAL: Boost z-index of highlighted element to appear ABOVE spotlight overlay
+                                    const originalZIndex = targetElement.style.zIndex;
+                                    const originalPosition = targetElement.style.position;
+                                    targetElement.style.position = targetElement.style.position || 'relative';
+                                    targetElement.style.zIndex = '10002'; // Above spotlight (10001)
+                                    targetElement.setAttribute('data-tutorial-boosted', 'true');
+                                    console.log('[TUTORIAL] Boosted z-index for:', step.highlight);
+                            
                                     // Create spotlight with UNIQUE ID
                                     const spotlightId = 'tutorialSpotlight_' + Date.now();
                                     const spotlight = document.createElement('div');
@@ -4141,6 +4158,10 @@ class DarkAtmosphericMusic {
                                     `;
                                     document.body.appendChild(spotlight);
                                     console.log('[TUTORIAL] Spotlight created:', spotlightId);
+                                    
+                                    // Store original values to restore later
+                                    spotlight.setAttribute('data-original-z', originalZIndex);
+                                    spotlight.setAttribute('data-original-pos', originalPosition);
                                 } else {
                                     console.warn('[TUTORIAL] Invalid rect for spotlight:', rect);
                                 }
@@ -4168,7 +4189,7 @@ class DarkAtmosphericMusic {
                 border: 3px solid #ffd700;
                 border-radius: 15px;
                 padding: 25px;
-                z-index: 10002;
+                z-index: 10003;
                 box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
                 text-align: center;
             `;
@@ -4224,7 +4245,7 @@ class DarkAtmosphericMusic {
                         border: 3px solid #ff4444;
                         border-radius: 15px;
                         padding: 30px;
-                        z-index: 10003;
+                        z-index: 10004;
                         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
                         text-align: center;
                         max-width: 450px;
@@ -4264,6 +4285,15 @@ class DarkAtmosphericMusic {
             allTutorialElements.forEach(el => {
                 console.log('[TUTORIAL] Final cleanup removing:', el.id || el.className);
                 el.remove();
+            });
+            
+            // Restore ALL boosted z-indexes
+            const boostedElements = document.querySelectorAll('[data-tutorial-boosted="true"]');
+            boostedElements.forEach(el => {
+                el.removeAttribute('data-tutorial-boosted');
+                el.style.zIndex = '';
+                el.style.position = '';
+                console.log('[TUTORIAL] Final restore z-index for:', el.id || el.className);
             });
             
             // RESUME TIMER after tutorial
