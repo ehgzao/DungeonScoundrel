@@ -2459,25 +2459,10 @@
             }
         }
         
-        // Validate contact form
+        // Validate contact form (removed button disabling - validation happens on submit)
         function validateContactForm() {
-            const name = document.getElementById('contactName').value.trim();
-            const email = document.getElementById('contactEmail').value.trim();
-            const subject = document.getElementById('contactSubject').value;
-            const message = document.getElementById('contactMessage').value.trim();
-            
-            const submitBtn = document.getElementById('contactSubmit');
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            
-            const isValid = name.length >= 2 && 
-                          emailRegex.test(email) && 
-                          subject !== '' && 
-                          message.length >= 10 && 
-                          message.length <= 2000;
-            
-            submitBtn.disabled = !isValid;
-            submitBtn.style.opacity = isValid ? '1' : '0.5';
-            submitBtn.style.cursor = isValid ? 'pointer' : 'not-allowed';
+            // Just update character count, validation happens on submit
+            updateContactCharacterCount();
         }
         
         // Reset contact form
@@ -2505,25 +2490,25 @@
                 const message = document.getElementById('contactMessage').value.trim();
                 const validation = document.getElementById('contactValidationMessage');
                 
-                // Anti-bot protection: Show math verification after 3 attempts
-                contactAttemptCount++;
-                if (contactAttemptCount >= 3) {
-                    const userAnswer = parseInt(document.getElementById('contactMathAnswer').value);
-                    
-                    if (!document.getElementById('contactHumanVerification').style.display || 
-                        document.getElementById('contactHumanVerification').style.display === 'none') {
-                        showContactHumanVerification();
-                        validation.textContent = 'Please complete the human verification below.';
-                        validation.style.display = 'block';
-                        return;
-                    }
-                    
-                    if (isNaN(userAnswer) || userAnswer !== contactMathAnswer) {
-                        validation.textContent = 'Incorrect answer. Please try again.';
-                        validation.style.display = 'block';
-                        showContactHumanVerification(); // Generate new question
-                        return;
-                    }
+                // Anti-bot protection: Show math verification on first attempt
+                const verificationDiv = document.getElementById('contactHumanVerification');
+                const isVerificationVisible = verificationDiv.style.display === 'block';
+                
+                if (!isVerificationVisible) {
+                    // Show verification on first attempt
+                    showContactHumanVerification();
+                    validation.textContent = 'Please complete the human verification below to send your message.';
+                    validation.style.display = 'block';
+                    return;
+                }
+                
+                // Validate math answer
+                const userAnswer = parseInt(document.getElementById('contactMathAnswer').value);
+                if (isNaN(userAnswer) || userAnswer !== contactMathAnswer) {
+                    validation.textContent = 'Incorrect answer. Please try again.';
+                    validation.style.display = 'block';
+                    showContactHumanVerification(); // Generate new question
+                    return;
                 }
                 
                 // Rate limiting: 5 minutes between messages
