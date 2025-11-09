@@ -1680,6 +1680,31 @@
             // Ignore if typing in input
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             
+            // TUTORIAL MODE - Block all shortcuts except Space, Arrows, ESC
+            if (inGameTutorialActive) {
+                const allowedKeys = [' ', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Escape'];
+                
+                // ESC during tutorial - Show skip confirmation
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    const skipBtn = document.getElementById('tutorialSkip');
+                    if (skipBtn) {
+                        skipBtn.click();
+                    }
+                    return;
+                }
+                
+                // Block all other keys during tutorial
+                if (!allowedKeys.includes(e.key)) {
+                    e.preventDefault();
+                    console.log('[TUTORIAL] Key blocked:', e.key);
+                    return;
+                }
+                
+                // Allow Space/Arrows to work on tutorial buttons
+                return;
+            }
+            
             // Ignore if modal is open (except ESC)
             const modalOpen = document.querySelector('.modal-overlay.active');
             if (modalOpen && e.key !== 'Escape') return;
@@ -1722,9 +1747,9 @@
                     
                 case 'u': // U - Undo
                     e.preventDefault();
-                    const btnUndo = document.getElementById('btnUndo');
-                    if (btnUndo && !btnUndo.disabled) {
-                        btnUndo.click();
+                    const btnUndoKey = document.getElementById('btnUndo');
+                    if (btnUndoKey && !btnUndoKey.disabled) {
+                        btnUndoKey.click();
                     }
                     break;
                     
@@ -4082,34 +4107,23 @@ class DarkAtmosphericMusic {
                 el.remove();
             });
             
-            // 1. Create OVERLAY (dark background)
-            const overlay = document.createElement('div');
-            overlay.className = 'tutorial-overlay';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.85);
-                z-index: 9998;
-                pointer-events: none;
-            `;
-            document.body.appendChild(overlay);
+            // Remove previous highlighting
+            document.querySelectorAll('.tutorial-highlighted').forEach(el => {
+                el.classList.remove('tutorial-highlighted');
+                el.style.position = '';
+                el.style.zIndex = '';
+                el.style.boxShadow = '';
+            });
             
-            // 2. SPOTLIGHT element if specified (SIMPLE approach)
+            // SPOTLIGHT element if specified (CUTOUT approach using box-shadow)
             if (step.highlight) {
                 const targetElement = document.querySelector(step.highlight);
                 if (targetElement) {
-                    // Make target element visible above overlay
-                    targetElement.style.position = 'relative';
-                    targetElement.style.zIndex = '9999';
-                    targetElement.classList.add('tutorial-highlighted');
+                    const rect = targetElement.getBoundingClientRect();
                     
-                    // Create spotlight border around element
+                    // Create spotlight with box-shadow cutout effect
                     const spotlight = document.createElement('div');
                     spotlight.className = 'tutorial-spotlight';
-                    const rect = targetElement.getBoundingClientRect();
                     spotlight.style.cssText = `
                         position: fixed;
                         top: ${rect.top - 8}px;
@@ -4118,12 +4132,20 @@ class DarkAtmosphericMusic {
                         height: ${rect.height + 16}px;
                         border: 4px solid #ffd700;
                         border-radius: 8px;
-                        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-                        z-index: 10000;
+                        box-shadow: 
+                            0 0 20px rgba(255, 215, 0, 0.8),
+                            0 0 0 9999px rgba(0, 0, 0, 0.85);
+                        z-index: 9999;
                         pointer-events: none;
                         animation: tutorialPulse 2s infinite;
                     `;
                     document.body.appendChild(spotlight);
+                    
+                    // Make target element interactive and above spotlight
+                    targetElement.style.position = 'relative';
+                    targetElement.style.zIndex = '10000';
+                    targetElement.classList.add('tutorial-highlighted');
+                    
                     console.log('[TUTORIAL] Spotlight created for:', step.highlight);
                 }
             }
