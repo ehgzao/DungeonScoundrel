@@ -6157,10 +6157,6 @@ class DarkAtmosphericMusic {
                         return false;
                     }
                 }
-            },
-            {
-                id: 'remove_card', name: '🔥 Card Removal', description: 'Remove a card from deck (coming soon)', price: 25,
-                buy: () => { showMessage('Feature coming soon!', 'info'); return false; }
             }
         ];
         
