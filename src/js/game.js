@@ -4024,6 +4024,10 @@ class DarkAtmosphericMusic {
             const existingOverlay = document.getElementById('tutorialOverlay');
             if (existingOverlay) existingOverlay.remove();
             
+            // Remove previous spotlight if exists
+            const existingSpotlight = document.getElementById('tutorialSpotlight');
+            if (existingSpotlight) existingSpotlight.remove();
+            
             // Create overlay
             const overlay = document.createElement('div');
             overlay.id = 'tutorialOverlay';
