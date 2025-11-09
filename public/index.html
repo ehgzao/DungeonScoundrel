@@ -335,94 +335,94 @@
             </div>
         </div>
         
-        <!-- Game Credits -->
+        <!-- Bottom Right Container (Credits + Buttons) -->
         <div style="
-            position: absolute;
-            bottom: 90px;
+            position: fixed;
+            bottom: 15px;
             right: 15px;
             z-index: 10;
-            padding: 4px 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 4px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.7em;
-            color: rgba(201, 169, 97, 0.6);
-            text-align: right;
-            letter-spacing: 0.05em;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
         ">
-            a game by <span style="color: rgba(201, 169, 97, 0.85); font-weight: 600;">Gab Lima</span>
-        </div>
-        
-        <!-- Bug Report (Bottom Right, above version) -->
-        <button onclick="document.getElementById('bugReportModal').classList.add('active');" style="
-            position: absolute;
-            bottom: 50px;
-            right: 15px;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            background: linear-gradient(135deg, rgba(61, 51, 40, 0.85) 0%, rgba(42, 35, 24, 0.9) 100%);
-            border: 1px solid rgba(201, 169, 97, 0.4);
-            border-radius: 6px;
-            box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                0 2px 12px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        " onmouseover="this.style.borderColor='rgba(201, 169, 97, 0.8)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(201, 169, 97, 0.4)'; this.style.transform='translateY(0)';" title="Report a bug">
-            <span style="
-                font-size: 0.95em;
-                filter: drop-shadow(0 0 3px rgba(201, 169, 97, 0.5));
-            ">🐛</span>
-            <span style="
+            <!-- Game Credits -->
+            <div style="
+                padding: 4px 10px;
+                background: rgba(0, 0, 0, 0.3);
+                border-radius: 4px;
                 font-family: 'Cinzel', serif;
-                font-size: 0.75em;
-                font-weight: 600;
-                color: #c9a961;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-            ">Report Bug</span>
-        </div>
+                font-size: 0.7em;
+                color: rgba(201, 169, 97, 0.6);
+                text-align: right;
+                letter-spacing: 0.05em;
+                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+                pointer-events: none;
+            ">
+                a game by <span style="color: rgba(201, 169, 97, 0.85); font-weight: 600;">Gab Lima</span>
+            </div>
+            
+            <!-- Bug Report Button -->
+            <button onclick="document.getElementById('bugReportModal').classList.add('active');" style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 12px;
+                background: linear-gradient(135deg, rgba(61, 51, 40, 0.85) 0%, rgba(42, 35, 24, 0.9) 100%);
+                border: 1px solid rgba(201, 169, 97, 0.4);
+                border-radius: 6px;
+                box-shadow: 
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                    0 2px 12px rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(4px);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            " onmouseover="this.style.borderColor='rgba(201, 169, 97, 0.8)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(201, 169, 97, 0.4)'; this.style.transform='translateY(0)';" title="Report a bug">
+                <span style="
+                    font-size: 0.95em;
+                    filter: drop-shadow(0 0 3px rgba(201, 169, 97, 0.5));
+                ">🐛</span>
+                <span style="
+                    font-family: 'Cinzel', serif;
+                    font-size: 0.75em;
+                    font-weight: 600;
+                    color: #c9a961;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+                ">Report Bug</span>
+            </button>
 
-        <!-- Version Badge (Bottom Right) -->
-        <div onclick="document.getElementById('versionModal').classList.add('active');" style="
-            position: absolute;
-            bottom: 10px;
-            right: 15px;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            background: linear-gradient(135deg, rgba(61, 51, 40, 0.85) 0%, rgba(42, 35, 24, 0.9) 100%);
-            border: 1px solid rgba(201, 169, 97, 0.4);
-            border-radius: 6px;
-            box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                0 2px 12px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        " onmouseover="this.style.borderColor='rgba(201, 169, 97, 0.8)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(201, 169, 97, 0.4)'; this.style.transform='translateY(0)';" title="Click to see what's new!">
-            <span style="
-                font-size: 0.95em;
-                filter: drop-shadow(0 0 3px rgba(201, 169, 97, 0.5));
-            ">🚀</span>
-            <span style="
-                font-family: 'Cinzel', serif;
-                font-size: 0.75em;
-                font-weight: 600;
-                color: #c9a961;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-            ">v1.3.1</span>
+            <!-- Version Badge -->
+            <div onclick="document.getElementById('versionModal').classList.add('active');" style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 12px;
+                background: linear-gradient(135deg, rgba(61, 51, 40, 0.85) 0%, rgba(42, 35, 24, 0.9) 100%);
+                border: 1px solid rgba(201, 169, 97, 0.4);
+                border-radius: 6px;
+                box-shadow: 
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                    0 2px 12px rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(4px);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            " onmouseover="this.style.borderColor='rgba(201, 169, 97, 0.8)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.borderColor='rgba(201, 169, 97, 0.4)'; this.style.transform='translateY(0)';" title="Click to see what's new!">
+                <span style="
+                    font-size: 0.95em;
+                    filter: drop-shadow(0 0 3px rgba(201, 169, 97, 0.5));
+                ">🚀</span>
+                <span style="
+                    font-family: 'Cinzel', serif;
+                    font-size: 0.75em;
+                    font-weight: 600;
+                    color: #c9a961;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+                ">v1.3.1</span>
+            </div>
         </div>
         
         </div> <!-- Close content container -->
