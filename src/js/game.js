@@ -6205,15 +6205,19 @@ class DarkAtmosphericMusic {
                 buy: () => {
                     if (game.equippedWeapon && game.equippedWeapon.durability < game.equippedWeapon.maxDurability) {
                         game.equippedWeapon.durability = game.equippedWeapon.maxDurability;
-                        showMessage(`🔧 Weapon repaired! (${game.equippedWeapon.durability}/${game.equippedWeapon.maxDurability})`, 'success');
+                        showMessage(` Weapon repaired! (${game.equippedWeapon.durability}/${game.equippedWeapon.maxDurability})`, 'success');
                         updateUI();
                         return true;
                     } else if (!game.equippedWeapon) {
                         showMessage('No weapon equipped!', 'danger');
                         return false;
                     } else {
-                        showMessage('Weapon already at full durability!', 'info');
-                        return false;
+                        // Weapon at full durability: increase max durability by 1!
+                        game.equippedWeapon.maxDurability += 1;
+                        game.equippedWeapon.durability = game.equippedWeapon.maxDurability;
+                        showMessage(' Weapon reinforced! Max durability increased!', 'success');
+                        updateUI();
+                        return true;
                     }
                 }
             }
