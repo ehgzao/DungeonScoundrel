@@ -1124,9 +1124,11 @@
         ];
         
         function startInteractiveTutorial() {
+            console.log('[TUTORIAL] Starting interactive tutorial...');
             tutorialStep = 0;
             updateTutorialStep();
             interactiveTutorialModal.classList.add('active');
+            console.log('[TUTORIAL] Tutorial modal opened. Total steps:', tutorialSteps.length);
         }
         
         function updateTutorialStep() {
@@ -1255,12 +1257,16 @@
         
         // Welcome Screen Hooks
         btnWelcomeStart.onclick = showNewGameModal;
-        btnLearnToPlay.onclick = () => learnToPlayModal.classList.add('active');
+        btnLearnToPlay.onclick = () => {
+            console.log('[TUTORIAL] Learn to Play button clicked');
+            learnToPlayModal.classList.add('active');
+        };
         btnWelcomeLeaderboard.onclick = showLeaderboard;
         // btnWelcomeUnlocks.onclick removed - now handled by codex.js
         
         // Learn to Play Modal Hooks
         btnStartInteractiveTutorial.onclick = () => {
+            console.log('[TUTORIAL] Start Interactive Tutorial button clicked');
             learnToPlayModal.classList.remove('active');
             startInteractiveTutorial();
         };
