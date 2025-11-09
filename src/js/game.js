@@ -6614,12 +6614,26 @@ class DarkAtmosphericMusic {
             `}).join('');
         }
         
+        // Track active filter for re-application after unlock
+        let activeUpgradeFilter = 'all';
+        
         window.unlockUpgradeWrapper = (unlockId) => {
+            const unlockData = UNLOCKS.find(u => u.id === unlockId);
+            
             permanentUnlocks[unlockId] = true;
             saveUnlocks();
-            showMessage('✨ Unlock activated! Will apply to next run.', 'success');
+            
+            // Enhanced visual feedback
+            showMessage(`✨ ${unlockData.name} UNLOCKED!`, 'success');
             playSound('special');
-            updateUnlocksDisplay();
+            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 50);
+            
+            // Re-apply current filter to update the list
+            if (activeUpgradeFilter !== 'all') {
+                filterUpgradesByStatus(activeUpgradeFilter);
+            } else {
+                updateUnlocksDisplay();
+            }
         }
         
         // Expose Give Up function globally for onclick
@@ -7272,6 +7286,9 @@ class DarkAtmosphericMusic {
         function filterUpgradesByStatus(status) {
             const upgradesList = document.getElementById('upgradesList');
             if (!upgradesList) return;
+            
+            // Save active filter for re-application after unlock
+            activeUpgradeFilter = status;
             
             let filteredUnlocks = UNLOCKS;
             
