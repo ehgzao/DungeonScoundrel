@@ -1,38 +1,41 @@
 /**
  * DUNGEON SCOUNDREL - EMAIL TO SHEETS AUTOMATION
  * 
- * Este script automatiza a coleta de bug reports e waitlist signups
+ * Este script automatiza a coleta de bug reports, contact messages e waitlist signups
  * dos emails recebidos e os organiza em planilhas Google Sheets.
  * 
  * COMO USAR:
  * 1. Abra Google Sheets
  * 2. Crie uma planilha: "Dungeon Scoundrel - Data"
- * 3. Crie duas abas: "Bug Reports" e "Mobile Waitlist"
+ * 3. Crie três abas: "Bug Reports", "Contact Messages" e "Mobile Waitlist"
  * 4. Vá em Extensions > Apps Script
  * 5. Cole este código
  * 6. Configure o trigger (ver instruções abaixo)
  * 7. Autorize as permissões
  */
 
+
 // ============================================
 // CONFIGURAÇÕES
 // ============================================
 
+
 const CONFIG = {
   // ID da sua planilha (pegar da URL)
-  SPREADSHEET_ID: 'COLE_AQUI_O_ID_DA_SUA_PLANILHA',
+  SPREADSHEET_ID: '1_n7N3UXNcorohlLoQgCjQ7dKvX3Znoprmk4N4JX5z7Q',
   
   // Nomes das abas
   BUG_REPORTS_SHEET: 'Bug Reports',
+  CONTACT_SHEET: 'Contact Messages',
   WAITLIST_SHEET: 'Mobile Waitlist',
   
   // Labels do Gmail (criar no Gmail)
   PROCESSED_LABEL: 'Processed/DungeonScoundrel',
   
   // Filtros de busca
-  BUG_REPORT_SEARCH: 'from:lima.ehg@gmail.com (subject:"BUG REPORT" OR subject:"CONTACT MESSAGE") is:unread',
-  WAITLIST_SEARCH: 'from:lima.ehg@gmail.com subject:"Mobile Waitlist" is:unread',
-  CONTACT_SHEET: 'Contact Messages'
+  BUG_REPORT_SEARCH: 'from:lima.ehg@gmail.com subject:"BUG REPORT" is:unread',
+  CONTACT_SEARCH: 'from:lima.ehg@gmail.com subject:"CONTACT MESSAGE" is:unread',
+  WAITLIST_SEARCH: 'from:lima.ehg@gmail.com subject:"Mobile Waitlist" is:unread'
 };
 
 // ============================================
@@ -43,6 +46,7 @@ function processEmails() {
   console.log('🚀 Starting email processing...');
   
   processBugReports();
+  processContactMessages();
   processWaitlistSignups();
   
   console.log('✅ Email processing complete!');
@@ -148,6 +152,92 @@ function parseBugReport(message) {
     pixelRatio,
     gameVersion,
     body.substring(0, 500) // Email completo (primeiros 500 chars)
+  ];
+}
+
+// ============================================
+// CONTACT MESSAGES
+// ============================================
+
+function processContactMessages() {
+  console.log('📧 Processing contact messages...');
+  
+  const threads = GmailApp.search(CONFIG.CONTACT_SEARCH);
+  const sheet = getSheet(CONFIG.CONTACT_SHEET);
+  
+  // Criar cabeçalhos se não existirem
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow([
+      'Data/Hora',
+      'Nome',
+      'Email',
+      'Assunto',
+      'Tipo Contato',
+      'Mensagem',
+      'Browser',
+      'Sistema Operacional',
+      'Resolução Tela',
+      'Status',
+      'Notas'
+    ]);
+    sheet.getRange(1, 1, 1, 11).setFontWeight('bold').setBackground('#6bcfff');
+  }
+  
+  threads.forEach(thread => {
+    const messages = thread.getMessages();
+    messages.forEach(message => {
+      if (message.isUnread()) {
+        const contactData = parseContactMessage(message);
+        sheet.appendRow(contactData);
+        message.markRead();
+        console.log(`✅ Contact message processed: ${contactData[1]}`);
+      }
+    });
+  });
+  
+  console.log(`📊 Processed ${threads.length} contact message threads`);
+}
+
+function parseContactMessage(message) {
+  const body = message.getPlainBody();
+  const date = message.getDate();
+  
+  const userName = extractField(body, /Name:\s*([^\n]+)/i) || 
+                  extractField(body, /from_name[:\s]+"([^"]+)"/i) ||
+                  'N/A';
+  
+  const userEmail = extractField(body, /Email:\s*([^\s]+@[^\s]+)/i) ||
+                   extractField(body, /reply_to[:\s]+"([^"]+@[^"]+)"/i) ||
+                   'N/A';
+  
+  const subject = extractField(body, /Subject:\s*([^\n]+)/i) || 
+                 extractField(body, /subject[:\s]+"([^"]+)"/i) ||
+                 'N/A';
+  
+  const contactType = extractField(body, /Contact Type:\s*([^\n]+)/i) ||
+                     extractField(body, /contact_subject[:\s]+"?([^"\n]+)"?/i) ||
+                     'N/A';
+  
+  const contactMessage = extractField(body, /Message:\s*([^\n]+(?:\n(?!\w+:)[^\n]+)*)/i) ||
+                        extractField(body, /message[:\s]+"([^"]+)"/i) ||
+                        'N/A';
+  
+  const browserName = extractField(body, /Browser:\s*([^\n]+)/i) || 'N/A';
+  const os = extractField(body, /Operating System:\s*([^\n]+)/i) || 'N/A';
+  const screenRes = extractField(body, /Screen Resolution:\s*([^\n]+)/i) || 'N/A';
+  
+  return [
+    date,
+    userName,
+    userEmail,
+    subject,
+    contactType,
+    contactMessage,
+    browserName,
+    os,
+    screenRes,
+    'Pending', // Status inicial
+    '' // Notas vazias
   ];
 }
 
