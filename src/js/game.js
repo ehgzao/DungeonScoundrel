@@ -2277,12 +2277,25 @@ class DarkAtmosphericMusic {
     }
     
     stopAll() {
+        console.log('[MUSIC] Stopping all audio...');
+        
         // Clear all oscillators
         this.oscillators.forEach(osc => {
             try {
                 osc.stop();
                 osc.disconnect();
-            } catch(e) {}
+            } catch(e) {
+                console.warn('[MUSIC] Error stopping oscillator:', e);
+            }
+        });
+        
+        // Clear all gain nodes (CRITICAL FIX!)
+        this.gainNodes.forEach(gain => {
+            try {
+                gain.disconnect();
+            } catch(e) {
+                console.warn('[MUSIC] Error disconnecting gain:', e);
+            }
         });
         
         // Clear all intervals
@@ -2296,6 +2309,8 @@ class DarkAtmosphericMusic {
         this.intervals = [];
         this.timeouts = [];
         this.gainNodes = [];
+        
+        console.log('[MUSIC] All audio stopped.');
     }
     
     // Sistema de troca automática de contexto
@@ -2826,6 +2841,9 @@ class DarkAtmosphericMusic {
         if (btnCloseSoundboard) {
             btnCloseSoundboard.onclick = () => {
                 soundboardModal.classList.remove('active');
+                // CRITICAL FIX: Stop music when closing soundboard!
+                music.stop();
+                console.log('[MUSIC] Soundboard closed, music stopped.');
             };
         }
         
