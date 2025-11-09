@@ -2452,17 +2452,19 @@ class DarkAtmosphericMusic {
     }
     
     // ============================================
-    // TRACK 4: VICTORY THEME - Triumph in Darkness
+    // TRACK 4: VICTORY THEME - Triumph in Darkness (REBUILT)
     // ============================================
     playVictoryTheme() {
-        // Fanfarra épica ascendente e empolgante
+        // REDESIGNED FROM SCRATCH: All notes have explicit duration, NO continuous drones!
+        
+        // Fanfarra épica ascendente (0-3s)
         const fanfare = [
             {freq: 261.63, time: 0, duration: 0.3},      // C4
             {freq: 329.63, time: 0.3, duration: 0.3},    // E4
             {freq: 392, time: 0.6, duration: 0.3},       // G4
             {freq: 523.25, time: 0.9, duration: 0.5},    // C5
             {freq: 659.25, time: 1.5, duration: 0.4},    // E5
-            {freq: 783.99, time: 2.0, duration: 1.0},    // G5 (final triunfante!)
+            {freq: 783.99, time: 2.0, duration: 0.8},    // G5 - REDUCED duration (was 1.0)
         ];
         
         fanfare.forEach(note => {
@@ -2470,41 +2472,40 @@ class DarkAtmosphericMusic {
                 if (!this.isPlaying) return;
                 this.playNote(note.freq, 0.20, note.duration, 'square');
                 this.playNote(note.freq * 2, 0.12, note.duration, 'triangle');
-                this.playBell(note.freq, 0.08, note.duration * 2);
+                this.playBell(note.freq, 0.08, note.duration * 1.5); // Reduced from *2
             }, note.time * 1000);
             this.timeouts.push(timeoutId);
         });
         
-        // Percussão triunfante - ÚNICA VEZ, não em loop infinito
-        const percTimeoutId = setTimeout(() => {
-            if (!this.isPlaying) return;
-            // Play percussion hits during victory fanfare only
-            for (let i = 0; i < 4; i++) {
-                const hitTimeout = setTimeout(() => {
-                    if (!this.isPlaying) return;
-                    this.playPercussiveBass(60, 0.15, 0.1);
-                }, i * 600);
-                this.timeouts.push(hitTimeout);
-            }
-        }, 0);
-        this.timeouts.push(percTimeoutId);
+        // Percussão triunfante (0-2.4s)
+        for (let i = 0; i < 4; i++) {
+            const hitTimeout = setTimeout(() => {
+                if (!this.isPlaying) return;
+                this.playPercussiveBass(60, 0.15, 0.1);
+            }, i * 600);
+            this.timeouts.push(hitTimeout);
+        }
         
-        // Arpejo final celebratório
+        // Arpejo final celebratório (3-3.6s)
         const arpeggio = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
         arpeggio.forEach((freq, index) => {
             const timeoutId = setTimeout(() => {
                 if (!this.isPlaying) return;
-                this.playNote(freq, 0.15, 0.3, 'sine');
+                this.playNote(freq, 0.15, 0.25, 'sine'); // Reduced duration
             }, (3000 + index * 150));
             this.timeouts.push(timeoutId);
         });
         
-        // Drone victorioso
-        const droneTimeoutId = setTimeout(() => {
+        // FINAL NOTE: Note sustentada que PARA automaticamente (3.6-5.1s)
+        const finalNoteTimeout = setTimeout(() => {
             if (!this.isPlaying) return;
-            this.playDrone(523.25, 0.12, 'triangle');
-        }, 2000);
-        this.timeouts.push(droneTimeoutId);
+            // Nota final C5 com fade out gradual - duração DEFINIDA
+            this.playNote(523.25, 0.18, 1.5, 'sine'); // 1.5s duration - STOPS at 5.1s
+        }, 3600);
+        this.timeouts.push(finalNoteTimeout);
+        
+        // REMOVED: Drone contínuo eliminado! Era o culpado do chiado!
+        // Victory theme agora termina completamente em ~5.1 segundos
     }
     
     // ============================================
