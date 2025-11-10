@@ -1653,20 +1653,31 @@ function startGame() {
     
     // Update player info display
     if (game.playerClass) {
-        document.getElementById('playerAvatar').src = `assets/images/avatar-${game.playerClass}.jpg`;
-        document.getElementById('playerNameDisplay').textContent = sanitizePlayerName(playerNameInput.value);
-        document.getElementById('playerClassDisplay').textContent = game.classData.name;
+        const playerAvatar = document.getElementById('playerAvatar');
+        const playerNameDisplay = document.getElementById('playerNameDisplay');
+        const playerClassDisplay = document.getElementById('playerClassDisplay');
+        
+        if (playerAvatar) playerAvatar.src = `assets/images/avatar-${game.playerClass}.jpg`;
+        if (playerNameDisplay) playerNameDisplay.textContent = sanitizePlayerName(playerNameInput.value);
+        if (playerClassDisplay) playerClassDisplay.textContent = game.classData.name;
         
         // Update ability button (only if class has an active ability)
         if (game.classData.active) {
-            document.getElementById('abilityIcon').textContent = game.classData.active.icon;
-            document.getElementById('abilityName').textContent = game.classData.active.name;
-            document.getElementById('abilityDescription').textContent = game.classData.active.description;
+            const abilityIcon = document.getElementById('abilityIcon');
+            const abilityName = document.getElementById('abilityName');
+            const abilityDescription = document.getElementById('abilityDescription');
+            
+            if (abilityIcon) abilityIcon.textContent = game.classData.active.icon;
+            if (abilityName) abilityName.textContent = game.classData.active.name;
+            if (abilityDescription) abilityDescription.textContent = game.classData.active.description;
         }
         
         // Show passive icons
         const passiveIconsDisplay = document.getElementById('passiveIconsDisplay');
-        passiveIconsDisplay.innerHTML = '';
+        if (!passiveIconsDisplay) {
+            console.warn('[GAME] passiveIconsDisplay element not found');
+        } else {
+            passiveIconsDisplay.innerHTML = '';
         
         // Create passive icons based on class
         const passiveIcons = {
@@ -1694,14 +1705,15 @@ function startGame() {
             ]
         };
         
-        const icons = passiveIcons[game.playerClass] || [];
-        icons.forEach(passive => {
-            const iconEl = document.createElement('div');
-            iconEl.style.cssText = 'background: rgba(0,0,0,0.5); border: 1px solid #5a4a38; border-radius: 6px; padding: 4px 8px; font-size: 0.7em; display: flex; align-items: center; gap: 4px; color: #ffd700;';
-            iconEl.title = passive.title;
-            iconEl.innerHTML = `<span>${passive.icon}</span><span style="color: #c9a961;">${passive.text}</span>`;
-            passiveIconsDisplay.appendChild(iconEl);
-        });
+            const icons = passiveIcons[game.playerClass] || [];
+            icons.forEach(passive => {
+                const iconEl = document.createElement('div');
+                iconEl.style.cssText = 'background: rgba(0,0,0,0.5); border: 1px solid #5a4a38; border-radius: 6px; padding: 4px 8px; font-size: 0.7em; display: flex; align-items: center; gap: 4px; color: #ffd700;';
+                iconEl.title = passive.title;
+                iconEl.innerHTML = `<span>${passive.icon}</span><span style="color: #c9a961;">${passive.text}</span>`;
+                passiveIconsDisplay.appendChild(iconEl);
+            });
+        }
     }
     
     game.deck = createDeck();
