@@ -223,7 +223,82 @@ window.createParticles = function(x, y, color, count = 10) {
     }
 };
 
-// Add particle animation CSS if not exists
+// Damage Numbers System
+window.showDamageNumber = function(amount, type = 'damage') {
+    const x = window.innerWidth / 2 + (Math.random() - 0.5) * 200;
+    const y = window.innerHeight / 2 + (Math.random() - 0.5) * 200;
+    
+    const damageEl = document.createElement('div');
+    damageEl.className = `damage-number ${type}`;
+    damageEl.textContent = typeof amount === 'number' ? (type === 'heal' ? `+${amount}` : `-${amount}`) : amount;
+    damageEl.style.cssText = `
+        position: fixed;
+        left: ${x}px;
+        top: ${y}px;
+        font-size: 2.5em;
+        font-weight: bold;
+        pointer-events: none;
+        z-index: 9999;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        animation: damageFloat 1.5s ease-out forwards;
+        color: ${type === 'heal' ? '#6bcf7f' : (type === 'damage' ? '#ff6b6b' : '#ffd93d')};
+    `;
+    
+    document.body.appendChild(damageEl);
+    setTimeout(() => damageEl.remove(), 1500);
+    
+    // Particles
+    const color = type === 'heal' ? '#6bcf7f' : (type === 'damage' ? '#ff6b6b' : '#ffd93d');
+    if (typeof createParticles !== 'undefined') {
+        createParticles(x, y, color, 15);
+    }
+};
+
+// Combo Display System
+window.showCombo = function(count) {
+    const comboEl = document.createElement('div');
+    comboEl.className = 'combo-counter';
+    
+    // Different messages based on combo count
+    let message = `${count}x COMBO!`;
+    let color = '#ffd93d';
+    
+    if (count >= 10) {
+        message = `${count}x LEGENDARY!`;
+        color = '#ff6b6b';
+    } else if (count >= 7) {
+        message = `${count}x AMAZING!`;
+        color = '#a8edea';
+    } else if (count >= 5) {
+        message = `${count}x GREAT!`;
+        color = '#6bcf7f';
+    }
+    
+    comboEl.textContent = message;
+    comboEl.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        font-size: 5em;
+        font-weight: bold;
+        color: ${color};
+        text-shadow: 0 0 30px ${color};
+        pointer-events: none;
+        z-index: 9998;
+        animation: comboPopup 1s ease-out forwards;
+    `;
+    
+    document.body.appendChild(comboEl);
+    setTimeout(() => comboEl.remove(), 1000);
+    
+    // Extra particles for high combos
+    if (count >= 5 && typeof createParticles !== 'undefined') {
+        createParticles(window.innerWidth / 2, window.innerHeight / 2, color, count * 3);
+    }
+};
+
+// Add damage and combo animation CSS if not exists
 if (!document.getElementById('particleStyles')) {
     const style = document.createElement('style');
     style.id = 'particleStyles';
@@ -236,6 +311,16 @@ if (!document.getElementById('particleStyles')) {
         @keyframes particleFade {
             0% { opacity: 1; transform: translateY(0) scale(1); }
             100% { opacity: 0; transform: translateY(-100px) scale(0); }
+        }
+        @keyframes damageFloat {
+            0% { opacity: 1; transform: translateY(0) scale(0.5); }
+            50% { transform: translateY(-60px) scale(1.2); }
+            100% { opacity: 0; transform: translateY(-120px) scale(0.8); }
+        }
+        @keyframes comboPopup {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-10deg); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.3) rotate(5deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(0.8) rotate(0deg); opacity: 0; }
         }
     `;
     document.head.appendChild(style);
