@@ -5136,7 +5136,12 @@ if (typeof resetCombo !== 'undefined') window.resetCombo = resetCombo;
 if (typeof buyItem !== 'undefined') window.buyItem = buyItem;
 if (typeof handleCardClick !== 'undefined') window.handleCardClick = handleCardClick;
 
-console.log('[GAME] All functions exposed globally for modules');
+// Expose game state, inputs and unlocks for modules (leaderboard.js, stats.js)
+window.game = game;
+window.playerNameInput = playerNameInput;
+window.permanentUnlocks = permanentUnlocks;
+
+console.log('[GAME] All functions and state exposed globally for modules');
 
 // Check orientation on load and resize
 checkMobileOrientation();
