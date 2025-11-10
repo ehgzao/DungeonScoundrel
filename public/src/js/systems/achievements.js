@@ -77,7 +77,8 @@ const ACHIEVEMENTS = [
 // ACHIEVEMENTS SYSTEM
 // ============================================
 function getLifetimeStat(stat) {
-    return getTotalStat(stat); // Alias for achievements
+    const stats = storage.get('scoundrel_lifetime_stats', {});
+    return stats[stat] || 0;
 }
 
 function loadAchievements() {

@@ -2715,12 +2715,6 @@ function handleMonster(monster, index) {
         }
     }
     
-    // Consume berserk stack
-    if (game.berserkStacks > 0 && berserkBonus > 0) {
-        game.berserkStacks--;
-        showMessage(`🔥 Berserk +5 damage! (${game.berserkStacks} left)`, 'info');
-    }
-    
     // Track if weapon was used for ATTACK (not just defense)
     // If dodge is active, weapon is not used (even if perfect kill)
     let weaponWasUsed = !game.dodgeActive;
@@ -2877,6 +2871,13 @@ function handleMonster(monster, index) {
     // But NOT when using defensive abilities (Dodge, Divine Blessing, Mirror, Cloak)
     if (attackWasMade && game.doubleDamage) {
         game.doubleDamage = false;
+    }
+    
+    // Consume Berserk stack ONLY if attack was made
+    // Same logic as Power: consumes when attacking, not when defending
+    if (attackWasMade && game.berserkStacks > 0 && berserkBonus > 0) {
+        game.berserkStacks--;
+        showMessage(`🔥 Berserk +5 damage! (${game.berserkStacks} left)`, 'info');
     }
     
     // Weapon durability system - ONLY if weapon was actually USED
