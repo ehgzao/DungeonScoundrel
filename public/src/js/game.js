@@ -770,12 +770,7 @@ const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
 // ===== 50 ACHIEVEMENTS SYSTEM =====
 
 // ===== ADVANCED SOUND EFFECTS SYSTEM =====
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-// Master gain for all sound effects
-const sfxMasterGain = audioContext.createGain();
-sfxMasterGain.connect(audioContext.destination);
-sfxMasterGain.gain.value = 0.3;
+// audioContext is now loaded from audio-context.js (loaded before this file)
 
 const soundEffects = {
     cardDraw: (ctx, time) => {
