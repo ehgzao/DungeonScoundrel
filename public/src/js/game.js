@@ -1828,7 +1828,8 @@ const IN_GAME_TUTORIAL_STEPS = [
     {
         id: 'welcome',
         title: '🎴 Welcome to Dungeon Scoundrel!',
-        text: 'You\'re about to enter a dark dungeon where every card counts. Let me show you the basics!',
+        text: 'Your Quest Begins!\n\nYou are a SCOUNDREL exploring dark medieval dungeons filled with monsters, treasures, and ancient relics.\n\n🎯 GOAL: Clear all cards from the dungeon deck without dying!',
+        visual: 'cards', // Show card examples
         highlight: null,
         position: 'center',
         buttonText: 'Let\'s Start!'
@@ -2061,9 +2062,35 @@ function showTutorialStep(step) {
         pointer-events: all;
     `;
     
+    // Create visual content if specified
+    let visualHTML = '';
+    if (step.visual === 'cards') {
+        visualHTML = `
+            <div style="display: flex; gap: 12px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
+                <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #8b4513; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center;">
+                    <div style="font-size: 2em;">K♠</div>
+                    <div style="font-size: 0.7em; color: #aaa; margin-top: 4px;">Monster</div>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #8b4513; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center;">
+                    <div style="font-size: 2em; color: #ff6b6b;">10♦</div>
+                    <div style="font-size: 0.7em; color: #aaa; margin-top: 4px;">Weapon</div>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #8b4513; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center;">
+                    <div style="font-size: 2em; color: #ff6b6b;">7♥</div>
+                    <div style="font-size: 0.7em; color: #aaa; margin-top: 4px;">Potion</div>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #ffd700; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);">
+                    <div style="font-size: 2em; color: #ffd700;">⚡</div>
+                    <div style="font-size: 0.7em; color: #ffd700; margin-top: 4px;">Special</div>
+                </div>
+            </div>
+        `;
+    }
+    
     modal.innerHTML = `
         <h2 style="color: #ffd700; margin-bottom: 15px; font-size: 1.5em;">${step.title}</h2>
         <p style="color: #e0e0e0; line-height: 1.6; white-space: pre-line; margin-bottom: 20px;">${step.text}</p>
+        ${visualHTML}
         <div style="display: flex; gap: 10px; justify-content: center;">
             ${inGameTutorialStep > 0 ? '<button class="btn btn-secondary" id="tutorialSkip">Skip Tutorial</button>' : ''}
             <button class="btn btn-primary" id="tutorialNext">${step.buttonText}</button>
