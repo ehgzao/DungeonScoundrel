@@ -50,6 +50,7 @@
     <link rel="stylesheet" href="src/css/animations.css">
     <link rel="stylesheet" href="src/css/scrollbar.css">
     <link rel="stylesheet" href="src/css/components/waitlist.css">
+    <link rel="stylesheet" href="src/css/components/buttons.css">
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
         (function(){
@@ -183,80 +184,15 @@
                 text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
             " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.6)'"><span style="font-size: 1.2em;">⚔️</span> Start Quest</button>
             
-            <button id="btnLearnToPlay" class="menu-btn-secondary" aria-label="Learn how to play the game" role="button" style="
-                font-family: 'Cinzel', serif;
-                font-size: clamp(0.85em, 2.2vw, 1em);
-                font-weight: 500;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                padding: 12px 18px;
-                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
-                border: 1px solid #5a4a38;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
-                color: #c9a961;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">📚</span> Learn to Play</button>
+            <button id="btnLearnToPlay" class="menu-btn-secondary" aria-label="Learn how to play the game" role="button"><span style="font-size: 1.1em;">📚</span> Learn to Play</button>
             
-            <button id="btnWelcomeLeaderboard" class="menu-btn-secondary" aria-label="View hall of fame leaderboard" role="button" style="
-                font-family: 'Cinzel', serif;
-                font-size: clamp(0.85em, 2.2vw, 1em);
-                font-weight: 500;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                padding: 12px 18px;
-                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
-                border: 1px solid #5a4a38;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
-                color: #c9a961;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🏆</span> Hall of Fame</button>
+            <button id="btnWelcomeLeaderboard" class="menu-btn-secondary" aria-label="View hall of fame leaderboard" role="button"><span style="font-size: 1.1em;">🏆</span> Hall of Fame</button>
             
-            <button id="btnWelcomeSoundboard" class="menu-btn-secondary" style="
-                font-family: 'Cinzel', serif;
-                font-size: clamp(0.85em, 2.2vw, 1em);
-                font-weight: 500;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                padding: 12px 18px;
-                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
-                border: 1px solid #5a4a38;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
-                color: #c9a961;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">🎵</span> Music Chamber</button>
+            <button id="btnWelcomeSoundboard" class="menu-btn-secondary"><span style="font-size: 1.1em;">🎵</span> Music Chamber</button>
             
-            <button id="btnCodex" class="menu-btn-secondary" aria-label="Open codex (upgrades, relics, achievements)" role="button" style="
-                font-family: 'Cinzel', serif;
-                font-size: clamp(0.85em, 2.2vw, 1em);
-                font-weight: 500;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                padding: 12px 18px;
-                background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
-                border: 1px solid #5a4a38;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
-                color: #c9a961;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">📚</span> Codex</button>
+            <button id="btnCodex" class="menu-btn-secondary" aria-label="Open codex (upgrades, relics, achievements)" role="button"><span style="font-size: 1.1em;">📚</span> Codex</button>
             
-            <button id="btnGoogleLogin" class="menu-btn-secondary" style="
-                font-family: 'Cinzel', serif;
-                font-size: clamp(0.85em, 2.2vw, 1em);
-                font-weight: 500;
-                text-transform: uppercase;
-                letter-spacing: 0.08em;
-                padding: 12px 18px;
-                background: linear-gradient(180deg, #4a3d2f 0%, #342820 100%);
-                border: 1px solid #5a4a38;
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
-                color: #c9a961;
-                cursor: pointer;
-                transition: all 0.2s ease;
-            " onmouseover="this.style.background='linear-gradient(180deg, #5a4d3f 0%, #443828 100%)'; this.style.borderColor='#6b5a48'" onmouseout="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#5a4a38'"><span style="font-size: 1.1em;">☁️</span> Cloud Sync</button>
+            <button id="btnGoogleLogin" class="menu-btn-secondary"><span style="font-size: 1.1em;">☁️</span> Cloud Sync</button>
         </div>
         
         <!-- Music Controls (Minimalist) -->
@@ -272,26 +208,8 @@
                 opacity: 0.8;
             ">Dark Awakening</div>
             <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-                <button id="btnWelcomeMusicToggle" title="Play/Pause Music" style="
-                    font-size: 1.3em;
-                    padding: 8px 16px;
-                    background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
-                    border: 1px solid #5a4a38;
-                    color: #c9a961;
-                    cursor: pointer;
-                    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
-                    transition: all 0.2s ease;
-                ">Play/Pause</button>
-                <input type="range" id="welcomeMusicVolume" min="0" max="100" value="40" title="Music Volume" style="
-                    width: 140px;
-                    height: 6px;
-                    cursor: pointer;
-                    -webkit-appearance: none;
-                    appearance: none;
-                    border-radius: 3px;
-                    outline: none;
-                    border: 1px solid #5a4a38;
-                ">
+                <button id="btnWelcomeMusicToggle" title="Play/Pause Music">⏯️</button>
+                <input type="range" id="welcomeMusicVolume" min="0" max="100" value="40" title="Music Volume">
             </div>
         </div>
         

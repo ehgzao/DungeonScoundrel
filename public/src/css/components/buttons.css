@@ -1,0 +1,92 @@
+/* ============================================
+   BUTTONS STYLES
+   Menu buttons and interactive elements
+   ============================================ */
+
+/* Menu Secondary Buttons (Hall of Fame, Music Chamber, Codex, Cloud Sync) */
+.menu-btn-secondary {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.85em, 2.2vw, 1em);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 12px 18px;
+    background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+    border: 1px solid #5a4a38;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
+    color: #c9a961;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+}
+
+.menu-btn-secondary:hover {
+    background: linear-gradient(180deg, #4a3d2f 0%, #342820 100%);
+    border-color: #6b5a48;
+    transform: translateY(-2px);
+}
+
+.menu-btn-secondary:active {
+    transform: translateY(0);
+}
+
+/* Cloud Sync Button (slightly different background) */
+#btnGoogleLogin {
+    background: linear-gradient(180deg, #4a3d2f 0%, #342820 100%);
+}
+
+#btnGoogleLogin:hover {
+    background: linear-gradient(180deg, #5a4d3f 0%, #443828 100%);
+}
+
+/* Welcome Music Toggle Button */
+#btnWelcomeMusicToggle {
+    font-size: 1.3em;
+    padding: 8px 16px;
+    background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+    border: 1px solid #5a4a38;
+    color: #c9a961;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease;
+    border-radius: 6px;
+}
+
+#btnWelcomeMusicToggle:hover {
+    background: linear-gradient(180deg, #4a3d2f 0%, #342820 100%);
+    border-color: #6b5a48;
+}
+
+/* Volume Slider */
+#welcomeMusicVolume {
+    width: 140px;
+    height: 6px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 3px;
+    outline: none;
+    border: 1px solid #5a4a38;
+    background: linear-gradient(90deg, #2a2318 0%, #5a4a38 100%);
+}
+
+#welcomeMusicVolume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #c9a961;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#welcomeMusicVolume::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #c9a961;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
