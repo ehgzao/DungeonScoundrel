@@ -2897,8 +2897,9 @@ function handleMonster(monster, index) {
         }
     }
     
-    // Decrement class ability counter
-    if (game.classAbilityActive && game.classAbilityCounter > 0) {
+    // Decrement class ability counter ONLY if attack was made
+    // Same logic as Power and Berserk: consumes when attacking, not when defending
+    if (attackWasMade && game.classAbilityActive && game.classAbilityCounter > 0) {
         game.classAbilityCounter--;
         if (game.classAbilityCounter === 0) {
             game.classAbilityActive = false;
