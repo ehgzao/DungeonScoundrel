@@ -5109,19 +5109,18 @@ window.filterAchievementsByTier = filterAchievementsByTier;
 console.log('[CODEX] System initialized successfully');
 
 // Expose other functions globally for HTML onclick handlers and modules
-// Note: createParticles is in helpers.js
-window.playSound = playSound;
-window.showTutorial = showTutorial;
-window.startInteractiveTutorial = startInteractiveTutorial;
-window.showMessage = showMessage;
-window.showDamageNumber = showDamageNumber;
-window.earnGold = earnGold;
-window.giveRandomRelic = giveRandomRelic;
-window.updateUI = updateUI;
-window.updateRelicsDisplay = updateRelicsDisplay;
-window.takeDamage = takeDamage;
-window.resetCombo = resetCombo;
-window.showCombo = showCombo;
+// Note: createParticles, showDamageNumber, showCombo are in helpers.js (or were removed)
+// Only expose functions that actually exist in this file
+if (typeof playSound !== 'undefined') window.playSound = playSound;
+if (typeof showTutorial !== 'undefined') window.showTutorial = showTutorial;
+if (typeof startInteractiveTutorial !== 'undefined') window.startInteractiveTutorial = startInteractiveTutorial;
+if (typeof showMessage !== 'undefined') window.showMessage = showMessage;
+if (typeof earnGold !== 'undefined') window.earnGold = earnGold;
+if (typeof giveRandomRelic !== 'undefined') window.giveRandomRelic = giveRandomRelic;
+if (typeof updateUI !== 'undefined') window.updateUI = updateUI;
+if (typeof updateRelicsDisplay !== 'undefined') window.updateRelicsDisplay = updateRelicsDisplay;
+if (typeof takeDamage !== 'undefined') window.takeDamage = takeDamage;
+if (typeof resetCombo !== 'undefined') window.resetCombo = resetCombo;
 
 console.log('[GAME] All functions exposed globally for modules');
 
