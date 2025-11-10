@@ -4192,6 +4192,14 @@ const UNLOCKS = [
 ];
 
 // Support Functions (Shop, Relics, etc.)
+// Helper: Take damage and reset combo (for events)
+function takeDamage(amount) {
+    game.health -= amount;
+    game.stats.totalDamage = (game.stats.totalDamage || 0) + amount;
+    resetCombo(); // Always reset combo when taking damage
+    showDamageNumber(amount, 'damage');
+}
+
 function earnGold(amount) {
     let mult = 1.0;
     

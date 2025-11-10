@@ -73,7 +73,7 @@ const EVENTS = [
         choices: [
             { text: '❤️ Sacrifice 5 HP for +2 weapon damage permanently (Gain Berserker Ring)',
                 effect: () => {
-                    if (game.health > 5) { game.health -= 5; game.relics.push({...RELICS.find(r => r.id === 'berserker_ring')}); showMessage('Gained Berserker Ring!', 'success'); updateRelicsDisplay(); } 
+                    if (game.health > 5) { takeDamage(5); game.relics.push({...RELICS.find(r => r.id === 'berserker_ring')}); showMessage('Gained Berserker Ring!', 'success'); updateRelicsDisplay(); } 
                     else { showMessage('Not enough HP!', 'danger'); }
                 }},
             { text: '💰 Offer 20 gold for +5 max HP',
@@ -121,13 +121,13 @@ const EVENTS = [
     { id: 'treasure', title: '🏺 Cursed Treasure', text: 'A golden chest glimmers before you... but dark energy surrounds it.',
         choices: [
             { text: '💰 Take the risk (+50 gold, -10 HP)', effect: () => { 
-                if (game.health > 10) { game.health -= 10; earnGold(50); showMessage('💰 +50 gold! But the curse hurts...', 'success'); }
+                if (game.health > 10) { takeDamage(10); earnGold(50); showMessage('💰 +50 gold! But the curse hurts...', 'success'); }
                 else { showMessage('⚠️ Too risky! You need more than 10 HP!', 'danger'); }
                 updateUI();
             }},
             { text: '🔮 Try to cleanse it (50% chance)', effect: () => {
                 if (Math.random() < 0.5) { earnGold(60); showMessage('✨ Cleansed! +60 gold with no curse!', 'success'); }
-                else { game.health -= 15; showMessage('💔 The curse backfired! -15 HP!', 'danger'); }
+                else { takeDamage(15); showMessage('💔 The curse backfired! -15 HP!', 'danger'); }
                 updateUI();
             }},
             { text: '🚪 Leave it alone', effect: () => { showMessage('Wisdom over greed.', 'info'); }}
@@ -209,14 +209,14 @@ const EVENTS = [
                     earnGold(40); 
                     showMessage('🤫 +40 gold stolen! The dragon sleeps...', 'success'); 
                 } else { 
-                    game.health -= 20; 
+                    takeDamage(20); 
                     showMessage('🐉 The dragon wakes! -20 HP!', 'danger'); 
                 }
                 updateUI();
             }},
             { text: '🗡️ Fight the dragon! (-15 HP, +80 gold)', effect: () => {
                 if (game.health > 15) {
-                    game.health -= 15;
+                    takeDamage(15);
                     earnGold(80);
                     showMessage('🐉 Victory! +80 gold!', 'success');
                 } else { showMessage('Too dangerous!', 'danger'); }
@@ -228,7 +228,7 @@ const EVENTS = [
         choices: [
             { text: '✨ Accept the challenge (Mirror match)', effect: () => {
                 const damage = Math.floor(game.health * 0.3);
-                game.health -= damage;
+                takeDamage(damage);
                 earnGold(30);
                 showMessage(`🪞 You defeat your reflection! -${damage} HP, +30 gold`, 'success');
                 updateUI();
@@ -255,7 +255,7 @@ const EVENTS = [
                     earnGold(50);
                     showMessage('👻 The ghost vanishes, dropping gold! +50', 'success');
                 } else {
-                    game.health -= 8;
+                    takeDamage(8);
                     showMessage('👻 The ghost counterattacks! -8 HP', 'danger');
                 }
                 updateUI();
@@ -269,7 +269,7 @@ const EVENTS = [
                 const result = outcomes[Math.floor(Math.random() * outcomes.length)];
                 if (result === 'good') { game.health += 8; showMessage('🌀 Portal leads to healing springs! +8 HP', 'success'); }
                 else if (result === 'great') { giveRandomRelic(); showMessage('🌀 You found a treasure room! Relic gained!', 'success'); }
-                else { game.health -= 5; showMessage('🌀 Ouch! Rough landing. -5 HP', 'danger'); }
+                else { takeDamage(5); showMessage('🌀 Ouch! Rough landing. -5 HP', 'danger'); }
                 updateUI();
             }},
             { text: '🔍 Study it first (Safer)', effect: () => {
@@ -283,7 +283,7 @@ const EVENTS = [
         choices: [
             { text: '❤️ Sacrifice 10 HP (Rare relic)', effect: () => {
                 if (game.health > 10) {
-                    game.health -= 10;
+                    takeDamage(10);
                     giveRandomRelic('rare');
                     showMessage('🕯️ The altar accepts! Rare relic gained!', 'success');
                 } else { showMessage('Not enough HP!', 'danger'); }
@@ -303,7 +303,7 @@ const EVENTS = [
     { id: 'trap', title: '⚠️ Hidden Trap Room', text: 'You trigger a trap! Spikes, arrows, or treasure?',
         choices: [
             { text: '🛡️ Defend (-5 HP, safe)', effect: () => {
-                game.health -= 5;
+                takeDamage(5);
                 showMessage('⚠️ You block most damage! -5 HP', 'warning');
                 updateUI();
             }},
@@ -312,7 +312,7 @@ const EVENTS = [
                     earnGold(25);
                     showMessage('🤸 Perfect dodge! Found hidden gold! +25', 'success');
                 } else {
-                    game.health -= 12;
+                    takeDamage(12);
                     showMessage('⚠️ Failed! Hit by trap! -12 HP', 'danger');
                 }
                 updateUI();
@@ -322,7 +322,7 @@ const EVENTS = [
                     giveRandomRelic();
                     showMessage('🎁 Trap was a ruse! Relic found!', 'success');
                 } else {
-                    game.health -= 15;
+                    takeDamage(15);
                     showMessage('💔 Trap activates! -15 HP', 'danger');
                 }
                 updateUI();
