@@ -1935,6 +1935,7 @@
         // ===== 50 ACHIEVEMENTS SYSTEM =====
         const ACHIEVEMENTS = [
             // 🥉 BRONZE (25) - Fáceis
+            { id: 'tutorial_master', tier: 'bronze', icon: '🎓', title: 'Tutorial Master', description: 'Complete the in-game tutorial', check: () => localStorage.getItem('dungeon_scoundrel_tutorial_completed') === 'true' },
             { id: 'first_blood', tier: 'bronze', icon: '⚔️', title: 'First Blood', description: 'Defeat your first monster', check: () => getLifetimeStat('monstersSlain') >= 1 },
             { id: 'baby_steps', tier: 'bronze', icon: '👶', title: 'Baby Steps', description: 'Clear your first room', check: () => getLifetimeStat('roomsCleared') >= 1 },
             { id: 'armed', tier: 'bronze', icon: '🗡️', title: 'Armed & Ready', description: 'Equip your first weapon', check: () => getLifetimeStat('weaponsEquipped') >= 1 },
@@ -1994,7 +1995,7 @@
             // 💎 PLATINUM (1) - Todas as outras
             { id: 'platinum', tier: 'platinum', icon: '💎', title: 'Master Scoundrel', description: 'Unlock ALL other achievements', check: () => {
                 const unlockedAchs = JSON.parse(localStorage.getItem('dungeon_scoundrel_achievements') || '[]');
-                return unlockedAchs.length >= 49; // All except platinum itself
+                return unlockedAchs.length >= 50; // All except platinum itself (51 total - 1 platinum)
             }}
         ];
 
@@ -4016,7 +4017,7 @@ class DarkAtmosphericMusic {
                 title: '⚔️ Weapons',
                 text: 'You need a weapon to fight monsters! Equip weapons (♦ Diamonds) from the cards you draw.',
                 highlight: '#equippedWeapon',
-                position: 'top',
+                position: 'bottom',
                 buttonText: 'Next'
             },
             {
@@ -4032,7 +4033,7 @@ class DarkAtmosphericMusic {
                 title: '🏆 Score System',
                 text: 'Your SCORE is the ultimate challenge! Points are earned by:\n\n• Defeating monsters\n• Finding relics\n• Clearing rooms quickly\n• Avoiding damage\n\nCompete for the highest score! Can you master the dungeon?',
                 highlight: '#mainScoreDisplay',
-                position: 'top',
+                position: 'bottom',
                 buttonText: 'I\'ll Do My Best!'
             },
             // === MEIO DA TELA (Middle elements) ===
@@ -4058,7 +4059,7 @@ class DarkAtmosphericMusic {
                 title: '🎲 Drawing Rooms',
                 text: 'Click "Draw Room" to draw 4 cards. Each room is a new challenge!',
                 highlight: '#btnDrawRoom',
-                position: 'bottom',
+                position: 'top',
                 buttonText: 'Draw My First Room!',
                 action: () => {
                     // Auto-click draw room
@@ -4070,7 +4071,7 @@ class DarkAtmosphericMusic {
                 title: '🃏 Understanding Cards',
                 text: '♠️♣️ = Monsters (damage you)\n♦️ = Weapons (equip to fight)\n♥️ = Potions (heal you)\n✨ = Special (powerful effects)',
                 highlight: '#room',
-                position: 'bottom',
+                position: 'top',
                 buttonText: 'I Understand!'
             },
             {
@@ -4324,6 +4325,10 @@ class DarkAtmosphericMusic {
             }
             
             localStorage.setItem('dungeon_scoundrel_tutorial_completed', 'true');
+            
+            // Unlock achievement
+            unlockAchievement('tutorial_master');
+            
             showMessage('🎓 Tutorial completed! Good luck in the dungeon!', 'success');
             console.log('[TUTORIAL] Tutorial completed!');
         }
