@@ -5133,6 +5133,8 @@ if (typeof updateUI !== 'undefined') window.updateUI = updateUI;
 if (typeof updateRelicsDisplay !== 'undefined') window.updateRelicsDisplay = updateRelicsDisplay;
 if (typeof takeDamage !== 'undefined') window.takeDamage = takeDamage;
 if (typeof resetCombo !== 'undefined') window.resetCombo = resetCombo;
+if (typeof buyItem !== 'undefined') window.buyItem = buyItem;
+if (typeof handleCardClick !== 'undefined') window.handleCardClick = handleCardClick;
 
 console.log('[GAME] All functions exposed globally for modules');
 
