@@ -2725,6 +2725,11 @@ function handleMonster(monster, index) {
     // If dodge is active, weapon is not used (even if perfect kill)
     let weaponWasUsed = !game.dodgeActive;
     
+    // Track if attack was made (for Power consumption)
+    // Power should consume when attacking (with or without weapon)
+    // But NOT when using defensive abilities (Dodge, Divine Blessing, etc)
+    let attackWasMade = !game.dodgeActive;
+    
     playSound('attack');
     
     // Dodge (dodgeMaster: avoids 2 attacks instead of 1)
@@ -2748,6 +2753,7 @@ function handleMonster(monster, index) {
     // Priest Divine Blessing - 15% chance to dodge
     else if (damage > 0 && game.classData && game.classData.passive.divineBlessing && Math.random() < 0.15) {
         weaponWasUsed = false; // Divine Blessing = no weapon used
+        attackWasMade = false; // Divine Blessing = no attack made
         playSound('special');
         addLog(`Divine Blessing! Dodged attack from ${monster.value}${monster.suit}!`, 'heal');
         showMessage('🕊️ Divine Blessing! No damage!', 'success');
@@ -2773,6 +2779,7 @@ function handleMonster(monster, index) {
         
         if (remaining <= 0) {
             weaponWasUsed = false; // Mirror blocked all = no weapon used
+            attackWasMade = false; // Mirror blocked all = no attack made
             game.combo++;
             game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
         } else {
@@ -2785,6 +2792,7 @@ function handleMonster(monster, index) {
         if (cloakRelic) {
             cloakRelic.usedThisRoom = true;
             weaponWasUsed = false; // Cloak = no weapon used
+            attackWasMade = false; // Cloak = no attack made
             showMessage(`🧥 Cloak protected you! No damage this turn!`, 'success');
             playSound('special');
             createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 30);
@@ -2864,8 +2872,10 @@ function handleMonster(monster, index) {
         }
     }
     
-    // Reset Power (doubleDamage) ONLY if weapon was used
-    if (weaponWasUsed && game.doubleDamage) {
+    // Reset Power (doubleDamage) ONLY if attack was made
+    // Power consumes when attacking (with or without weapon)
+    // But NOT when using defensive abilities (Dodge, Divine Blessing, Mirror, Cloak)
+    if (attackWasMade && game.doubleDamage) {
         game.doubleDamage = false;
     }
     
