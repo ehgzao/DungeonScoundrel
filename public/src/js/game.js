@@ -5081,6 +5081,10 @@ window.filterUpgradesByStatus = filterUpgradesByStatus;
 window.filterAchievementsByTier = filterAchievementsByTier;
 console.log('[CODEX] System initialized successfully');
 
+// Expose other functions globally for HTML onclick handlers
+window.playSound = playSound;
+window.showTutorial = showTutorial;
+window.startInteractiveTutorial = startInteractiveTutorial;
 
 // Check orientation on load and resize
 checkMobileOrientation();

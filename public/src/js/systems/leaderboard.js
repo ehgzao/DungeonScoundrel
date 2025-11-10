@@ -171,6 +171,9 @@ window.switchLeaderboardDifficulty = async function(difficulty) {
     await loadLeaderboardForDifficulty(difficulty);
 }
 
+// Expose functions globally for HTML onclick handlers
+window.showLeaderboard = showLeaderboard;
+window.loadLeaderboardForDifficulty = loadLeaderboardForDifficulty;
 
 // Log module load
 console.log('[LEADERBOARD] Firebase leaderboard system loaded');
