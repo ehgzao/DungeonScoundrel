@@ -26,4 +26,9 @@
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 12px;
+    
+    /* Footer Buttons */
+    --footer-btn-height: 32px;
+    --footer-btn-font-size: 0.75em;
+    --footer-btn-padding: 8px 12px;
 }

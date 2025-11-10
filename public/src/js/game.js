@@ -3994,6 +3994,7 @@ class DarkAtmosphericMusic {
                 position: 'center',
                 buttonText: 'Let\'s Start!'
             },
+            // === TOPO DA TELA (Top elements) ===
             {
                 id: 'health',
                 title: '❤️ Your Health',
@@ -4011,14 +4012,6 @@ class DarkAtmosphericMusic {
                 buttonText: 'Next'
             },
             {
-                id: 'merchant',
-                title: '🏺 Merchant',
-                text: 'Click the MERCHANT button to buy healing potions, weapons, and powerful relics. Spend your gold wisely to survive the dungeon!',
-                highlight: '#btnOpenShop',
-                position: 'left',
-                buttonText: 'Got it!'
-            },
-            {
                 id: 'weapon',
                 title: '⚔️ Weapons',
                 text: 'You need a weapon to fight monsters! Equip weapons (♦ Diamonds) from the cards you draw.',
@@ -4026,6 +4019,40 @@ class DarkAtmosphericMusic {
                 position: 'top',
                 buttonText: 'Next'
             },
+            {
+                id: 'codex',
+                title: '📖 Codex (Relics & Upgrades)',
+                text: 'Click the 📖 RELICS button at the top to see all relics and permanent upgrades!\n\nRelics give you powerful passive bonuses. Upgrades make you stronger for all future runs. Unlock them by completing challenges!',
+                highlight: '#btnTopRelics',
+                position: 'top',
+                buttonText: 'Got it!'
+            },
+            {
+                id: 'score',
+                title: '🏆 Score System',
+                text: 'Your SCORE is the ultimate challenge! Points are earned by:\n\n• Defeating monsters\n• Finding relics\n• Clearing rooms quickly\n• Avoiding damage\n\nCompete for the highest score! Can you master the dungeon?',
+                highlight: '#mainScoreDisplay',
+                position: 'top',
+                buttonText: 'I\'ll Do My Best!'
+            },
+            // === MEIO DA TELA (Middle elements) ===
+            {
+                id: 'merchant',
+                title: '🏺 Merchant',
+                text: 'Click the MERCHANT button to buy healing potions, weapons, and powerful relics. Spend your gold wisely to survive the dungeon!',
+                highlight: '#btnOpenShop',
+                position: 'top-right',
+                buttonText: 'Got it!'
+            },
+            {
+                id: 'held_card',
+                title: '✋ Held Cards (Unique Mechanic!)',
+                text: 'Right-click a card to HOLD it! This is a unique mechanic in Dungeon Scoundrel.\n\nHeld cards are saved for later and won\'t clutter your room. Perfect for saving strong weapons or potions for when you really need them!',
+                highlight: '#holdAreaContainer',
+                position: 'left',
+                buttonText: 'Great Tip!'
+            },
+            // === BAIXO DA TELA (Bottom elements - game start) ===
             {
                 id: 'draw',
                 title: '🎲 Drawing Rooms',
@@ -4054,30 +4081,7 @@ class DarkAtmosphericMusic {
                 position: 'top',
                 buttonText: 'Ready to Fight!'
             },
-            {
-                id: 'held_card',
-                title: '✋ Held Cards (Unique Mechanic!)',
-                text: 'Right-click a card to HOLD it! This is a unique mechanic in Dungeon Scoundrel.\n\nHeld cards are saved for later and won\'t clutter your room. Perfect for saving strong weapons or potions for when you really need them!',
-                highlight: '#holdAreaContainer',
-                position: 'left',
-                buttonText: 'Great Tip!'
-            },
-            {
-                id: 'codex',
-                title: '📖 Codex (Relics & Upgrades)',
-                text: 'Click the 📖 RELICS button at the top to see all relics and permanent upgrades!\n\nRelics give you powerful passive bonuses. Upgrades make you stronger for all future runs. Unlock them by completing challenges!',
-                highlight: '#btnTopRelics',
-                position: 'top',
-                buttonText: 'Got it!'
-            },
-            {
-                id: 'score',
-                title: '🏆 Score System',
-                text: 'Your SCORE is the ultimate challenge! Points are earned by:\n\n• Defeating monsters\n• Finding relics\n• Clearing rooms quickly\n• Avoiding damage\n\nCompete for the highest score! Can you master the dungeon?',
-                highlight: '#mainScoreDisplay',
-                position: 'top',
-                buttonText: 'I\'ll Do My Best!'
-            },
+            // === FINAL (Strategy & Finish) ===
             {
                 id: 'strategy',
                 title: '🧠 Strategy Tips',
@@ -4139,13 +4143,13 @@ class DarkAtmosphericMusic {
                 el.style.boxShadow = '';
             });
             
-            // ALWAYS create dark overlay (even without spotlight)
+            // ALWAYS create dark overlay (LIGHTER for better visibility)
             const darkOverlay = document.createElement('div');
             darkOverlay.className = 'tutorial-overlay';
             darkOverlay.style.cssText = `
                 position: fixed;
                 inset: 0;
-                background: rgba(0, 0, 0, 0.85);
+                background: rgba(0, 0, 0, 0.70);
                 z-index: 9998;
                 pointer-events: none;
             `;
@@ -4161,23 +4165,25 @@ class DarkAtmosphericMusic {
                     
                     // Only create spotlight if element is visible (has dimensions)
                     if (rect.width > 0 && rect.height > 0) {
-                        // Create spotlight with box-shadow cutout effect
+                        // Create spotlight with BRIGHT glow (no dark shadow)
                         const spotlight = document.createElement('div');
                         spotlight.className = 'tutorial-spotlight';
                         spotlight.style.cssText = `
                             position: fixed;
-                            top: ${rect.top - 8}px;
-                            left: ${rect.left - 8}px;
-                            width: ${rect.width + 16}px;
-                            height: ${rect.height + 16}px;
-                            border: 4px solid #ffd700;
-                            border-radius: 8px;
+                            top: ${rect.top - 10}px;
+                            left: ${rect.left - 10}px;
+                            width: ${rect.width + 20}px;
+                            height: ${rect.height + 20}px;
+                            border: 3px solid #ffd700;
+                            border-radius: 12px;
                             box-shadow: 
-                                0 0 20px rgba(255, 215, 0, 0.8),
-                                0 0 0 9999px rgba(0, 0, 0, 0.85);
+                                0 0 30px rgba(255, 215, 0, 0.9),
+                                0 0 60px rgba(255, 215, 0, 0.6),
+                                inset 0 0 20px rgba(255, 215, 0, 0.2);
                             z-index: 9999;
                             pointer-events: none;
                             animation: tutorialPulse 2s infinite;
+                            background: rgba(255, 215, 0, 0.05);
                         `;
                         document.body.appendChild(spotlight);
                         
@@ -4322,12 +4328,18 @@ class DarkAtmosphericMusic {
             console.log('[TUTORIAL] Tutorial completed!');
         }
 
-        // Add CSS animation for pulse
+        // Add CSS animation for pulse (BRIGHT glow, no dark shadow)
         const tutorialStyle = document.createElement('style');
         tutorialStyle.textContent = `
             @keyframes tutorialPulse {
-                0%, 100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 30px #ffd700; }
-                50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 50px #ffd700, 0 0 70px #ffd700; }
+                0%, 100% { 
+                    box-shadow: 0 0 30px rgba(255, 215, 0, 0.9), 0 0 60px rgba(255, 215, 0, 0.6), inset 0 0 20px rgba(255, 215, 0, 0.2);
+                    transform: scale(1);
+                }
+                50% { 
+                    box-shadow: 0 0 40px rgba(255, 215, 0, 1), 0 0 80px rgba(255, 215, 0, 0.8), inset 0 0 30px rgba(255, 215, 0, 0.3);
+                    transform: scale(1.02);
+                }
             }
         `;
         document.head.appendChild(tutorialStyle);

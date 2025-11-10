@@ -1,0 +1,187 @@
+/* ============================================
+   MEDIEVAL SCROLLBAR
+   Custom scrollbar for better UX on MacBook and all browsers
+   ============================================ */
+
+/* === WEBKIT BROWSERS (Chrome, Safari, Edge) === */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: linear-gradient(180deg, #1a1410 0%, #0d0a08 100%);
+    border: 1px solid rgba(90, 74, 56, 0.5);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #c9a961 0%, #a68948 100%);
+    border: 2px solid #5a4a38;
+    border-radius: 6px;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #d4af37 0%, #c9a961 100%);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 12px rgba(212, 175, 55, 0.5),
+        0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(180deg, #a68948 0%, #8b7239 100%);
+}
+
+/* === FIREFOX === */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #c9a961 #1a1410;
+}
+
+/* === MODAL SCROLLBARS (More visible) === */
+.modal-content::-webkit-scrollbar {
+    width: 14px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #0d0a08;
+    border: 2px solid #5a4a38;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ffd700 0%, #c9a961 100%);
+    border: 2px solid #8b7239;
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ffed4e 0%, #ffd700 100%);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+/* === GAME AREA SCROLLBARS === */
+.game-wrapper::-webkit-scrollbar,
+#gameWrapper::-webkit-scrollbar {
+    width: 10px;
+}
+
+.game-wrapper::-webkit-scrollbar-thumb,
+#gameWrapper::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #c9a961 0%, #a68948 100%);
+    border-radius: 5px;
+}
+
+/* === CODEX/RELICS SCROLLBAR === */
+#relicsGrid::-webkit-scrollbar,
+#upgradesGrid::-webkit-scrollbar {
+    width: 12px;
+}
+
+#relicsGrid::-webkit-scrollbar-thumb,
+#upgradesGrid::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #6bcf7f 0%, #4ea65e 100%);
+    border: 2px solid #3d8049;
+}
+
+#relicsGrid::-webkit-scrollbar-thumb:hover,
+#upgradesGrid::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #7fdf8f 0%, #6bcf7f 100%);
+    box-shadow: 0 0 10px rgba(107, 207, 127, 0.5);
+}
+
+/* === LEADERBOARD SCROLLBAR === */
+#leaderboardList::-webkit-scrollbar {
+    width: 10px;
+}
+
+#leaderboardList::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ffd700 0%, #c9a961 100%);
+    border-radius: 5px;
+}
+
+#leaderboardList::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ffed4e 0%, #ffd700 100%);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* === SHOP SCROLLBAR === */
+#shopContent::-webkit-scrollbar {
+    width: 12px;
+}
+
+#shopContent::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #4ecdc4 0%, #3da89f 100%);
+    border: 2px solid #2d7a73;
+}
+
+#shopContent::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #5eddd4 0%, #4ecdc4 100%);
+    box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+}
+
+/* === ALWAYS SHOW SCROLLBAR (Important for MacBook) === */
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+/* Force scrollbar to always be visible */
+body {
+    overflow-y: scroll;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* === SCROLLBAR INDICATORS === */
+/* Add subtle shadow to indicate scrollable content */
+.modal-content,
+#relicsGrid,
+#upgradesGrid,
+#leaderboardList,
+#shopContent {
+    position: relative;
+}
+
+/* Top shadow when scrolled */
+.modal-content::before,
+#relicsGrid::before,
+#upgradesGrid::before {
+    content: '';
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Bottom shadow when more content below */
+.modal-content::after,
+#relicsGrid::after,
+#upgradesGrid::after {
+    content: '';
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.3) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
