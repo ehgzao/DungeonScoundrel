@@ -1,0 +1,206 @@
+/* ============================================
+   MODAL COMPONENTS
+   Styles for all modal dialogs in the game
+   ============================================ */
+
+/* Mobile Waitlist Modal */
+#mobileWaitlistModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1410 0%, #2a1f1a 100%);
+    z-index: 10000;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+#mobileWaitlistModal.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.waitlist-container {
+    max-width: 500px;
+    width: 100%;
+    background: rgba(42, 31, 26, 0.95);
+    border: 2px solid #5a4a38;
+    border-radius: 12px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.waitlist-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+
+.waitlist-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8em;
+    color: #ffd700;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.waitlist-subtitle {
+    font-size: 1.1em;
+    color: #ddd;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.waitlist-form {
+    margin-top: 30px;
+}
+
+.waitlist-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(201,169,97,0.3);
+    border-radius: 6px;
+    color: #ddd;
+    font-size: 1em;
+    transition: all 0.3s;
+}
+
+.waitlist-input:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.waitlist-checkbox-group {
+    text-align: left;
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+}
+
+.waitlist-checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: #ddd;
+    font-size: 0.9em;
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+.waitlist-checkbox-label input[type="checkbox"] {
+    margin-top: 3px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #ffd700;
+}
+
+.waitlist-checkbox-label:last-child {
+    margin-bottom: 0;
+}
+
+.waitlist-submit {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #c9a961 0%, #a68948 100%);
+    border: none;
+    border-radius: 8px;
+    color: #1a1410;
+    font-family: 'Cinzel', serif;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.waitlist-submit:hover {
+    background: linear-gradient(135deg, #d4af37 0%, #c9a961 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(201,169,97,0.4);
+}
+
+.waitlist-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.waitlist-features {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.waitlist-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: #ddd;
+    font-size: 0.95em;
+}
+
+.waitlist-feature-icon {
+    font-size: 1.5em;
+    min-width: 30px;
+    text-align: center;
+}
+
+.waitlist-note {
+    margin-top: 20px;
+    font-size: 0.85em;
+    color: #999;
+    font-style: italic;
+}
+
+.waitlist-success {
+    animation: fadeIn 0.5s ease;
+}
+
+.waitlist-success-icon {
+    font-size: 5em;
+    margin-bottom: 20px;
+    animation: pulse 1s infinite;
+}
+
+.waitlist-success-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2em;
+    color: #6bcf7f;
+    margin-bottom: 15px;
+}
+
+.waitlist-success-message {
+    font-size: 1.1em;
+    color: #ddd;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.waitlist-close-btn {
+    padding: 12px 30px;
+    background: rgba(201,169,97,0.2);
+    border: 1px solid rgba(201,169,97,0.5);
+    border-radius: 6px;
+    color: #c9a961;
+    font-family: 'Cinzel', serif;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.waitlist-close-btn:hover {
+    background: rgba(201,169,97,0.3);
+    border-color: #c9a961;
+}
