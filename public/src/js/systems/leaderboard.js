@@ -4,10 +4,19 @@
    Extracted from game.js
    ============================================ */
 
+// Get Firebase globals from firebase-auth.js
+// These are set by firebase-auth.js when it loads
+const getFirebaseGlobals = () => ({
+    db: window.db,
+    appId: window.appId,
+    userId: window.userId
+});
+
 // ============================================
 // LEADERBOARD (FIREBASE)
 // ============================================
 async function submitScoreToLeaderboard(score, gameTime) {
+    const { db, appId, userId } = getFirebaseGlobals();
     if (!db || !appId || !userId) throw new Error("Firebase is not ready");
     
     const playerName = playerNameInput.value.trim() || 'Scoundrel';
@@ -36,9 +45,15 @@ async function submitScoreToLeaderboard(score, gameTime) {
 let currentLeaderboardDifficulty = 'easy';
 
 async function showLeaderboard(difficulty = 'easy') {
+    const leaderboardModal = document.getElementById('leaderboardModal');
+    if (!leaderboardModal) {
+        console.error('[LEADERBOARD] Modal element not found');
+        return;
+    }
+    
     leaderboardModal.classList.add('active');
-    trapFocus(leaderboardModal);
-    hapticFeedback('light');
+    if (typeof trapFocus !== 'undefined') trapFocus(leaderboardModal);
+    if (typeof hapticFeedback !== 'undefined') hapticFeedback('light');
     currentLeaderboardDifficulty = difficulty;
     
     // Show loading skeleton
@@ -63,6 +78,7 @@ async function loadLeaderboardForDifficulty(difficulty) {
         difficulty = 'easy'; // Default fallback
     }
     
+    const { db, appId } = getFirebaseGlobals();
     if (!db || !appId) {
         listDiv.innerHTML = `
             <div style="text-align: center; padding: 40px 20px;">
