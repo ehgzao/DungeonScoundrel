@@ -4841,7 +4841,7 @@ setTimeout(() => {
     game.settings.musicEnabled = true;
     music.switchContext('menu');
     music.start();
-    updateWelcomeMusicButton();
+    // updateWelcomeMusicButton() removed - function no longer exists
 }, 100);
 
 showWelcomeScreen(); // Show welcome screen on load
