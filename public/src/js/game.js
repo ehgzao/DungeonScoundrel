@@ -1,3 +1,42 @@
+// ============================================
+// DOM ELEMENTS
+// ============================================
+// Welcome Screen
+const welcomeScreen = document.getElementById('welcomeScreen');
+const gameWrapper = document.getElementById('gameWrapper');
+const btnWelcomeStart = document.getElementById('btnWelcomeStart');
+const btnLearnToPlay = document.getElementById('btnLearnToPlay');
+const btnWelcomeLeaderboard = document.getElementById('btnWelcomeLeaderboard');
+
+// Modals
+const newGameModal = document.getElementById('newGameModal');
+const learnToPlayModal = document.getElementById('learnToPlayModal');
+const shopModal = document.getElementById('shopModal');
+const eventModal = document.getElementById('eventModal');
+const giveUpModal = document.getElementById('giveUpModal');
+
+// Buttons
+const btnStartGameModal = document.getElementById('btnStartGameModal');
+const btnStartInteractiveTutorial = document.getElementById('btnStartInteractiveTutorial');
+const btnOpenRulesReference = document.getElementById('btnOpenRulesReference');
+const btnDrawRoom = document.getElementById('btnDrawRoom');
+const btnAvoidRoom = document.getElementById('btnAvoidRoom');
+const btnOpenShop = document.getElementById('btnOpenShop');
+const btnTopGiveUp = document.getElementById('btnTopGiveUp');
+const btnCancelGiveUp = document.getElementById('btnCancelGiveUp');
+const btnConfirmGiveUp = document.getElementById('btnConfirmGiveUp');
+
+// Inputs
+const playerNameInput = document.getElementById('playerNameInput');
+const difficultySelector = document.getElementById('difficultySelector');
+
+// Display Elements
+const healthEl = document.getElementById('health');
+const goldEl = document.getElementById('gold');
+const dungeonCountEl = document.getElementById('dungeonCount');
+const statRoomsEl = document.getElementById('statRooms');
+const mainScoreValue = document.getElementById('mainScoreValue');
+const equippedWeaponEl = document.getElementById('equippedWeapon');
 
 // ============================================
 // GAME STATE
