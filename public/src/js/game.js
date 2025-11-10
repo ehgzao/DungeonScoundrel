@@ -32,7 +32,7 @@ const difficultySelector = document.getElementById('difficultySelector');
 
 // Display Elements
 const healthEl = document.getElementById('health');
-const goldEl = document.getElementById('gold');
+const goldEl = document.getElementById('goldAmount');
 const dungeonCountEl = document.getElementById('dungeonCount');
 const statRoomsEl = document.getElementById('statRooms');
 const mainScoreValue = document.getElementById('mainScoreValue');

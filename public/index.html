@@ -1113,6 +1113,21 @@
         </div>
     </div>
     
+    <!-- Modal: Give Up Confirmation -->
+    <div class="modal-overlay" id="giveUpModal">
+        <div class="modal-content" style="max-width: 500px; text-align: center;">
+            <h2 style="color: #ff6b6b; margin-bottom: 20px;">⚠️ Give Up?</h2>
+            <p style="color: #ddd; font-size: 1.1em; line-height: 1.6; margin-bottom: 25px;">
+                Are you sure you want to give up this run?<br>
+                <span style="color: #aaa; font-size: 0.9em;">All progress in this dungeon will be lost.</span>
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="btn btn-secondary" id="btnCancelGiveUp" style="min-width: 120px;">Cancel</button>
+                <button class="btn btn-primary" id="btnConfirmGiveUp" style="min-width: 120px; background: linear-gradient(135deg, #ff6b6b, #ee5a6f);">Give Up</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Modal: Codex (Unified) -->
     <div class="modal-overlay" id="codexModal">
         <div class="modal-content" style="max-width: 900px;">
