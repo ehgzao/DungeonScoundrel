@@ -5109,10 +5109,10 @@ window.filterAchievementsByTier = filterAchievementsByTier;
 console.log('[CODEX] System initialized successfully');
 
 // Expose other functions globally for HTML onclick handlers and modules
+// Note: createParticles is in helpers.js
 window.playSound = playSound;
 window.showTutorial = showTutorial;
 window.startInteractiveTutorial = startInteractiveTutorial;
-window.createParticles = createParticles;
 window.showMessage = showMessage;
 window.showDamageNumber = showDamageNumber;
 window.earnGold = earnGold;

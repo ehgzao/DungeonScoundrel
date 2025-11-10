@@ -189,6 +189,58 @@ window.screenShake = function() {
     }, 300);
 };
 
+// Particles System with performance limit
+let activeParticles = 0;
+const MAX_PARTICLES = 150; // Prevent performance issues
+
+window.createParticles = function(x, y, color, count = 10) {
+    // Limit number of particles for performance
+    const actualCount = Math.min(count, MAX_PARTICLES - activeParticles);
+    if (actualCount <= 0) return; // Skip if at limit
+    
+    for (let i = 0; i < actualCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: ${Math.random() * 8 + 4}px;
+            height: ${Math.random() * 8 + 4}px;
+            background: ${color};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            animation: particleFade ${Math.random() * 0.5 + 0.5}s ease-out forwards;
+            transform: translate(${(Math.random() - 0.5) * 100}px, ${(Math.random() - 0.5) * 100}px);
+        `;
+        activeParticles++;
+        document.body.appendChild(particle);
+        setTimeout(() => {
+            particle.remove();
+            activeParticles--;
+        }, 1000);
+    }
+};
+
+// Add particle animation CSS if not exists
+if (!document.getElementById('particleStyles')) {
+    const style = document.createElement('style');
+    style.id = 'particleStyles';
+    style.textContent = `
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        @keyframes particleFade {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-100px) scale(0); }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 // Focus Management for modals
 function trapFocus(element) {
     const focusableElements = element.querySelectorAll(
