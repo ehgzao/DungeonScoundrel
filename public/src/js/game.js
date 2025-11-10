@@ -3737,43 +3737,37 @@ function updateUI() {
     statRoomsEl.textContent = game.stats.roomsCleared;
     mainScoreValue.textContent = game.score; // Update main score
     
-    // Show active class buff indicator
+    // Show active class buff indicator (OPTIMIZED: reuse element)
+    let buffIndicator = document.getElementById('classBuffIndicator');
     if (game.classAbilityActive && game.classAbilityCounter > 0) {
-        const buffIndicator = document.createElement('div');
-        buffIndicator.style.cssText = 'position: fixed; top: 120px; right: 20px; background: rgba(255, 215, 0, 0.9); color: #000; padding: 10px 15px; border-radius: 8px; font-weight: bold; z-index: 100; animation: pulse 1s infinite;';
-        buffIndicator.id = 'classBuffIndicator';
+        if (!buffIndicator) {
+            buffIndicator = document.createElement('div');
+            buffIndicator.style.cssText = 'position: fixed; top: 120px; right: 20px; background: rgba(255, 215, 0, 0.9); color: #000; padding: 10px 15px; border-radius: 8px; font-weight: bold; z-index: 100; animation: pulse 1s infinite;';
+            buffIndicator.id = 'classBuffIndicator';
+            document.body.appendChild(buffIndicator);
+        }
         
         if (game.playerClass === 'rogue') {
             buffIndicator.innerHTML = `🔪 SHADOW STRIKE<br><small>2x damage, combo safe!</small>`;
         } else if (game.playerClass === 'dancer') {
             buffIndicator.innerHTML = `💃 HEALING DANCE<br><small>+2 dmg (${game.classAbilityCounter} left)</small>`;
         }
-        
-        // Remove old indicator
-        const oldIndicator = document.getElementById('classBuffIndicator');
-        if (oldIndicator) oldIndicator.remove();
-        
-        document.body.appendChild(buffIndicator);
-    } else {
-        const oldIndicator = document.getElementById('classBuffIndicator');
-        if (oldIndicator) oldIndicator.remove();
+    } else if (buffIndicator) {
+        buffIndicator.remove();
     }
     
-    // Berserk stacks indicator
+    // Berserk stacks indicator (OPTIMIZED: reuse element)
+    let berserkIndicator = document.getElementById('berserkIndicator');
     if (game.berserkStacks > 0) {
-        const berserkIndicator = document.createElement('div');
-        berserkIndicator.style.cssText = 'position: fixed; top: 160px; right: 20px; background: linear-gradient(135deg, #ff6b6b, #ee5a52); color: #fff; padding: 10px 15px; border-radius: 8px; font-weight: bold; z-index: 100; box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4); animation: pulse 1s infinite;';
-        berserkIndicator.id = 'berserkIndicator';
+        if (!berserkIndicator) {
+            berserkIndicator = document.createElement('div');
+            berserkIndicator.style.cssText = 'position: fixed; top: 160px; right: 20px; background: linear-gradient(135deg, #ff6b6b, #ee5a52); color: #fff; padding: 10px 15px; border-radius: 8px; font-weight: bold; z-index: 100; box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4); animation: pulse 1s infinite;';
+            berserkIndicator.id = 'berserkIndicator';
+            document.body.appendChild(berserkIndicator);
+        }
         berserkIndicator.innerHTML = `🔥 BERSERK x${game.berserkStacks}<br><small>+5 damage per attack</small>`;
-        
-        // Remove old indicator
-        const oldBerserk = document.getElementById('berserkIndicator');
-        if (oldBerserk) oldBerserk.remove();
-        
-        document.body.appendChild(berserkIndicator);
-    } else {
-        const oldBerserk = document.getElementById('berserkIndicator');
-        if (oldBerserk) oldBerserk.remove();
+    } else if (berserkIndicator) {
+        berserkIndicator.remove();
     }
     
     // Undo button visibility (Easy/Normal only)
