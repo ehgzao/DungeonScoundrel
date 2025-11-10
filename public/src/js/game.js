@@ -1841,7 +1841,7 @@ const IN_GAME_TUTORIAL_STEPS = [
         id: 'welcome',
         title: '🎴 Welcome to Dungeon Scoundrel!',
         text: 'Your Quest Begins!\n\nYou are a SCOUNDREL exploring dark medieval dungeons filled with monsters, treasures, and ancient relics.\n\n🎯 GOAL: Clear all cards from the dungeon deck without dying!',
-        visual: 'cards', // Show card examples
+        visual: null, // No visual for in-game tutorial
         highlight: null,
         position: 'center',
         buttonText: 'Let\'s Start!'
