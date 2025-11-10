@@ -5108,10 +5108,22 @@ window.filterUpgradesByStatus = filterUpgradesByStatus;
 window.filterAchievementsByTier = filterAchievementsByTier;
 console.log('[CODEX] System initialized successfully');
 
-// Expose other functions globally for HTML onclick handlers
+// Expose other functions globally for HTML onclick handlers and modules
 window.playSound = playSound;
 window.showTutorial = showTutorial;
 window.startInteractiveTutorial = startInteractiveTutorial;
+window.createParticles = createParticles;
+window.showMessage = showMessage;
+window.showDamageNumber = showDamageNumber;
+window.earnGold = earnGold;
+window.giveRandomRelic = giveRandomRelic;
+window.updateUI = updateUI;
+window.updateRelicsDisplay = updateRelicsDisplay;
+window.takeDamage = takeDamage;
+window.resetCombo = resetCombo;
+window.showCombo = showCombo;
+
+console.log('[GAME] All functions exposed globally for modules');
 
 // Check orientation on load and resize
 checkMobileOrientation();

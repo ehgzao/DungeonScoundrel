@@ -98,8 +98,11 @@ function unlockAchievement(achievementId) {
         const ach = ACHIEVEMENTS.find(a => a.id === achievementId);
         if (ach) {
             showAchievementToast(ach);
-            playSound('special');
-            createParticles(window.innerWidth / 2, window.innerHeight / 3, '#ffd700', 50);
+            // Safe calls to functions that may not be loaded yet
+            if (typeof playSound !== 'undefined') playSound('special');
+            if (typeof createParticles !== 'undefined') {
+                createParticles(window.innerWidth / 2, window.innerHeight / 3, '#ffd700', 50);
+            }
         }
         
         updateAchievementCounter();
