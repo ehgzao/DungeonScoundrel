@@ -180,6 +180,15 @@ window.hideTooltip = function() {
     }
 };
 
+// Screen Shake Effect
+window.screenShake = function() {
+    const gameContainer = document.body;
+    gameContainer.style.animation = 'shake 0.3s';
+    setTimeout(() => {
+        gameContainer.style.animation = '';
+    }, 300);
+};
+
 // Focus Management for modals
 function trapFocus(element) {
     const focusableElements = element.querySelectorAll(
