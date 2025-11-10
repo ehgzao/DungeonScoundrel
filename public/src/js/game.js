@@ -2864,7 +2864,10 @@ function handleMonster(monster, index) {
         }
     }
     
-    if (game.doubleDamage) game.doubleDamage = false;
+    // Reset Power (doubleDamage) ONLY if weapon was used
+    if (weaponWasUsed && game.doubleDamage) {
+        game.doubleDamage = false;
+    }
     
     // Weapon durability system - ONLY if weapon was actually USED
     if (weaponWasUsed && game.equippedWeapon && game.equippedWeapon.durability < 999) {
