@@ -132,14 +132,14 @@
                         validationDiv.textContent = 'Failed to join waitlist. Please try again.';
                         validationDiv.style.display = 'block';
                         submitBtn.disabled = false;
-                        submitBtn.textContent = 'Ã¢Å“Â¨ Join Waitlist';
+                        submitBtn.textContent = '✨ Join Waitlist';
                     });
             } else {
                 console.error('EmailJS not loaded');
                 validationDiv.textContent = 'Email service not available. Please try again later.';
                 validationDiv.style.display = 'block';
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Ã¢Å“Â¨ Join Waitlist';
+                submitBtn.textContent = '✨ Join Waitlist';
             }
         };
         
