@@ -194,8 +194,8 @@ const EVENTS = [
                 if (game.gold >= 25 && game.equippedWeapon) {
                     game.gold -= 25;
                     game.equippedWeapon.maxDurability += 2;
-                    game.equippedWeapon.durability += 2;
-                    showMessage('⭐ Weapon enhanced!', 'success');
+                    game.equippedWeapon.durability = game.equippedWeapon.maxDurability; // Always set to max
+                    showMessage('⭐ Weapon enhanced and fully repaired!', 'success');
                     updateUI();
                 } else if (!game.equippedWeapon) { showMessage('No weapon!', 'warning'); }
                 else { showMessage('Not enough gold!', 'danger'); }
