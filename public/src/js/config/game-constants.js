@@ -104,7 +104,26 @@ export const EVENT_CONFIG = {
     /** Compass relic event chance bonus */
     COMPASS_BONUS: 0.10,
     /** Event trigger delay (ms) */
-    TRIGGER_DELAY: 800
+    TRIGGER_DELAY: 800,
+    /** Event chance by difficulty */
+    CHANCE_EASY: 0.40,
+    CHANCE_NORMAL: 0.30,
+    CHANCE_HARD: 0.20,
+    CHANCE_ENDLESS: 0.25,
+    /** Dancer event chance bonus */
+    DANCER_BONUS: 0.15
+};
+
+// ============================================
+// LUCKY DRAW (Special Card)
+// ============================================
+export const LUCKY_DRAW = {
+    /** Chance for potion */
+    POTION_CHANCE: 0.40,
+    /** Chance for weapon (cumulative) */
+    WEAPON_CHANCE: 0.80,
+    /** Remaining is monster chance */
+    MONSTER_CHANCE: 1.0
 };
 
 // ============================================

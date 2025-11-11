@@ -25,7 +25,8 @@ import {
     LOG_TYPES,
     MESSAGE_TYPES,
     SPECIAL_CARDS,
-    COMBAT
+    COMBAT,
+    LUCKY_DRAW
 } from './config/game-constants.js';
 
 // ============================================
@@ -914,11 +915,11 @@ const specialCards = [
             const roll = Math.random();
             
             // 40% chance for potion
-            if (roll < 0.40 && potions.length > 0) {
+            if (roll < LUCKY_DRAW.POTION_CHANCE && potions.length > 0) {
                 selectedCard = potions[Math.floor(Math.random() * potions.length)];
             }
             // 40% chance for weapon (cumulative 0.40-0.80)
-            else if (roll < 0.80 && weapons.length > 0) {
+            else if (roll < LUCKY_DRAW.WEAPON_CHANCE && weapons.length > 0) {
                 selectedCard = weapons[Math.floor(Math.random() * weapons.length)];
             }
             // 20% chance for monster OR fallback if preferred types unavailable
@@ -3062,72 +3063,6 @@ function handleMonster(monster, index) {
             resetCombo();
         }
     }
-    // Cloak Relic - First damage each room is 0 (PRIORITY)
-    else if (damage > 0) {
-        let cloakRelic = game.relics.find(r => r.id === 'cloak' && !r.usedThisRoom);
-        if (cloakRelic) {
-            cloakRelic.usedThisRoom = true;
-            weaponWasUsed = false; // Cloak = no weapon used
-            attackWasMade = false; // Cloak = no attack made
-            showMessage(`🧥 Cloak protected you! No damage this turn!`, 'success');
-            playSound('special');
-            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 30);
-            // Perfect dodge - keep combo!
-            game.combo++;
-            game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
-            if (game.combo >= COMBO.COMBO_MASTER_START + 1) {
-                showCombo(game.combo);
-            }
-        } else {
-            // Tank Relic Shield - Reduces damage by 1
-            let shieldRelic = game.relics.find(r => r.id === 'tank' && !r.shieldUsed);
-            if (shieldRelic) {
-                shieldRelic.shieldUsed = true;
-                const actualDamage = Math.max(0, damage - 1);
-                showMessage(`🛡️ Shield absorbed 1 damage! Received ${actualDamage}.`, 'success');
-                if (actualDamage > 0) {
-                    game.health -= actualDamage;
-                    game.stats.totalDamage += actualDamage;
-                    showDamageNumber(actualDamage, 'damage');
-                    playSound('damage');
-                    resetCombo();
-                } else {
-                    // Shield absorbed all damage - keep combo
-                    game.combo++;
-                    game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
-                }
-            } else {
-                // Normal Damage
-                console.log('[COMBO] Taking damage:', { 
-                    damage, 
-                    comboBefore: game.combo, 
-                    hasWeapon: !!game.equippedWeapon,
-                    effectiveWeapon,
-                    rogueDoubleActive 
-                });
-                
-                game.health -= damage;
-                game.stats.totalDamage += damage;
-                
-                // Rogue Shadow Strike: don't break combo even when taking damage
-                const rogueComboSafe = (game.playerClass === 'rogue' && rogueDoubleActive);
-                if (!rogueComboSafe) {
-                    console.log('[COMBO] Resetting combo (took damage)');
-                    resetCombo(); // Reset combo (unless Rogue ability is active)
-                } else {
-                    console.log('[COMBO] Rogue Shadow Strike active - combo safe');
-                }
-                
-                console.log('[COMBO] After damage:', { comboAfter: game.combo });
-                
-                showDamageNumber(damage, 'damage');
-                playSound('damage');
-                screenShake();
-                addLog(`Took ${damage} damage from ${monster.value}${monster.suit}`, 'damage');
-                showMessage(`⚔️ Took ${damage} damage!`, 'danger');
-            }
-        }
-    } 
     // Perfect Kill
     else {
         game.combo++;
@@ -3480,12 +3415,12 @@ function checkGameState() {
         // Event Chance (difficulty-based)
         // Only trigger if no event was triggered this room yet
         const eventChanceByDifficulty = {
-            easy: 0.40,      // 40% chance
-            normal: 0.30,    // 30% chance
-            hard: 0.20,      // 20% chance
-            endless: 0.25    // 25% chance
+            easy: EVENT_CONFIG.CHANCE_EASY,
+            normal: EVENT_CONFIG.CHANCE_NORMAL,
+            hard: EVENT_CONFIG.CHANCE_HARD,
+            endless: EVENT_CONFIG.CHANCE_ENDLESS
         };
-        let eventChance = eventChanceByDifficulty[game.difficulty] || 0.30;
+        let eventChance = eventChanceByDifficulty[game.difficulty] || EVENT_CONFIG.CHANCE_NORMAL;
         
         // Dancer: +15% event chance (luck passive)
         if (game.classData && game.classData.passive.eventChanceBonus) {
