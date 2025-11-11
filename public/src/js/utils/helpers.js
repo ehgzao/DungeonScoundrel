@@ -523,24 +523,7 @@ const tutorialSteps = [
                 <div style="background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; margin: 20px 0;">
                     <p style="font-size: 1.2em; color: #6bcf7f;"><strong>🎯 Goal:</strong> Clear all 50 cards from the dungeon deck without dying!</p>
                 </div>
-                <div style="display: flex; gap: 12px; justify-content: center; margin: 30px 0; flex-wrap: wrap;">
-                    <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #8b4513; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">
-                        <div style="font-size: 2em;">K♠</div>
-                        <div style="font-size: 0.7em; color: #aaa; margin-top: 4px;">Monster</div>
-                    </div>
-                    <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #8b4513; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">
-                        <div style="font-size: 2em; color: #ff6b6b;">10♦</div>
-                        <div style="font-size: 0.7em; color: #aaa; margin-top: 4px;">Weapon</div>
-                    </div>
-                    <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #8b4513; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.5);">
-                        <div style="font-size: 2em; color: #ff6b6b;">7♥</div>
-                        <div style="font-size: 0.7em; color: #aaa; margin-top: 4px;">Potion</div>
-                    </div>
-                    <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #ffd700; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);">
-                        <div style="font-size: 2em; color: #ffd700;">⚡</div>
-                        <div style="font-size: 0.7em; color: #ffd700; margin-top: 4px;">Special</div>
-                    </div>
-                </div>
+                <div id="tutorialCardExamples" style="display: flex; gap: 15px; justify-content: center; margin: 30px 0; flex-wrap: wrap;"></div>
             </div>
         `
     },
@@ -778,6 +761,34 @@ function startInteractiveTutorial() {
     updateTutorialStep();
     const modal = document.getElementById('interactiveTutorialModal');
     if (modal) modal.classList.add('active');
+    
+    // Render real game cards after modal is shown
+    setTimeout(() => {
+        const cardsContainer = document.getElementById('tutorialCardExamples');
+        if (cardsContainer && typeof window.createMiniCardElement === 'function') {
+            cardsContainer.innerHTML = '';
+            const exampleCards = [
+                { suit: '♠', value: 'K' },  // Monster
+                { suit: '♦', value: '10' }, // Weapon
+                { suit: '♥', value: '7' },  // Potion
+                { suit: '🃏', value: 'Special' } // Special
+            ];
+            
+            exampleCards.forEach(card => {
+                try {
+                    const cardEl = window.createMiniCardElement(card);
+                    if (cardEl) {
+                        cardEl.style.transform = 'scale(1.2)';
+                        cardEl.style.pointerEvents = 'none';
+                        cardsContainer.appendChild(cardEl);
+                    }
+                } catch (e) {
+                    console.warn('[TUTORIAL] Could not create card:', e);
+                }
+            });
+        }
+    }, 100);
+    
     console.log('[TUTORIAL] Tutorial modal opened. Total steps:', tutorialSteps.length);
 }
 

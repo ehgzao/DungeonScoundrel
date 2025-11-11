@@ -141,6 +141,38 @@ btnLearnToPlay.onclick = () => {
 btnWelcomeLeaderboard.onclick = showLeaderboard;
 // btnWelcomeUnlocks.onclick removed - now handled by codex.js
 
+// Music Chamber Hook
+const btnWelcomeSoundboard = document.getElementById('btnWelcomeSoundboard');
+if (btnWelcomeSoundboard) {
+    btnWelcomeSoundboard.onclick = () => {
+        const soundboardModal = document.getElementById('soundboardModal');
+        if (soundboardModal) soundboardModal.classList.add('active');
+    };
+}
+
+// Music Player Controls
+const btnWelcomeMusicToggle = document.getElementById('btnWelcomeMusicToggle');
+const welcomeMusicVolume = document.getElementById('welcomeMusicVolume');
+
+if (btnWelcomeMusicToggle && typeof music !== 'undefined') {
+    btnWelcomeMusicToggle.onclick = () => {
+        if (music.isPlaying) {
+            music.stop();
+            btnWelcomeMusicToggle.textContent = '▶️';
+        } else {
+            music.start();
+            btnWelcomeMusicToggle.textContent = '⏸️';
+        }
+    };
+}
+
+if (welcomeMusicVolume && typeof music !== 'undefined') {
+    welcomeMusicVolume.oninput = (e) => {
+        const volume = parseInt(e.target.value) / 100;
+        if (music.masterGain) music.masterGain.gain.value = volume * 0.7;
+    };
+}
+
 // Learn to Play Modal Hooks
 btnStartInteractiveTutorial.onclick = () => {
     console.log('[TUTORIAL] Start Interactive Tutorial button clicked');
@@ -5140,6 +5172,7 @@ if (typeof handleCardClick !== 'undefined') window.handleCardClick = handleCardC
 window.game = game;
 window.playerNameInput = playerNameInput;
 window.permanentUnlocks = permanentUnlocks;
+window.createMiniCardElement = createMiniCardElement; // For tutorial
 
 console.log('[GAME] All functions and state exposed globally for modules');
 
