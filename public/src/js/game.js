@@ -3258,10 +3258,12 @@ function handleWeapon(weapon, index) {
     // Check for Durable Weapons relic
     if (game.relics.some(r => r.id === 'durable_weapons')) {
         console.log('[WEAPON] 🛠️ Eternal Forge active - Setting infinite durability');
+        console.log('[WEAPON] Current relics:', game.relics.map(r => r.name).join(', '));
         game.equippedWeapon.maxDurability = 999; // Infinite durability
         game.equippedWeapon.durability = 999;
     } else {
         console.log('[WEAPON] Durability set:', game.equippedWeapon.durability, '/', game.equippedWeapon.maxDurability);
+        console.log('[WEAPON] Current relics:', game.relics.map(r => r.name).join(', ') || 'None');
     }
     
     playSound('equip');
