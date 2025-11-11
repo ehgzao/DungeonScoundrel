@@ -407,7 +407,7 @@ const SHOP_ITEMS = [
                 updateUI();
                 return true;
             } else if (!game.equippedWeapon) {
-                showMessage('No weapon equipped!', 'danger');
+                showMessage('⚠️ Equip a weapon first!', 'danger');
                 return false;
             } else {
                 // Weapon at full durability: increase max durability by 1!

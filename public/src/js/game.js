@@ -2304,10 +2304,38 @@ function showTutorialStep(step) {
             
             document.getElementById('confirmSkip').onclick = () => {
                 confirmModal.remove();
-                completeTutorial();
+                skipTutorial(); // Use skipTutorial instead of completeTutorial
             };
         };
     }
+}
+
+function skipTutorial() {
+    inGameTutorialActive = false;
+    
+    // Cleanup ALL tutorial elements
+    document.querySelectorAll('.tutorial-overlay, .tutorial-spotlight, .tutorial-modal').forEach(el => {
+        el.remove();
+    });
+    
+    // Restore highlighted elements
+    document.querySelectorAll('.tutorial-highlighted').forEach(el => {
+        el.classList.remove('tutorial-highlighted');
+        el.style.zIndex = '';
+        el.style.position = '';
+    });
+    
+    // Resume timer
+    if (window.resumeGameTimer) {
+        window.resumeGameTimer();
+        console.log('[TUTORIAL] Timer resumed (skipped)');
+    }
+    
+    localStorage.setItem('dungeon_scoundrel_tutorial_completed', 'true');
+    
+    // NO ACHIEVEMENT when skipping!
+    showMessage('Tutorial skipped. Good luck!', 'info');
+    console.log('[TUTORIAL] Tutorial skipped (no achievement)');
 }
 
 function completeTutorial() {
@@ -2333,11 +2361,11 @@ function completeTutorial() {
     
     localStorage.setItem('dungeon_scoundrel_tutorial_completed', 'true');
     
-    // Unlock achievement
+    // Unlock achievement ONLY when completing (not skipping)
     unlockAchievement('tutorial_master');
     
     showMessage('🎓 Tutorial completed! Good luck in the dungeon!', 'success');
-    console.log('[TUTORIAL] Tutorial completed!');
+    console.log('[TUTORIAL] Tutorial completed with achievement!');
 }
 
 // Add CSS animation for pulse (BRIGHT glow, no dark shadow)
@@ -3294,8 +3322,17 @@ function handlePotion(potion, index) {
 }
 
 function checkGameState() {
+    console.log('[CHECKGAMESTATE] Called:', { 
+        roomLength: game.room.length, 
+        gameOver: game.gameOver,
+        btnDrawDisabled: btnDrawRoom.disabled,
+        btnAvoidDisabled: btnAvoidRoom.disabled
+    });
+    
     // Room Cleared?
     if (game.room.length === 0 && !game.gameOver) {
+        console.log('[CHECKGAMESTATE] ✅ Room cleared! Enabling buttons...');
+        
         game.potionsUsed = 0;
         game.stats.roomsCleared++;
         
@@ -3329,6 +3366,11 @@ function checkGameState() {
         
         btnDrawRoom.disabled = false;
         btnAvoidRoom.disabled = game.lastActionWasAvoid;
+        
+        console.log('[CHECKGAMESTATE] Buttons enabled:', { 
+            btnDrawDisabled: btnDrawRoom.disabled,
+            btnAvoidDisabled: btnAvoidRoom.disabled
+        });
         
         // Room Clear Relics (optimized single iteration)
         let goldPerRoom = 0;
