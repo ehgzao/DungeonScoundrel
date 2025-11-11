@@ -421,5 +421,10 @@ const SHOP_ITEMS = [
     }
 ];
 
+// Expose globally for codex.js
+window.RELICS = RELICS;
+window.SHOP_ITEMS = SHOP_ITEMS;
+window.EVENTS = EVENTS;
+
 // Log module load
 console.log('[GAME DATA] Relics & Shop data loaded. Relics:', RELICS.length, 'Shop items:', SHOP_ITEMS.length);

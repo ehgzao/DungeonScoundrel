@@ -5036,10 +5036,11 @@ if (typeof resetCombo !== 'undefined') window.resetCombo = resetCombo;
 if (typeof buyItem !== 'undefined') window.buyItem = buyItem;
 if (typeof handleCardClick !== 'undefined') window.handleCardClick = handleCardClick;
 
-// Expose game state, inputs and unlocks for modules (leaderboard.js, stats.js)
+// Expose game state, inputs and unlocks for modules (leaderboard.js, stats.js, codex.js)
 window.game = game;
 window.playerNameInput = playerNameInput;
 window.permanentUnlocks = permanentUnlocks;
+window.UNLOCKS = UNLOCKS; // For codex.js
 window.createCardElement = createCardElement; // For tutorial - FULL styled cards
 window.createMiniCardElement = createMiniCardElement; // For tutorial - mini cards
 

@@ -208,5 +208,9 @@ function updateAchievementsDisplay() {
     }).join('');
 }
 
+// Expose globally for codex.js
+window.ACHIEVEMENTS = ACHIEVEMENTS;
+window.loadAchievements = loadAchievements;
+
 // Log module load
 console.log('[ACHIEVEMENTS] 50 Achievements system loaded');

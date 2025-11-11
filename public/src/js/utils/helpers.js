@@ -854,6 +854,8 @@ if (btnSkip) {
 
 // Expose startInteractiveTutorial globally for HTML onclick
 window.startInteractiveTutorial = startInteractiveTutorial;
+window.trapFocus = trapFocus; // For codex.js
+window.hapticFeedback = hapticFeedback; // For codex.js
 
 // Log module load
 console.log('[HELPERS] Storage & Utility helpers loaded');
