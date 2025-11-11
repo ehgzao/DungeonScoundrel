@@ -706,7 +706,7 @@ document.addEventListener('keydown', (e) => {
         const allowedKeys = [' ', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Escape'];
         
         // ESC during tutorial - Show skip confirmation
-        if (e.key === 'Escape') {
+        if (e.key === KEYS.ESCAPE) {
             e.preventDefault();
             const skipBtn = document.getElementById('tutorialSkip');
             if (skipBtn) {
@@ -728,10 +728,10 @@ document.addEventListener('keydown', (e) => {
     
     // Ignore if modal is open (except ESC)
     const modalOpen = document.querySelector('.modal-overlay.active');
-    if (modalOpen && e.key !== 'Escape') return;
+    if (modalOpen && e.key !== KEYS.ESCAPE) return;
     
     // ESC - Close modals
-    if (e.key === 'Escape') {
+    if (e.key === KEYS.ESCAPE) {
         const modal = document.querySelector('.modal-overlay.active');
         if (modal) {
             modal.classList.remove('active');
@@ -745,28 +745,28 @@ document.addEventListener('keydown', (e) => {
     
     switch(e.key.toLowerCase()) {
         case ' ': // Space - Draw Room
-        case 'd':
+        case KEYS.DRAW:
             e.preventDefault();
             if (!btnDrawRoom.disabled) {
                 btnDrawRoom.click();
             }
             break;
             
-        case 'a': // A - Avoid Room
+        case KEYS.AVOID: // A - Avoid Room
             e.preventDefault();
             if (!btnAvoidRoom.disabled) {
                 btnAvoidRoom.click();
             }
             break;
             
-        case 'q': // Q - Class Ability
+        case KEYS.ABILITY: // Q - Class Ability
             e.preventDefault();
             if (btnClassAbility && !btnClassAbility.disabled) {
                 btnClassAbility.click();
             }
             break;
             
-        case 'u': // U - Undo
+        case KEYS.UNDO: // U - Undo
             e.preventDefault();
             const btnUndoKey = document.getElementById('btnUndo');
             if (btnUndoKey && !btnUndoKey.disabled) {
@@ -774,18 +774,18 @@ document.addEventListener('keydown', (e) => {
             }
             break;
             
-        case 's': // S - Shop
+        case KEYS.SHOP: // S - Shop
             e.preventDefault();
             if (btnOpenShop && !btnOpenShop.disabled) {
                 btnOpenShop.click();
             }
             break;
             
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
+        case KEYS.CARD_1:
+        case KEYS.CARD_2:
+        case KEYS.CARD_3:
+        case KEYS.CARD_4:
+        case KEYS.CARD_5:
             e.preventDefault();
             const cardIndex = parseInt(e.key) - 1;
             const cards = bottomBar.querySelectorAll('.card');
