@@ -3257,6 +3257,7 @@ function handleWeapon(weapon, index) {
     }
     
     game.equippedWeapon.durability = game.equippedWeapon.maxDurability;
+    console.log('[WEAPON] ⚠️ DURABILITY SET:', game.equippedWeapon.durability, '/', game.equippedWeapon.maxDurability, '| STACK:', new Error().stack.split('\n')[2]);
     
     // Master Smith: +1 damage when equipping weapon
     if (game.relics.some(r => r.id === 'master_smith')) {
