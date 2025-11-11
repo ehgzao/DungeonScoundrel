@@ -4157,6 +4157,7 @@ function updateUI() {
             const cardEl = createCardElement(currentCard);
             cardEl.classList.add('held');
             cardEl.onclick = () => {
+                console.log('[HOLD] Using held card (multi-hold):', game.heldCard[game.heldCardIndex]);
                 const selectedCard = game.heldCard.splice(game.heldCardIndex, 1)[0];
                 if (game.heldCard.length === 0) {
                     game.heldCard = null;
@@ -4166,10 +4167,18 @@ function updateUI() {
                     if (game.heldCardIndex >= game.heldCard.length) game.heldCardIndex = 0;
                 }
                 game.room.unshift(selectedCard);
+                console.log('[HOLD] Card added to room, room.length:', game.room.length);
                 updateUI();
                 setTimeout(() => {
                     const firstCardEl = bottomBar.querySelector('.card');
-                    if (firstCardEl) firstCardEl.click();
+                    console.log('[HOLD] Attempting to click card:', firstCardEl);
+                    if (firstCardEl) {
+                        firstCardEl.click();
+                    } else {
+                        console.error('[HOLD] ERROR: Card not found in bottomBar!');
+                        // Fallback: manually call handleCardClick
+                        handleCardClick(selectedCard, 0);
+                    }
                 }, 100);
             };
             holdAreaContainer.appendChild(cardEl);
@@ -4184,17 +4193,27 @@ function updateUI() {
                     // Use held card (works for both single and array)
                     let selectedCard;
                     if (Array.isArray(game.heldCard)) {
+                        console.log('[HOLD] Using held card (array):', game.heldCard[idx]);
                         selectedCard = game.heldCard.splice(idx, 1)[0];
                         if (game.heldCard.length === 0) game.heldCard = null;
                     } else {
+                        console.log('[HOLD] Using held card (single):', game.heldCard);
                         selectedCard = game.heldCard;
                         game.heldCard = null;
                     }
                     game.room.unshift(selectedCard);
+                    console.log('[HOLD] Card added to room, room.length:', game.room.length);
                     updateUI();
                     setTimeout(() => {
                         const firstCardEl = bottomBar.querySelector('.card');
-                        if (firstCardEl) firstCardEl.click();
+                        console.log('[HOLD] Attempting to click card:', firstCardEl);
+                        if (firstCardEl) {
+                            firstCardEl.click();
+                        } else {
+                            console.error('[HOLD] ERROR: Card not found in bottomBar!');
+                            // Fallback: manually call handleCardClick
+                            handleCardClick(selectedCard, 0);
+                        }
                     }, 100);
                 };
                 holdAreaContainer.appendChild(cardEl);
