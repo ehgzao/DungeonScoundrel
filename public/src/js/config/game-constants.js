@@ -94,7 +94,7 @@ export const DIFFICULTY = {
 // ============================================
 // EVENTS & RANDOM
 // ============================================
-export const EVENTS = {
+export const EVENT_CONFIG = {
     /** Base event chance (percentage) */
     BASE_CHANCE: 0.15,
     /** Easy mode event chance reduction */

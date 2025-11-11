@@ -8,7 +8,7 @@ import {
     COMBO,
     BOSS,
     DIFFICULTY,
-    EVENTS,
+    EVENT_CONFIG,
     POTIONS,
     RELICS,
     ACHIEVEMENTS,
