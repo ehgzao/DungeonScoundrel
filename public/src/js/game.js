@@ -3063,8 +3063,8 @@ function handleMonster(monster, index) {
             resetCombo();
         }
     }
-    // Perfect Kill
-    else {
+    // Perfect Kill (ONLY if weapon is equipped!)
+    else if (game.equippedWeapon && damage <= 0) {
         game.combo++;
         game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
         if (game.combo >= COMBO.COMBO_MASTER_START + 1) {
@@ -3100,6 +3100,17 @@ function handleMonster(monster, index) {
         } else {
             showMessage(`⚔️ Perfect kill! ${game.combo}x COMBO!`, 'success');
         }
+    }
+    // NO WEAPON: Take damage and reset combo
+    else {
+        game.health -= damage;
+        game.stats.totalDamage += damage;
+        showDamageNumber(damage, 'damage');
+        playSound('damage');
+        addLog(`No weapon! Took ${damage} damage from ${monster.value}${monster.suit}`, 'danger');
+        showMessage(`⚠️ NO WEAPON! -${damage} HP`, 'danger');
+        screenShake();
+        resetCombo();
     }
     
     // Reset Power (doubleDamage) ONLY if attack was made
