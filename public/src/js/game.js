@@ -61,9 +61,6 @@ import {
     getRelicBonus
 } from './modules/game-relics.js';
 
-// Import game constants
-import { RELIC_CONFIG } from './config/game-constants.js';
-
 // ============================================
 // DOM ELEMENTS
 // ============================================
