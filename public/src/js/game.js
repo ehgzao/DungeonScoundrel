@@ -24,7 +24,8 @@ import {
     SUITS,
     LOG_TYPES,
     MESSAGE_TYPES,
-    SPECIAL_CARDS
+    SPECIAL_CARDS,
+    COMBAT
 } from './config/game-constants.js';
 
 // ============================================
@@ -1471,7 +1472,7 @@ function generateTooltip(card) {
         let classBonus = 0;
         if (game.classAbilityActive && game.classAbilityCounter > 0) {
             if (game.playerClass === 'dancer') {
-                classBonus = 2;
+                classBonus = COMBAT.DANCER_DAMAGE_BONUS;
             }
         }
         
@@ -2709,7 +2710,7 @@ function handleMonster(monster, index) {
     // Power Gauntlet: +3 damage on first attack each room
     let gauntletBonus = 0;
     if (game.equippedWeapon && game.relics.some(r => r.id === 'gauntlet') && !game.firstAttackDone) {
-        gauntletBonus = 3;
+        gauntletBonus = COMBAT.GAUNTLET_BONUS;
         game.firstAttackDone = true; // Mark first attack as done
     }
     
@@ -2736,7 +2737,7 @@ function handleMonster(monster, index) {
             rogueDoubleActive = true;
         } else if (game.playerClass === 'dancer') {
             // Dancer: +2 damage for next 2 monsters
-            classBonus = 2;
+            classBonus = COMBAT.DANCER_DAMAGE_BONUS;
         } else if (game.playerClass === 'berserker' && game.rageStrikeActive) {
             // Berserker: 3x damage on next attack
             berserkerTripleActive = true;

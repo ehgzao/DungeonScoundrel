@@ -325,6 +325,18 @@ export const SPECIAL_CARDS = {
 };
 
 // ============================================
+// COMBAT BONUSES
+// ============================================
+export const COMBAT = {
+    /** Power Gauntlet: First attack bonus */
+    GAUNTLET_BONUS: 3,
+    /** Dancer class ability: Damage bonus */
+    DANCER_DAMAGE_BONUS: 2,
+    /** Berserker Rage Strike: Damage multiplier */
+    BERSERKER_RAGE_MULTIPLIER: 3
+};
+
+// ============================================
 // EXPORT ALL
 // ============================================
 export default {
