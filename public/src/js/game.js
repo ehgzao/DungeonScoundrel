@@ -2074,17 +2074,20 @@ const IN_GAME_TUTORIAL_STEPS = [
 function checkAndStartTutorial() {
     // Only show tutorial if:
     // 1. Tutorial not completed yet
-    // 2. Difficulty is Easy
-    // 3. Tutorial not already active
+    // 2. Tutorial not skipped yet
+    // 3. Difficulty is Easy
+    // 4. Tutorial not already active
     const tutorialCompleted = localStorage.getItem('dungeon_scoundrel_tutorial_completed');
+    const tutorialSkipped = localStorage.getItem('dungeon_scoundrel_tutorial_skipped');
     const playedBefore = localStorage.getItem('dungeon_scoundrel_played_before');
     
     console.log('[TUTORIAL] Checking conditions...');
     console.log('[TUTORIAL]   - tutorial_completed:', tutorialCompleted);
+    console.log('[TUTORIAL]   - tutorial_skipped:', tutorialSkipped);
     console.log('[TUTORIAL]   - played_before:', playedBefore);
     console.log('[TUTORIAL]   - game.difficulty:', game.difficulty);
     console.log('[TUTORIAL]   - inGameTutorialActive:', inGameTutorialActive);
-    console.log('[TUTORIAL]   - Should start:', !tutorialCompleted && game.difficulty === 'easy' && !inGameTutorialActive);
+    console.log('[TUTORIAL]   - Should start:', !tutorialCompleted && !tutorialSkipped && game.difficulty === 'easy' && !inGameTutorialActive);
     
     // CRITICAL: Prevent tutorial from starting multiple times
     if (inGameTutorialActive) {
@@ -2092,7 +2095,7 @@ function checkAndStartTutorial() {
         return;
     }
     
-    if (!tutorialCompleted && game.difficulty === 'easy') {
+    if (!tutorialCompleted && !tutorialSkipped && game.difficulty === 'easy') {
         console.log('[TUTORIAL] ✅ Starting in-game tutorial...');
         inGameTutorialActive = true;
         inGameTutorialStep = 0;
@@ -2331,7 +2334,9 @@ function skipTutorial() {
         console.log('[TUTORIAL] Timer resumed (skipped)');
     }
     
-    localStorage.setItem('dungeon_scoundrel_tutorial_completed', 'true');
+    // CRITICAL: Set SKIPPED flag, NOT completed flag
+    // This prevents achievement from unlocking
+    localStorage.setItem('dungeon_scoundrel_tutorial_skipped', 'true');
     
     // NO ACHIEVEMENT when skipping!
     showMessage('Tutorial skipped. Good luck!', 'info');
@@ -3367,10 +3372,23 @@ function checkGameState() {
         btnDrawRoom.disabled = false;
         btnAvoidRoom.disabled = game.lastActionWasAvoid;
         
+        // CRITICAL: Force DOM update
+        btnDrawRoom.style.pointerEvents = 'auto';
+        btnDrawRoom.style.opacity = '1';
+        
         console.log('[CHECKGAMESTATE] Buttons enabled:', { 
             btnDrawDisabled: btnDrawRoom.disabled,
-            btnAvoidDisabled: btnAvoidRoom.disabled
+            btnAvoidDisabled: btnAvoidRoom.disabled,
+            btnDrawStyle: btnDrawRoom.style.cssText
         });
+        
+        // Double-check after a tick
+        setTimeout(() => {
+            console.log('[CHECKGAMESTATE] Buttons after tick:', {
+                btnDrawDisabled: btnDrawRoom.disabled,
+                btnDrawVisible: btnDrawRoom.offsetParent !== null
+            });
+        }, 0);
         
         // Room Clear Relics (optimized single iteration)
         let goldPerRoom = 0;

@@ -815,7 +815,7 @@
             transform: translateX(-50%);
             width: 90%;
             max-width: 600px;
-            z-index: 100;
+            z-index: 10001; /* Above all modals (modals are 1000-10000) */
         }
 
         .message {
