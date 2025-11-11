@@ -2852,7 +2852,7 @@ function handleMonster(monster, index) {
             const victoryMsg = victoryMessages[Math.min(monster.bossNumber - 1, victoryMessages.length - 1)];
             
             showMessage(`👹 ${monster.bossName} DEFEATED! +${bossGold} GOLD!`, 'success');
-            setTimeout(() => showMessage(victoryMsg, 'success'), 800);
+            setTimeout(() => showMessage(victoryMsg, 'success'), TIMING.EVENT_DELAY);
             
             createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 80);
             playSound('special');
@@ -3393,7 +3393,7 @@ function checkGameState() {
         // Show combo message if active (combo now persists between rooms!)
         if (game.combo >= COMBO.MIN_VISUAL_COMBO) {
             showMessage(`🔥 ${game.combo}x COMBO! DUNGEON CLEAR! Keep it going!`, 'success');
-            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 40);
+            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', UI.ROOM_CLEAR_PARTICLES);
         }
         
         // COMBO NO LONGER RESETS - it persists between chambers!
@@ -3414,9 +3414,9 @@ function checkGameState() {
         addLog(`Dungeon cleared! Total: ${game.stats.roomsCleared}`, 'info');
         
         // Victory particles!
-        createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 40);
-        setTimeout(() => createParticles(window.innerWidth / 2 + 100, window.innerHeight / 2, '#6bcf7f', 30), 150);
-        setTimeout(() => createParticles(window.innerWidth / 2 - 100, window.innerHeight / 2, '#4ecdc4', 30), 300);
+        createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', UI.ROOM_CLEAR_PARTICLES);
+        setTimeout(() => createParticles(window.innerWidth / 2 + 100, window.innerHeight / 2, '#6bcf7f', UI.SECONDARY_PARTICLES), TIMING.PARTICLE_DELAY_1);
+        setTimeout(() => createParticles(window.innerWidth / 2 - 100, window.innerHeight / 2, '#4ecdc4', UI.SECONDARY_PARTICLES), TIMING.PARTICLE_DELAY_2);
         
         // Room Clear Relics (optimized single iteration)
         let goldPerRoom = 0;
