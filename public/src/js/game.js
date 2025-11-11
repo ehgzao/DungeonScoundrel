@@ -1890,7 +1890,9 @@ function startGame() {
     showMessage(`Game started! Enter a dungeon to begin.`, 'info');
     
     btnStartGameModal.disabled = true; // Prevent double click
+    btnDrawRoom.removeAttribute('disabled');
     btnDrawRoom.disabled = false;
+    btnAvoidRoom.removeAttribute('disabled');
     btnAvoidRoom.disabled = false;
     
     // Timer functions
@@ -3369,26 +3371,25 @@ function checkGameState() {
         setTimeout(() => createParticles(window.innerWidth / 2 + 100, window.innerHeight / 2, '#6bcf7f', 30), 150);
         setTimeout(() => createParticles(window.innerWidth / 2 - 100, window.innerHeight / 2, '#4ecdc4', 30), 300);
         
+        // CRITICAL: Remove disabled attribute explicitly from DOM
+        // Setting .disabled = false doesn't always update the DOM attribute
+        btnDrawRoom.removeAttribute('disabled');
         btnDrawRoom.disabled = false;
-        btnAvoidRoom.disabled = game.lastActionWasAvoid;
         
-        // CRITICAL: Force DOM update
-        btnDrawRoom.style.pointerEvents = 'auto';
-        btnDrawRoom.style.opacity = '1';
+        if (game.lastActionWasAvoid) {
+            btnAvoidRoom.setAttribute('disabled', 'disabled');
+            btnAvoidRoom.disabled = true;
+        } else {
+            btnAvoidRoom.removeAttribute('disabled');
+            btnAvoidRoom.disabled = false;
+        }
         
         console.log('[CHECKGAMESTATE] Buttons enabled:', { 
             btnDrawDisabled: btnDrawRoom.disabled,
+            btnDrawHasAttr: btnDrawRoom.hasAttribute('disabled'),
             btnAvoidDisabled: btnAvoidRoom.disabled,
-            btnDrawStyle: btnDrawRoom.style.cssText
+            btnAvoidHasAttr: btnAvoidRoom.hasAttribute('disabled')
         });
-        
-        // Double-check after a tick
-        setTimeout(() => {
-            console.log('[CHECKGAMESTATE] Buttons after tick:', {
-                btnDrawDisabled: btnDrawRoom.disabled,
-                btnDrawVisible: btnDrawRoom.offsetParent !== null
-            });
-        }, 0);
         
         // Room Clear Relics (optimized single iteration)
         let goldPerRoom = 0;
@@ -4754,8 +4755,15 @@ function showEventModal(event) {
             
             // Re-enable buttons if room is empty
             if (game.room.length === 0) {
+                btnDrawRoom.removeAttribute('disabled');
                 btnDrawRoom.disabled = false;
-                btnAvoidRoom.disabled = game.lastActionWasAvoid;
+                if (game.lastActionWasAvoid) {
+                    btnAvoidRoom.setAttribute('disabled', 'disabled');
+                    btnAvoidRoom.disabled = true;
+                } else {
+                    btnAvoidRoom.removeAttribute('disabled');
+                    btnAvoidRoom.disabled = false;
+                }
             }
             updateUI();
             checkGameState();
@@ -4933,8 +4941,15 @@ function closeShop() {
     // Re-enable buttons based on game state
     if (game.room.length === 0) {
         // No cards in room - enable draw/avoid
+        btnDrawRoom.removeAttribute('disabled');
         btnDrawRoom.disabled = false;
-        btnAvoidRoom.disabled = game.lastActionWasAvoid;
+        if (game.lastActionWasAvoid) {
+            btnAvoidRoom.setAttribute('disabled', 'disabled');
+            btnAvoidRoom.disabled = true;
+        } else {
+            btnAvoidRoom.removeAttribute('disabled');
+            btnAvoidRoom.disabled = false;
+        }
     } else {
         // Cards in room - disable draw/avoid (player must clear room first)
         btnDrawRoom.disabled = true;
@@ -5019,8 +5034,15 @@ window.closeEventWrapper = () => {
     eventModal.classList.remove('active');
     // Re-enable buttons if room is empty
     if (game.room.length === 0) {
+        btnDrawRoom.removeAttribute('disabled');
         btnDrawRoom.disabled = false;
-        btnAvoidRoom.disabled = game.lastActionWasAvoid;
+        if (game.lastActionWasAvoid) {
+            btnAvoidRoom.setAttribute('disabled', 'disabled');
+            btnAvoidRoom.disabled = true;
+        } else {
+            btnAvoidRoom.removeAttribute('disabled');
+            btnAvoidRoom.disabled = false;
+        }
     }
 };
 
