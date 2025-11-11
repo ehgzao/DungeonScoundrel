@@ -44,6 +44,14 @@ import {
     closeEventWrapper
 } from './modules/game-events.js';
 
+// Import game shop module
+import {
+    updateShopDisplay,
+    buyItem,
+    openShop,
+    closeShop
+} from './modules/game-shop.js';
+
 // ============================================
 // DOM ELEMENTS
 // ============================================
@@ -4673,192 +4681,7 @@ function getRelicBonus(type) {
 
 // NOTE: triggerRandomEvent and showEventModal moved to modules/game-events.js
 
-function updateShopDisplay() {
-    // Clear existing items
-    shopItems.innerHTML = '';
-    shopGoldAmount.textContent = game.gold;
-    
-    // Check for shop discount (unlocks + relics)
-    let discount = 1.0;
-    
-    // Permanent unlock: 20% discount
-    if (permanentUnlocks.shopDiscount) discount *= 0.8;
-    
-    // Dice relic: 5% discount
-    if (game.relics.some(r => r.id === 'dice')) discount *= 0.95;
-    
-    // Crystal relic: 15% discount
-    if (game.relics.some(r => r.id === 'crystal')) discount *= 0.85;
-    
-    // Show price multiplier warning if prices have increased
-    if (game.shopPriceMultiplier > 1.0) {
-        const increasePercent = Math.round((game.shopPriceMultiplier - 1) * 100);
-        const warningBanner = document.createElement('div');
-        warningBanner.style.cssText = 'background: rgba(255, 107, 107, 0.2); border: 2px solid #ff6b6b; padding: 10px; margin-bottom: 15px; text-align: center; border-radius: 8px;';
-        warningBanner.innerHTML = `⚠️ <strong>Prices increased by ${increasePercent}%</strong> due to repeated purchases!`;
-        shopItems.appendChild(warningBanner);
-    }
-    
-    // Old Key: Check if we have a free item available
-    const hasOldKey = game.relics.find(r => r.id === 'key' && !r.used);
-    
-    SHOP_ITEMS.forEach((item, itemIndex) => {
-        // Old Key: First item is FREE (once per game)
-        let finalPrice;
-        let basePrice = Math.floor(item.price * discount);
-        
-        if (hasOldKey && itemIndex === 0) {
-            finalPrice = 0;
-        } else {
-            finalPrice = Math.floor(basePrice * game.shopPriceMultiplier);
-        }
-        const itemEl = document.createElement('div');
-        itemEl.className = 'shop-item';
-        
-        // Add visual indicator if can't afford
-        const canAfford = game.gold >= finalPrice;
-        const affordClass = canAfford ? '' : 'cannot-afford';
-        const priceColor = canAfford ? '#ffd700' : '#ff6b6b';
-        
-        // Show original price if discount OR price increased
-        let priceDisplayHTML = '';
-        if (discount < 1.0 && game.shopPriceMultiplier > 1.0) {
-            // Show both original and base (with multiplier) if both active
-            priceDisplayHTML = `<span style="text-decoration: line-through; opacity: 0.5;">${item.price}</span> → <span style="text-decoration: line-through; opacity: 0.5;">${basePrice}</span> `;
-        } else if (discount < 1.0) {
-            // Just discount
-            priceDisplayHTML = `<span style="text-decoration: line-through; opacity: 0.5;">${item.price}</span> `;
-        } else if (game.shopPriceMultiplier > 1.0) {
-            // Just price increase
-            priceDisplayHTML = `<span style="text-decoration: line-through; opacity: 0.5;">${item.price}</span> `;
-        }
-        
-        itemEl.innerHTML = `
-            <div class="item-info ${affordClass}">
-                <div class="item-name">${item.name}</div>
-                <div class="item-description">${item.description}</div>
-                <div class="item-price" style="color: ${priceColor}; font-weight: bold;">
-                    ${priceDisplayHTML}${finalPrice} 🪙
-                    ${!canAfford ? ' <span style="color: #ff6b6b; font-size: 0.9em;">(Need ' + (finalPrice - game.gold) + ' more)</span>' : ''}
-                </div>
-            </div>
-            <button class="buy-btn" data-item-id="${item.id}" data-price="${finalPrice}">${canAfford ? 'Buy' : '🔒 Locked'}</button>
-        `;
-        
-        const buyBtn = itemEl.querySelector('.buy-btn');
-        if (!canAfford) {
-            buyBtn.disabled = true;
-            buyBtn.style.opacity = '0.5';
-        }
-        
-        buyBtn.onclick = () => buyItem(item, finalPrice);
-        
-        shopItems.appendChild(itemEl);
-    });
-    
-    // Show discount banner if unlocked
-    if (discount < 1.0) {
-        const banner = document.createElement('div');
-        banner.style.cssText = 'background: rgba(255, 215, 0, 0.2); border: 2px solid #ffd700; padding: 10px; margin-bottom: 15px; text-align: center; border-radius: 8px;';
-        banner.innerHTML = '🏪 <strong>Merchant Friend Active!</strong> 20% discount on all items!';
-        shopItems.prepend(banner);
-    }
-}
-
-function buyItem(item, finalPrice) {
-    if (game.gold < finalPrice) {
-        showMessage(`❌ Not enough gold! Need ${finalPrice - game.gold} more.`, 'danger');
-        playSound('error');
-        return;
-    }
-    
-    const success = item.buy(); // Run the item's function
-    if (success) {
-        // Old Key: Mark as used if this was a free purchase
-        if (finalPrice === 0) {
-            const keyRelic = game.relics.find(r => r.id === 'key');
-            if (keyRelic) {
-                keyRelic.used = true;
-                showMessage('🗝️ Old Key used - 1 free item!', 'info');
-            }
-        }
-        
-        game.gold -= finalPrice;
-        
-        // ANTI-EXPLOIT: Increase prices by 8% after each purchase (balanced)
-        game.shopPriceMultiplier *= 1.08;
-        
-        showMessage(`Purchased ${item.name}!`, 'success');
-        playSound('special');
-        
-        // Track item purchase for achievement
-        const saved = localStorage.getItem('scoundrel_lifetime_stats');
-        let lifetimeStats = saved ? JSON.parse(saved) : {};
-        lifetimeStats.itemsBought = (lifetimeStats.itemsBought || 0) + 1;
-        localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
-        
-        updateUI();
-        updateShopDisplay(); // Re-render shop
-        checkAchievements();
-    } else {
-        playSound('error');
-    }
-}
-
-function openShop() {
-    updateShopDisplay();
-    // Disable game buttons
-    btnDrawRoom.disabled = true;
-    btnAvoidRoom.disabled = true;
-    shopModal.classList.add('active');
-    
-    // Switch to shop music
-    music.switchContext('shop');
-    
-    // Track shop visit for score penalty AND achievements
-    game.stats.shopsVisited = (game.stats.shopsVisited || 0) + 1;
-    
-    const saved = localStorage.getItem('scoundrel_lifetime_stats');
-    let lifetimeStats = saved ? JSON.parse(saved) : {};
-    lifetimeStats.shopsVisited = (lifetimeStats.shopsVisited || 0) + 1;
-    localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
-    checkAchievements();
-}
-
-function closeShop() {
-    shopModal.classList.remove('active');
-    // Return to gameplay music
-    music.switchContext('gameplay');
-    
-    console.log('[SHOP] Closing shop, game state:', {
-        roomLength: game.room.length,
-        roomContent: game.room,
-        lastActionWasAvoid: game.lastActionWasAvoid
-    });
-    
-    // Re-enable buttons based on game state
-    if (game.room.length === 0) {
-        // No cards in room - enable draw/avoid
-        console.log('[SHOP] Room empty, enabling buttons');
-        btnDrawRoom.removeAttribute('disabled');
-        btnDrawRoom.disabled = false;
-        
-        // CRITICAL: First room (roomsCleared === 0): Avoid must be disabled
-        // After first room: Avoid enabled unless lastActionWasAvoid
-        if (game.stats.roomsCleared === 0 || game.lastActionWasAvoid) {
-            btnAvoidRoom.setAttribute('disabled', 'disabled');
-            btnAvoidRoom.disabled = true;
-        } else {
-            btnAvoidRoom.removeAttribute('disabled');
-            btnAvoidRoom.disabled = false;
-        }
-    } else {
-        // Cards in room - disable draw/avoid (player must clear room first)
-        console.log('[SHOP] Room has cards, disabling buttons');
-        btnDrawRoom.disabled = true;
-        btnAvoidRoom.disabled = true;
-    }
-}
+// NOTE: Shop functions (updateShopDisplay, buyItem, openShop, closeShop) moved to modules/game-shop.js
 
 // Modal open/close functions
 function showTutorial() { 
