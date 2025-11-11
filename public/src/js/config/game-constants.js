@@ -388,6 +388,95 @@ export const CLASS_BONUSES = {
 };
 
 // ============================================
+// SCORE & REWARDS
+// ============================================
+export const SCORE = {
+    /** Base win bonus */
+    WIN_BONUS: 1000,
+    /** Health multiplier */
+    HEALTH_MULTIPLIER: 20,
+    /** Gold multiplier */
+    GOLD_MULTIPLIER: 5,
+    /** Combo multiplier */
+    COMBO_MULTIPLIER: 10,
+    /** Monster multiplier */
+    MONSTER_MULTIPLIER: 2,
+    /** Time penalty per second */
+    TIME_PENALTY: 2,
+    /** Shop visit penalty */
+    SHOP_PENALTY: 50,
+    /** Speedrun bonus (<1min) */
+    SPEEDRUN_BONUS: 1000,
+    /** Fast bonus (<5min) */
+    FAST_BONUS: 500,
+    /** Perfect run bonus (no damage) */
+    PERFECT_RUN_BONUS: 1000,
+    /** Normal difficulty multiplier */
+    NORMAL_MULTIPLIER: 1.5,
+    /** Hard difficulty multiplier */
+    HARD_MULTIPLIER: 2.5
+};
+
+// ============================================
+// BOSS HP BY DIFFICULTY
+// ============================================
+export const BOSS_HP = {
+    /** Miniboss 1 HP */
+    MINIBOSS_1_EASY: 12,
+    MINIBOSS_1_NORMAL: 15,
+    MINIBOSS_1_HARD: 20,
+    /** Miniboss 2 HP */
+    MINIBOSS_2_EASY: 18,
+    MINIBOSS_2_NORMAL: 22,
+    MINIBOSS_2_HARD: 28,
+    /** Final Boss HP */
+    FINAL_EASY: 20,
+    FINAL_NORMAL: 30,
+    FINAL_HARD: 40
+};
+
+// ============================================
+// GOLD REWARDS
+// ============================================
+export const GOLD_REWARDS = {
+    /** Boss gold by difficulty */
+    BOSS_EASY_MIN: 25,
+    BOSS_EASY_MAX: 40,
+    BOSS_NORMAL_MIN: 20,
+    BOSS_NORMAL_MAX: 30,
+    BOSS_HARD_MIN: 15,
+    BOSS_HARD_MAX: 25,
+    /** Monster gold by difficulty */
+    MONSTER_EASY_MIN: 3,
+    MONSTER_EASY_MAX: 6,
+    MONSTER_NORMAL_MIN: 2,
+    MONSTER_NORMAL_MAX: 4,
+    MONSTER_HARD_MIN: 2,
+    MONSTER_HARD_MAX: 4,
+    /** Room clear bonus */
+    ROOM_EASY_MIN: 5,
+    ROOM_EASY_MAX: 8,
+    ROOM_NORMAL_MIN: 4,
+    ROOM_NORMAL_MAX: 6,
+    ROOM_HARD_MIN: 2,
+    ROOM_HARD_MAX: 4
+};
+
+// ============================================
+// SPECIAL CARD EFFECTS
+// ============================================
+export const SPECIAL_EFFECTS = {
+    /** Gamble: Win amount */
+    GAMBLE_WIN: 15,
+    /** Gamble: Lose amount */
+    GAMBLE_LOSE: 10,
+    /** Lucky Draw: Gold reward */
+    LUCKY_DRAW_GOLD: 5,
+    /** Lucky Draw: Cards to draw */
+    LUCKY_DRAW_CARDS: 3
+};
+
+// ============================================
 // EXPORT ALL
 // ============================================
 export default {
