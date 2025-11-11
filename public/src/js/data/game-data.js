@@ -73,7 +73,14 @@ const EVENTS = [
         choices: [
             { text: '❤️ Sacrifice 5 HP for +2 weapon damage permanently (Gain Berserker Ring)',
                 effect: () => {
-                    if (game.health > 5) { takeDamage(5); game.relics.push({...RELICS.find(r => r.id === 'berserker_ring')}); showMessage('Gained Berserker Ring!', 'success'); updateRelicsDisplay(); } 
+                    if (game.health > 5) { 
+                        console.log('[EVENT] Shrine BERSERKER - Before relic');
+                        takeDamage(5); 
+                        game.relics.push({...RELICS.find(r => r.id === 'berserker_ring')}); 
+                        console.log('[EVENT] Shrine BERSERKER - After relic, weapon:', game.equippedWeapon ? `${game.equippedWeapon.durability}/${game.equippedWeapon.maxDurability}` : 'none');
+                        showMessage('Gained Berserker Ring!', 'success'); 
+                        updateRelicsDisplay(); 
+                    } 
                     else { showMessage('Not enough HP!', 'danger'); }
                 }},
             { text: '💰 Offer 20 gold for +5 max HP',
@@ -135,7 +142,14 @@ const EVENTS = [
     { id: 'witch', title: '🧙 Mysterious Witch', text: 'An old witch offers her services: "I can upgrade your equipment... for a price."',
         choices: [
             { text: '⚔️ Upgrade weapon (+2 damage, 25 gold)', effect: () => {
-                if (game.gold >= 25 && game.equippedWeapon) { game.gold -= 25; game.equippedWeapon.numValue += 2; showMessage('⚔️ Weapon upgraded!', 'success'); updateUI(); }
+                if (game.gold >= 25 && game.equippedWeapon) { 
+                    console.log('[EVENT] Witch UPGRADE - Before:', game.equippedWeapon.numValue, 'durability:', game.equippedWeapon.durability, '/', game.equippedWeapon.maxDurability);
+                    game.gold -= 25; 
+                    game.equippedWeapon.numValue += 2; 
+                    console.log('[EVENT] Witch UPGRADE - After:', game.equippedWeapon.numValue, 'durability:', game.equippedWeapon.durability, '/', game.equippedWeapon.maxDurability);
+                    showMessage('⚔️ Weapon upgraded!', 'success'); 
+                    updateUI(); 
+                }
                 else if (!game.equippedWeapon) { showMessage('No weapon to upgrade!', 'warning'); }
                 else { showMessage('Not enough gold!', 'danger'); }
             }},
