@@ -30,11 +30,11 @@
 
 ### **FASE 1: CRÍTICO - game.js** ⏳ EM ANDAMENTO
 
-#### 1.1 Extrair Constantes ✅ **85% COMPLETO**
+#### 1.1 Extrair Constantes ✅ **100% COMPLETO**
 - [x] Criar `config/game-constants.js`
-- [x] Definir todas as constantes (23 categorias)
+- [x] Definir todas as constantes (29 categorias)
 - [x] Importar em game.js
-- [x] Substituir ~65 constantes:
+- [x] Substituir 100 constantes:
   - ✅ HEALTH (3 constantes)
   - ✅ GOLD (1 constante)
   - ✅ CARDS (4 constantes)
@@ -51,7 +51,13 @@
   - ✅ KEYS (9 constantes)
   - ✅ STORAGE_KEYS (3 constantes)
   - ✅ SPECIAL_CARDS (5 constantes)
-  - ✅ COMBAT (3 constantes)
+  - ✅ COMBAT (7 constantes)
+  - ✅ LUCKY_DRAW (3 constantes)
+  - ✅ CLASS_BONUSES (9 constantes)
+  - ✅ SCORE (13 constantes)
+  - ✅ BOSS_HP (9 constantes)
+  - ✅ GOLD_REWARDS (18 constantes)
+  - ✅ SPECIAL_EFFECTS (4 constantes)
 
 **Bugs Críticos Corrigidos:**
 - ✅ ES6 module type="module" adicionado
@@ -60,7 +66,7 @@
 - ✅ ACHIEVEMENTS conflict (renomeado para ACHIEVEMENT_CONFIG)
 - ✅ giveRelicByRarity exposto globalmente
 
-**Próximo:** Continuar substituindo ~35 constantes restantes
+**Próximo:** ✅ FASE 1.1 COMPLETA! Iniciar Fase 1.2 (Dividir game.js em módulos)
 
 #### 1.2 Separar Módulo de UI ⏳ PENDENTE
 - [ ] Criar `modules/game-ui.js`
