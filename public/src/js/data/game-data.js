@@ -336,15 +336,39 @@ const EVENTS = [
 const SHOP_ITEMS = [
     {
         id: 'heal_small', name: '💊 Small Potion', description: 'Restore 8 HP', price: 18,
-        buy: () => { game.health = Math.min(game.maxHealth, game.health + 8); showMessage('Healed 8 HP!', 'success'); return true; }
+        buy: () => {
+            if (game.health >= game.maxHealth) {
+                showMessage('⚠️ HP is already full!', 'warning');
+                return false;
+            }
+            game.health = Math.min(game.maxHealth, game.health + 8);
+            showMessage('Healed 8 HP!', 'success');
+            return true;
+        }
     },
     {
         id: 'heal_large', name: '🍾 Large Potion', description: 'Restore 15 HP', price: 30,
-        buy: () => { game.health = Math.min(game.maxHealth, game.health + 15); showMessage('Healed 15 HP!', 'success'); return true; }
+        buy: () => {
+            if (game.health >= game.maxHealth) {
+                showMessage('⚠️ HP is already full!', 'warning');
+                return false;
+            }
+            game.health = Math.min(game.maxHealth, game.health + 15);
+            showMessage('Healed 15 HP!', 'success');
+            return true;
+        }
     },
     {
         id: 'heal_full', name: '✨ Elixir', description: 'Restore to full HP', price: 50,
-        buy: () => { game.health = game.maxHealth; showMessage('Fully healed!', 'success'); return true; }
+        buy: () => {
+            if (game.health >= game.maxHealth) {
+                showMessage('⚠️ HP is already full!', 'warning');
+                return false;
+            }
+            game.health = game.maxHealth;
+            showMessage('Fully healed!', 'success');
+            return true;
+        }
     },
     {
         id: 'max_health', name: '❤️ Heart Container', description: '+5 maximum HP', price: 35,

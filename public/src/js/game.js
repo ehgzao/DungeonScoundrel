@@ -1892,8 +1892,9 @@ function startGame() {
     btnStartGameModal.disabled = true; // Prevent double click
     btnDrawRoom.removeAttribute('disabled');
     btnDrawRoom.disabled = false;
-    btnAvoidRoom.removeAttribute('disabled');
-    btnAvoidRoom.disabled = false;
+    // First action must be Draw, not Avoid
+    btnAvoidRoom.setAttribute('disabled', 'disabled');
+    btnAvoidRoom.disabled = true;
     
     // Timer functions
     function pauseTimer() {
@@ -4046,6 +4047,11 @@ function holdCard(card, index) {
     playSound('cardFlip');
     showMessage('Card held!', 'success');
     updateUI();
+    
+    // CRITICAL: Check if room is now empty after holding card
+    // This enables buttons if player held the last card
+    console.log('[HOLD] Card held, checking game state. Room length:', game.room.length);
+    checkGameState();
 }
 
 function updateUI() {
@@ -4980,9 +4986,16 @@ function closeShop() {
     // Return to gameplay music
     music.switchContext('gameplay');
     
+    console.log('[SHOP] Closing shop, game state:', {
+        roomLength: game.room.length,
+        roomContent: game.room,
+        lastActionWasAvoid: game.lastActionWasAvoid
+    });
+    
     // Re-enable buttons based on game state
     if (game.room.length === 0) {
         // No cards in room - enable draw/avoid
+        console.log('[SHOP] Room empty, enabling buttons');
         btnDrawRoom.removeAttribute('disabled');
         btnDrawRoom.disabled = false;
         if (game.lastActionWasAvoid) {
@@ -4994,6 +5007,7 @@ function closeShop() {
         }
     } else {
         // Cards in room - disable draw/avoid (player must clear room first)
+        console.log('[SHOP] Room has cards, disabling buttons');
         btnDrawRoom.disabled = true;
         btnAvoidRoom.disabled = true;
     }
