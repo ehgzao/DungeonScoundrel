@@ -4634,14 +4634,12 @@ function showEventModal(event) {
     });
     
     // Disable game buttons while event is active
+    btnDrawRoom.disabled = true;
+    btnAvoidRoom.disabled = true;
     
-    eventModal.classList.remove('active');
-    
-    // Track event completion for achievement
-    const saved = localStorage.getItem('scoundrel_lifetime_stats');
-    let lifetimeStats = saved ? JSON.parse(saved) : {};
-    lifetimeStats.eventsCompleted = (lifetimeStats.eventsCompleted || 0) + 1;
-    localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
+    // Show event modal
+    eventModal.classList.add('active');
+    playSound('special');
 }
 
 function updateShopDisplay() {
