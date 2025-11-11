@@ -5035,6 +5035,7 @@ if (typeof takeDamage !== 'undefined') window.takeDamage = takeDamage;
 if (typeof resetCombo !== 'undefined') window.resetCombo = resetCombo;
 if (typeof buyItem !== 'undefined') window.buyItem = buyItem;
 if (typeof handleCardClick !== 'undefined') window.handleCardClick = handleCardClick;
+if (typeof getCardType !== 'undefined') window.getCardType = getCardType; // For hold card system
 
 // Expose game state, inputs and unlocks for modules (leaderboard.js, stats.js, codex.js)
 window.game = game;
