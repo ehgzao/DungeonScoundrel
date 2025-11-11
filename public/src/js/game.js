@@ -5278,6 +5278,7 @@ if (typeof startInteractiveTutorial !== 'undefined') window.startInteractiveTuto
 if (typeof showMessage !== 'undefined') window.showMessage = showMessage;
 if (typeof earnGold !== 'undefined') window.earnGold = earnGold;
 if (typeof giveRandomRelic !== 'undefined') window.giveRandomRelic = giveRandomRelic;
+if (typeof giveRelicByRarity !== 'undefined') window.giveRelicByRarity = giveRelicByRarity;
 if (typeof updateUI !== 'undefined') window.updateUI = updateUI;
 if (typeof updateRelicsDisplay !== 'undefined') window.updateRelicsDisplay = updateRelicsDisplay;
 if (typeof takeDamage !== 'undefined') window.takeDamage = takeDamage;
