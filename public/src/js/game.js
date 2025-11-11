@@ -29,6 +29,14 @@ import {
     LUCKY_DRAW
 } from './config/game-constants.js';
 
+// Import game state module
+import {
+    game,
+    permanentStats,
+    permanentUnlocks,
+    UNLOCKS
+} from './modules/game-state.js';
+
 // ============================================
 // DOM ELEMENTS
 // ============================================
@@ -76,42 +84,8 @@ const holdAreaContainer = document.getElementById('holdAreaContainer');
 // ============================================
 // GAME STATE
 // ============================================
-const game = {
-    deck: [],
-    relics: [],
-    heldCard: null,
-    discardPile: [],
-    lastActionWasAvoid: false,
-    gameOver: false,
-    gameTimerInterval: null,
-    gameStartTime: 0,
-    undoAvailable: false,
-    lastGameState: null,
-    potionsUsed: 0,
-    difficulty: GAME_MODES.NORMAL,
-    combo: 0,
-    score: 0,
-    health: HEALTH.DEFAULT_START,
-    maxHealth: HEALTH.DEFAULT_MAX,
-    equippedWeapon: null,
-    dungeon: [],
-    room: [],
-    gold: GOLD.DEFAULT_START,
-    totalGoldEarned: 0,
-    stats: {},
-    settings: {
-        soundEnabled: true,
-        musicEnabled: true
-    },
-    dodgeActive: false,
-    doubleDamage: false,
-    berserkStacks: 0,
-    mirrorShield: 0,
-    obliterateMode: false
-};
-
-// Permanent Stats (LocalStorage)
-let permanentStats = {};
+// NOTE: game, permanentStats, permanentUnlocks, UNLOCKS
+// are now imported from modules/game-state.js
 
 // ============================================
 // INITIALIZATION AND SCREEN FLOW LOGIC
@@ -4532,59 +4506,7 @@ function createMiniCardElement(card) {
 
 // ============================================
 
-let permanentUnlocks = {
-    startHealth: false, startGold: false, betterDrops: false, extraRelic: false,
-    strongerWeapons: false, masterHealer: false, richStart: false, comboMaster: false,
-    bigStart: false, ultraWeapons: false, godMode: false, relicMaster: false,
-    shopDiscount: false, eventLuck: false, survivalBonus: false, speedBonus: false,
-    weaponMaster: false, potionMaster: false, goldRush: false, comboGod: false,
-    durablePlus: false, startPower: false, megaHealth: false, luckyCharm: false,
-    berserkMaster: false, mirrorMaster: false, dodgeMaster: false, criticalStrike: false,
-    lifeSteal: false, thornsArmor: false
-};
-const UNLOCKS = [
-    // Tier 1: Beginner (Easy)
-    { id: 'startHealth', name: '❤️ Tough Start', description: 'Start each run with +5 max HP', requirement: 'Clear 10 rooms', check: () => getTotalStat('roomsCleared') >= 10 },
-    { id: 'startGold', name: '💰 Rich Start', description: 'Start each run with 30 gold', requirement: 'Earn 200 gold (lifetime)', check: () => getTotalStat('totalGoldEarned') >= 200 },
-    { id: 'strongerWeapons', name: '⚔️ Weapon Expert', description: 'All weapons get +1 damage', requirement: 'Defeat 50 monsters', check: () => getTotalStat('monstersSlain') >= 50 },
-    { id: 'masterHealer', name: '💚 Healer', description: 'All potions heal +2 HP', requirement: 'Use 20 potions', check: () => getTotalStat('potionsUsed') >= 20 },
-    { id: 'comboMaster', name: '🔥 Combo Start', description: 'Combos start at 1 instead of 0', requirement: 'Get a 5x combo', check: () => getTotalStat('maxCombo') >= 5 },
-    
-    // Tier 2: Intermediate (Medium)
-    { id: 'betterDrops', name: '🍀 Lucky', description: '+30% gold from all sources', requirement: 'Earn 500 gold (lifetime)', check: () => getTotalStat('totalGoldEarned') >= 500 },
-    { id: 'extraRelic', name: '🔮 Relic Start', description: 'Start each run with 1 random relic', requirement: 'Clear 30 rooms', check: () => getTotalStat('roomsCleared') >= 30 },
-    { id: 'richStart', name: '💎 Wealthy Start', description: 'Start with 50 gold instead of 30', requirement: 'Earn 1000 gold (lifetime)', check: () => getTotalStat('totalGoldEarned') >= 1000 },
-    { id: 'weaponMaster', name: '⚔️ Weapon Master', description: 'All weapons get +1 damage (stacks)', requirement: 'Equip 100 weapons', check: () => getTotalStat('weaponsEquipped') >= 100 },
-    { id: 'potionMaster', name: '💊 Potion Master', description: 'All potions heal +4 HP (stacks)', requirement: 'Use 75 potions', check: () => getTotalStat('potionsUsed') >= 75 },
-    
-    // Tier 3: Advanced (Hard)
-    { id: 'bigStart', name: '❤️❤️ Warrior Start', description: 'Start with +10 max HP (stacks)', requirement: 'Clear 75 rooms', check: () => getTotalStat('roomsCleared') >= 75 },
-    { id: 'durablePlus', name: '🛠️ Durable Weapons', description: 'Weapons have +1 durability on all difficulties', requirement: 'Win 3 games', check: () => getTotalStat('gamesWon') >= 3 },
-    { id: 'goldRush', name: '💰💰 Gold Rush', description: '+50% gold from all sources (stacks)', requirement: 'Earn 3000 gold (lifetime)', check: () => getTotalStat('totalGoldEarned') >= 3000 },
-    { id: 'shopDiscount', name: '🏪 Merchant Friend', description: '20% discount in all shops', requirement: 'Buy 50 items from shop', check: () => getTotalStat('itemsBought') >= 50 },
-    { id: 'relicMaster', name: '🔮🔮 Double Relic Start', description: 'Start with 2 random relics', requirement: 'Clear 100 rooms', check: () => getTotalStat('roomsCleared') >= 100 },
-    
-    // Tier 4: Expert (Very Hard)
-    { id: 'ultraWeapons', name: '⚔️⚔️⚔️ Weapon God', description: 'All weapons get +2 damage (stacks)', requirement: 'Defeat 500 monsters', check: () => getTotalStat('monstersSlain') >= 500 },
-    { id: 'startPower', name: '⚡ Power Start', description: 'Start each run with a random weapon', requirement: 'Win 5 games', check: () => getTotalStat('gamesWon') >= 5 },
-    { id: 'megaHealth', name: '❤️❤️❤️ Titan Health', description: 'Start with +20 max HP total', requirement: 'Clear 150 rooms', check: () => getTotalStat('roomsCleared') >= 150 },
-    { id: 'eventLuck', name: '🎲 Event Master', description: 'Events appear 50% more often', requirement: 'Complete 50 events', check: () => getTotalStat('eventsCompleted') >= 50 },
-    { id: 'luckyCharm', name: '🍀🍀 Super Lucky', description: '+60% gold from all sources', requirement: 'Earn 5000 gold (lifetime)', check: () => getTotalStat('totalGoldEarned') >= 5000 },
-    
-    // Tier 5: Master (Extreme)
-    { id: 'comboGod', name: '🔥🔥🔥 Combo God', description: 'Combos start at 2, +2 damage per combo', requirement: 'Get a 15x combo', check: () => getTotalStat('maxCombo') >= 15 },
-    { id: 'survivalBonus', name: '💪 Survivor', description: 'Start with +5 HP when below 50% health', requirement: 'Win 10 games', check: () => getTotalStat('gamesWon') >= 10 },
-    { id: 'speedBonus', name: '⏱️ Speedrunner', description: 'Gain 2x gold for winning under 1 minute', requirement: 'Win a game in under 1 minute', check: () => getTotalStat('fastestWin') > 0 && getTotalStat('fastestWin') < 60 },
-    { id: 'berserkMaster', name: '🔥 Berserk God', description: 'Berserk gives +7 damage instead of +5', requirement: 'Use Berserk 50 times', check: () => getTotalStat('berserkUses') >= 50 },
-    { id: 'mirrorMaster', name: '🪞 Mirror Master', description: 'Mirror reflects 15 damage instead of 10', requirement: 'Win a game on Hard', check: () => getTotalStat('hardWins') >= 1 },
-    
-    // Tier 6: Legend (Insane)
-    { id: 'godMode', name: '👑 God Mode', description: 'Start with +15 max HP, 100 gold, 2 relics', requirement: 'Win 20 games', check: () => getTotalStat('gamesWon') >= 20 },
-    { id: 'dodgeMaster', name: '🛡️ Dodge God', description: 'Dodge cards avoid 2 attacks instead of 1', requirement: 'Clear 200 rooms', check: () => getTotalStat('roomsCleared') >= 200 },
-    { id: 'criticalStrike', name: '💥 Critical Master', description: '10% chance to deal 3x damage', requirement: 'Defeat 1000 monsters', check: () => getTotalStat('monstersSlain') >= 1000 },
-    { id: 'lifeSteal', name: '🧛 Vampiric', description: 'Heal 1 HP on every perfect kill', requirement: 'Win 15 games', check: () => getTotalStat('gamesWon') >= 15 },
-    { id: 'thornsArmor', name: '🌵 Thorns', description: 'Reflect 2 damage to all attackers', requirement: 'Win 3 games on Hard', check: () => getTotalStat('hardWins') >= 3 }
-];
+// NOTE: permanentUnlocks and UNLOCKS are now imported from modules/game-state.js
 
 // Support Functions (Shop, Relics, etc.)
 // Helper: Take damage and reset combo (for events)
