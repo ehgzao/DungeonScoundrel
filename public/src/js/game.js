@@ -147,10 +147,19 @@ btnWelcomeLeaderboard.onclick = showLeaderboard;
 
 // Music Chamber Hook
 const btnWelcomeSoundboard = document.getElementById('btnWelcomeSoundboard');
+const btnCloseSoundboard = document.getElementById('btnCloseSoundboard');
+
 if (btnWelcomeSoundboard) {
     btnWelcomeSoundboard.onclick = () => {
         const soundboardModal = document.getElementById('soundboardModal');
         if (soundboardModal) soundboardModal.classList.add('active');
+    };
+}
+
+if (btnCloseSoundboard) {
+    btnCloseSoundboard.onclick = () => {
+        const soundboardModal = document.getElementById('soundboardModal');
+        if (soundboardModal) soundboardModal.classList.remove('active');
     };
 }
 
@@ -3850,6 +3859,51 @@ function showMessage(text, type) {
 function updateRunningScore() {
     game.score = (game.stats.monstersSlain * 10) + (game.stats.roomsCleared * 50) + game.totalGoldEarned;
     mainScoreValue.textContent = game.score;
+}
+
+// ============================================
+// HOLD CARD FUNCTION
+// ============================================
+function holdCard(card, index) {
+    // Calculate max hold capacity
+    let maxHold = 1;
+    if (game.selectedClass === 'rogue') maxHold = 2;
+    if (game.relics.some(r => r.id === 'feather')) maxHold += 1;
+    
+    // Check if already at capacity
+    const currentHeldCount = game.heldCard ? (Array.isArray(game.heldCard) ? game.heldCard.length : 1) : 0;
+    
+    if (currentHeldCount >= maxHold) {
+        showMessage(`Cannot hold more than ${maxHold} card${maxHold > 1 ? 's' : ''}!`, 'error');
+        return;
+    }
+    
+    // Check if it's a special card (cannot be held)
+    const type = getCardType(card);
+    if (type === 'special') {
+        showMessage('Cannot hold special cards!', 'error');
+        return;
+    }
+    
+    // Remove card from room
+    const removedCard = game.room.splice(index, 1)[0];
+    
+    // Add to held cards
+    if (!game.heldCard) {
+        game.heldCard = maxHold > 1 ? [removedCard] : removedCard;
+    } else if (Array.isArray(game.heldCard)) {
+        game.heldCard.push(removedCard);
+    } else {
+        // Convert single card to array
+        game.heldCard = [game.heldCard, removedCard];
+    }
+    
+    // Track stat
+    if (game.stats) game.stats.cardsHeld++;
+    
+    playSound('cardFlip');
+    showMessage('Card held!', 'success');
+    updateUI();
 }
 
 function updateUI() {
