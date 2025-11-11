@@ -1561,12 +1561,16 @@ function resetCombo() {
 // Helper: Calculate berserk bonus
 function getBerserkBonus() {
     if (game.berserkStacks <= 0) return 0;
+    // CRITICAL: Berserk bonus ONLY applies if weapon is equipped
+    if (!game.equippedWeapon) return 0;
     return permanentUnlocks.berserkMaster ? 7 : 5;
 }
 
 // Helper: Calculate bloodlust bonus
 function getBloodlustBonus() {
     if (!game.classData || !game.classData.passive.bloodlust) return 0;
+    // CRITICAL: Bloodlust bonus ONLY applies if weapon is equipped
+    if (!game.equippedWeapon) return 0;
     const hpPercent = (game.health / game.maxHealth) * 100;
     if (hpPercent <= 30) return 3;
     if (hpPercent <= 50) return 2;
@@ -1577,6 +1581,10 @@ function getBloodlustBonus() {
 // Helper: Calculate combo bonus
 function getComboBonus() {
     if (game.combo === 0) return 0;
+    
+    // CRITICAL: Combo bonus ONLY applies if weapon is equipped
+    // Without weapon, you cannot deal damage regardless of combo
+    if (!game.equippedWeapon) return 0;
     
     // Combo God: +2 damage per combo level (stacks with base)
     // Base: 2 combo = +1, 3 combo = +2, etc.
@@ -2671,7 +2679,7 @@ function handleMonster(monster, index) {
     
     // Power Gauntlet: +3 damage on first attack each room
     let gauntletBonus = 0;
-    if (game.relics.some(r => r.id === 'gauntlet') && !game.firstAttackDone) {
+    if (game.equippedWeapon && game.relics.some(r => r.id === 'gauntlet') && !game.firstAttackDone) {
         gauntletBonus = 3;
         game.firstAttackDone = true; // Mark first attack as done
     }
@@ -2692,7 +2700,8 @@ function handleMonster(monster, index) {
     let classBonus = 0;
     let rogueDoubleActive = false;
     let berserkerTripleActive = false;
-    if (game.classAbilityActive && game.classAbilityCounter > 0) {
+    // CRITICAL: Class abilities ONLY apply if weapon is equipped
+    if (game.equippedWeapon && game.classAbilityActive && game.classAbilityCounter > 0) {
         if (game.playerClass === 'rogue') {
             // Rogue: 2x damage on next attack
             rogueDoubleActive = true;
@@ -4704,10 +4713,10 @@ function getRelicBonus(type) {
     let bonus = 0;
     game.relics.forEach(r => {
         if (r.effect === type) {
-            // Power bonuses
-            if (type === 'smallPower') bonus += 1;
-            if (type === 'power') bonus += 2;
-            if (type === 'bigPower') bonus += 3;
+            // Power bonuses - CRITICAL: Only apply if weapon is equipped
+            if (type === 'smallPower' && game.equippedWeapon) bonus += 1;
+            if (type === 'power' && game.equippedWeapon) bonus += 2;
+            if (type === 'bigPower' && game.equippedWeapon) bonus += 3;
             
             // Heal bonuses
             if (type === 'smallHealBonus') bonus += 1;
