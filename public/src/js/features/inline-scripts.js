@@ -30,10 +30,23 @@ function hasDismissedMobileWarning() {
 
 // Show mobile waitlist modal
 function showMobileWaitlist() {
-    if (isMobileDevice() && !hasDismissedMobileWarning()) {
-        document.getElementById('mobileWaitlistModal').classList.add('active');
-        // Prevent scrolling on body
-        document.body.style.overflow = 'hidden';
+    const isMobile = isMobileDevice();
+    const hasDismissed = hasDismissedMobileWarning();
+    
+    console.log('[WAITLIST] Mobile detection:', { isMobile, hasDismissed, userAgent: navigator.userAgent, width: window.innerWidth });
+    
+    if (isMobile && !hasDismissed) {
+        const modal = document.getElementById('mobileWaitlistModal');
+        if (modal) {
+            console.log('[WAITLIST] Showing modal');
+            modal.classList.add('active');
+            // Prevent scrolling on body
+            document.body.style.overflow = 'hidden';
+        } else {
+            console.error('[WAITLIST] ERROR: Modal element not found!');
+        }
+    } else {
+        console.log('[WAITLIST] Not showing modal:', isMobile ? 'Already dismissed' : 'Not mobile');
     }
 }
 

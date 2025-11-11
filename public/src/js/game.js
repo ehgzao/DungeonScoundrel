@@ -2071,11 +2071,22 @@ function checkAndStartTutorial() {
     // Only show tutorial if:
     // 1. Tutorial not completed yet
     // 2. Difficulty is Easy
+    // 3. Tutorial not already active
     const tutorialCompleted = localStorage.getItem('dungeon_scoundrel_tutorial_completed');
+    const playedBefore = localStorage.getItem('dungeon_scoundrel_played_before');
+    
     console.log('[TUTORIAL] Checking conditions...');
     console.log('[TUTORIAL]   - tutorial_completed:', tutorialCompleted);
+    console.log('[TUTORIAL]   - played_before:', playedBefore);
     console.log('[TUTORIAL]   - game.difficulty:', game.difficulty);
-    console.log('[TUTORIAL]   - Should start:', !tutorialCompleted && game.difficulty === 'easy');
+    console.log('[TUTORIAL]   - inGameTutorialActive:', inGameTutorialActive);
+    console.log('[TUTORIAL]   - Should start:', !tutorialCompleted && game.difficulty === 'easy' && !inGameTutorialActive);
+    
+    // CRITICAL: Prevent tutorial from starting multiple times
+    if (inGameTutorialActive) {
+        console.log('[TUTORIAL] ⚠️ Tutorial already active, skipping...');
+        return;
+    }
     
     if (!tutorialCompleted && game.difficulty === 'easy') {
         console.log('[TUTORIAL] ✅ Starting in-game tutorial...');

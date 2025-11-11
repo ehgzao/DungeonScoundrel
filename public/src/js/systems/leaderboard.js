@@ -79,7 +79,10 @@ async function loadLeaderboardForDifficulty(difficulty) {
     }
     
     const { db, appId } = getFirebaseGlobals();
+    console.log('[LEADERBOARD] Firebase status:', { db: !!db, appId: !!appId, difficulty });
+    
     if (!db || !appId) {
+        console.error('[LEADERBOARD] Firebase not ready:', { db: !!db, appId: !!appId });
         listDiv.innerHTML = `
             <div style="text-align: center; padding: 40px 20px;">
                 <p style="color: #ffd93d; font-size: 1.2em; margin-bottom: 15px;">📡 Offline Mode</p>
