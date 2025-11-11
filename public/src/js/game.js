@@ -23,7 +23,8 @@ import {
     CARD_TYPES,
     SUITS,
     LOG_TYPES,
-    MESSAGE_TYPES
+    MESSAGE_TYPES,
+    SPECIAL_CARDS
 } from './config/game-constants.js';
 
 // ============================================
@@ -826,12 +827,12 @@ const specialCards = [
     { id: 'dodge', name: '🛡️ Dodge', description: 'Avoid next damage', effect: () => { game.dodgeActive = true; showMessage('🛡️ Dodge active!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#4ecdc4', 20); } },
     { id: 'double_damage', name: '⚡ Power', description: 'Weapon 2x stronger', effect: () => { game.doubleDamage = true; showMessage('⚡ Power Strike!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 25); } },
     { id: 'super_heal', name: '💊 Super Potion', description: 'Heal to full HP', effect: () => { const healed = game.maxHealth - game.health; game.health = game.maxHealth; showDamageNumber(healed, 'heal'); showMessage('💊 HP Full!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#6bcf7f', 30); } },
-    { id: 'treasure', name: '💰 Treasure', description: '+5 Max HP', effect: () => { game.maxHealth += 5; game.health += 5; showDamageNumber('+5 MAX', 'heal'); showMessage('💰 Max HP increased!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 35); } },
+    { id: 'treasure', name: '💰 Treasure', description: '+5 Max HP', effect: () => { game.maxHealth += SPECIAL_CARDS.TREASURE_MAX_HP_BONUS; game.health += SPECIAL_CARDS.TREASURE_MAX_HP_BONUS; showDamageNumber('+5 MAX', 'heal'); showMessage('💰 Max HP increased!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 35); } },
     
     // 🆕 NOVAS CARTAS ESPECIAIS
     { id: 'berserk_card', name: '🔥 Berserk', description: 'Next 3 attacks +5 damage', effect: () => { 
         // Hourglass: +1 extra berserk turn
-        game.berserkStacks = game.relics.some(r => r.id === 'hourglass') ? 4 : 3; 
+        game.berserkStacks = game.relics.some(r => r.id === 'hourglass') ? SPECIAL_CARDS.BERSERK_HOURGLASS_STACKS : SPECIAL_CARDS.BERSERK_DEFAULT_STACKS; 
         showMessage('🔥 BERSERK MODE! Next 3 attacks +5 damage!', 'success'); 
         playSound('special');
         createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 40);
@@ -843,8 +844,8 @@ const specialCards = [
         localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
     } },
     { id: 'time_warp', name: '⏰ Time Warp', description: 'Draw 2 extra cards this room', effect: () => {
-        if (game.dungeon.length >= 2) {
-            const extraCards = game.dungeon.splice(0, 2);
+        if (game.dungeon.length >= SPECIAL_CARDS.TIME_WARP_CARDS) {
+            const extraCards = game.dungeon.splice(0, SPECIAL_CARDS.TIME_WARP_CARDS);
             game.room.push(...extraCards);
             showMessage('⏰ Time Warp! +2 cards drawn!', 'success');
             playSound('cardDraw');

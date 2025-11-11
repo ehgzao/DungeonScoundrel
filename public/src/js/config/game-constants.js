@@ -294,20 +294,33 @@ export const LOG_TYPES = {
 // MESSAGE TYPES
 // ============================================
 export const MESSAGE_TYPES = {
-    INFO: 'info',
     SUCCESS: 'success',
-    DANGER: 'danger',
+    INFO: 'info',
     WARNING: 'warning',
     ERROR: 'error'
+};
+
+// ============================================
+// SPECIAL CARDS
+// ============================================
+export const SPECIAL_CARDS = {
+    /** Berserk: Default number of stacks */
+    BERSERK_DEFAULT_STACKS: 3,
+    /** Berserk: Stacks with Hourglass relic */
+    BERSERK_HOURGLASS_STACKS: 4,
+    /** Berserk: Damage bonus per stack */
+    BERSERK_DAMAGE_BONUS: 5,
+    /** Treasure: Max HP bonus */
+    TREASURE_MAX_HP_BONUS: 5,
+    /** Time Warp: Cards to draw */
+    TIME_WARP_CARDS: 2
 };
 
 // ============================================
 // EXPORT ALL
 // ============================================
 export default {
-    HEALTH,
-    GOLD,
-    CARDS,
+    EVENT_CONFIG,
     COMBO,
     BOSS,
     DIFFICULTY,
