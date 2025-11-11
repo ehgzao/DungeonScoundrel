@@ -3474,7 +3474,9 @@ function checkGameState() {
         btnDrawRoom.removeAttribute('disabled');
         btnDrawRoom.disabled = false;
         
-        if (game.lastActionWasAvoid) {
+        // First room (roomsCleared === 0): Avoid must be disabled
+        // After first room: Avoid enabled unless lastActionWasAvoid
+        if (game.stats.roomsCleared === 1 || game.lastActionWasAvoid) {
             btnAvoidRoom.setAttribute('disabled', 'disabled');
             btnAvoidRoom.disabled = true;
         } else {
@@ -3486,7 +3488,8 @@ function checkGameState() {
             btnDrawDisabled: btnDrawRoom.disabled,
             btnDrawHasAttr: btnDrawRoom.hasAttribute('disabled'),
             btnAvoidDisabled: btnAvoidRoom.disabled,
-            btnAvoidHasAttr: btnAvoidRoom.hasAttribute('disabled')
+            btnAvoidHasAttr: btnAvoidRoom.hasAttribute('disabled'),
+            roomsCleared: game.stats.roomsCleared
         });
     }
 
