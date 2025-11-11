@@ -4679,10 +4679,10 @@ function giveRelicByRarity(rarity) {
     game.stats.relicsCollected++;  // Track for Priest unlock
     
     // Apply immediate health effects
-    if (randomRelic.effect === 'smallHealth') { game.maxHealth += 3; game.health += 3; }
-    if (randomRelic.effect === 'maxHealth') { game.maxHealth += 5; game.health += 5; }
-    if (randomRelic.effect === 'bigHealth') { game.maxHealth += 10; game.health += 10; }
-    if (randomRelic.effect === 'tinyHealth') { game.maxHealth += 1; game.health += 1; }
+    if (randomRelic.effect === 'smallHealth') { game.maxHealth += RELIC_CONFIG.SMALL_HEALTH_BONUS; game.health += RELIC_CONFIG.SMALL_HEALTH_BONUS; }
+    if (randomRelic.effect === 'maxHealth') { game.maxHealth += RELIC_CONFIG.MEDIUM_HEALTH_BONUS; game.health += RELIC_CONFIG.MEDIUM_HEALTH_BONUS; }
+    if (randomRelic.effect === 'bigHealth') { game.maxHealth += RELIC_CONFIG.BIG_HEALTH_BONUS; game.health += RELIC_CONFIG.BIG_HEALTH_BONUS; }
+    if (randomRelic.effect === 'tinyHealth') { game.maxHealth += RELIC_CONFIG.TINY_HEALTH_BONUS; game.health += RELIC_CONFIG.TINY_HEALTH_BONUS; }
     
     const rarityColors = { common: '⚪', uncommon: '🟢', rare: '🔵', legendary: '🟠' };
     showMessage(`${rarityColors[rarity]} Relic: ${randomRelic.name}!`, 'success');

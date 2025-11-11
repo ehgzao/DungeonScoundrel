@@ -126,7 +126,15 @@ export const RELIC_CONFIG = {
     /** Maximum relics a player can have */
     MAX_RELICS: 10,
     /** Four Leaf Clover: consecutive avoid limit */
-    CLOVER_AVOID_LIMIT: 2
+    CLOVER_AVOID_LIMIT: 2,
+    /** Tiny health bonus (rope) */
+    TINY_HEALTH_BONUS: 1,
+    /** Small health bonus (small shield) */
+    SMALL_HEALTH_BONUS: 3,
+    /** Medium health bonus (silver shield) */
+    MEDIUM_HEALTH_BONUS: 5,
+    /** Big health bonus (golden shield) */
+    BIG_HEALTH_BONUS: 10
 };
 
 // ============================================
