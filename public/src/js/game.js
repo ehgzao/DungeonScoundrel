@@ -37,6 +37,13 @@ import {
     UNLOCKS
 } from './modules/game-state.js';
 
+// Import game events module
+import {
+    triggerRandomEvent,
+    showEventModal,
+    closeEventWrapper
+} from './modules/game-events.js';
+
 // ============================================
 // DOM ELEMENTS
 // ============================================
@@ -4661,91 +4668,7 @@ function getRelicBonus(type) {
     return bonus;
 }
 
-function triggerRandomEvent() {
-    if (game.gameOver) return;
-    
-    game.stats.eventsTriggered++;  // Track for Priest unlock
-    
-    // Filter out events already seen this run (no repeats)
-    const availableEvents = EVENTS.filter(e => !game.seenEvents.includes(e.id));
-    
-    // If all events seen, reset the pool
-    if (availableEvents.length === 0) {
-        game.seenEvents = [];
-        availableEvents.push(...EVENTS);
-    }
-    
-    // Pick random event from available pool
-    const event = availableEvents[Math.floor(Math.random() * availableEvents.length)];
-    
-    // Mark event as seen this run
-    game.seenEvents.push(event.id);
-    
-    // Mark that an event was triggered this room (max 1 per room)
-    game.eventTriggeredThisRoom = true;
-    
-    showEventModal(event);
-}
-
-function showEventModal(event) {
-    eventTitle.textContent = event.title;
-    eventText.innerHTML = event.text;
-    eventChoices.innerHTML = ''; // Clear previous choices
-    
-    event.choices.forEach(choice => {
-        const choiceEl = document.createElement('div');
-        choiceEl.className = 'event-choice';
-        choiceEl.innerHTML = choice.text;
-        choiceEl.onclick = () => {
-            choice.effect();
-            
-            // Lantern: +2 gold per event
-            if (game.relics.some(r => r.id === 'lantern')) {
-                earnGold(2);
-                showMessage('🏮 Lantern: +2 gold from event!', 'info');
-            }
-            
-            // Holy Necklace: Events heal 2 HP
-            if (game.relics.some(r => r.id === 'necklace')) {
-                game.health = Math.min(game.maxHealth, game.health + 2);
-                showMessage('📿 Holy Necklace: +2 HP!', 'success');
-            }
-            
-            eventModal.classList.remove('active');
-            
-            // Track event completion for achievement
-            const saved = localStorage.getItem('scoundrel_lifetime_stats');
-            let lifetimeStats = saved ? JSON.parse(saved) : {};
-            lifetimeStats.eventsCompleted = (lifetimeStats.eventsCompleted || 0) + 1;
-            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
-            
-            // Re-enable buttons if room is empty
-            if (game.room.length === 0) {
-                btnDrawRoom.removeAttribute('disabled');
-                btnDrawRoom.disabled = false;
-                if (game.lastActionWasAvoid) {
-                    btnAvoidRoom.setAttribute('disabled', 'disabled');
-                    btnAvoidRoom.disabled = true;
-                } else {
-                    btnAvoidRoom.removeAttribute('disabled');
-                    btnAvoidRoom.disabled = false;
-                }
-            }
-            updateUI();
-            checkGameState();
-            checkAchievements();
-        };
-        eventChoices.appendChild(choiceEl);
-    });
-    
-    // Disable game buttons while event is active
-    btnDrawRoom.disabled = true;
-    btnAvoidRoom.disabled = true;
-    
-    // Show event modal
-    eventModal.classList.add('active');
-    playSound('special');
-}
+// NOTE: triggerRandomEvent and showEventModal moved to modules/game-events.js
 
 function updateShopDisplay() {
     // Clear existing items
