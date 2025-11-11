@@ -3654,6 +3654,12 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                 hapticFeedback('success');
                 pulseElement(btn, '#6bcf7f');
                 console.log(`✅ Score ${score} auto-submitted to leaderboard!`);
+                
+                // Auto-close modal after 2 seconds on success
+                setTimeout(() => {
+                    const gameOverOverlay = document.querySelector('.game-over-overlay');
+                    if (gameOverOverlay) gameOverOverlay.remove();
+                }, 2000);
             } catch (err) {
                 setButtonLoading(btn, false);
                 btn.textContent = '❌ Submission Failed';
@@ -3980,8 +3986,11 @@ function updateUI() {
             document.body.appendChild(berserkIndicator);
         }
         berserkIndicator.innerHTML = `🔥 BERSERK x${game.berserkStacks}<br><small>+5 damage per attack</small>`;
-    } else if (berserkIndicator) {
-        berserkIndicator.remove();
+    } else {
+        // Remove indicator when stacks reach 0
+        if (berserkIndicator) {
+            berserkIndicator.remove();
+        }
     }
     
     // Undo button visibility (Easy/Normal only)
