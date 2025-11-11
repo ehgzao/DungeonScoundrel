@@ -131,7 +131,7 @@ function showNewGameModal() {
     }
     
     // First-time player: Suggest Easy difficulty
-    const hasPlayedBefore = localStorage.getItem('dungeon_scoundrel_played_before');
+    const hasPlayedBefore = localStorage.getItem(STORAGE_KEYS.PLAYED_BEFORE);
     console.log('[EASY MODAL] hasPlayedBefore:', hasPlayedBefore);
     console.log('[EASY MODAL] Should show Easy suggestion:', !hasPlayedBefore);
     
@@ -1774,7 +1774,7 @@ function shuffleDeck(deck) {
 
 function startGame() {
     // Mark that player has played before (for first-time Easy suggestion)
-    localStorage.setItem('dungeon_scoundrel_played_before', 'true');
+    localStorage.setItem(STORAGE_KEYS.PLAYED_BEFORE, 'true');
     
     // 1. Load Stats and Unlocks
     loadPermanentStats();
@@ -2116,9 +2116,9 @@ function checkAndStartTutorial() {
     // 2. Tutorial not skipped yet
     // 3. Difficulty is Easy
     // 4. Tutorial not already active
-    const tutorialCompleted = localStorage.getItem('dungeon_scoundrel_tutorial_completed');
-    const tutorialSkipped = localStorage.getItem('dungeon_scoundrel_tutorial_skipped');
-    const playedBefore = localStorage.getItem('dungeon_scoundrel_played_before');
+    const tutorialCompleted = localStorage.getItem(STORAGE_KEYS.TUTORIAL_COMPLETED);
+    const tutorialSkipped = localStorage.getItem(STORAGE_KEYS.TUTORIAL_SKIPPED);
+    const playedBefore = localStorage.getItem(STORAGE_KEYS.PLAYED_BEFORE);
     
     console.log('[TUTORIAL] Checking conditions...');
     console.log('[TUTORIAL]   - tutorial_completed:', tutorialCompleted);
@@ -2375,7 +2375,7 @@ function skipTutorial() {
     
     // CRITICAL: Set SKIPPED flag, NOT completed flag
     // This prevents achievement from unlocking
-    localStorage.setItem('dungeon_scoundrel_tutorial_skipped', 'true');
+    localStorage.setItem(STORAGE_KEYS.TUTORIAL_SKIPPED, 'true');
     
     // NO ACHIEVEMENT when skipping!
     showMessage('Tutorial skipped. Good luck!', 'info');
@@ -2403,7 +2403,7 @@ function completeTutorial() {
         console.log('[TUTORIAL] Timer resumed');
     }
     
-    localStorage.setItem('dungeon_scoundrel_tutorial_completed', 'true');
+    localStorage.setItem(STORAGE_KEYS.TUTORIAL_COMPLETED, 'true');
     
     // Unlock achievement ONLY when completing (not skipping)
     unlockAchievement('tutorial_master');
@@ -2434,7 +2434,7 @@ function drawRoom() {
         if (game.difficulty === 'endless') {
             // Progressive difficulty scaling
             game.endlessLevel = (game.endlessLevel || 0) + 1;
-            const difficultyScaling = Math.min(game.endlessLevel * 0.15, 2); // Max 2x scaling
+            const difficultyScaling = Math.min(game.endlessLevel * DIFFICULTY.ENDLESS_SCALING_INCREMENT, DIFFICULTY.ENDLESS_MAX_SCALING);
             
             game.dungeon = createDeck();
             
@@ -2574,7 +2574,7 @@ function avoidRoom() {
     }
     
     // Leather Boots: Avoid costs 2 cards instead of 3
-    const avoidCost = game.relics.some(r => r.id === 'leather_boots') ? 2 : 3;
+    const avoidCost = game.relics.some(r => r.id === 'leather_boots') ? 2 : CARDS.AVOID_COST;
     
     if (game.dungeon.length < avoidCost) {
         showMessage('Not enough cards to avoid!', 'warning');
@@ -4045,9 +4045,9 @@ function updateRunningScore() {
 // ============================================
 function holdCard(card, index) {
     // Calculate max hold capacity
-    let maxHold = 1;
-    if (game.selectedClass === 'rogue') maxHold = 2;
-    if (game.relics.some(r => r.id === 'feather')) maxHold += 1;
+    let maxHold = CARDS.DEFAULT_HOLD_CAPACITY;
+    if (game.selectedClass === 'rogue') maxHold = CARDS.ROGUE_HOLD_CAPACITY;
+    if (game.relics.some(r => r.id === 'feather')) maxHold += CARDS.FEATHER_BONUS_SLOTS;
     
     // Check if already at capacity
     const currentHeldCount = game.heldCard ? (Array.isArray(game.heldCard) ? game.heldCard.length : 1) : 0;
