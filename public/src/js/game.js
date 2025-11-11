@@ -95,6 +95,13 @@ function showWelcomeScreen() {
 function showNewGameModal() {
     newGameModal.classList.add('active');
     
+    // CRITICAL: ALWAYS remove old suggestions first (prevents duplicate suggestions)
+    const oldSuggestion = document.querySelector('.difficulty-suggestion');
+    if (oldSuggestion) {
+        console.log('[EASY MODAL] Removing old suggestion');
+        oldSuggestion.remove();
+    }
+    
     // First-time player: Suggest Easy difficulty
     const hasPlayedBefore = localStorage.getItem('dungeon_scoundrel_played_before');
     console.log('[EASY MODAL] hasPlayedBefore:', hasPlayedBefore);
@@ -102,9 +109,6 @@ function showNewGameModal() {
     
     if (!hasPlayedBefore) {
         console.log('[EASY MODAL] ✅ Showing Easy suggestion...');
-        // Remove previous suggestions
-        const oldSuggestion = document.querySelector('.difficulty-suggestion');
-        if (oldSuggestion) oldSuggestion.remove();
         
         // Select Easy by default
         difficultySelector.querySelectorAll('.difficulty-btn').forEach(btn => {
@@ -3410,7 +3414,15 @@ function checkGameState() {
     if (game.dungeon.length === 0 && game.room.length === 0 && game.difficulty !== 'endless') {
         // Check if final boss already defeated
         if (!game.finalBossDefeated) {
-            spawnFinalBoss();
+            // CRITICAL: Only spawn if boss is not already in room
+            // This prevents boss HP from resetting if room becomes empty temporarily
+            const bossInRoom = game.room.some(card => card.isBoss && card.bossNumber === 99);
+            if (!bossInRoom) {
+                console.log('[BOSS] Spawning final boss');
+                spawnFinalBoss();
+            } else {
+                console.log('[BOSS] Final boss already in room, skipping spawn');
+            }
         } else {
             endGame('victory');
         }
@@ -4182,11 +4194,13 @@ function updateUI() {
                 }
                 game.room.unshift(selectedCard);
                 console.log('[HOLD] Card added to room, room.length:', game.room.length);
+                console.log('[HOLD] Card details:', selectedCard);
                 updateUI();
                 // SOLUÇÃO DEFINITIVA: Chamar handleCardClick diretamente (sem setTimeout)
                 // Isso evita race condition onde carta não existe no DOM ainda
                 console.log('[HOLD] Calling handleCardClick directly');
                 handleCardClick(selectedCard, 0);
+                console.log('[HOLD] ✅ handleCardClick completed');
             };
             holdAreaContainer.appendChild(cardEl);
             
@@ -4210,11 +4224,13 @@ function updateUI() {
                     }
                     game.room.unshift(selectedCard);
                     console.log('[HOLD] Card added to room, room.length:', game.room.length);
+                    console.log('[HOLD] Card details:', selectedCard);
                     updateUI();
                     // SOLUÇÃO DEFINITIVA: Chamar handleCardClick diretamente (sem setTimeout)
                     // Isso evita race condition onde carta não existe no DOM ainda
                     console.log('[HOLD] Calling handleCardClick directly');
                     handleCardClick(selectedCard, 0);
+                    console.log('[HOLD] ✅ handleCardClick completed');
                 };
                 holdAreaContainer.appendChild(cardEl);
             });

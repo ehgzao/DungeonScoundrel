@@ -18,11 +18,20 @@ let db, auth, appId, userId;
 
 try {
             // __firebase_config and __app_id are injected by the environment
-            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+            // CRITICAL: Must use window.* in ES6 modules to access global variables
+            const firebaseConfig = typeof window.__firebase_config !== 'undefined' ? JSON.parse(window.__firebase_config) : {};
+            
+            console.log('[FIREBASE] Initializing with config:', { 
+                hasConfig: !!window.__firebase_config, 
+                projectId: firebaseConfig.projectId 
+            });
+            
             const app = initializeApp(firebaseConfig);
             db = getFirestore(app);
             auth = getAuth(app);
-            appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            appId = typeof window.__app_id !== 'undefined' ? window.__app_id : 'default-app-id';
+            
+            console.log('[FIREBASE] ✅ Initialized successfully:', { appId, hasDb: !!db, hasAuth: !!auth });
             // setLogLevel('debug'); // Useful for debugging
             
             // Anonymous auth for leaderboard - handled separately from Google Auth
@@ -32,7 +41,7 @@ try {
                     console.log("Firebase Auth: User signed in:", userId);
                 } else if (!user) {
                     try {
-                        const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                        const token = typeof window.__initial_auth_token !== 'undefined' ? window.__initial_auth_token : null;
                         if (token) {
                             await signInWithCustomToken(auth, token);
                         } else {
@@ -405,6 +414,17 @@ try {
         window.signOutUser = signOutUser;
         window.saveProgressToCloud = saveProgressToCloud;
         
+        // CRITICAL: Expose Firebase globals for leaderboard.js and other modules
+        window.db = db;
+        window.appId = appId;
+        window.userId = userId;
+        window.auth = auth;
+        
 
 // Log module load
-console.log('[FIREBASE-AUTH] Module loaded. DB:', !!db, 'Auth:', !!auth);
+console.log('[FIREBASE-AUTH] Module loaded. DB:', !!db, 'Auth:', !!auth, 'AppId:', appId);
+console.log('[FIREBASE-AUTH] ✅ Globals exposed:', { 
+    'window.db': !!window.db, 
+    'window.appId': !!window.appId, 
+    'window.auth': !!window.auth 
+});
