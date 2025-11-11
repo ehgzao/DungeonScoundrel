@@ -182,10 +182,8 @@ const EVENTS = [
         choices: [
             { text: '🔧 Repair weapon (Full durability, 15 gold)', effect: () => {
                 if (game.gold >= 15 && game.equippedWeapon && game.equippedWeapon.durability < game.equippedWeapon.maxDurability) {
-                    console.log('[EVENT] Blacksmith REPAIR - Before:', game.equippedWeapon.durability, '/', game.equippedWeapon.maxDurability);
                     game.gold -= 15;
                     game.equippedWeapon.durability = game.equippedWeapon.maxDurability;
-                    console.log('[EVENT] Blacksmith REPAIR - After:', game.equippedWeapon.durability, '/', game.equippedWeapon.maxDurability);
                     showMessage('🔧 Weapon fully repaired!', 'success');
                     updateUI();
                 } else if (!game.equippedWeapon) { showMessage('No weapon!', 'warning'); }
