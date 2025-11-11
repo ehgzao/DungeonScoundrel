@@ -4948,6 +4948,18 @@ window.createMiniCardElement = createMiniCardElement; // For tutorial - mini car
 
 console.log('[GAME] All functions and state exposed globally for modules');
 
+// DEBUG: Force Blacksmith event (remove after testing)
+window.debugBlacksmith = function() {
+    console.log('[DEBUG] Forcing Blacksmith event...');
+    const blacksmithEvent = EVENTS.find(e => e.id === 'blacksmith');
+    if (blacksmithEvent) {
+        showEventModal(blacksmithEvent);
+        console.log('[DEBUG] Blacksmith event triggered!');
+    } else {
+        console.error('[DEBUG] Blacksmith event not found!');
+    }
+};
+
 // Check orientation on load and resize
 checkMobileOrientation();
 window.addEventListener('resize', debounce(checkMobileOrientation, 300));
