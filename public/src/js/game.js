@@ -4986,7 +4986,10 @@ function closeShop() {
         console.log('[SHOP] Room empty, enabling buttons');
         btnDrawRoom.removeAttribute('disabled');
         btnDrawRoom.disabled = false;
-        if (game.lastActionWasAvoid) {
+        
+        // CRITICAL: First room (roomsCleared === 0): Avoid must be disabled
+        // After first room: Avoid enabled unless lastActionWasAvoid
+        if (game.stats.roomsCleared === 0 || game.lastActionWasAvoid) {
             btnAvoidRoom.setAttribute('disabled', 'disabled');
             btnAvoidRoom.disabled = true;
         } else {
@@ -5003,6 +5006,7 @@ function closeShop() {
 
 // Modal open/close functions
 function showTutorial() { 
+    // ...
     tutorialModal.classList.add('active'); 
     trapFocus(tutorialModal);
     hapticFeedback('light');
