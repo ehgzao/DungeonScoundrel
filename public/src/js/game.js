@@ -3337,7 +3337,15 @@ function checkGameState() {
     });
     
     // Room Cleared?
-    if (game.room.length === 0 && !game.gameOver) {
+    const roomEmpty = game.room.length === 0;
+    const notGameOver = !game.gameOver;
+    console.log('[CHECKGAMESTATE] Conditions:', { 
+        roomEmpty, 
+        notGameOver, 
+        shouldEnableButtons: roomEmpty && notGameOver 
+    });
+    
+    if (roomEmpty && notGameOver) {
         console.log('[CHECKGAMESTATE] ✅ Room cleared! Enabling buttons...');
         
         game.potionsUsed = 0;
@@ -3370,26 +3378,6 @@ function checkGameState() {
         createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 40);
         setTimeout(() => createParticles(window.innerWidth / 2 + 100, window.innerHeight / 2, '#6bcf7f', 30), 150);
         setTimeout(() => createParticles(window.innerWidth / 2 - 100, window.innerHeight / 2, '#4ecdc4', 30), 300);
-        
-        // CRITICAL: Remove disabled attribute explicitly from DOM
-        // Setting .disabled = false doesn't always update the DOM attribute
-        btnDrawRoom.removeAttribute('disabled');
-        btnDrawRoom.disabled = false;
-        
-        if (game.lastActionWasAvoid) {
-            btnAvoidRoom.setAttribute('disabled', 'disabled');
-            btnAvoidRoom.disabled = true;
-        } else {
-            btnAvoidRoom.removeAttribute('disabled');
-            btnAvoidRoom.disabled = false;
-        }
-        
-        console.log('[CHECKGAMESTATE] Buttons enabled:', { 
-            btnDrawDisabled: btnDrawRoom.disabled,
-            btnDrawHasAttr: btnDrawRoom.hasAttribute('disabled'),
-            btnAvoidDisabled: btnAvoidRoom.disabled,
-            btnAvoidHasAttr: btnAvoidRoom.hasAttribute('disabled')
-        });
         
         // Room Clear Relics (optimized single iteration)
         let goldPerRoom = 0;
@@ -3478,6 +3466,26 @@ function checkGameState() {
                 triggerRandomEvent();
             }
         }, 800);
+        
+        // CRITICAL: Enable buttons AFTER room clear and BEFORE boss spawn
+        // This ensures buttons are enabled even if boss spawns immediately
+        btnDrawRoom.removeAttribute('disabled');
+        btnDrawRoom.disabled = false;
+        
+        if (game.lastActionWasAvoid) {
+            btnAvoidRoom.setAttribute('disabled', 'disabled');
+            btnAvoidRoom.disabled = true;
+        } else {
+            btnAvoidRoom.removeAttribute('disabled');
+            btnAvoidRoom.disabled = false;
+        }
+        
+        console.log('[CHECKGAMESTATE] Buttons enabled:', { 
+            btnDrawDisabled: btnDrawRoom.disabled,
+            btnDrawHasAttr: btnDrawRoom.hasAttribute('disabled'),
+            btnAvoidDisabled: btnAvoidRoom.disabled,
+            btnAvoidHasAttr: btnAvoidRoom.hasAttribute('disabled')
+        });
     }
 
     if (game.health <= 0) {
