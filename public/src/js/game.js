@@ -414,7 +414,7 @@ const CLASSES = {
         icon: '💃',
         unlocked: false,
         unlockRequirement: 'Win on Hard difficulty',
-        passive: { potionHealBonus: 3, maxPotionsPerRoom: 2, eventChanceBonus: 15 },
+        passive: { potionHealBonus: 3, maxPotionsPerRoom: POTIONS.DANCER_MAX_PER_ROOM, eventChanceBonus: 15 },
         active: {
             name: 'Healing Dance',
             description: 'Heal 5 HP + damage buff',
@@ -3318,11 +3318,11 @@ function handleWeapon(weapon, index) {
 
 function handlePotion(potion, index) {
     // Max potions per dungeon (Herb relic: 2x instead of 1x)
-    let maxPotionsPerDungeon = 1;
-    if (game.relics.some(r => r.id === 'herb')) maxPotionsPerDungeon = 2;
+    let maxPotionsPerDungeon = POTIONS.DEFAULT_MAX_PER_ROOM;
+    if (game.relics.some(r => r.id === 'herb')) maxPotionsPerDungeon = POTIONS.DANCER_MAX_PER_ROOM;
     
     // Dancer can use 2 potions per ROOM (different from dungeon limit)
-    const maxPotionsPerRoom = (game.classData && game.classData.passive.maxPotionsPerRoom) || 1;
+    const maxPotionsPerRoom = (game.classData && game.classData.passive.maxPotionsPerRoom) || POTIONS.DEFAULT_MAX_PER_ROOM;
     
     // Check if potion limit reached (per dungeon)
     if (game.potionsUsed >= maxPotionsPerDungeon) {

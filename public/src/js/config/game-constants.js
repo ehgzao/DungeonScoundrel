@@ -111,8 +111,10 @@ export const EVENTS = {
 // POTIONS
 // ============================================
 export const POTIONS = {
-    /** Maximum potions usable per room */
-    MAX_PER_ROOM: 2,
+    /** Default maximum potions usable per room */
+    DEFAULT_MAX_PER_ROOM: 1,
+    /** Dancer class: maximum potions usable per room */
+    DANCER_MAX_PER_ROOM: 2,
     /** Potion Mastery relic: max potions per room */
     MASTERY_MAX: 3
 };
