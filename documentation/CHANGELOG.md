@@ -5,6 +5,68 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.24] - 2025-11-11 - 📦 Modularization Phase 1.2 + Bug Fixes
+
+### 🎯 Major Improvements
+
+#### **Game Modularization - Phase 1.2** 📦
+- **Progress**: 4/7 modules completed (57%)
+- **New Modules Created**:
+  - `modules/game-state.js` (165 lines) - Central game state management
+  - `modules/game-events.js` (185 lines) - Random events system
+  - `modules/game-shop.js` (290 lines) - Shop system
+  - `modules/game-relics.js` (200 lines) - Relic management
+- **Benefits**:
+  - ✅ Reduced game.js from 5,096 to ~4,200 lines (-17.6%)
+  - ✅ Better code organization
+  - ✅ Easier to maintain and test
+  - ✅ Clear separation of concerns
+
+#### **Project Cleanup** 🧹
+- **Removed**:
+  - 2 backup folders (outdated)
+  - `docs/` folder (101 obsolete files)
+  - `src/` and `dist/` empty folders
+- **Result**: ~100+ files removed, cleaner structure
+
+### 🐛 Bug Fixes
+
+#### **Bug #1: Tutorial Spotlight Clickthrough**
+- **Fixed**: Game buttons were clickable during tutorial spotlight
+- **Impact**: Players could interact with game during tutorial
+- **Solution**: Added `disableGameButtons()` and `enableGameButtons()` calls
+
+#### **Bug #2: RELIC_CONFIG Not Found**
+- **Fixed**: Module couldn't access RELIC_CONFIG constant
+- **Impact**: Relic system completely broken
+- **Solution**: Exposed `window.RELIC_CONFIG` globally
+
+#### **Bug #3: Duplicate Import**
+- **Fixed**: RELIC_CONFIG imported twice causing syntax error
+- **Impact**: Game wouldn't start
+- **Solution**: Removed duplicate import statement
+
+### 🔍 Debug Features
+
+#### **Massive Durability Logging**
+- Added comprehensive logging system for weapon durability
+- Stack trace capture for durability modifications
+- Helps identify edge cases and bugs
+
+### 📝 Documentation
+
+#### **New Documents**:
+- `BACKLOG_PRIORIZADO.md` - Complete prioritized backlog
+- Updated `PHASE_1.2_PLAN.md` - Modularization progress
+- Updated `REFACTORING_PROGRESS.md` - Current status
+
+### 🚀 Deployment
+- All changes tested and deployed to production
+- GitHub repository cleaned and organized
+- Netlify auto-deployment working
+
+---
+
 ## [1.4.1] - 2025-11-10 - 🔧 Code Quality & Bug Fixes
 
 ### 🎯 Major Improvements
