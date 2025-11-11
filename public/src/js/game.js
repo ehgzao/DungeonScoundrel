@@ -1618,7 +1618,7 @@ function getComboBonus() {
     // Base: 2 combo = +1, 3 combo = +2, etc.
     // With Combo God: 2 combo = +2, 3 combo = +4, etc.
     const comboMultiplier = permanentUnlocks.comboGod ? 2 : 1;
-    let bonus = game.combo >= 2 ? (game.combo - 1) * comboMultiplier : 0;
+    let bonus = game.combo >= COMBO.COMBO_MASTER_START + 1 ? (game.combo - 1) * comboMultiplier : 0;
     
     // Fire Ring: +1 damage per combo stack
     if (game.relics.some(r => r.id === 'ring_fire') && game.combo >= 1) {
@@ -3073,7 +3073,7 @@ function handleMonster(monster, index) {
             // Perfect dodge - keep combo!
             game.combo++;
             game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
-            if (game.combo >= 2) {
+            if (game.combo >= COMBO.COMBO_MASTER_START + 1) {
                 showCombo(game.combo);
             }
         } else {
@@ -3130,7 +3130,7 @@ function handleMonster(monster, index) {
     else {
         game.combo++;
         game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
-        if (game.combo >= 2) {
+        if (game.combo >= COMBO.COMBO_MASTER_START + 1) {
             showCombo(game.combo);
             playSound('combo');
         }
@@ -3391,7 +3391,7 @@ function checkGameState() {
         game.stats.roomsCleared++;
         
         // Show combo message if active (combo now persists between rooms!)
-        if (game.combo >= 3) {
+        if (game.combo >= COMBO.MIN_VISUAL_COMBO) {
             showMessage(`🔥 ${game.combo}x COMBO! DUNGEON CLEAR! Keep it going!`, 'success');
             createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 40);
         }
