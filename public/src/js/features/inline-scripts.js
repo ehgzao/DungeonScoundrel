@@ -472,7 +472,7 @@ window.sendBugReport = function() {
             from_name: 'Player',
             reply_to: userEmailValue || 'hello@dungeonscoundrel.com',
             message: message,
-            game_version: 'v1.4.7',
+            game_version: 'v1.4.8',
             report_date: new Date().toLocaleString(),
             
             // BROWSER INFO
@@ -493,7 +493,7 @@ window.sendBugReport = function() {
             copy_message: userEmailValue ? '📧 A copy of this report has been sent to your email.' : '',
             
             // LEGACY FIELDS
-            version: 'v1.4.7',
+            version: 'v1.4.8',
             date: new Date().toLocaleString()
         };
         

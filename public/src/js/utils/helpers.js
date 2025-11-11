@@ -762,30 +762,39 @@ function startInteractiveTutorial() {
     const modal = document.getElementById('interactiveTutorialModal');
     if (modal) modal.classList.add('active');
     
-    // Render real game cards after modal is shown
+    // Render real game cards with INLINE STYLES (to ensure colors show)
     setTimeout(() => {
         const cardsContainer = document.getElementById('tutorialCardExamples');
-        if (cardsContainer && typeof window.createCardElement === 'function') {
+        if (cardsContainer) {
             cardsContainer.innerHTML = '';
-            const exampleCards = [
-                { suit: '♠', value: 'K' },  // Monster
-                { suit: '♦', value: '10' }, // Weapon
-                { suit: '♥', value: '7' },  // Potion
-                { suit: '🃏', value: 'Special' } // Special
-            ];
             
-            exampleCards.forEach(card => {
-                try {
-                    const cardEl = window.createCardElement(card);
-                    if (cardEl) {
-                        cardEl.style.pointerEvents = 'none';
-                        cardEl.style.cursor = 'default';
-                        cardsContainer.appendChild(cardEl);
-                    }
-                } catch (e) {
-                    console.warn('[TUTORIAL] Could not create card:', e);
-                }
-            });
+            // Monster Card (K♠)
+            const monsterCard = document.createElement('div');
+            monsterCard.className = 'card monster';
+            monsterCard.style.cssText = 'background: linear-gradient(135deg, #8b2e2e 0%, #5a1a1a 100%); border: 3px solid #ff6b6b; box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4); pointer-events: none; min-width: 100px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; position: relative;';
+            monsterCard.innerHTML = '<div style="font-size: 2.5em; color: #fff; font-weight: bold;">K</div><div style="font-size: 2em; color: #fff;">♠</div>';
+            cardsContainer.appendChild(monsterCard);
+            
+            // Weapon Card (10♦)
+            const weaponCard = document.createElement('div');
+            weaponCard.className = 'card weapon';
+            weaponCard.style.cssText = 'background: linear-gradient(135deg, #d4af37 0%, #aa8c2a 100%); border: 3px solid #ffd93d; box-shadow: 0 4px 12px rgba(255, 217, 61, 0.4); pointer-events: none; min-width: 100px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; position: relative;';
+            weaponCard.innerHTML = '<div style="font-size: 2.5em; color: #fff; font-weight: bold;">10</div><div style="font-size: 2em; color: #ff6b6b;">♦</div>';
+            cardsContainer.appendChild(weaponCard);
+            
+            // Potion Card (7♥)
+            const potionCard = document.createElement('div');
+            potionCard.className = 'card potion';
+            potionCard.style.cssText = 'background: linear-gradient(135deg, #6bcf7f 0%, #4ecdc4 100%); border: 3px solid #6bcf7f; box-shadow: 0 4px 12px rgba(107, 207, 127, 0.4); pointer-events: none; min-width: 100px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; position: relative;';
+            potionCard.innerHTML = '<div style="font-size: 2.5em; color: #fff; font-weight: bold;">7</div><div style="font-size: 2em; color: #ff6b6b;">♥</div>';
+            cardsContainer.appendChild(potionCard);
+            
+            // Special Card
+            const specialCard = document.createElement('div');
+            specialCard.className = 'card special';
+            specialCard.style.cssText = 'background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%); border: 3px solid #ffd700; box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4), 0 0 20px rgba(167, 139, 250, 0.3); pointer-events: none; min-width: 100px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; position: relative;';
+            specialCard.innerHTML = '<div style="font-size: 1.5em; color: #ffd700; font-weight: bold;">SPECIAL</div><div style="font-size: 2em; color: #ffd700;">✨</div>';
+            cardsContainer.appendChild(specialCard);
         }
     }, 100);
     
