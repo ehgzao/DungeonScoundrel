@@ -2677,6 +2677,9 @@ function handleMonster(monster, index) {
         effectiveWeapon *= 3;
     }
     
+    // Track if weapon durability was already reduced (for boss battles)
+    let weaponDurabilityReduced = false;
+    
     // Boss battle: reduce HP instead of instant kill
     if (monster.isBoss) {
         // SPECIAL CASE: Boss without weapon - boss attacks once and flees!
@@ -2712,6 +2715,7 @@ function handleMonster(monster, index) {
         // Weapon durability for boss attacks
         if (game.equippedWeapon && game.equippedWeapon.durability < 999) {
             game.equippedWeapon.durability--;
+            weaponDurabilityReduced = true; // Mark that durability was already reduced
             
             if (game.equippedWeapon.durability <= 0) {
                 // Weapon broke!
@@ -3006,7 +3010,13 @@ function handleMonster(monster, index) {
                 // Normal Damage
                 game.health -= damage;
                 game.stats.totalDamage += damage;
-                resetCombo(); // Reset combo
+                
+                // Rogue Shadow Strike: don't break combo even when taking damage
+                const rogueComboSafe = (game.playerClass === 'rogue' && rogueDoubleActive);
+                if (!rogueComboSafe) {
+                    resetCombo(); // Reset combo (unless Rogue ability is active)
+                }
+                
                 showDamageNumber(damage, 'damage');
                 playSound('damage');
                 screenShake();
@@ -3069,7 +3079,8 @@ function handleMonster(monster, index) {
     }
     
     // Weapon durability system - ONLY if weapon was actually USED
-    if (weaponWasUsed && game.equippedWeapon && game.equippedWeapon.durability < 999) {
+    // AND durability wasn't already reduced (boss battles reduce durability earlier)
+    if (weaponWasUsed && game.equippedWeapon && game.equippedWeapon.durability < 999 && !weaponDurabilityReduced) {
         game.equippedWeapon.durability--;
         
         if (game.equippedWeapon.durability <= 0) {
@@ -3094,14 +3105,6 @@ function handleMonster(monster, index) {
             game.rageStrikeActive = false; // Reset Berserker flag
             showMessage('✨ Class ability buff expired!', 'info');
         }
-    }
-    
-    // Rogue Shadow Strike: don't break combo
-    const rogueComboSafe = (game.playerClass === 'rogue' && rogueDoubleActive);
-    if (rogueComboSafe && damage > 0) {
-        // Override combo break for Rogue ability
-        game.combo++;
-        game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
     }
     
     game.stats.monstersSlain++;
