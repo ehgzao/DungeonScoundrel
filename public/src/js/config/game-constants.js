@@ -333,7 +333,13 @@ export const COMBAT = {
     /** Dancer class ability: Damage bonus */
     DANCER_DAMAGE_BONUS: 2,
     /** Berserker Rage Strike: Damage multiplier */
-    BERSERKER_RAGE_MULTIPLIER: 3
+    BERSERKER_RAGE_MULTIPLIER: 3,
+    /** Thunder Gauntlet: Critical hit chance */
+    THUNDER_CRIT_CHANCE: 0.20,
+    /** Critical Strike: Triple damage chance */
+    CRITICAL_STRIKE_CHANCE: 0.10,
+    /** Priest Divine Blessing: Dodge chance */
+    DIVINE_BLESSING_CHANCE: 0.15
 };
 
 // ============================================

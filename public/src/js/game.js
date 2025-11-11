@@ -3027,7 +3027,7 @@ function handleMonster(monster, index) {
         showMessage('🛡️ Dodged! No damage!', 'success');
     }
     // Priest Divine Blessing - 15% chance to dodge
-    else if (damage > 0 && game.classData && game.classData.passive.divineBlessing && Math.random() < 0.15) {
+    else if (damage > 0 && game.classData && game.classData.passive.divineBlessing && Math.random() < COMBAT.DIVINE_BLESSING_CHANCE) {
         weaponWasUsed = false; // Divine Blessing = no weapon used
         attackWasMade = false; // Divine Blessing = no attack made
         playSound('special');
