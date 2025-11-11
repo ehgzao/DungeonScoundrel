@@ -1,4 +1,32 @@
 // ============================================
+// IMPORTS
+// ============================================
+import {
+    HEALTH,
+    GOLD,
+    CARDS,
+    COMBO,
+    BOSS,
+    DIFFICULTY,
+    EVENTS,
+    POTIONS,
+    RELICS,
+    ACHIEVEMENTS,
+    UI,
+    TIMING,
+    SHOP_PRICES,
+    SHOP_VALUES,
+    CLASS_COOLDOWNS,
+    KEYS,
+    STORAGE_KEYS,
+    GAME_MODES,
+    CARD_TYPES,
+    SUITS,
+    LOG_TYPES,
+    MESSAGE_TYPES
+} from './config/game-constants.js';
+
+// ============================================
 // DOM ELEMENTS
 // ============================================
 // Welcome Screen
@@ -57,15 +85,15 @@ const game = {
     undoAvailable: false,
     lastGameState: null,
     potionsUsed: 0,
-    difficulty: 'normal',
+    difficulty: GAME_MODES.NORMAL,
     combo: 0,
     score: 0,
-    health: 20,
-    maxHealth: 20,
+    health: HEALTH.DEFAULT_START,
+    maxHealth: HEALTH.DEFAULT_MAX,
     equippedWeapon: null,
     dungeon: [],
     room: [],
-    gold: 0,
+    gold: GOLD.DEFAULT_START,
     totalGoldEarned: 0,
     stats: {},
     settings: {
@@ -1301,8 +1329,8 @@ function useDancerAbility() {
 
 function useBerserkerAbility() {
     // Rage Strike: Sacrifice 5 HP for 3x damage
-    if (game.health <= 5) {
-        showMessage('⚠️ Not enough HP! Need more than 5 HP to use Rage Strike.', 'danger');
+    if (game.health <= HEALTH.CRITICAL_THRESHOLD) {
+        showMessage(`⚠️ Not enough HP! Need more than ${HEALTH.CRITICAL_THRESHOLD} HP to use Rage Strike.`, 'danger');
         playSound('error');
         return;
     }
@@ -2433,8 +2461,8 @@ function drawRoom() {
 
     // NEW BOSS SYSTEM: 2 Minibosses (room 15 and 25) + Final Boss mandatory
     const nextRoomNumber = game.stats.roomsCleared + 1;
-    const isMiniboss1 = nextRoomNumber === 15;
-    const isMiniboss2 = nextRoomNumber === 25;
+    const isMiniboss1 = nextRoomNumber === BOSS.MINIBOSS_1_ROOM;
+    const isMiniboss2 = nextRoomNumber === BOSS.MINIBOSS_2_ROOM;
     
     // Warn player about upcoming miniboss
     if (nextRoomNumber === 14) {
@@ -2796,7 +2824,7 @@ function handleMonster(monster, index) {
             game.stats.bossesKilled++;  // Track for Berserker unlock
             
             // Check if this is the final boss
-            if (monster.bossNumber === 99) {
+            if (monster.bossNumber === BOSS.FINAL_BOSS_NUMBER) {
                 game.finalBossDefeated = true;
             }
             
@@ -3512,7 +3540,7 @@ function checkGameState() {
         if (!game.finalBossDefeated) {
             // CRITICAL: Only spawn if boss is not already in room
             // This prevents boss HP from resetting if room becomes empty temporarily
-            const bossInRoom = game.room.some(card => card.isBoss && card.bossNumber === 99);
+            const bossInRoom = game.room.some(card => card.isBoss && card.bossNumber === BOSS.FINAL_BOSS_NUMBER);
             if (!bossInRoom) {
                 console.log('[BOSS] Spawning final boss');
                 spawnFinalBoss();
@@ -4074,7 +4102,7 @@ function updateUI() {
     }
     
     // HP Critical Warning
-    if (game.health > 0 && game.health <= 5) {
+    if (game.health > 0 && game.health <= HEALTH.CRITICAL_THRESHOLD) {
         document.body.classList.add('hp-critical');
         // Show warning message first time
         if (!game.criticalWarningShown) {
