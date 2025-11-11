@@ -3812,6 +3812,14 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
 }
 
 function spawnFinalBoss() {
+    // CRITICAL: Prevent duplicate spawns
+    if (game.finalBossSpawned) {
+        console.log('[BOSS] Final boss already spawned, skipping');
+        return;
+    }
+    
+    game.finalBossSpawned = true; // Mark as spawned
+    
     // Spawn final boss based on difficulty
     const difficultyHP = {
         easy: 20,
@@ -3822,8 +3830,8 @@ function spawnFinalBoss() {
     const finalBossHP = difficultyHP[game.difficulty] || 30;
     
     const finalBoss = {
-        suit: '👹',
-        value: '👹',
+        suit: '',
+        value: '',
         numValue: finalBossHP,
         maxHP: finalBossHP,
         isBoss: true,
@@ -3835,7 +3843,7 @@ function spawnFinalBoss() {
     game.room = [finalBoss];
     
     playSound('special');
-    showMessage('👑 FINAL BOSS: The Dungeon Lord appears!', 'danger');
+    showMessage('', 'danger');
     setTimeout(() => showMessage(finalBoss.bossFlavor, 'warning'), 1500);
     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 100);
     
