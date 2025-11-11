@@ -62,30 +62,40 @@
 **Bugs Críticos Corrigidos:**
 - ✅ ES6 module type="module" adicionado
 - ✅ EVENTS conflict (renomeado para EVENT_CONFIG)
-- ✅ RELICS conflict (renomeado para RELIC_CONFIG)
-- ✅ ACHIEVEMENTS conflict (renomeado para ACHIEVEMENT_CONFIG)
-- ✅ giveRelicByRarity exposto globalmente
 
-**Próximo:** ✅ FASE 1.1 COMPLETA! Iniciar Fase 1.2 (Dividir game.js em módulos)
+**Próximo:** FASE 1.1 COMPLETA! Iniciar Fase 1.2 (Dividir game.js em módulos)
 
-#### 1.2 Separar Módulo de UI ⏳ PENDENTE
-- [ ] Criar `modules/game-ui.js`
-- [ ] Mover funções de UI:
-  - updateUI()
-  - updateRunningScore()
-  - createCardElement()
-  - renderRoom()
-  - renderHeldCards()
-  - showMessage()
-  - addLog()
+#### 1.2 Separar Módulos ⏳ **EM ANDAMENTO** (14% completo)
 
-#### 1.3 Separar Módulo de Combate ⏳ PENDENTE
+**Módulo 1: game-state.js**  **COMPLETO**
+- [x] Criar `modules/game-state.js`
+- [x] Mover game object (estado central)
+- [x] Mover permanentStats, permanentUnlocks
+- [x] Mover UNLOCKS array
+- [x] Importar em game.js
+- [x] Testar funcionamento
+- [x] Commit (v1.6.4)
+
+**Status:** Funcionando perfeitamente, zero erros
+
+**Módulo 2: game-ui.js** ⏸️ **PAUSADO**
+- [ ] **PROBLEMA:** updateUI() muito grande (387 linhas)
+- [ ] **SOLUÇÃO:** Dividir em funções menores primeiro
+- [ ] Criar funções auxiliares:
+  - updateHealthBar()
+  - updateGoldDisplay()
+  - updateWeaponDisplay()
+  - updateHoldArea()
+  - updateRoomDisplay()
+- [ ] Depois mover para módulo
+- [ ] Testar isoladamente
+
+**Próximos módulos:** Aguardando estratégia revistaCombate ⏳ PENDENTE
 - [ ] Criar `modules/game-combat.js`
 - [ ] Mover funções de combate:
   - handleMonster()
   - calculateDamage()
   - applyDamage()
-  - resetCombo()
   - checkCombo()
 
 #### 1.4 Separar Módulo de Cartas ⏳ PENDENTE

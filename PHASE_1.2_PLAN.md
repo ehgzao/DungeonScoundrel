@@ -293,8 +293,8 @@ window.showTutorial = showTutorial;
 
 ## 📊 PROGRESSO
 
-- [ ] 1. game-state.js
-- [ ] 2. game-ui.js
+- [x] 1. game-state.js ✅ **COMPLETO** (v1.6.4)
+- [ ] 2. game-ui.js ⏸️ **PAUSADO** (muito complexo - 387 linhas)
 - [ ] 3. game-cards.js
 - [ ] 4. game-combat.js
 - [ ] 5. game-shop.js
@@ -303,6 +303,48 @@ window.showTutorial = showTutorial;
 - [ ] 8. Atualizar index.html
 - [ ] 9. Atualizar DEPENDENCIES.md
 - [ ] 10. Teste final completo
+
+---
+
+## 📚 LIÇÕES APRENDIDAS - SESSÃO 1
+
+### ✅ SUCESSOS:
+1. **Módulo 1 (game-state.js)** criado e testado com sucesso
+2. **Zero erros** no console após integração
+3. **6 bugs corrigidos** (5 críticos + 1 tutorial)
+4. **33 commits** bem documentados
+5. **Backup** criado antes de iniciar
+
+### ⚠️ DESAFIOS IDENTIFICADOS:
+1. **updateUI() é MUITO grande** (387 linhas)
+   - Depende de 15+ funções
+   - Depende de 20+ elementos DOM
+   - Precisa ser dividida ANTES de modularizar
+
+2. **Estratégia precisa ser revista:**
+   - Não mover funções grandes de uma vez
+   - Dividir em funções menores primeiro
+   - Depois modularizar
+
+### 🎯 PRÓXIMA SESSÃO - NOVA ESTRATÉGIA:
+1. **Dividir updateUI()** em funções menores:
+   - `updateHealthBar()`
+   - `updateGoldDisplay()`
+   - `updateWeaponDisplay()`
+   - `updateHoldArea()`
+   - `updateRoomDisplay()`
+   - etc.
+
+2. **Depois** mover para módulo game-ui.js
+
+3. **Testar** cada função isoladamente
+
+### 📈 ESTATÍSTICAS:
+- **Tempo investido:** ~5 horas
+- **Linhas refatoradas:** ~100
+- **Bugs corrigidos:** 6
+- **Módulos criados:** 1/7 (14%)
+- **Risco evitado:** Alto (não tentamos updateUI() grande)
 
 ---
 
