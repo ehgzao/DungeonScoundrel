@@ -2137,6 +2137,12 @@ function checkAndStartTutorial() {
             console.log('[TUTORIAL] Timer paused');
         }
         
+        // CRITICAL: Disable all game buttons during tutorial
+        if (window.disableGameButtons) {
+            window.disableGameButtons();
+            console.log('[TUTORIAL] Game buttons disabled');
+        }
+        
         showTutorialStep(IN_GAME_TUTORIAL_STEPS[0]);
     } else {
         console.log('[TUTORIAL] ❌ Tutorial not started - conditions not met');
@@ -2365,6 +2371,12 @@ function skipTutorial() {
         console.log('[TUTORIAL] Timer resumed (skipped)');
     }
     
+    // CRITICAL: Re-enable game buttons
+    if (window.enableGameButtons) {
+        window.enableGameButtons();
+        console.log('[TUTORIAL] Game buttons re-enabled (skipped)');
+    }
+    
     // CRITICAL: Set SKIPPED flag, NOT completed flag
     // This prevents achievement from unlocking
     localStorage.setItem(STORAGE_KEYS.TUTORIAL_SKIPPED, 'true');
@@ -2381,6 +2393,12 @@ function completeTutorial() {
     document.querySelectorAll('.tutorial-overlay, .tutorial-spotlight, .tutorial-modal').forEach(el => {
         el.remove();
     });
+    
+    // CRITICAL: Re-enable game buttons
+    if (window.enableGameButtons) {
+        window.enableGameButtons();
+        console.log('[TUTORIAL] Game buttons re-enabled (completed)');
+    }
     
     // Restore highlighted elements
     document.querySelectorAll('.tutorial-highlighted').forEach(el => {
