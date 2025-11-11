@@ -120,9 +120,9 @@ export const POTIONS = {
 };
 
 // ============================================
-// RELICS
+// RELICS CONFIG
 // ============================================
-export const RELICS = {
+export const RELIC_CONFIG = {
     /** Maximum relics a player can have */
     MAX_RELICS: 10,
     /** Four Leaf Clover: consecutive avoid limit */
@@ -130,9 +130,9 @@ export const RELICS = {
 };
 
 // ============================================
-// ACHIEVEMENTS
+// ACHIEVEMENTS CONFIG
 // ============================================
-export const ACHIEVEMENTS = {
+export const ACHIEVEMENT_CONFIG = {
     /** Rooms required for "Perfect Run" */
     PERFECT_RUN_ROOMS: 10,
     /** Total achievements in game */
