@@ -61,6 +61,9 @@ import {
     getRelicBonus
 } from './modules/game-relics.js';
 
+// Import game constants
+import { RELIC_CONFIG } from './config/game-constants.js';
+
 // ============================================
 // DOM ELEMENTS
 // ============================================
@@ -4830,6 +4833,7 @@ window.game = game;
 window.playerNameInput = playerNameInput;
 window.permanentUnlocks = permanentUnlocks;
 window.UNLOCKS = UNLOCKS; // For codex.js
+window.RELIC_CONFIG = RELIC_CONFIG; // For game-relics.js
 window.createCardElement = createCardElement; // For tutorial - FULL styled cards
 window.createMiniCardElement = createMiniCardElement; // For tutorial - mini cards
 
