@@ -30,32 +30,37 @@
 
 ### **FASE 1: CRÍTICO - game.js** ⏳ EM ANDAMENTO
 
-#### 1.1 Extrair Constantes ✅ COMPLETO
+#### 1.1 Extrair Constantes ✅ **65% COMPLETO**
 - [x] Criar `config/game-constants.js`
-- [x] Definir todas as constantes:
-  - Health & Damage
-  - Gold & Economy
-  - Cards & Deck
-  - Combo System
-  - Boss System
-  - Difficulty Scaling
-  - Events & Random
-  - Potions
-  - Relics
-  - Achievements
-  - UI & Animations
-  - Timing
-  - Shop Prices/Values
-  - Class Cooldowns
-  - Keyboard Shortcuts
-  - Storage Keys
-  - Game Modes
-  - Card Types
-  - Suits
-  - Log Types
-  - Message Types
+- [x] Definir todas as constantes (23 categorias)
+- [x] Importar em game.js
+- [x] Substituir ~65 constantes:
+  - ✅ HEALTH (3 constantes)
+  - ✅ GOLD (1 constante)
+  - ✅ CARDS (4 constantes)
+  - ✅ COMBO (2 constantes)
+  - ✅ BOSS (3 constantes)
+  - ✅ DIFFICULTY (2 constantes)
+  - ✅ EVENT_CONFIG (5 constantes)
+  - ✅ POTIONS (3 constantes)
+  - ✅ RELIC_CONFIG (6 constantes)
+  - ✅ ACHIEVEMENT_CONFIG (2 constantes)
+  - ✅ UI (2 constantes)
+  - ✅ TIMING (3 constantes)
+  - ✅ CLASS_COOLDOWNS (4 constantes)
+  - ✅ KEYS (9 constantes)
+  - ✅ STORAGE_KEYS (3 constantes)
+  - ✅ SPECIAL_CARDS (5 constantes)
+  - ✅ COMBAT (3 constantes)
 
-**Próximo:** Atualizar game.js para usar as constantes
+**Bugs Críticos Corrigidos:**
+- ✅ ES6 module type="module" adicionado
+- ✅ EVENTS conflict (renomeado para EVENT_CONFIG)
+- ✅ RELICS conflict (renomeado para RELIC_CONFIG)
+- ✅ ACHIEVEMENTS conflict (renomeado para ACHIEVEMENT_CONFIG)
+- ✅ giveRelicByRarity exposto globalmente
+
+**Próximo:** Continuar substituindo ~35 constantes restantes
 
 #### 1.2 Separar Módulo de UI ⏳ PENDENTE
 - [ ] Criar `modules/game-ui.js`
@@ -185,7 +190,7 @@
 1. Testar `game-constants.js` localmente
 2. Atualizar `game.js` para importar constantes
 3. Substituir magic numbers por constantes
-4. Testar jogo completo localmente
+4. Testar jogo completo localmente!
 5. Aguardar aprovação para commit
 
 ---
