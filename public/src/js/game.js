@@ -37,6 +37,10 @@ const dungeonCountEl = document.getElementById('dungeonCount');
 const statRoomsEl = document.getElementById('statRooms');
 const mainScoreValue = document.getElementById('mainScoreValue');
 const equippedWeaponEl = document.getElementById('equippedWeapon');
+const bottomBar = document.getElementById('room'); // The room/bottom bar
+const gameTimer = document.getElementById('gameTimer');
+const discardPilePreview = document.getElementById('discardPilePreview');
+const holdAreaContainer = document.getElementById('holdAreaContainer');
 
 // ============================================
 // GAME STATE
@@ -170,6 +174,53 @@ if (welcomeMusicVolume && typeof music !== 'undefined') {
     welcomeMusicVolume.oninput = (e) => {
         const volume = parseInt(e.target.value) / 100;
         if (music.masterGain) music.masterGain.gain.value = volume * 0.7;
+    };
+}
+
+// Soundboard Play Buttons
+const btnPlayMenu = document.getElementById('btnPlayMenu');
+const btnPlayGameplay = document.getElementById('btnPlayGameplay');
+const btnPlayShop = document.getElementById('btnPlayShop');
+const btnPlayVictory = document.getElementById('btnPlayVictory');
+const btnPlayDefeat = document.getElementById('btnPlayDefeat');
+
+if (btnPlayMenu && typeof music !== 'undefined') {
+    btnPlayMenu.onclick = () => {
+        music.stop();
+        music.currentContext = 'menu';
+        music.start();
+    };
+}
+
+if (btnPlayGameplay && typeof music !== 'undefined') {
+    btnPlayGameplay.onclick = () => {
+        music.stop();
+        music.currentContext = 'gameplay';
+        music.start();
+    };
+}
+
+if (btnPlayShop && typeof music !== 'undefined') {
+    btnPlayShop.onclick = () => {
+        music.stop();
+        music.currentContext = 'shop';
+        music.start();
+    };
+}
+
+if (btnPlayVictory && typeof music !== 'undefined') {
+    btnPlayVictory.onclick = () => {
+        music.stop();
+        music.currentContext = 'victory';
+        music.start();
+    };
+}
+
+if (btnPlayDefeat && typeof music !== 'undefined') {
+    btnPlayDefeat.onclick = () => {
+        music.stop();
+        music.currentContext = 'defeat';
+        music.start();
     };
 }
 
@@ -5172,7 +5223,8 @@ if (typeof handleCardClick !== 'undefined') window.handleCardClick = handleCardC
 window.game = game;
 window.playerNameInput = playerNameInput;
 window.permanentUnlocks = permanentUnlocks;
-window.createMiniCardElement = createMiniCardElement; // For tutorial
+window.createCardElement = createCardElement; // For tutorial - FULL styled cards
+window.createMiniCardElement = createMiniCardElement; // For tutorial - mini cards
 
 console.log('[GAME] All functions and state exposed globally for modules');
 

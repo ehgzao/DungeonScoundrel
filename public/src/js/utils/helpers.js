@@ -765,7 +765,7 @@ function startInteractiveTutorial() {
     // Render real game cards after modal is shown
     setTimeout(() => {
         const cardsContainer = document.getElementById('tutorialCardExamples');
-        if (cardsContainer && typeof window.createMiniCardElement === 'function') {
+        if (cardsContainer && typeof window.createCardElement === 'function') {
             cardsContainer.innerHTML = '';
             const exampleCards = [
                 { suit: '♠', value: 'K' },  // Monster
@@ -776,10 +776,10 @@ function startInteractiveTutorial() {
             
             exampleCards.forEach(card => {
                 try {
-                    const cardEl = window.createMiniCardElement(card);
+                    const cardEl = window.createCardElement(card);
                     if (cardEl) {
-                        cardEl.style.transform = 'scale(1.2)';
                         cardEl.style.pointerEvents = 'none';
+                        cardEl.style.cursor = 'default';
                         cardsContainer.appendChild(cardEl);
                     }
                 } catch (e) {
