@@ -4172,17 +4172,10 @@ function updateUI() {
                 game.room.unshift(selectedCard);
                 console.log('[HOLD] Card added to room, room.length:', game.room.length);
                 updateUI();
-                setTimeout(() => {
-                    const firstCardEl = bottomBar.querySelector('.card');
-                    console.log('[HOLD] Attempting to click card:', firstCardEl);
-                    if (firstCardEl) {
-                        firstCardEl.click();
-                    } else {
-                        console.error('[HOLD] ERROR: Card not found in bottomBar!');
-                        // Fallback: manually call handleCardClick
-                        handleCardClick(selectedCard, 0);
-                    }
-                }, 100);
+                // SOLUÇÃO DEFINITIVA: Chamar handleCardClick diretamente (sem setTimeout)
+                // Isso evita race condition onde carta não existe no DOM ainda
+                console.log('[HOLD] Calling handleCardClick directly');
+                handleCardClick(selectedCard, 0);
             };
             holdAreaContainer.appendChild(cardEl);
             
@@ -4207,17 +4200,10 @@ function updateUI() {
                     game.room.unshift(selectedCard);
                     console.log('[HOLD] Card added to room, room.length:', game.room.length);
                     updateUI();
-                    setTimeout(() => {
-                        const firstCardEl = bottomBar.querySelector('.card');
-                        console.log('[HOLD] Attempting to click card:', firstCardEl);
-                        if (firstCardEl) {
-                            firstCardEl.click();
-                        } else {
-                            console.error('[HOLD] ERROR: Card not found in bottomBar!');
-                            // Fallback: manually call handleCardClick
-                            handleCardClick(selectedCard, 0);
-                        }
-                    }, 100);
+                    // SOLUÇÃO DEFINITIVA: Chamar handleCardClick diretamente (sem setTimeout)
+                    // Isso evita race condition onde carta não existe no DOM ainda
+                    console.log('[HOLD] Calling handleCardClick directly');
+                    handleCardClick(selectedCard, 0);
                 };
                 holdAreaContainer.appendChild(cardEl);
             });
