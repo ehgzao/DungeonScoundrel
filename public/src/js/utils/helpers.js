@@ -475,112 +475,37 @@ const modalManager = {
 console.log('✅ Optimization helpers loaded!');
 
 // ============================================
-// DOM ELEMENTS (NEW STRUCTURE)
+// DOM ELEMENTS - REMOVED TO PREVENT DUPLICATES
 // ============================================
+// All DOM elements are now declared ONLY in game.js
+// If helpers.js needs to access DOM elements, use:
+// - document.getElementById('elementId') directly when needed
+// - OR access from window.elementName if exposed globally
 
-// Screens
-const welcomeScreen = document.getElementById('welcomeScreen');
-const gameWrapper = document.getElementById('gameWrapper');
+// Close Modals - Using direct getElementById to avoid conflicts
+document.getElementById('btnCloseTutorial')?.addEventListener('click', () => {
+    document.getElementById('tutorialModal')?.classList.remove('active');
+});
+document.getElementById('btnCloseLeaderboard')?.addEventListener('click', () => {
+    document.getElementById('leaderboardModal')?.classList.remove('active');
+});
+document.getElementById('btnCloseShop')?.addEventListener('click', () => {
+    if (typeof closeShop !== 'undefined') closeShop();
+});
+document.getElementById('btnCloseUnlocks')?.addEventListener('click', () => {
+    document.getElementById('unlocksModal')?.classList.remove('active');
+});
+document.getElementById('btnCloseAchievements')?.addEventListener('click', () => {
+    document.getElementById('achievementsModal')?.classList.remove('active');
+});
 
-// Welcome Buttons
-const btnWelcomeStart = document.getElementById('btnWelcomeStart');
-const btnLearnToPlay = document.getElementById('btnLearnToPlay');
-const btnWelcomeLeaderboard = document.getElementById('btnWelcomeLeaderboard');
-// btnWelcomeUnlocks removed - replaced by btnCodex in CODEX system
-
-// Learn to Play Modal Elements
-const learnToPlayModal = document.getElementById('learnToPlayModal');
-const btnStartInteractiveTutorial = document.getElementById('btnStartInteractiveTutorial');
-const btnOpenRulesReference = document.getElementById('btnOpenRulesReference');
-
-// Interactive Tutorial Elements
-const interactiveTutorialModal = document.getElementById('interactiveTutorialModal');
-const tutorialStepTitle = document.getElementById('tutorialStepTitle');
-const tutorialStepContent = document.getElementById('tutorialStepContent');
-const btnTutorialPrev = document.getElementById('btnTutorialPrev');
-const btnTutorialNext = document.getElementById('btnTutorialNext');
-const btnTutorialSkip = document.getElementById('btnTutorialSkip');
-const tutorialCurrentStep = document.getElementById('tutorialCurrentStep');
-const tutorialTotalSteps = document.getElementById('tutorialTotalSteps');
-
-// New Game Modal
-const newGameModal = document.getElementById('newGameModal');
-const playerNameInput = document.getElementById('playerNameInput');
-const difficultySelector = document.getElementById('difficultySelector');
-const btnStartGameModal = document.getElementById('btnStartGameModal');
-const btnCancelStart = document.getElementById('btnCancelStart');
-
-// Game Bars
-const topBar = document.querySelector('.top-bar');
-const centerArea = document.querySelector('.center-area');
-const bottomBar = document.getElementById('room'); // Bottom bar is the room
-
-// Side Panels
-const relicsPanel = document.getElementById('relicsPanel');
-const relicsList = document.getElementById('relicsList');
-const btnOpenShop = document.getElementById('btnOpenShop');
-const holdAreaContainer = document.getElementById('holdAreaContainer');
-const discardPilePreview = document.getElementById('discardPilePreview');
-const gameTimer = document.getElementById('gameTimer');
-
-// Center Stage
-const messageArea = document.getElementById('messageArea');
-const equippedWeaponEl = document.getElementById('equippedWeapon');
-const btnDrawRoom = document.getElementById('btnDrawRoom');
-const btnAvoidRoom = document.getElementById('btnAvoidRoom');
-const mainScoreValue = document.getElementById('mainScoreValue'); // New Score Element
-
-// Top Bar Stats
-const healthEl = document.getElementById('health');
-const goldEl = document.getElementById('goldAmount');
-// scoreEl removed
-const dungeonCountEl = document.getElementById('dungeonCount');
-const statRoomsEl = document.getElementById('statRooms');
-
-// Achievements
-const achievementsCompact = document.getElementById('achievementsCompact');
-const achievementCounter = document.getElementById('achievementCounter');
-const achievementsModal = document.getElementById('achievementsModal');
-const achievementsList = document.getElementById('achievementsList');
-
-// Top Bar Buttons
-// btnTopSound removed - redundant with music controls
-const btnMusicPrev = document.getElementById('btnMusicPrev');
-const btnMusicToggle = document.getElementById('btnMusicToggle');
-const btnMusicNext = document.getElementById('btnMusicNext');
-// btnTopTutorial removed - only in main menu
-// btnTopLeaderboard removed - only in main menu
-// btnTopCodex removed - redundant with Relics button
-const btnTopGiveUp = document.getElementById('btnTopGiveUp'); // Give Up Button
-
-// Modals
-const tutorialModal = document.getElementById('tutorialModal');
-const leaderboardModal = document.getElementById('leaderboardModal');
-const shopModal = document.getElementById('shopModal');
-const eventModal = document.getElementById('eventModal');
-const unlocksModal = document.getElementById('unlocksModal');
-const giveUpModal = document.getElementById('giveUpModal'); // Give Up Modal
-
-// Modal Elements
-const shopGoldAmount = document.getElementById('shopGoldAmount');
-const shopItems = document.getElementById('shopItems');
-const eventTitle = document.getElementById('eventTitle');
-const eventText = document.getElementById('eventText');
-const eventChoices = document.getElementById('eventChoices');
-const btnCancelGiveUp = document.getElementById('btnCancelGiveUp'); // Give Up Modal Buttons
-const btnConfirmGiveUp = document.getElementById('btnConfirmGiveUp');
-
-// Close Modals
-document.getElementById('btnCloseTutorial').onclick = () => tutorialModal.classList.remove('active');
-document.getElementById('btnCloseLeaderboard').onclick = () => leaderboardModal.classList.remove('active');
-document.getElementById('btnCloseShop').onclick = () => closeShop(); // Use wrapper
-document.getElementById('btnCloseUnlocks').onclick = () => unlocksModal.classList.remove('active');
-document.getElementById('btnCloseAchievements').onclick = () => achievementsModal.classList.remove('active');
-
-// Open Achievements in CODEX (unified)
-achievementsCompact.onclick = () => {
-    openCodex('achievements');
-};
+// Open Achievements in CODEX (unified) - Using direct getElementById
+const achievementsCompactBtn = document.getElementById('achievementsCompact');
+if (achievementsCompactBtn) {
+    achievementsCompactBtn.onclick = () => {
+        if (typeof openCodex !== 'undefined') openCodex('achievements');
+    };
+}
 
 // ============================================
 // INTERACTIVE TUTORIAL SYSTEM
@@ -834,42 +759,61 @@ function startInteractiveTutorial() {
     console.log('[TUTORIAL] Starting interactive tutorial...');
     tutorialStep = 0;
     updateTutorialStep();
-    interactiveTutorialModal.classList.add('active');
+    const modal = document.getElementById('interactiveTutorialModal');
+    if (modal) modal.classList.add('active');
     console.log('[TUTORIAL] Tutorial modal opened. Total steps:', tutorialSteps.length);
 }
 
 function updateTutorialStep() {
     const step = tutorialSteps[tutorialStep];
-    tutorialStepTitle.textContent = step.title;
-    tutorialStepContent.innerHTML = step.content;
-    tutorialCurrentStep.textContent = tutorialStep + 1;
-    tutorialTotalSteps.textContent = tutorialSteps.length;
+    const title = document.getElementById('tutorialStepTitle');
+    const content = document.getElementById('tutorialStepContent');
+    const current = document.getElementById('tutorialCurrentStep');
+    const total = document.getElementById('tutorialTotalSteps');
+    const btnPrev = document.getElementById('btnTutorialPrev');
+    const btnNext = document.getElementById('btnTutorialNext');
+    
+    if (title) title.textContent = step.title;
+    if (content) content.innerHTML = step.content;
+    if (current) current.textContent = tutorialStep + 1;
+    if (total) total.textContent = tutorialSteps.length;
     
     // Update buttons
-    btnTutorialPrev.disabled = tutorialStep === 0;
-    btnTutorialNext.textContent = tutorialStep === tutorialSteps.length - 1 ? '✅ Finish' : '➡️ Next';
+    if (btnPrev) btnPrev.disabled = tutorialStep === 0;
+    if (btnNext) btnNext.textContent = tutorialStep === tutorialSteps.length - 1 ? '✅ Finish' : '➡️ Next';
 }
 
-btnTutorialNext.onclick = () => {
-    if (tutorialStep < tutorialSteps.length - 1) {
-        tutorialStep++;
-        updateTutorialStep();
-    } else {
-        // Finish tutorial
-        interactiveTutorialModal.classList.remove('active');
-    }
-};
+const btnNext = document.getElementById('btnTutorialNext');
+if (btnNext) {
+    btnNext.onclick = () => {
+        if (tutorialStep < tutorialSteps.length - 1) {
+            tutorialStep++;
+            updateTutorialStep();
+        } else {
+            // Finish tutorial
+            const modal = document.getElementById('interactiveTutorialModal');
+            if (modal) modal.classList.remove('active');
+        }
+    };
+}
 
-btnTutorialPrev.onclick = () => {
-    if (tutorialStep > 0) {
-        tutorialStep--;
-        updateTutorialStep();
-    }
-};
+const btnPrev = document.getElementById('btnTutorialPrev');
+if (btnPrev) {
+    btnPrev.onclick = () => {
+        if (tutorialStep > 0) {
+            tutorialStep--;
+            updateTutorialStep();
+        }
+    };
+}
 
-btnTutorialSkip.onclick = () => {
-    interactiveTutorialModal.classList.remove('active');
-};
+const btnSkip = document.getElementById('btnTutorialSkip');
+if (btnSkip) {
+    btnSkip.onclick = () => {
+        const modal = document.getElementById('interactiveTutorialModal');
+        if (modal) modal.classList.remove('active');
+    };
+}
 
 // Log module load
 console.log('[HELPERS] Storage & Utility helpers loaded');
