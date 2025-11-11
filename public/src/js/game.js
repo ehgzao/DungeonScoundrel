@@ -3331,6 +3331,7 @@ function handlePotion(potion, index) {
 function checkGameState() {
     console.log('[CHECKGAMESTATE] Called:', { 
         roomLength: game.room.length, 
+        roomContent: game.room,
         gameOver: game.gameOver,
         btnDrawDisabled: btnDrawRoom.disabled,
         btnAvoidDisabled: btnAvoidRoom.disabled
@@ -4274,15 +4275,32 @@ function updateUI() {
                     // Adjust index if needed
                     if (game.heldCardIndex >= game.heldCard.length) game.heldCardIndex = 0;
                 }
-                game.room.unshift(selectedCard);
-                console.log('[HOLD] Card added to room, room.length:', game.room.length);
-                console.log('[HOLD] Card details:', selectedCard);
-                updateUI();
-                // SOLUÇÃO DEFINITIVA: Chamar handleCardClick diretamente (sem setTimeout)
-                // Isso evita race condition onde carta não existe no DOM ainda
-                console.log('[HOLD] Calling handleCardClick directly');
-                handleCardClick(selectedCard, 0);
-                console.log('[HOLD] ✅ handleCardClick completed');
+                
+                // CRITICAL: Process card directly WITHOUT adding to room first
+                // Adding to room causes checkGameState() to see room.length = 1
+                console.log('[HOLD] Processing card directly:', selectedCard);
+                
+                // Determine card type and process accordingly
+                const cardType = getCardType(selectedCard);
+                console.log('[HOLD] Card type:', cardType);
+                
+                if (cardType === 'potion') {
+                    // For potions: add to room temporarily, then handlePotion removes it
+                    game.room.unshift(selectedCard);
+                    updateUI();
+                    handlePotion(selectedCard, 0);
+                } else if (cardType === 'weapon') {
+                    // For weapons: add to room temporarily, then handleWeapon removes it
+                    game.room.unshift(selectedCard);
+                    updateUI();
+                    handleWeapon(selectedCard, 0);
+                } else {
+                    // For other cards: add to room and let player click
+                    game.room.unshift(selectedCard);
+                    updateUI();
+                }
+                
+                console.log('[HOLD] ✅ Card processed, room.length:', game.room.length);
             };
             holdAreaContainer.appendChild(cardEl);
             
@@ -4304,15 +4322,31 @@ function updateUI() {
                         selectedCard = game.heldCard;
                         game.heldCard = null;
                     }
-                    game.room.unshift(selectedCard);
-                    console.log('[HOLD] Card added to room, room.length:', game.room.length);
-                    console.log('[HOLD] Card details:', selectedCard);
-                    updateUI();
-                    // SOLUÇÃO DEFINITIVA: Chamar handleCardClick diretamente (sem setTimeout)
-                    // Isso evita race condition onde carta não existe no DOM ainda
-                    console.log('[HOLD] Calling handleCardClick directly');
-                    handleCardClick(selectedCard, 0);
-                    console.log('[HOLD] ✅ handleCardClick completed');
+                    
+                    // CRITICAL: Process card directly WITHOUT adding to room first
+                    console.log('[HOLD] Processing card directly:', selectedCard);
+                    
+                    // Determine card type and process accordingly
+                    const cardType = getCardType(selectedCard);
+                    console.log('[HOLD] Card type:', cardType);
+                    
+                    if (cardType === 'potion') {
+                        // For potions: add to room temporarily, then handlePotion removes it
+                        game.room.unshift(selectedCard);
+                        updateUI();
+                        handlePotion(selectedCard, 0);
+                    } else if (cardType === 'weapon') {
+                        // For weapons: add to room temporarily, then handleWeapon removes it
+                        game.room.unshift(selectedCard);
+                        updateUI();
+                        handleWeapon(selectedCard, 0);
+                    } else {
+                        // For other cards: add to room and let player click
+                        game.room.unshift(selectedCard);
+                        updateUI();
+                    }
+                    
+                    console.log('[HOLD] ✅ Card processed, room.length:', game.room.length);
                 };
                 holdAreaContainer.appendChild(cardEl);
             });
