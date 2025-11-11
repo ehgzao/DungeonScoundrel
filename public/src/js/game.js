@@ -4158,19 +4158,21 @@ function updateUI() {
                 cardEl.classList.add('held');
                 cardEl.style.marginBottom = '10px';
                 cardEl.onclick = () => {
-                    // Use specific held card
+                    // Use held card (works for both single and array)
+                    let selectedCard;
                     if (Array.isArray(game.heldCard)) {
-                        const selectedCard = game.heldCard.splice(idx, 1)[0];
+                        selectedCard = game.heldCard.splice(idx, 1)[0];
                         if (game.heldCard.length === 0) game.heldCard = null;
-                        game.room.unshift(selectedCard);
-                        updateUI();
-                        setTimeout(() => {
-                            const firstCardEl = bottomBar.querySelector('.card');
-                            if (firstCardEl) firstCardEl.click();
-                        }, 100);
                     } else {
-                        useHeldCard();
+                        selectedCard = game.heldCard;
+                        game.heldCard = null;
                     }
+                    game.room.unshift(selectedCard);
+                    updateUI();
+                    setTimeout(() => {
+                        const firstCardEl = bottomBar.querySelector('.card');
+                        if (firstCardEl) firstCardEl.click();
+                    }, 100);
                 };
                 holdAreaContainer.appendChild(cardEl);
             });
