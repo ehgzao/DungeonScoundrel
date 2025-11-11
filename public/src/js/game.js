@@ -3878,10 +3878,14 @@ function holdCard(card, index) {
         return;
     }
     
-    // Check if it's a special card (cannot be held)
+    // Check card type - only weapons and potions can be held
     const type = getCardType(card);
     if (type === 'special') {
         showMessage('Cannot hold special cards!', 'error');
+        return;
+    }
+    if (type === 'monster') {
+        showMessage('Cannot hold monsters!', 'error');
         return;
     }
     
@@ -4785,9 +4789,16 @@ function closeShop() {
     shopModal.classList.remove('active');
     // Return to gameplay music
     music.switchContext('gameplay');
+    
+    // Re-enable buttons based on game state
     if (game.room.length === 0) {
+        // No cards in room - enable draw/avoid
         btnDrawRoom.disabled = false;
         btnAvoidRoom.disabled = game.lastActionWasAvoid;
+    } else {
+        // Cards in room - disable draw/avoid (player must clear room first)
+        btnDrawRoom.disabled = true;
+        btnAvoidRoom.disabled = true;
     }
 }
 
