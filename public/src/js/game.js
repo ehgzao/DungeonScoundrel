@@ -388,7 +388,7 @@ const CLASSES = {
         active: {
             name: 'Shield Bash',
             description: 'Deal weapon damage to first monster',
-            cooldown: 3,
+            cooldown: CLASS_COOLDOWNS.WARRIOR,
             icon: '🛡️'
         }
     },
@@ -403,7 +403,7 @@ const CLASSES = {
         active: {
             name: 'Shadow Strike',
             description: 'Next monster: 2x damage, combo safe',
-            cooldown: 4,
+            cooldown: CLASS_COOLDOWNS.ROGUE,
             icon: '🔪'
         }
     },
@@ -418,7 +418,7 @@ const CLASSES = {
         active: {
             name: 'Healing Dance',
             description: 'Heal 5 HP + damage buff',
-            cooldown: 5,
+            cooldown: CLASS_COOLDOWNS.DANCER,
             icon: '✨'
         }
     },
@@ -433,7 +433,7 @@ const CLASSES = {
         active: {
             name: 'Rage Strike',
             description: 'Sacrifice 5 HP: 3x damage for 3 attacks, breaks combo',
-            cooldown: 4,
+            cooldown: CLASS_COOLDOWNS.BERSERKER,
             icon: '⚔️'
         }
     },

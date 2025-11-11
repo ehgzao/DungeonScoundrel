@@ -207,14 +207,14 @@ export const SHOP_VALUES = {
 // CLASS ABILITIES
 // ============================================
 export const CLASS_COOLDOWNS = {
-    /** Default class ability cooldown */
-    DEFAULT: 3,
-    /** Warrior ability cooldown */
+    /** Warrior ability cooldown (Shield Bash) */
     WARRIOR: 3,
-    /** Rogue ability cooldown */
-    ROGUE: 2,
-    /** Mage ability cooldown */
-    MAGE: 4
+    /** Rogue ability cooldown (Shadow Strike) */
+    ROGUE: 4,
+    /** Dancer ability cooldown (Healing Dance) */
+    DANCER: 5,
+    /** Berserker ability cooldown (Rage Strike) */
+    BERSERKER: 4
 };
 
 // ============================================
