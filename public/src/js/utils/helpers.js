@@ -755,12 +755,60 @@ const tutorialSteps = [
     }
 ];
 
+// Helper functions to disable/enable game buttons during tutorial
+function disableGameButtons() {
+    const gameButtons = [
+        'btnDrawRoom',
+        'btnAvoidRoom',
+        'btnOpenShop',
+        'btnUseAbility',
+        'btnUndo',
+        'btnTopGiveUp'
+    ];
+    
+    gameButtons.forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            btn.disabled = true;
+            btn.style.pointerEvents = 'none';
+            btn.style.opacity = '0.5';
+        }
+    });
+    
+    console.log('[TUTORIAL] Game buttons disabled');
+}
+
+function enableGameButtons() {
+    const gameButtons = [
+        'btnDrawRoom',
+        'btnAvoidRoom',
+        'btnOpenShop',
+        'btnUseAbility',
+        'btnUndo',
+        'btnTopGiveUp'
+    ];
+    
+    gameButtons.forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            btn.disabled = false;
+            btn.style.pointerEvents = 'auto';
+            btn.style.opacity = '1';
+        }
+    });
+    
+    console.log('[TUTORIAL] Game buttons enabled');
+}
+
 function startInteractiveTutorial() {
     console.log('[TUTORIAL] Starting interactive tutorial...');
     tutorialStep = 0;
     updateTutorialStep();
     const modal = document.getElementById('interactiveTutorialModal');
     if (modal) modal.classList.add('active');
+    
+    // CRITICAL: Disable all game buttons during tutorial
+    disableGameButtons();
     
     // Render real game cards with INLINE STYLES (to ensure colors show)
     setTimeout(() => {
@@ -830,6 +878,8 @@ if (btnNext) {
             // Finish tutorial
             const modal = document.getElementById('interactiveTutorialModal');
             if (modal) modal.classList.remove('active');
+            // CRITICAL: Re-enable game buttons
+            enableGameButtons();
         }
     };
 }
@@ -849,6 +899,8 @@ if (btnSkip) {
     btnSkip.onclick = () => {
         const modal = document.getElementById('interactiveTutorialModal');
         if (modal) modal.classList.remove('active');
+        // CRITICAL: Re-enable game buttons
+        enableGameButtons();
     };
 }
 
