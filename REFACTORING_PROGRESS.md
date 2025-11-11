@@ -30,7 +30,7 @@
 
 ### **FASE 1: CRÍTICO - game.js** ⏳ EM ANDAMENTO
 
-#### 1.1 Extrair Constantes ✅ **70% COMPLETO**
+#### 1.1 Extrair Constantes ✅ **85% COMPLETO**
 - [x] Criar `config/game-constants.js`
 - [x] Definir todas as constantes (23 categorias)
 - [x] Importar em game.js
