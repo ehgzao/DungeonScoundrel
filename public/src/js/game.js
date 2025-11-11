@@ -3023,14 +3023,27 @@ function handleMonster(monster, index) {
                 }
             } else {
                 // Normal Damage
+                console.log('[COMBO] Taking damage:', { 
+                    damage, 
+                    comboBefore: game.combo, 
+                    hasWeapon: !!game.equippedWeapon,
+                    effectiveWeapon,
+                    rogueDoubleActive 
+                });
+                
                 game.health -= damage;
                 game.stats.totalDamage += damage;
                 
                 // Rogue Shadow Strike: don't break combo even when taking damage
                 const rogueComboSafe = (game.playerClass === 'rogue' && rogueDoubleActive);
                 if (!rogueComboSafe) {
+                    console.log('[COMBO] Resetting combo (took damage)');
                     resetCombo(); // Reset combo (unless Rogue ability is active)
+                } else {
+                    console.log('[COMBO] Rogue Shadow Strike active - combo safe');
                 }
+                
+                console.log('[COMBO] After damage:', { comboAfter: game.combo });
                 
                 showDamageNumber(damage, 'damage');
                 playSound('damage');

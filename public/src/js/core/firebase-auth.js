@@ -420,6 +420,16 @@ try {
         window.userId = userId;
         window.auth = auth;
         
+        // CRITICAL: Expose Firestore functions for leaderboard.js (non-module script)
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.getDocs = getDocs;
+        window.query = query;
+        window.limit = limit;
+        window.doc = doc;
+        window.getDoc = getDoc;
+        window.setDoc = setDoc;
+        
 
 // Log module load
 console.log('[FIREBASE-AUTH] Module loaded. DB:', !!db, 'Auth:', !!auth, 'AppId:', appId);
