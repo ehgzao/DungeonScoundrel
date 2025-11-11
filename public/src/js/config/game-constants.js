@@ -358,7 +358,33 @@ export const COMBAT = {
     /** Critical Strike: Triple damage chance */
     CRITICAL_STRIKE_CHANCE: 0.10,
     /** Priest Divine Blessing: Dodge chance */
-    DIVINE_BLESSING_CHANCE: 0.15
+    DIVINE_BLESSING_CHANCE: 0.15,
+    /** Infinite durability value */
+    INFINITE_DURABILITY: 999
+};
+
+// ============================================
+// CLASS BONUSES
+// ============================================
+export const CLASS_BONUSES = {
+    /** Knight: Max HP bonus */
+    KNIGHT_HP_BONUS: 5,
+    /** Knight: Weapon durability bonus */
+    KNIGHT_DURABILITY_BONUS: 1,
+    /** Rogue: Bonus gold per room */
+    ROGUE_GOLD_PER_ROOM: 1,
+    /** Dancer: Potion heal bonus */
+    DANCER_POTION_BONUS: 3,
+    /** Dancer: Healing Dance HP */
+    DANCER_HEAL_AMOUNT: 5,
+    /** Dancer: Event chance bonus (%) */
+    DANCER_EVENT_BONUS: 15,
+    /** Berserker: Rage Strike HP cost */
+    BERSERKER_RAGE_COST: 5,
+    /** Priest: Potion heal bonus */
+    PRIEST_POTION_BONUS: 2,
+    /** Priest: Max HP bonus */
+    PRIEST_HP_BONUS: 2
 };
 
 // ============================================
