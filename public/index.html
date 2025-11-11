@@ -1535,11 +1535,6 @@
     <script src="src/js/systems/leaderboard.js?v=1.5.1"></script>
     
     <!-- ============================================ -->
-    <!-- CODEX SYSTEM
-    <!-- ============================================ -->
-    <script src="src/js/systems/codex.js?v=1.5.1"></script>
-    
-    <!-- ============================================ -->
     <!-- AUDIO CONTEXT (Must load before music.js!)
     <!-- ============================================ -->
     <script src="src/js/core/audio-context.js?v=1.5.1"></script>
@@ -1550,9 +1545,14 @@
     <script src="src/js/systems/music.js?v=1.5.1"></script>
     
     <!-- ============================================ -->
-    <!-- GAME SCRIPT (includes CODEX system)
+    <!-- GAME SCRIPT (Main game logic - must load before codex!)
     <!-- ============================================ -->
     <script src="src/js/game.js?v=1.5.1"></script>
+    
+    <!-- ============================================ -->
+    <!-- CODEX SYSTEM (Depends on game.js variables)
+    <!-- ============================================ -->
+    <script src="src/js/systems/codex.js?v=1.5.1"></script>
     
     
 </body>
