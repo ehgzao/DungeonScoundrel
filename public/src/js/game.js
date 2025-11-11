@@ -181,8 +181,31 @@ if (btnWelcomeMusicToggle && typeof music !== 'undefined') {
 
 if (welcomeMusicVolume && typeof music !== 'undefined') {
     welcomeMusicVolume.oninput = (e) => {
-        const volume = parseInt(e.target.value) / 100;
-        if (music.masterGain) music.masterGain.gain.value = volume * 0.7;
+        const volume = parseInt(e.target.value);
+        music.setVolume(volume);
+    };
+}
+
+// In-game Music Controls
+const btnMusicToggle = document.getElementById('btnMusicToggle');
+const musicVolume = document.getElementById('musicVolume');
+
+if (btnMusicToggle && typeof music !== 'undefined') {
+    btnMusicToggle.onclick = () => {
+        if (music.isPlaying) {
+            music.stop();
+            btnMusicToggle.textContent = '▶️';
+        } else {
+            music.start();
+            btnMusicToggle.textContent = '⏸️';
+        }
+    };
+}
+
+if (musicVolume && typeof music !== 'undefined') {
+    musicVolume.oninput = (e) => {
+        const volume = parseInt(e.target.value);
+        music.setVolume(volume);
     };
 }
 

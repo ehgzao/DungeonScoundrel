@@ -160,6 +160,15 @@ if (display) {
 }
     }
     
+    setVolume(value) {
+// value: 0-100
+const normalizedVolume = value / 100;
+// Apply exponential curve for better perceived volume control
+const targetVolume = normalizedVolume * normalizedVolume * 0.70; // Max 70%
+this.masterGain.gain.setValueAtTime(targetVolume, this.context.currentTime);
+console.log(`[MUSIC] Volume set to ${value}% (${targetVolume.toFixed(2)})`);
+    }
+    
     // ============================================
     // TRACK 1: MENU THEME - Dark Awakening
     // ============================================
