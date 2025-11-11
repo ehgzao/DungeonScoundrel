@@ -1253,68 +1253,62 @@
     <div class="modal-overlay" id="versionModal">
         <div class="modal-content" style="max-width: 700px;">
             <button class="modal-close-btn" onclick="document.getElementById('versionModal').classList.remove('active');">✕</button>
-            <h2>🚀 What's New in v1.5.4</h2>
+            <h2>🚀 What's New in v1.4.1</h2>
             
             <div style="text-align: center; margin-bottom: 20px;">
-                <p style="color: #ff6b6b; font-size: 1.2em; font-weight: bold;">🐛 Critical Bug Fixes!</p>
-                <p style="color: #aaa; font-size: 0.9em;">Released: November 11, 2025</p>
+                <p style="color: #6bcf7f; font-size: 1.2em; font-weight: bold;">🔧 Code Quality & Bug Fixes!</p>
+                <p style="color: #aaa; font-size: 0.9em;">Released: November 10, 2025</p>
             </div>
             
             <div style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
-                <!-- Critical Bugs -->
-                <div style="background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ff6b6b;">
-                    <h3 style="color: #ff6b6b; margin-top: 0;">🚨 4 Critical Bugs Fixed!</h3>
-                    <ul style="color: #ddd; line-height: 1.8;">
-                        <li><strong>CODEX Load Order:</strong> Fixed crash - codex.js now loads AFTER game.js</li>
-                        <li><strong>Hold Card System:</strong> Weapon durability now reduces correctly when using held cards</li>
-                        <li><strong>Event Modal:</strong> Events now display properly instead of freezing the game</li>
-                        <li><strong>Music Controls:</strong> Volume slider and play/pause button now work!</li>
-                    </ul>
-                </div>
-                
-                <!-- System Improvements -->
+                <!-- Modularization -->
                 <div style="background: rgba(107, 207, 127, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #6bcf7f;">
-                    <h3 style="color: #6bcf7f; margin-top: 0;">✅ System Integrations Verified</h3>
+                    <h3 style="color: #6bcf7f; margin-top: 0;">📦 Complete Code Modularization</h3>
+                    <p style="color: #ddd; margin-bottom: 10px;">Massive refactoring: 4,441 lines extracted into 14 new modules!</p>
                     <ul style="color: #ddd; line-height: 1.8; font-size: 0.95em;">
-                        <li><strong>CODEX:</strong> All dependencies (UNLOCKS, RELICS, ACHIEVEMENTS) properly exposed</li>
-                        <li><strong>Module Load Order:</strong> Documented in DEPENDENCIES.md</li>
-                        <li><strong>Global Exposures:</strong> Complete verification of all window.* variables</li>
-                        <li><strong>Cache Busting:</strong> All scripts updated to v1.5.4</li>
+                        <li><strong>index.html:</strong> 2,751 → 1,523 lines (-44.6%)</li>
+                        <li><strong>game.js:</strong> 8,073 → 4,881 lines (-39.5%)</li>
+                        <li><strong>Better Organization:</strong> Easier to maintain and debug</li>
+                        <li><strong>Browser Caching:</strong> Faster loading on return visits</li>
                     </ul>
                 </div>
                 
-                <!-- Technical Details -->
+                <div style="background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ff6b6b;">
+                    <h3 style="color: #ff6b6b; margin-top: 0;">🐛 10 Critical Bugs Fixed!</h3>
+                    <ul style="color: #ddd; line-height: 1.8;">
+                        <li><strong>Berserk:</strong> No longer consumed when using Dodge/Divine Blessing</li>
+                        <li><strong>Power Card:</strong> Now works correctly without weapon equipped</li>
+                        <li><strong>Class Abilities:</strong> Counters only decrease when actually attacking</li>
+                        <li><strong>Events:</strong> 12 events now properly reset combo when dealing damage</li>
+                        <li><strong>Blacksmith:</strong> Enhance now fully repairs weapon durability</li>
+                        <li><strong>Achievements:</strong> getLifetimeStat function fixed</li>
+                        <li><strong>screenShake:</strong> Function was missing, now implemented</li>
+                        <li><strong>Hold Card:</strong> Weapon durability now reduces correctly when using held cards</li>
+                        <li><strong>Event Modal:</strong> Fixed bug where events didn't show and blocked game progress</li>
+                        <li><strong>Music Controls:</strong> Volume slider and play/pause button now work properly</li>
+                    </ul>
+                </div>
+                
                 <div style="background: rgba(78, 205, 196, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #4ecdc4;">
-                    <h3 style="color: #4ecdc4; margin-top: 0;">🔧 Technical Fixes</h3>
+                    <h3 style="color: #4ecdc4; margin-top: 0;">⚡ Performance Optimizations</h3>
                     <ul style="color: #ddd; line-height: 1.8;">
-                        <li><strong>useHeldCard():</strong> Removed non-existent function call</li>
-                        <li><strong>showEventModal():</strong> Fixed duplicate code and missing modal.add()</li>
-                        <li><strong>music.setVolume():</strong> Added exponential volume curve (0-70%)</li>
-                        <li><strong>Event Listeners:</strong> Connected #btnMusicToggle and #musicVolume</li>
-                    </ul>
-                </div>
-                
-                <!-- Documentation -->
-                <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ffd700;">
-                    <h3 style="color: #ffd700; margin-top: 0;">📋 New Documentation</h3>
-                    <ul style="color: #ddd; line-height: 1.8;">
-                        <li><strong>DEPENDENCIES.md:</strong> Complete module dependency map</li>
-                        <li><strong>Load Order Rules:</strong> Critical rules to prevent future bugs</li>
-                        <li><strong>Global Exposures:</strong> Full list of all window.* variables</li>
+                        <li><strong>updateUI():</strong> ~80% reduction in DOM operations</li>
+                        <li><strong>Better FPS:</strong> Especially noticeable on mobile devices</li>
+                        <li><strong>Memory Usage:</strong> Reduced garbage collection</li>
                     </ul>
                 </div>
             </div>
             
-            <div style="text-align: center; margin-top: 20px; padding: 15px; background: rgba(107, 207, 127, 0.1); border-radius: 8px;">
-                <p style="color: #6bcf7f; font-weight: bold; margin: 0;">🎯 All Systems Operational!</p>
-                <p style="color: #aaa; font-size: 0.9em; margin-top: 10px;">4 critical bugs fixed • Full system verification • Complete documentation</p>
+            <div style="text-align: center; margin-top: 20px; padding: 15px; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                <p style="color: #ffd700; font-weight: bold; margin: 0;">🎯 More Stable, Faster, Better!</p>
+                <p style="color: #aaa; font-size: 0.9em; margin-top: 10px;">10 bugs fixed • 80% better performance • Professional code quality</p>
             </div>
             
             <div style="text-align: center; margin-top: 15px; padding: 12px; background: rgba(78, 205, 196, 0.08); border-radius: 8px;">
-                <p style="color: #4ecdc4; font-weight: bold; margin: 0; font-size: 0.95em;">🔍 Systematic Debugging</p>
+                <p style="color: #4ecdc4; font-weight: bold; margin: 0; font-size: 0.95em;">🙏 Special Thanks</p>
                 <p style="color: #aaa; font-size: 0.85em; margin-top: 8px; line-height: 1.6;">
-                    Every integration verified, every dependency mapped, every bug squashed!<br>
-                    <span style="font-size: 0.9em;">Professional code quality maintained throughout! 🎮✨</span>
+                    3+ hours of meticulous code review to find and fix these bugs!<br>
+                    <span style="font-size: 0.9em;">Every line analyzed for correctness and performance! 🎮✨</span>
                 </p>
             </div>
             
@@ -1490,12 +1484,12 @@
     <!-- ============================================ -->
     <!-- ERROR HANDLER (Must load first!)
     <!-- ============================================ -->
-    <script src="src/js/core/error-handler.js?v=1.5.4"></script>
+    <script src="src/js/core/error-handler.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
     <!-- INLINE SCRIPTS (Waitlist & Email Systems)
     <!-- ============================================ -->
-    <script src="src/js/features/inline-scripts.js?v=1.5.4"></script>
+    <script src="src/js/features/inline-scripts.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
     <!-- FIREBASE CONFIG (Inline to avoid Netlify secrets scanning)
@@ -1516,52 +1510,52 @@
     <!-- ============================================ -->
     <!-- FIREBASE & AUTHENTICATION
     <!-- ============================================ -->
-    <script type="module" src="src/js/core/firebase-auth.js?v=1.5.4"></script>
+    <script type="module" src="src/js/core/firebase-auth.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
     <!-- STORAGE & UTILITY HELPERS
     <!-- ============================================ -->
-    <script src="src/js/utils/helpers.js?v=1.5.4"></script>
+    <script src="src/js/utils/helpers.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
     <!-- ACHIEVEMENTS SYSTEM
     <!-- ============================================ -->
-    <script src="src/js/systems/achievements.js?v=1.5.4"></script>
+    <script src="src/js/systems/achievements.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
     <!-- GAME DATA (Relics & Shop)
     <!-- ============================================ -->
-    <script src="src/js/data/game-data.js?v=1.5.4"></script>
+    <script src="src/js/data/game-data.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
     <!-- STATS SYSTEM
     <!-- ============================================ -->
-    <script src="src/js/systems/stats.js?v=1.5.4"></script>
+    <script src="src/js/systems/stats.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
     <!-- LEADERBOARD SYSTEM
     <!-- ============================================ -->
-    <script src="src/js/systems/leaderboard.js?v=1.5.4"></script>
+    <script src="src/js/systems/leaderboard.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
     <!-- AUDIO CONTEXT (Must load before music.js!)
     <!-- ============================================ -->
-    <script src="src/js/core/audio-context.js?v=1.5.4"></script>
+    <script src="src/js/core/audio-context.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
     <!-- MUSIC SYSTEM
     <!-- ============================================ -->
-    <script src="src/js/systems/music.js?v=1.5.4"></script>
+    <script src="src/js/systems/music.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
     <!-- GAME SCRIPT (Main game logic - must load before codex!)
     <!-- ============================================ -->
-    <script src="src/js/game.js?v=1.5.4"></script>
+    <script src="src/js/game.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
     <!-- CODEX SYSTEM (Depends on game.js variables)
     <!-- ============================================ -->
-    <script src="src/js/systems/codex.js?v=1.5.4"></script>
+    <script src="src/js/systems/codex.js?v=1.4.1"></script>
     
     
 </body>
