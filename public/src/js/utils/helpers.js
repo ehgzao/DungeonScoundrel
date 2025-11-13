@@ -180,38 +180,70 @@ window.hideTooltip = function() {
     }
 };
 
-// Screen Shake Effect
+// Screen Shake Effect (Mobile-optimized)
 window.screenShake = function() {
+    // Check if mobile optimization is active
+    const isMobile = window.mobileOptimization && window.mobileOptimization.isMobile;
+    const isLowEnd = window.mobileOptimization && window.mobileOptimization.isLowEndDevice;
+
+    // Skip shake on low-end devices
+    if (isLowEnd) return;
+
     const gameContainer = document.body;
-    gameContainer.style.animation = 'shake 0.3s';
+    const duration = isMobile ? 0.15 : 0.3; // Shorter on mobile
+    gameContainer.style.animation = `shake ${duration}s`;
     setTimeout(() => {
         gameContainer.style.animation = '';
-    }, 300);
+    }, duration * 1000);
 };
 
-// Particles System with performance limit
+// Particles System with performance limit (Mobile-optimized)
 let activeParticles = 0;
-const MAX_PARTICLES = 150; // Prevent performance issues
+let MAX_PARTICLES = 150; // Prevent performance issues
 
 window.createParticles = function(x, y, color, count = 10) {
+    // Apply mobile optimizations
+    const isMobile = window.mobileOptimization && window.mobileOptimization.isMobile;
+    const isLowEnd = window.mobileOptimization && window.mobileOptimization.isLowEndDevice;
+
+    // Adjust MAX_PARTICLES based on device
+    if (isMobile) {
+        MAX_PARTICLES = isLowEnd ? 20 : 50; // Drastically reduced for mobile
+    }
+
+    // Skip particles completely on low-end devices if performance is bad
+    if (isLowEnd && activeParticles > 5) return;
+
+    // Reduce count on mobile
+    if (isMobile) {
+        count = Math.floor(count * (isLowEnd ? 0.2 : 0.4)); // 20% or 40% of original
+    }
+
     // Limit number of particles for performance
     const actualCount = Math.min(count, MAX_PARTICLES - activeParticles);
     if (actualCount <= 0) return; // Skip if at limit
     
+    // Adjust animation duration for mobile
+    const animDuration = isMobile ? (isLowEnd ? 0.3 : 0.5) : 1.0; // Faster on mobile
+    const particleSize = isMobile ? 4 : 8; // Smaller particles on mobile
+
     for (let i = 0; i < actualCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
+        const size = Math.random() * particleSize + 2;
+        const duration = Math.random() * (animDuration * 0.5) + (animDuration * 0.5);
+
         particle.style.cssText = `
             position: fixed;
             left: ${x}px;
             top: ${y}px;
-            width: ${Math.random() * 8 + 4}px;
-            height: ${Math.random() * 8 + 4}px;
+            width: ${size}px;
+            height: ${size}px;
             background: ${color};
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            animation: particleFade ${Math.random() * 0.5 + 0.5}s ease-out forwards;
+            animation: particleFade ${duration}s ease-out forwards;
             transform: translate(${(Math.random() - 0.5) * 100}px, ${(Math.random() - 0.5) * 100}px);
         `;
         activeParticles++;
@@ -219,7 +251,7 @@ window.createParticles = function(x, y, color, count = 10) {
         setTimeout(() => {
             particle.remove();
             activeParticles--;
-        }, 1000);
+        }, animDuration * 1000);
     }
 };
 
