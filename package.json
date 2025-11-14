@@ -1,0 +1,33 @@
+{
+  "name": "dungeon-scoundrel",
+  "version": "1.6.25",
+  "description": "A roguelike deck-building card game where you navigate through treacherous dungeons using a standard deck of cards",
+  "main": "public/index.html",
+  "scripts": {
+    "dev": "python -m http.server 8080 --directory public",
+    "build": "echo 'Building for production...' && npm run build:sw",
+    "build:sw": "workbox generateSW workbox-config.js",
+    "deploy": "netlify deploy --prod"
+  },
+  "keywords": [
+    "game",
+    "roguelike",
+    "card-game",
+    "dungeon",
+    "medieval",
+    "pwa"
+  ],
+  "author": "ehgzao",
+  "license": "MIT",
+  "devDependencies": {
+    "workbox-cli": "^7.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ehgzao/DungeonScoundrel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ehgzao/DungeonScoundrel/issues"
+  },
+  "homepage": "https://dungeonscoundrel.netlify.app/"
+}

@@ -41,3 +41,13 @@ tmp/
 
 # Firebase config (contains API keys)
 src/config/firebase-config.js
+
+# Node modules
+node_modules/
+
+# Generated Service Worker
+public/sw.js
+public/workbox-*.js
+
+# Package lock
+package-lock.json

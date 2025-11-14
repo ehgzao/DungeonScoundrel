@@ -644,7 +644,7 @@
                     <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
                         <picture>
                             <source srcset="assets/images/avatar-scoundrel.webp" type="image/webp">
-                            <img src="assets/images/avatar-scoundrel.jpg" alt="Scoundrel" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="assets/images/avatar-scoundrel.jpg" alt="Scoundrel" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         </picture>
                     </div>
                     <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">SCOUNDREL</h3>
@@ -666,7 +666,7 @@
                     <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
                         <picture>
                             <source srcset="assets/images/avatar-knight.webp" type="image/webp">
-                            <img src="assets/images/avatar-knight.jpg" alt="Knight" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="assets/images/avatar-knight.jpg" alt="Knight" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         </picture>
                     </div>
                     <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">KNIGHT</h3>
@@ -688,7 +688,7 @@
                     <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
                         <picture>
                             <source srcset="assets/images/avatar-rogue.webp" type="image/webp">
-                            <img src="assets/images/avatar-rogue.jpg" alt="Rogue" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="assets/images/avatar-rogue.jpg" alt="Rogue" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         </picture>
                     </div>
                     <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">ROGUE</h3>
@@ -710,7 +710,7 @@
                     <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
                         <picture>
                             <source srcset="assets/images/avatar-dancer.webp" type="image/webp">
-                            <img src="assets/images/avatar-dancer.jpg" alt="Dancer" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="assets/images/avatar-dancer.jpg" alt="Dancer" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         </picture>
                     </div>
                     <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">DANCER</h3>
@@ -732,7 +732,7 @@
                     <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
                         <picture>
                             <source srcset="assets/images/avatar-berserker.webp" type="image/webp">
-                            <img src="assets/images/avatar-berserker.jpg" alt="Berserker" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="assets/images/avatar-berserker.jpg" alt="Berserker" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         </picture>
                     </div>
                     <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">BERSERKER</h3>
@@ -754,7 +754,7 @@
                     <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
                         <picture>
                             <source srcset="assets/images/avatar-priest.webp" type="image/webp">
-                            <img src="assets/images/avatar-priest.jpg" alt="Priest" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <img src="assets/images/avatar-priest.jpg" alt="Priest" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                         </picture>
                     </div>
                     <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">PRIEST</h3>
@@ -1516,7 +1516,17 @@
     <!-- STORAGE & UTILITY HELPERS
     <!-- ============================================ -->
     <script src="src/js/utils/helpers.js?v=1.4.1"></script>
-    
+
+    <!-- ============================================ -->
+    <!-- MOBILE OPTIMIZATION MODULE
+    <!-- ============================================ -->
+    <script src="src/js/utils/mobile-optimization.js?v=1.6.25"></script>
+
+    <!-- ============================================ -->
+    <!-- OFFLINE STORAGE MODULE (IndexedDB)
+    <!-- ============================================ -->
+    <script src="src/js/utils/offline-storage.js?v=1.6.25"></script>
+
     <!-- ============================================ -->
     <!-- ACHIEVEMENTS SYSTEM
     <!-- ============================================ -->
@@ -1556,7 +1566,58 @@
     <!-- CODEX SYSTEM (Depends on game.js variables)
     <!-- ============================================ -->
     <script src="src/js/systems/codex.js?v=1.4.1"></script>
-    
-    
+
+    <!-- ============================================ -->
+    <!-- SERVICE WORKER REGISTRATION (PWA Support)
+    <!-- ============================================ -->
+    <script>
+        // Service Worker Registration for PWA and Offline Support
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js', {
+                        scope: '/'
+                    });
+
+                    console.log('✅ Service Worker registered successfully:', registration.scope);
+
+                    // Listen for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        console.log('🔄 Service Worker update found...');
+
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // New service worker available
+                                console.log('✨ New version available! Reload to update.');
+
+                                // Show update notification (optional)
+                                if (confirm('🎮 New version of Dungeon Scoundrel available! Reload now?')) {
+                                    window.location.reload();
+                                }
+                            }
+                        });
+                    });
+
+                    // Check for updates periodically (every 1 hour)
+                    setInterval(() => {
+                        registration.update();
+                    }, 60 * 60 * 1000);
+
+                } catch (error) {
+                    console.error('❌ Service Worker registration failed:', error);
+                }
+            });
+
+            // Handle controller change (when SW takes control)
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                console.log('🔄 Service Worker controller changed');
+            });
+        } else {
+            console.warn('⚠️  Service Workers not supported in this browser');
+        }
+    </script>
+
+
 </body>
 </html>
