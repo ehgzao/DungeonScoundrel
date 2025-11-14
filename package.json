@@ -1,6 +1,6 @@
 {
   "name": "dungeon-scoundrel",
-  "version": "1.6.25",
+  "version": "1.4.2",
   "description": "A roguelike deck-building card game where you navigate through treacherous dungeons using a standard deck of cards",
   "main": "public/index.html",
   "scripts": {
