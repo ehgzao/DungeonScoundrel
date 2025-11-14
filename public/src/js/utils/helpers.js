@@ -504,7 +504,6 @@ const modalManager = {
     }
 };
 
-console.log('✅ Optimization helpers loaded!');
 
 // ============================================
 // DOM ELEMENTS - REMOVED TO PREVENT DUPLICATES
@@ -807,7 +806,6 @@ function disableGameButtons() {
         }
     });
     
-    console.log('[TUTORIAL] Game buttons disabled');
 }
 
 function enableGameButtons() {
@@ -829,11 +827,9 @@ function enableGameButtons() {
         }
     });
     
-    console.log('[TUTORIAL] Game buttons enabled');
 }
 
 function startInteractiveTutorial() {
-    console.log('[TUTORIAL] Starting interactive tutorial...');
     tutorialStep = 0;
     updateTutorialStep();
     const modal = document.getElementById('interactiveTutorialModal');
@@ -878,7 +874,6 @@ function startInteractiveTutorial() {
         }
     }, 100);
     
-    console.log('[TUTORIAL] Tutorial modal opened. Total steps:', tutorialSteps.length);
 }
 
 function updateTutorialStep() {
@@ -942,4 +937,3 @@ window.trapFocus = trapFocus; // For codex.js
 window.hapticFeedback = hapticFeedback; // For codex.js
 
 // Log module load
-console.log('[HELPERS] Storage & Utility helpers loaded');

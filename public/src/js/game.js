@@ -127,17 +127,13 @@ function showNewGameModal() {
     // CRITICAL: ALWAYS remove old suggestions first (prevents duplicate suggestions)
     const oldSuggestion = document.querySelector('.difficulty-suggestion');
     if (oldSuggestion) {
-        console.log('[EASY MODAL] Removing old suggestion');
         oldSuggestion.remove();
     }
     
     // First-time player: Suggest Easy difficulty
     const hasPlayedBefore = localStorage.getItem(STORAGE_KEYS.PLAYED_BEFORE);
-    console.log('[EASY MODAL] hasPlayedBefore:', hasPlayedBefore);
-    console.log('[EASY MODAL] Should show Easy suggestion:', !hasPlayedBefore);
     
     if (!hasPlayedBefore) {
-        console.log('[EASY MODAL] ✅ Showing Easy suggestion...');
         
         // Select Easy by default
         difficultySelector.querySelectorAll('.difficulty-btn').forEach(btn => {
@@ -172,7 +168,6 @@ function showGameUI() {
 // Welcome Screen Hooks
 btnWelcomeStart.onclick = showNewGameModal;
 btnLearnToPlay.onclick = () => {
-    console.log('[TUTORIAL] Learn to Play button clicked');
     learnToPlayModal.classList.add('active');
 };
 btnWelcomeLeaderboard.onclick = showLeaderboard;
@@ -291,7 +286,6 @@ if (btnPlayDefeat && typeof music !== 'undefined') {
 
 // Learn to Play Modal Hooks
 btnStartInteractiveTutorial.onclick = () => {
-    console.log('[TUTORIAL] Start Interactive Tutorial button clicked');
     learnToPlayModal.classList.remove('active');
     startInteractiveTutorial();
 };
@@ -648,28 +642,22 @@ btnOpenShop.onclick = openShop;
 // Give Up Hooks (ROBUST VERSION)
 if (btnTopGiveUp && giveUpModal && btnCancelGiveUp && btnConfirmGiveUp) {
     btnTopGiveUp.addEventListener('click', function() {
-        console.log('Give Up clicked', {gameOver: game.gameOver, gameStartTime: game.gameStartTime});
         if (game.gameOver || game.gameStartTime === 0) {
-            console.log('Give Up blocked - game not running');
             showMessage('⚠️ Start a game first!', 'warning');
             return;
         }
-        console.log('Opening Give Up modal');
         giveUpModal.classList.add('active');
     });
     
     btnCancelGiveUp.addEventListener('click', function() {
-        console.log('Give Up cancelled');
         giveUpModal.classList.remove('active');
     });
     
     btnConfirmGiveUp.addEventListener('click', function() {
-        console.log('Give Up confirmed');
         giveUpModal.classList.remove('active');
         endGame('death', true); // true = gave up
     });
     
-    console.log('✅ Give Up system initialized');
 } else {
     console.error('❌ Give Up elements not found:', {
         btnTopGiveUp: !!btnTopGiveUp,
@@ -719,7 +707,6 @@ document.addEventListener('keydown', (e) => {
         // Block all other keys during tutorial
         if (!allowedKeys.includes(e.key)) {
             e.preventDefault();
-            console.log('[TUTORIAL] Key blocked:', e.key);
             return;
         }
         
@@ -797,7 +784,6 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-console.log('✅ Keyboard shortcuts loaded! D=Draw | A=Avoid | Q=Ability | 1-5=Cards | U=Undo | S=Shop | ESC=Close');
 
 // ============================================
 // ALL GAME CODE (STARTGAME, HANDLECLICK, ETC)
@@ -1576,7 +1562,6 @@ function checkAchievements() {
 
 // Game Log (now in a modal or sidebar? For now, no visible log)
 function addLog(message, type = 'info') {
-    console.log(`LOG [${type}]: ${message}`);
     // (The log UI was removed for a cleaner layout)
 }
 
@@ -2121,45 +2106,32 @@ function checkAndStartTutorial() {
     const tutorialSkipped = localStorage.getItem(STORAGE_KEYS.TUTORIAL_SKIPPED);
     const playedBefore = localStorage.getItem(STORAGE_KEYS.PLAYED_BEFORE);
     
-    console.log('[TUTORIAL] Checking conditions...');
-    console.log('[TUTORIAL]   - tutorial_completed:', tutorialCompleted);
-    console.log('[TUTORIAL]   - tutorial_skipped:', tutorialSkipped);
-    console.log('[TUTORIAL]   - played_before:', playedBefore);
-    console.log('[TUTORIAL]   - game.difficulty:', game.difficulty);
-    console.log('[TUTORIAL]   - inGameTutorialActive:', inGameTutorialActive);
-    console.log('[TUTORIAL]   - Should start:', !tutorialCompleted && !tutorialSkipped && game.difficulty === 'easy' && !inGameTutorialActive);
     
     // CRITICAL: Prevent tutorial from starting multiple times
     if (inGameTutorialActive) {
-        console.log('[TUTORIAL] ⚠️ Tutorial already active, skipping...');
         return;
     }
     
     if (!tutorialCompleted && !tutorialSkipped && game.difficulty === 'easy') {
-        console.log('[TUTORIAL] ✅ Starting in-game tutorial...');
         inGameTutorialActive = true;
         inGameTutorialStep = 0;
         
         // PAUSE TIMER during tutorial
         if (window.pauseGameTimer) {
             window.pauseGameTimer();
-            console.log('[TUTORIAL] Timer paused');
         }
         
         // CRITICAL: Disable all game buttons during tutorial
         if (window.disableGameButtons) {
             window.disableGameButtons();
-            console.log('[TUTORIAL] Game buttons disabled');
         }
         
         showTutorialStep(IN_GAME_TUTORIAL_STEPS[0]);
     } else {
-        console.log('[TUTORIAL] ❌ Tutorial not started - conditions not met');
     }
 }
 
 function showTutorialStep(step) {
-    console.log('[TUTORIAL] Showing step:', step.id);
     
     // CLEANUP - Remove ALL previous tutorial elements
     document.querySelectorAll('.tutorial-overlay, .tutorial-spotlight, .tutorial-modal').forEach(el => {
@@ -2192,7 +2164,6 @@ function showTutorialStep(step) {
         if (targetElement) {
             const rect = targetElement.getBoundingClientRect();
             
-            console.log('[TUTORIAL] 🎯 Creating spotlight for:', step.highlight, 'Rect:', rect);
             
             // Only create spotlight if element is visible (has dimensions)
             if (rect.width > 0 && rect.height > 0) {
@@ -2223,7 +2194,6 @@ function showTutorialStep(step) {
                 targetElement.style.zIndex = '10000';
                 targetElement.classList.add('tutorial-highlighted');
                 
-                console.log('[TUTORIAL] ✅ Spotlight created successfully');
             } else {
                 console.warn('[TUTORIAL] ⚠️ Element not visible (0 dimensions):', step.highlight);
             }
@@ -2377,13 +2347,11 @@ function skipTutorial() {
     // Resume timer
     if (window.resumeGameTimer) {
         window.resumeGameTimer();
-        console.log('[TUTORIAL] Timer resumed (skipped)');
     }
     
     // CRITICAL: Re-enable game buttons
     if (window.enableGameButtons) {
         window.enableGameButtons();
-        console.log('[TUTORIAL] Game buttons re-enabled (skipped)');
     }
     
     // CRITICAL: Set SKIPPED flag, NOT completed flag
@@ -2392,7 +2360,6 @@ function skipTutorial() {
     
     // NO ACHIEVEMENT when skipping!
     showMessage('Tutorial skipped. Good luck!', 'info');
-    console.log('[TUTORIAL] Tutorial skipped (no achievement)');
 }
 
 function completeTutorial() {
@@ -2406,7 +2373,6 @@ function completeTutorial() {
     // CRITICAL: Re-enable game buttons
     if (window.enableGameButtons) {
         window.enableGameButtons();
-        console.log('[TUTORIAL] Game buttons re-enabled (completed)');
     }
     
     // Restore highlighted elements
@@ -2419,7 +2385,6 @@ function completeTutorial() {
     // Resume timer
     if (window.resumeGameTimer) {
         window.resumeGameTimer();
-        console.log('[TUTORIAL] Timer resumed');
     }
     
     localStorage.setItem(STORAGE_KEYS.TUTORIAL_COMPLETED, 'true');
@@ -2428,7 +2393,6 @@ function completeTutorial() {
     unlockAchievement('tutorial_master');
     
     showMessage('🎓 Tutorial completed! Good luck in the dungeon!', 'success');
-    console.log('[TUTORIAL] Tutorial completed with achievement!');
 }
 
 // Add CSS animation for pulse (BRIGHT glow, no dark shadow)
@@ -3257,7 +3221,6 @@ function handleWeapon(weapon, index) {
     }
     
     game.equippedWeapon.durability = game.equippedWeapon.maxDurability;
-    console.log('[WEAPON] ⚠️ DURABILITY SET:', game.equippedWeapon.durability, '/', game.equippedWeapon.maxDurability, '| STACK:', new Error().stack.split('\n')[2]);
     
     // Master Smith: +1 damage when equipping weapon
     if (game.relics.some(r => r.id === 'master_smith')) {
@@ -3267,13 +3230,9 @@ function handleWeapon(weapon, index) {
     
     // Check for Durable Weapons relic
     if (game.relics.some(r => r.id === 'durable_weapons')) {
-        console.log('[WEAPON] 🛠️ Eternal Forge active - Setting infinite durability');
-        console.log('[WEAPON] Current relics:', game.relics.map(r => r.name).join(', '));
         game.equippedWeapon.maxDurability = 999; // Infinite durability
         game.equippedWeapon.durability = 999;
     } else {
-        console.log('[WEAPON] Durability set:', game.equippedWeapon.durability, '/', game.equippedWeapon.maxDurability);
-        console.log('[WEAPON] Current relics:', game.relics.map(r => r.name).join(', ') || 'None');
     }
     
     playSound('equip');
@@ -3337,7 +3296,6 @@ function handlePotion(potion, index) {
 }
 
 function checkGameState() {
-    console.log('[CHECKGAMESTATE] Called:', { 
         roomLength: game.room.length, 
         roomContent: game.room,
         gameOver: game.gameOver,
@@ -3348,14 +3306,12 @@ function checkGameState() {
     // Room Cleared?
     const roomEmpty = game.room.length === 0;
     const notGameOver = !game.gameOver;
-    console.log('[CHECKGAMESTATE] Conditions:', { 
         roomEmpty, 
         notGameOver, 
         shouldEnableButtons: roomEmpty && notGameOver 
     });
     
     if (roomEmpty && notGameOver) {
-        console.log('[CHECKGAMESTATE] ✅ Room cleared! Enabling buttons...');
         
         game.potionsUsed = 0;
         game.stats.roomsCleared++;
@@ -3491,7 +3447,6 @@ function checkGameState() {
             btnAvoidRoom.disabled = false;
         }
         
-        console.log('[CHECKGAMESTATE] Buttons enabled:', { 
             btnDrawDisabled: btnDrawRoom.disabled,
             btnDrawHasAttr: btnDrawRoom.hasAttribute('disabled'),
             btnAvoidDisabled: btnAvoidRoom.disabled,
@@ -3512,10 +3467,8 @@ function checkGameState() {
             // This prevents boss HP from resetting if room becomes empty temporarily
             const bossInRoom = game.room.some(card => card.isBoss && card.bossNumber === BOSS.FINAL_BOSS_NUMBER);
             if (!bossInRoom) {
-                console.log('[BOSS] Spawning final boss');
                 spawnFinalBoss();
             } else {
-                console.log('[BOSS] Final boss already in room, skipping spawn');
             }
         } else {
             endGame('victory');
@@ -3796,7 +3749,6 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                 btn.disabled = true; // Prevent re-submission
                 hapticFeedback('success');
                 pulseElement(btn, '#6bcf7f');
-                console.log(`✅ Score ${score} auto-submitted to leaderboard!`);
                 
                 // Auto-close modal after 2 seconds on success
                 setTimeout(() => {
@@ -3836,7 +3788,6 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
 function spawnFinalBoss() {
     // CRITICAL: Prevent duplicate spawns
     if (game.finalBossSpawned) {
-        console.log('[BOSS] Final boss already spawned, skipping');
         return;
     }
     
@@ -4068,7 +4019,6 @@ function holdCard(card, index) {
     
     // CRITICAL: Check if room is now empty after holding card
     // This enables buttons if player held the last card
-    console.log('[HOLD] Card held, checking game state. Room length:', game.room.length);
     checkGameState();
 }
 
@@ -4290,7 +4240,6 @@ function updateUI() {
             const cardEl = createCardElement(currentCard);
             cardEl.classList.add('held');
             cardEl.onclick = () => {
-                console.log('[HOLD] Using held card (multi-hold):', game.heldCard[game.heldCardIndex]);
                 const selectedCard = game.heldCard.splice(game.heldCardIndex, 1)[0];
                 if (game.heldCard.length === 0) {
                     game.heldCard = null;
@@ -4302,11 +4251,9 @@ function updateUI() {
                 
                 // CRITICAL: Process card directly WITHOUT adding to room first
                 // Adding to room causes checkGameState() to see room.length = 1
-                console.log('[HOLD] Processing card directly:', selectedCard);
                 
                 // Determine card type and process accordingly
                 const cardType = getCardType(selectedCard);
-                console.log('[HOLD] Card type:', cardType);
                 
                 if (cardType === 'potion') {
                     // For potions: add to room temporarily, then handlePotion removes it
@@ -4324,7 +4271,6 @@ function updateUI() {
                     updateUI();
                 }
                 
-                console.log('[HOLD] ✅ Card processed, room.length:', game.room.length);
             };
             holdAreaContainer.appendChild(cardEl);
             
@@ -4338,21 +4284,17 @@ function updateUI() {
                     // Use held card (works for both single and array)
                     let selectedCard;
                     if (Array.isArray(game.heldCard)) {
-                        console.log('[HOLD] Using held card (array):', game.heldCard[idx]);
                         selectedCard = game.heldCard.splice(idx, 1)[0];
                         if (game.heldCard.length === 0) game.heldCard = null;
                     } else {
-                        console.log('[HOLD] Using held card (single):', game.heldCard);
                         selectedCard = game.heldCard;
                         game.heldCard = null;
                     }
                     
                     // CRITICAL: Process card directly WITHOUT adding to room first
-                    console.log('[HOLD] Processing card directly:', selectedCard);
                     
                     // Determine card type and process accordingly
                     const cardType = getCardType(selectedCard);
-                    console.log('[HOLD] Card type:', cardType);
                     
                     if (cardType === 'potion') {
                         // For potions: add to room temporarily, then handlePotion removes it
@@ -4370,7 +4312,6 @@ function updateUI() {
                         updateUI();
                     }
                     
-                    console.log('[HOLD] ✅ Card processed, room.length:', game.room.length);
                 };
                 holdAreaContainer.appendChild(cardEl);
             });
@@ -4835,7 +4776,6 @@ window.RELIC_CONFIG = RELIC_CONFIG; // For game-relics.js
 window.createCardElement = createCardElement; // For tutorial - FULL styled cards
 window.createMiniCardElement = createMiniCardElement; // For tutorial - mini cards
 
-console.log('[GAME] All functions and state exposed globally for modules');
 
 // Check orientation on load and resize
 checkMobileOrientation();

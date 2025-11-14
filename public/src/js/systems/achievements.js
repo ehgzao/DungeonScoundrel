@@ -213,4 +213,3 @@ window.ACHIEVEMENTS = ACHIEVEMENTS;
 window.loadAchievements = loadAchievements;
 
 // Log module load
-console.log('[ACHIEVEMENTS] 50 Achievements system loaded');

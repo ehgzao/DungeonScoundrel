@@ -176,4 +176,3 @@ export function closeEventWrapper() {
 window.triggerRandomEvent = triggerRandomEvent;
 window.closeEventWrapper = closeEventWrapper;
 
-console.log('✅ game-events.js loaded');

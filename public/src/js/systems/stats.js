@@ -137,4 +137,3 @@ function showUpgradeAvailableToast(unlock) {
 
 
 // Log module load
-console.log('[STATS] Permanent stats system loaded');
