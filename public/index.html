@@ -1,15 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>🎴 Dungeon Scoundrel - Roguelike Card Game</title>
+    <title>ðŸŽ´ Dungeon Scoundrel - Roguelike Card Game</title>
     
 
     <!-- Performance upgrades-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>    
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap" as="style">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap">
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" as="script"><script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
 
     <!-- Mobile Meta Tags -->
     <meta name="description" content="A dark medieval roguelike card game. Explore dungeons, fight monsters, collect powerful relics and prove your skill in this challenging card game! 4 difficulties, 50 achievements, permanent unlock system.">
@@ -26,7 +28,7 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.dungeonscoundrel.com/">
-    <meta property="og:title" content="🎴 Dungeon Scoundrel - Dark Medieval Roguelike Card Game">
+    <meta property="og:title" content="ðŸŽ´ Dungeon Scoundrel - Dark Medieval Roguelike Card Game">
     <meta property="og:description" content="A challenging medieval roguelike card game. Explore dungeons, collect relics, defeat monsters! 4 difficulties, 50 achievements. Play now in your browser!">
     <meta property="og:image" content="https://www.dungeonscoundrel.com/og-image.png">
     <meta property="og:image:width" content="1200">
@@ -38,7 +40,7 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://www.dungeonscoundrel.com/">
-    <meta name="twitter:title" content="🎴 Dungeon Scoundrel - Dark Medieval Roguelike">
+    <meta name="twitter:title" content="ðŸŽ´ Dungeon Scoundrel - Dark Medieval Roguelike">
     <meta name="twitter:description" content="A challenging medieval roguelike card game. Explore dungeons, collect relics, defeat monsters! Play now!">
     <meta name="twitter:image" content="https://www.dungeonscoundrel.com/og-image.png">
     <meta name="twitter:image:alt" content="Dungeon Scoundrel - Dark Medieval Roguelike Card Game">
@@ -62,7 +64,7 @@
     <link rel="stylesheet" href="src/styles/scrollbar.css">
     <link rel="stylesheet" href="src/styles/components/waitlist.css">
     <link rel="stylesheet" href="src/styles/components/buttons.css">
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js" defer></script>
     <script>
         (function(){
             if (window.emailjs) { emailjs.init('JhH3cSIF6g3y73-Yk'); }
@@ -77,7 +79,7 @@
     <!-- ============================================ -->
     <div id="mobileWaitlistModal">
         <div class="waitlist-container">
-            <div class="waitlist-icon">📱</div>
+            <div class="waitlist-icon">ðŸ“±</div>
             <h1 class="waitlist-title">Coming Soon to Mobile!</h1>
             <p class="waitlist-subtitle">
                 Dungeon Scoundrel is being optimized for mobile devices. 
@@ -86,7 +88,7 @@
             
             <div class="waitlist-form">
                 <p style="color: #ffd700; margin-bottom: 20px; font-weight: 600;">
-                    🎮 Be the first to know when mobile version launches!
+                    ðŸŽ® Be the first to know when mobile version launches!
                 </p>
                 
                 <input 
@@ -112,18 +114,18 @@
                 <div id="waitlistValidation" class="waitlist-validation"></div>
                 
                 <button class="waitlist-btn" onclick="joinWaitlist()">
-                    ✨ Join Waitlist
+                    âœ¨ Join Waitlist
                 </button>
                 
                 <div id="waitlistSuccess" class="waitlist-success">
-                    <strong>🎉 Success!</strong><br>
+                    <strong>ðŸŽ‰ Success!</strong><br>
                     You're on the list! We'll notify you as soon as the mobile version is ready.
                 </div>
             </div>
             
             <div class="waitlist-desktop-link">
                 <p>Want to play now?</p>
-                <p><a href="#" onclick="dismissMobileWarning()">Continue to desktop version →</a></p>
+                <p><a href="#" onclick="dismissMobileWarning()">Continue to desktop version â†’</a></p>
             </div>
         </div>
     </div>
@@ -193,17 +195,17 @@
                 cursor: pointer;
                 transition: all 0.2s ease;
                 text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
-            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.6)'"><span style="font-size: 1.2em;">⚔️</span> Start Quest</button>
+            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.6)'"><span style="font-size: 1.2em;">âš”ï¸</span> Start Quest</button>
             
-            <button id="btnLearnToPlay" class="menu-btn-secondary" aria-label="Learn how to play the game" role="button"><span style="font-size: 1.1em;">📚</span> Learn to Play</button>
+            <button id="btnLearnToPlay" class="menu-btn-secondary" aria-label="Learn how to play the game" role="button"><span style="font-size: 1.1em;">ðŸ“š</span> Learn to Play</button>
             
-            <button id="btnWelcomeLeaderboard" class="menu-btn-secondary" aria-label="View hall of fame leaderboard" role="button"><span style="font-size: 1.1em;">🏆</span> Hall of Fame</button>
+            <button id="btnWelcomeLeaderboard" class="menu-btn-secondary" aria-label="View hall of fame leaderboard" role="button"><span style="font-size: 1.1em;">ðŸ†</span> Hall of Fame</button>
             
-            <button id="btnWelcomeSoundboard" class="menu-btn-secondary"><span style="font-size: 1.1em;">🎵</span> Music Chamber</button>
+            <button id="btnWelcomeSoundboard" class="menu-btn-secondary"><span style="font-size: 1.1em;">ðŸŽµ</span> Music Chamber</button>
             
-            <button id="btnCodex" class="menu-btn-secondary" aria-label="Open codex (upgrades, relics, achievements)" role="button"><span style="font-size: 1.1em;">📚</span> Codex</button>
+            <button id="btnCodex" class="menu-btn-secondary" aria-label="Open codex (upgrades, relics, achievements)" role="button"><span style="font-size: 1.1em;">ðŸ“š</span> Codex</button>
             
-            <button id="btnGoogleLogin" class="menu-btn-secondary"><span style="font-size: 1.1em;">☁️</span> Cloud Sync</button>
+            <button id="btnGoogleLogin" class="menu-btn-secondary"><span style="font-size: 1.1em;">â˜ï¸</span> Cloud Sync</button>
         </div>
         
         <!-- Music Controls (Minimalist) -->
@@ -219,7 +221,7 @@
                 opacity: 0.8;
             ">Dark Awakening</div>
             <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-                <button id="btnWelcomeMusicToggle" title="Play/Pause Music">⏯️</button>
+                <button id="btnWelcomeMusicToggle" title="Play/Pause Music">â¯ï¸</button>
                 <input type="range" id="welcomeMusicVolume" min="0" max="100" value="40" title="Music Volume">
             </div>
         </div>
@@ -276,7 +278,7 @@
                 <span style="
                     font-size: 0.95em;
                     filter: drop-shadow(0 0 3px rgba(201, 169, 97, 0.5));
-                ">🐛</span>
+                ">ðŸ›</span>
                 <span style="
                     font-family: 'Cinzel', serif;
                     font-size: 0.75em;
@@ -309,7 +311,7 @@
                 <span style="
                     font-size: 0.95em;
                     filter: drop-shadow(0 0 3px rgba(201, 169, 97, 0.5));
-                ">📧</span>
+                ">ðŸ“§</span>
                 <span style="
                     font-family: 'Cinzel', serif;
                     font-size: 0.75em;
@@ -342,7 +344,7 @@
                 <span style="
                     font-size: 0.95em;
                     filter: drop-shadow(0 0 3px rgba(201, 169, 97, 0.5));
-                ">🚀</span>
+                ">ðŸš€</span>
                 <span style="
                     font-family: 'Cinzel', serif;
                     font-size: 0.75em;
@@ -367,41 +369,41 @@
         <div class="top-bar">
             <div class="stats-group">
                 <div class="stat-display" id="top-bar-health" title="Current / Max Health" role="status" aria-live="polite">
-                    ❤️ <span class="stat-value" id="health" aria-label="Current health">20</span>
+                    â¤ï¸ <span class="stat-value" id="health" aria-label="Current health">20</span>
                 </div>
                 <div class="stat-display" id="top-bar-gold" title="Gold" role="status">
-                    🪙 <span class="stat-value" id="goldAmount" aria-label="Gold amount">0</span>
+                    ðŸª™ <span class="stat-value" id="goldAmount" aria-label="Gold amount">0</span>
                 </div>
                  <!-- Score removed from here -->
                 <div class="stat-display" id="top-bar-dungeon" title="Cards left in Dungeon">
-                    🏰 <span class="stat-value" id="dungeonCount">0</span>
+                    ðŸ° <span class="stat-value" id="dungeonCount">0</span>
                 </div>
                 <div class="stat-display" id="top-bar-rooms" title="Rooms Cleared">
-                    🚪 <span class="stat-value" id="statRooms">0</span>
+                    ðŸšª <span class="stat-value" id="statRooms">0</span>
                 </div>
             </div>
             
             <!-- CENTER GROUP: Relics + Timer + Achievements - ABSOLUTE CENTER -->
             <div style="position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; align-items: center;">
-                <div class="achievements-compact" id="btnTopRelics" title="📖 Quick access to Relics encyclopedia - View all relics, their effects, and rarities" style="cursor: pointer; transition: all 0.2s ease;">
-                    📖 <span class="achievement-counter">Relics</span>
+                <div class="achievements-compact" id="btnTopRelics" title="ðŸ“– Quick access to Relics encyclopedia - View all relics, their effects, and rarities" style="cursor: pointer; transition: all 0.2s ease;">
+                    ðŸ“– <span class="achievement-counter">Relics</span>
                 </div>
                 <div class="stat-display" id="gameTimer" title="Elapsed Time" style="font-size: 1.1em; font-weight: bold; color: #ffd700;">
-                    ⏱️ <span class="stat-value">00:00</span>
+                    â±ï¸ <span class="stat-value">00:00</span>
                 </div>
                 <div class="achievements-compact" id="achievementsCompact" title="Click to view all achievements" style="cursor: pointer;">
-                    🏆 <span class="achievement-counter" id="achievementCounter">0/50</span>
+                    ðŸ† <span class="achievement-counter" id="achievementCounter">0/50</span>
                 </div>
             </div>
             
             <div class="settings-group">
                 <div class="music-controls">
-                    <button class="settings-btn" id="btnMusicToggle" title="Play/Pause Music">⏯️</button>
+                    <button class="settings-btn" id="btnMusicToggle" title="Play/Pause Music">â¯ï¸</button>
                     <input type="range" id="musicVolume" min="0" max="100" value="40" title="Music Volume" 
                            style="width: 80px; height: 20px; vertical-align: middle; margin: 0 5px; cursor: pointer;">
                 </div>
                 
-                <button class="settings-btn btn-danger-style" id="btnTopGiveUp" title="Give Up Run" onclick="tryGiveUp();">🏳️</button>
+                <button class="settings-btn btn-danger-style" id="btnTopGiveUp" title="Give Up Run" onclick="tryGiveUp();">ðŸ³ï¸</button>
             </div>
         </div>
 
@@ -470,7 +472,7 @@
                     </div>
                 </div>
                 <div class="sidebar-action">
-                    <button class="btn-shop" id="btnOpenShop">🏺 Merchant</button>
+                    <button class="btn-shop" id="btnOpenShop">ðŸº Merchant</button>
                 </div>
             </div>
 
@@ -495,9 +497,9 @@
                 </div>
                 
                 <div class="controls">
-                    <button class="btn btn-primary" id="btnDrawRoom" disabled>⚔️ Enter Chamber</button>
-                    <button class="btn btn-success" id="btnAvoidRoom" disabled>🛡️ Evade</button>
-                    <button class="btn btn-warning" id="btnUndo" disabled style="display: none;">↩️ Undo Last Move</button>
+                    <button class="btn btn-primary" id="btnDrawRoom" disabled>âš”ï¸ Enter Chamber</button>
+                    <button class="btn btn-success" id="btnAvoidRoom" disabled>ðŸ›¡ï¸ Evade</button>
+                    <button class="btn btn-warning" id="btnUndo" disabled style="display: none;">â†©ï¸ Undo Last Move</button>
                 </div>
             </div>
 
@@ -530,7 +532,7 @@
                     onmouseover="if(!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 12px rgba(255,215,0,0.6)'; }"
                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 3px 8px rgba(255,215,0,0.4)';"
                     title="Class special ability">
-                        <span id="abilityIcon" style="font-size: 1.3em; margin-right: 5px;">✨</span>
+                        <span id="abilityIcon" style="font-size: 1.3em; margin-right: 5px;">âœ¨</span>
                         <span id="abilityName" style="font-size: 0.85em;">Ability</span>
                         <div id="abilityCooldownDisplay" style="
                             position: absolute;
@@ -590,43 +592,43 @@
     <!-- Modal: New Game -->
     <div class="modal-overlay" id="newGameModal">
         <div class="modal-content" style="max-width: 600px !important; max-height: 90vh; overflow-y: auto;">
-            <button class="modal-close-btn" onclick="document.getElementById('newGameModal').classList.remove('active');">✕</button>
-            <h2>✨ New Game</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('newGameModal').classList.remove('active');">âœ•</button>
+            <h2>âœ¨ New Game</h2>
             <div class="form-group">
-                <label for="playerNameInput">👤 Player Name (3-10 characters) *</label>
+                <label for="playerNameInput">ðŸ‘¤ Player Name (3-10 characters) *</label>
                 <input type="text" id="playerNameInput" placeholder="Enter your name" minlength="3" maxlength="10" required>
                 <div id="nameError" style="display: none; color: #ff6b6b; font-size: 0.9em; margin-top: 5px; font-weight: bold;"></div>
                 <small style="color: #aaa; font-size: 0.85em;">Minimum 3, maximum 10 characters</small>
             </div>
             <div class="form-group">
-                <label>🔥 Difficulty</label>
+                <label>ðŸ”¥ Difficulty</label>
                 <div class="difficulty-selector" id="difficultySelector">
                     <button class="difficulty-btn easy" data-difficulty="easy">
-                        🟢 Easy<br><small>20 HP | 30 🪙</small>
+                        ðŸŸ¢ Easy<br><small>20 HP | 30 ðŸª™</small>
                     </button>
                     <button class="difficulty-btn normal selected" data-difficulty="normal">
-                        🟡 Normal<br><small>15 HP | 15 🪙</small>
+                        ðŸŸ¡ Normal<br><small>15 HP | 15 ðŸª™</small>
                     </button>
                     <button class="difficulty-btn hard" data-difficulty="hard">
-                        🔴 Hard<br><small>10 HP | 0 🪙</small>
+                        ðŸ”´ Hard<br><small>10 HP | 0 ðŸª™</small>
                     </button>
                     <button class="difficulty-btn endless" data-difficulty="endless">
-                        ♾️ Endless<br><small>15 HP | 15 🪙</small>
+                        â™¾ï¸ Endless<br><small>15 HP | 15 ðŸª™</small>
                     </button>
                 </div>
                 <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin-top: 10px; font-size: 0.9em; color: #ddd; line-height: 1.5;">
-                    <strong>⚔️ Weapon Durability:</strong> Easy: 3 | Normal: 2 | Hard: 1 | Endless: 2
-                    <br><br><strong>💎 Gold & Events:</strong>
-                    <br>• <strong>🟢 Easy:</strong> More gold & events (40%)
-                    <br>• <strong>🟡 Normal:</strong> Balanced (30%)
-                    <br>• <strong>🔴 Hard:</strong> Less gold & events (20%)
-                    <br><br><strong>↩️ Undo:</strong> Available on Easy & Normal only
-                    <br><br><strong>👹 Boss Battles:</strong> 2 Minibosses (room 15 & 25) + Final Boss!
+                    <strong>âš”ï¸ Weapon Durability:</strong> Easy: 3 | Normal: 2 | Hard: 1 | Endless: 2
+                    <br><br><strong>ðŸ’Ž Gold & Events:</strong>
+                    <br>â€¢ <strong>ðŸŸ¢ Easy:</strong> More gold & events (40%)
+                    <br>â€¢ <strong>ðŸŸ¡ Normal:</strong> Balanced (30%)
+                    <br>â€¢ <strong>ðŸ”´ Hard:</strong> Less gold & events (20%)
+                    <br><br><strong>â†©ï¸ Undo:</strong> Available on Easy & Normal only
+                    <br><br><strong>ðŸ‘¹ Boss Battles:</strong> 2 Minibosses (room 15 & 25) + Final Boss!
                     <br><br><strong>Higher difficulty = Bigger score multiplier!</strong>
                 </div>
             </div>
             <div class="modal-controls">
-                <button class="btn btn-success" id="btnStartGameModal">⚔️ Start Quest!</button>
+                <button class="btn btn-success" id="btnStartGameModal">âš”ï¸ Start Quest!</button>
                 <button class="btn btn-secondary" id="btnCancelStart">Cancel</button>
             </div>
         </div>
@@ -635,7 +637,7 @@
     <!-- Modal: Class Selection -->
     <div class="modal-overlay" id="classSelectionModal">
         <div class="modal-content" style="max-width: 1000px !important; width: 90vw !important; padding: 40px 30px !important;">
-            <h2 id="classSelectionTitle" style="text-align: center; font-family: 'Cinzel', serif; color: #c9a961; margin-bottom: 10px;">⚔️ SELECT YOUR HERO</h2>
+            <h2 id="classSelectionTitle" style="text-align: center; font-family: 'Cinzel', serif; color: #c9a961; margin-bottom: 10px;">âš”ï¸ SELECT YOUR HERO</h2>
             <p id="classSelectionSubtitle" style="text-align: center; color: #8b7355; font-size: 0.9em; margin-bottom: 20px; min-height: 20px;"></p>
             
             <!-- Class Avatars (Horizontal) -->
@@ -789,7 +791,7 @@
             </div>
             
             <div class="modal-controls">
-                <button class="btn btn-success" id="btnConfirmClass" disabled>⚔️ Begin Adventure!</button>
+                <button class="btn btn-success" id="btnConfirmClass" disabled>âš”ï¸ Begin Adventure!</button>
                 <button class="btn btn-secondary" id="btnCancelClass">Back</button>
             </div>
         </div>
@@ -798,15 +800,15 @@
     <!-- Modal: Interactive Tutorial -->
     <div class="modal-overlay" id="interactiveTutorialModal">
         <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
-            <button class="modal-close-btn" onclick="document.getElementById('interactiveTutorialModal').classList.remove('active');">✕</button>
-            <h2 id="tutorialStepTitle">🎮 Interactive Tutorial</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('interactiveTutorialModal').classList.remove('active');">âœ•</button>
+            <h2 id="tutorialStepTitle">ðŸŽ® Interactive Tutorial</h2>
             <div id="tutorialStepContent" style="min-height: 300px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 8px; margin: 20px 0;">
                 <!-- Dynamic content here -->
             </div>
             <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
-                <button class="btn btn-secondary" id="btnTutorialPrev" disabled>⬅️ Previous</button>
-                <button class="btn btn-primary" id="btnTutorialNext">➡️ Next</button>
-                <button class="btn btn-secondary" id="btnTutorialSkip">⏩ Skip Tutorial</button>
+                <button class="btn btn-secondary" id="btnTutorialPrev" disabled>â¬…ï¸ Previous</button>
+                <button class="btn btn-primary" id="btnTutorialNext">âž¡ï¸ Next</button>
+                <button class="btn btn-secondary" id="btnTutorialSkip">â© Skip Tutorial</button>
             </div>
             <div style="text-align: center; margin-top: 15px; color: #aaa; font-size: 0.9em;">
                 Step <span id="tutorialCurrentStep">1</span> of <span id="tutorialTotalSteps">8</span>
@@ -817,8 +819,8 @@
     <!-- Modal: Learn to Play Selection -->
     <div class="modal-overlay" id="learnToPlayModal" role="dialog" aria-modal="true" aria-labelledby="learnToPlayTitle">
         <div class="modal-content" style="max-width: 600px; padding: 40px;">
-            <button class="modal-close-btn" onclick="document.getElementById('learnToPlayModal').classList.remove('active');" aria-label="Close learn to play modal">✕</button>
-            <h2 id="learnToPlayTitle" style="text-align: center; color: #c9a961; margin-bottom: 30px; font-size: 2em;">📚 Learn to Play</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('learnToPlayModal').classList.remove('active');" aria-label="Close learn to play modal">âœ•</button>
+            <h2 id="learnToPlayTitle" style="text-align: center; color: #c9a961; margin-bottom: 30px; font-size: 2em;">ðŸ“š Learn to Play</h2>
             
             <p style="text-align: center; color: #c9a961; margin-bottom: 30px; font-size: 1.05em;">
                 Choose how you want to learn:
@@ -844,7 +846,7 @@
                     transition: all 0.2s ease;
                     text-align: left;
                 " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 12px rgba(0,0,0,0.6)'">
-                    <div style="font-size: 1.3em; margin-bottom: 8px;">🎓 Interactive Tutorial</div>
+                    <div style="font-size: 1.3em; margin-bottom: 8px;">ðŸŽ“ Interactive Tutorial</div>
                     <div style="font-size: 0.8em; font-weight: 400; opacity: 0.8; letter-spacing: 0.05em; text-transform: none;">
                         Play through a guided tutorial with step-by-step instructions
                     </div>
@@ -868,7 +870,7 @@
                     transition: all 0.2s ease;
                     text-align: left;
                 " onmouseover="this.style.background='linear-gradient(180deg, #4a3d2f 0%, #342820 100%)'; this.style.borderColor='#6b5a48'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='linear-gradient(180deg, #3d3328 0%, #2a2318 100%)'; this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)'">
-                    <div style="font-size: 1.3em; margin-bottom: 8px;">📖 Rules Reference</div>
+                    <div style="font-size: 1.3em; margin-bottom: 8px;">ðŸ“– Rules Reference</div>
                     <div style="font-size: 0.8em; font-weight: 400; opacity: 0.8; letter-spacing: 0.05em; text-transform: none;">
                         Read the complete game rules and mechanics at your own pace
                     </div>
@@ -880,125 +882,125 @@
     <!-- Modal: Rules Reference -->
     <div class="modal-overlay" id="tutorialModal">
         <div class="modal-content">
-            <button class="modal-close-btn" onclick="document.getElementById('tutorialModal').classList.remove('active');">✕</button>
-            <h2>📖 Rules Reference</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('tutorialModal').classList.remove('active');">âœ•</button>
+            <h2>ðŸ“– Rules Reference</h2>
             
             <div class="tutorial-section">
-                <h3>🎯 Objective</h3>
+                <h3>ðŸŽ¯ Objective</h3>
                 <p>Clear all cards from the Dungeon deck without your health reaching zero!</p>
             </div>
 
             <div class="tutorial-section">
-                <h3>🎮 Gameplay</h3>
+                <h3>ðŸŽ® Gameplay</h3>
                 <p><strong>1. Start the Action:</strong></p>
-                <p>• Choose <strong>"Enter Dungeon"</strong> (draws 4 cards) or <strong>"Avoid Dungeon"</strong> (discards 3 cards from the top). You cannot avoid two dungeons in a row.</p>
+                <p>â€¢ Choose <strong>"Enter Dungeon"</strong> (draws 4 cards) or <strong>"Avoid Dungeon"</strong> (discards 3 cards from the top). You cannot avoid two dungeons in a row.</p>
                 <p><strong>2. Clear the Dungeon:</strong></p>
-                <p>• You must use or discard all 4 cards from the dungeon (in the bottom bar) to advance.</p>
+                <p>â€¢ You must use or discard all 4 cards from the dungeon (in the bottom bar) to advance.</p>
             </div>
 
             <div class="tutorial-section">
-                <h3>🃏 Card Types</h3>
+                <h3>ðŸƒ Card Types</h3>
                 <p>
-                    <span class="tutorial-card-demo monster">♠️ ♣️ Monsters (Spades & Clubs)</span>
+                    <span class="tutorial-card-demo monster">â™ ï¸ â™£ï¸ Monsters (Spades & Clubs)</span>
                     <br>Click to fight. You take damage = (Monster Value) - (Your Weapon Value). If your weapon is stronger, you take no damage.
                 </p>
                 <p>
-                    <span class="tutorial-card-demo weapon">♦️ Weapons (Diamonds)</span>
+                    <span class="tutorial-card-demo weapon">â™¦ï¸ Weapons (Diamonds)</span>
                     <br>Click to equip. Replaces your current weapon.
                 </p>
                 <p>
-                    <span class="tutorial-card-demo potion">♥️ Potions (Hearts)</span>
+                    <span class="tutorial-card-demo potion">â™¥ï¸ Potions (Hearts)</span>
                     <br>Click to heal. Limit of 1 potion per dungeon!
                 </p>
             </div>
 
             <div class="tutorial-section">
-                <h3>📌 "Hold" System</h3>
+                <h3>ðŸ“Œ "Hold" System</h3>
                 <p><strong>Tap & hold</strong> (or <strong>right-click</strong> on desktop) cards in the room (bottom bar) to save them in the "Held" area (right sidebar).</p>
-                <p>• <strong>Can hold:</strong> Weapons ⚔️, Potions 💊, and Specials ✨</p>
-                <p>• <strong>Cannot hold:</strong> Monsters 👹 (must be fought immediately!)</p>
-                <p>• Only 1 card can be held at a time.</p>
-                <p>• Tap the held card to use it immediately (returns to room).</p>
-                <p>• <strong>Strategy:</strong> Hold a weapon to skip it now and equip later, or hold a potion for when you need it most!</p>
+                <p>â€¢ <strong>Can hold:</strong> Weapons âš”ï¸, Potions ðŸ’Š, and Specials âœ¨</p>
+                <p>â€¢ <strong>Cannot hold:</strong> Monsters ðŸ‘¹ (must be fought immediately!)</p>
+                <p>â€¢ Only 1 card can be held at a time.</p>
+                <p>â€¢ Tap the held card to use it immediately (returns to room).</p>
+                <p>â€¢ <strong>Strategy:</strong> Hold a weapon to skip it now and equip later, or hold a potion for when you need it most!</p>
             </div>
             
             <div class="tutorial-section">
-                <h3>⚠️ Weapon Durability</h3>
+                <h3>âš ï¸ Weapon Durability</h3>
                 <p>Weapons break after use! Easy: 3 uses | Normal: 2 | Hard: 1</p>
-                <p>• Colored bar shows durability (🟢 good, 🟡 medium, 🔴 low)</p>
-                <p>• Repair in shop or find 🔨 Durable Weapons relic for infinite durability</p>
-                <p>• <strong>⛔ Warning:</strong> Equipping a new weapon breaks your combo!</p>
+                <p>â€¢ Colored bar shows durability (ðŸŸ¢ good, ðŸŸ¡ medium, ðŸ”´ low)</p>
+                <p>â€¢ Repair in shop or find ðŸ”¨ Durable Weapons relic for infinite durability</p>
+                <p>â€¢ <strong>â›” Warning:</strong> Equipping a new weapon breaks your combo!</p>
             </div>
             
             <div class="tutorial-section">
-                <h3>🔥 Combo System</h3>
+                <h3>ðŸ”¥ Combo System</h3>
                 <p><strong>Build combos by killing monsters without taking damage!</strong></p>
-                <p>• <strong>Combo increases:</strong> Perfect kills (no damage taken)</p>
-                <p>• <strong>Combo persists:</strong> Between rooms - keep it going!</p>
-                <p>• <strong>Combo breaks:</strong> Taking damage OR equipping a weapon</p>
-                <p>• <strong>Potions don't break combo</strong> - use them strategically!</p>
-                <p>• <strong>Visual rewards:</strong> 5x = GREAT!, 7x = AMAZING!, 10x = LEGENDARY!</p>
-                <p>• <strong>Score bonus:</strong> Max combo x10 points in final score</p>
+                <p>â€¢ <strong>Combo increases:</strong> Perfect kills (no damage taken)</p>
+                <p>â€¢ <strong>Combo persists:</strong> Between rooms - keep it going!</p>
+                <p>â€¢ <strong>Combo breaks:</strong> Taking damage OR equipping a weapon</p>
+                <p>â€¢ <strong>Potions don't break combo</strong> - use them strategically!</p>
+                <p>â€¢ <strong>Visual rewards:</strong> 5x = GREAT!, 7x = AMAZING!, 10x = LEGENDARY!</p>
+                <p>â€¢ <strong>Score bonus:</strong> Max combo x10 points in final score</p>
             </div>
             
             <div class="tutorial-section">
-                <h3>👹 Boss Battles</h3>
+                <h3>ðŸ‘¹ Boss Battles</h3>
                 <p><strong>Every 10th room is a BOSS ROOM!</strong></p>
-                <p>• Bosses have <strong>15 HP</strong> and require multiple hits</p>
-                <p>• <strong>HP bar</strong> shows boss health (🟢→🟡→🔴)</p>
-                <p>• <strong>⚠️ Critical:</strong> If you fight a boss <strong>WITHOUT a weapon</strong>:</p>
-                <p>&nbsp;&nbsp;&nbsp;• Boss attacks once and flees</p>
-                <p>&nbsp;&nbsp;&nbsp;• You take full damage (15 HP!)</p>
-                <p>&nbsp;&nbsp;&nbsp;• <strong>NO GOLD REWARD</strong></p>
-                <p>• <strong>💡 Strategy:</strong> Always have a weapon before room 10, 20, 30...</p>
+                <p>â€¢ Bosses have <strong>15 HP</strong> and require multiple hits</p>
+                <p>â€¢ <strong>HP bar</strong> shows boss health (ðŸŸ¢â†’ðŸŸ¡â†’ðŸ”´)</p>
+                <p>â€¢ <strong>âš ï¸ Critical:</strong> If you fight a boss <strong>WITHOUT a weapon</strong>:</p>
+                <p>&nbsp;&nbsp;&nbsp;â€¢ Boss attacks once and flees</p>
+                <p>&nbsp;&nbsp;&nbsp;â€¢ You take full damage (15 HP!)</p>
+                <p>&nbsp;&nbsp;&nbsp;â€¢ <strong>NO GOLD REWARD</strong></p>
+                <p>â€¢ <strong>ðŸ’¡ Strategy:</strong> Always have a weapon before room 10, 20, 30...</p>
             </div>
             
             <div class="tutorial-section">
-                <h3>💰 Gold & Economy</h3>
-                <p>• <strong>Gold varies by difficulty:</strong> Easy = More | Normal = Balanced | Hard = Much less</p>
-                <p>• Get gold from: Monsters, rooms, relics, events</p>
-                <p>• <strong>💡 Tip:</strong> On Hard mode, every coin counts!</p>
+                <h3>ðŸ’° Gold & Economy</h3>
+                <p>â€¢ <strong>Gold varies by difficulty:</strong> Easy = More | Normal = Balanced | Hard = Much less</p>
+                <p>â€¢ Get gold from: Monsters, rooms, relics, events</p>
+                <p>â€¢ <strong>ðŸ’¡ Tip:</strong> On Hard mode, every coin counts!</p>
             </div>
             
             <div class="tutorial-section">
-                <h3>🏺 Merchant & 🔮 Relics</h3>
-                <p>• <strong>Merchant:</strong> Click 🏺 MERCHANT to spend gold on heals, relics, and upgrades.</p>
-                <p>• <strong>Relics by Rarity:</strong></p>
-                <p>&nbsp;&nbsp;&nbsp;⚪ Common (25🪙) - Basic bonuses</p>
-                <p>&nbsp;&nbsp;&nbsp;🟢 Uncommon (50🪙) - Moderate bonuses</p>
-                <p>&nbsp;&nbsp;&nbsp;🔵 Rare (100🪙) - Powerful bonuses</p>
-                <p>&nbsp;&nbsp;&nbsp;🟠 Legendary (200🪙) - Game-changing!</p>
-                <p>• <strong>⚠️ Shop Penalty:</strong> Each shop visit costs -50 points in final score</p>
-                <p>• <strong>Events:</strong> 🎲 Random encounters after clearing rooms. Make choices!</p>
-                <p>• <strong>Upgrades:</strong> ⭐ Permanent progress that carries over between runs!</p>
+                <h3>ðŸº Merchant & ðŸ”® Relics</h3>
+                <p>â€¢ <strong>Merchant:</strong> Click ðŸº MERCHANT to spend gold on heals, relics, and upgrades.</p>
+                <p>â€¢ <strong>Relics by Rarity:</strong></p>
+                <p>&nbsp;&nbsp;&nbsp;âšª Common (25ðŸª™) - Basic bonuses</p>
+                <p>&nbsp;&nbsp;&nbsp;ðŸŸ¢ Uncommon (50ðŸª™) - Moderate bonuses</p>
+                <p>&nbsp;&nbsp;&nbsp;ðŸ”µ Rare (100ðŸª™) - Powerful bonuses</p>
+                <p>&nbsp;&nbsp;&nbsp;ðŸŸ  Legendary (200ðŸª™) - Game-changing!</p>
+                <p>â€¢ <strong>âš ï¸ Shop Penalty:</strong> Each shop visit costs -50 points in final score</p>
+                <p>â€¢ <strong>Events:</strong> ðŸŽ² Random encounters after clearing rooms. Make choices!</p>
+                <p>â€¢ <strong>Upgrades:</strong> â­ Permanent progress that carries over between runs!</p>
             </div>
             
             <div class="tutorial-section">
-                <h3>🏆 Score System</h3>
+                <h3>ðŸ† Score System</h3>
                 <p><strong>Victory score is calculated from multiple factors:</strong></p>
-                <p>• <strong>Base Bonuses:</strong></p>
-                <p>&nbsp;&nbsp;&nbsp;🎯 Win Bonus: +1000</p>
-                <p>&nbsp;&nbsp;&nbsp;❤️ Health: HP x 20</p>
-                <p>&nbsp;&nbsp;&nbsp;💰 Gold: Total earned x 5</p>
-                <p>&nbsp;&nbsp;&nbsp;🔥 Combo: Max combo x 10</p>
-                <p>&nbsp;&nbsp;&nbsp;⚔️ Monsters: Slain x 2</p>
-                <p>• <strong>Special Bonuses:</strong></p>
-                <p>&nbsp;&nbsp;&nbsp;⚡ Speedrun: +1000 (<1 min) or +500 (1-5 min)</p>
-                <p>&nbsp;&nbsp;&nbsp;🏆 Perfect Run: +1000 (no damage taken!)</p>
-                <p>• <strong>Penalties:</strong></p>
-                <p>&nbsp;&nbsp;&nbsp;⏱️ Time: -2 points per second</p>
-                <p>&nbsp;&nbsp;&nbsp;🏺 Shop: -50 per visit</p>
-                <p>• <strong>Difficulty Multiplier:</strong> Easy x1, Normal x1.5, Hard x2.5</p>
+                <p>â€¢ <strong>Base Bonuses:</strong></p>
+                <p>&nbsp;&nbsp;&nbsp;ðŸŽ¯ Win Bonus: +1000</p>
+                <p>&nbsp;&nbsp;&nbsp;â¤ï¸ Health: HP x 20</p>
+                <p>&nbsp;&nbsp;&nbsp;ðŸ’° Gold: Total earned x 5</p>
+                <p>&nbsp;&nbsp;&nbsp;ðŸ”¥ Combo: Max combo x 10</p>
+                <p>&nbsp;&nbsp;&nbsp;âš”ï¸ Monsters: Slain x 2</p>
+                <p>â€¢ <strong>Special Bonuses:</strong></p>
+                <p>&nbsp;&nbsp;&nbsp;âš¡ Speedrun: +1000 (<1 min) or +500 (1-5 min)</p>
+                <p>&nbsp;&nbsp;&nbsp;ðŸ† Perfect Run: +1000 (no damage taken!)</p>
+                <p>â€¢ <strong>Penalties:</strong></p>
+                <p>&nbsp;&nbsp;&nbsp;â±ï¸ Time: -2 points per second</p>
+                <p>&nbsp;&nbsp;&nbsp;ðŸº Shop: -50 per visit</p>
+                <p>â€¢ <strong>Difficulty Multiplier:</strong> Easy x1, Normal x1.5, Hard x2.5</p>
             </div>
             
             <div class="tutorial-section" style="background: rgba(255, 215, 0, 0.1); border: 2px solid #ffd700; padding: 15px; border-radius: 8px;">
-                <h3>💡 Pro Tips</h3>
-                <p>• <strong>Combo strategy:</strong> Don't equip weapons mid-combo unless absolutely necessary</p>
-                <p>• <strong>Boss prep:</strong> Always check your weapon before room 10, 20, 30...</p>
-                <p>• <strong>Shop discipline:</strong> Each shop visit costs score - use it wisely!</p>
-                <p>• <strong>Speedrun tip:</strong> <1 minute = +1000 bonus! 1-5 min = +500!</p>
-                <p>• <strong>Perfect run:</strong> Take zero damage for +1000 bonus!</p>
-                <p>• <strong>Hold system:</strong> Save healing potions for emergencies</p>
+                <h3>ðŸ’¡ Pro Tips</h3>
+                <p>â€¢ <strong>Combo strategy:</strong> Don't equip weapons mid-combo unless absolutely necessary</p>
+                <p>â€¢ <strong>Boss prep:</strong> Always check your weapon before room 10, 20, 30...</p>
+                <p>â€¢ <strong>Shop discipline:</strong> Each shop visit costs score - use it wisely!</p>
+                <p>â€¢ <strong>Speedrun tip:</strong> <1 minute = +1000 bonus! 1-5 min = +500!</p>
+                <p>â€¢ <strong>Perfect run:</strong> Take zero damage for +1000 bonus!</p>
+                <p>â€¢ <strong>Hold system:</strong> Save healing potions for emergencies</p>
             </div>
             
             <button class="close-modal-btn" id="btnCloseTutorial">Got it!</button>
@@ -1008,22 +1010,22 @@
     <!-- Modal: Leaderboard -->
     <div class="modal-overlay" id="leaderboardModal">
         <div class="modal-content" style="max-width: 700px;">
-            <button class="modal-close-btn" onclick="document.getElementById('leaderboardModal').classList.remove('active');">✕</button>
-            <h2>🏆 Hall of Fame (Top 10)</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('leaderboardModal').classList.remove('active');">âœ•</button>
+            <h2>ðŸ† Hall of Fame (Top 10)</h2>
             
             <!-- Difficulty Tabs -->
             <div style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
                 <button class="difficulty-tab active" data-difficulty="easy" onclick="switchLeaderboardDifficulty('easy')">
-                    🟢 Easy
+                    ðŸŸ¢ Easy
                 </button>
                 <button class="difficulty-tab" data-difficulty="normal" onclick="switchLeaderboardDifficulty('normal')">
-                    🟡 Normal
+                    ðŸŸ¡ Normal
                 </button>
                 <button class="difficulty-tab" data-difficulty="hard" onclick="switchLeaderboardDifficulty('hard')">
-                    🔴 Hard
+                    ðŸ”´ Hard
                 </button>
                 <button class="difficulty-tab" data-difficulty="endless" onclick="switchLeaderboardDifficulty('endless')">
-                    ♾️ Endless
+                    â™¾ï¸ Endless
                 </button>
             </div>
             
@@ -1037,8 +1039,8 @@
     <!-- Other Modals (Shop, Event, Unlocks) - Identical structure -->
     <div class="modal-overlay" id="shopModal">
         <div class="modal-content">
-            <button class="modal-close-btn" onclick="closeShopWrapper();">✕</button>
-            <h2>🏺 Merchant's Wares</h2>
+            <button class="modal-close-btn" onclick="closeShopWrapper();">âœ•</button>
+            <h2>ðŸº Merchant's Wares</h2>
             <p style="text-align: center; color: #aaa; margin-bottom: 20px;">
                 Spend your gold wisely! (Gold: <span id="shopGoldAmount">0</span>)
             </p>
@@ -1049,8 +1051,8 @@
 
     <div class="modal-overlay" id="eventModal">
         <div class="modal-content">
-            <button class="modal-close-btn" onclick="closeEventWrapper();">✕</button>
-            <h2 id="eventTitle">🎲 Event</h2>
+            <button class="modal-close-btn" onclick="closeEventWrapper();">âœ•</button>
+            <h2 id="eventTitle">ðŸŽ² Event</h2>
             <div class="event-text" id="eventText"></div>
             <div id="eventChoices"></div>
             <!-- Close button not needed, choice closes modal -->
@@ -1059,8 +1061,8 @@
 
     <div class="modal-overlay" id="unlocksModal">
         <div class="modal-content">
-            <button class="modal-close-btn" onclick="document.getElementById('unlocksModal').classList.remove('active');">✕</button>
-            <h2>⭐ Permanent Upgrades</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('unlocksModal').classList.remove('active');">âœ•</button>
+            <h2>â­ Permanent Upgrades</h2>
             <p style="text-align: center; color: #aaa; margin-bottom: 20px;">
                 Progress that continues between runs!
             </p>
@@ -1073,14 +1075,14 @@
     <!-- Modal: Achievements -->
     <div class="modal-overlay" id="achievementsModal">
         <div class="modal-content" style="max-width: 900px;">
-            <button class="modal-close-btn" onclick="document.getElementById('achievementsModal').classList.remove('active');">✕</button>
-            <h2>🏆 Achievements</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('achievementsModal').classList.remove('active');">âœ•</button>
+            <h2>ðŸ† Achievements</h2>
             <p style="text-align: center; color: #aaa; margin-bottom: 20px;">
                 <span id="achievementStats">0/50 Unlocked</span> | 
-                🥉 <span id="bronzeCount">0/25</span> | 
-                🥈 <span id="silverCount">0/15</span> | 
-                🥇 <span id="goldCount">0/9</span> | 
-                💎 <span id="platinumCount">0/1</span>
+                ðŸ¥‰ <span id="bronzeCount">0/25</span> | 
+                ðŸ¥ˆ <span id="silverCount">0/15</span> | 
+                ðŸ¥‡ <span id="goldCount">0/9</span> | 
+                ðŸ’Ž <span id="platinumCount">0/1</span>
             </p>
             <div id="achievementsList" class="achievements-grid"></div>
             <button class="close-modal-btn" id="btnCloseAchievements">Close</button>
@@ -1090,39 +1092,39 @@
     <!-- Modal: Soundboard -->
     <div class="modal-overlay" id="soundboardModal">
         <div class="modal-content" style="max-width: 600px;">
-            <button class="modal-close-btn" onclick="document.getElementById('soundboardModal').classList.remove('active');">✕</button>
-            <h2>🎵 Soundboard - Dark Atmospheric Music</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('soundboardModal').classList.remove('active');">âœ•</button>
+            <h2>ðŸŽµ Soundboard - Dark Atmospheric Music</h2>
             <p style="color: #aaa; margin-bottom: 20px;">Preview all atmospheric tracks from the game!</p>
             
             <div style="display: grid; gap: 15px;">
                 <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
-                    <h3 style="color: #d4af37; margin-bottom: 10px;">🏰 Dark Awakening</h3>
+                    <h3 style="color: #d4af37; margin-bottom: 10px;">ðŸ° Dark Awakening</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Menu Theme - Mysterious, inviting, dark</p>
-                    <button class="btn btn-primary" id="btnPlayMenu" style="width: 100%;">▶️ Play</button>
+                    <button class="btn btn-primary" id="btnPlayMenu" style="width: 100%;">â–¶ï¸ Play</button>
                 </div>
                 
                 <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
-                    <h3 style="color: #d4af37; margin-bottom: 10px;">⚔️ Into the Depths</h3>
+                    <h3 style="color: #d4af37; margin-bottom: 10px;">âš”ï¸ Into the Depths</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Gameplay Theme - Tense, adventurous</p>
-                    <button class="btn btn-primary" id="btnPlayGameplay" style="width: 100%;">▶️ Play</button>
+                    <button class="btn btn-primary" id="btnPlayGameplay" style="width: 100%;">â–¶ï¸ Play</button>
                 </div>
                 
                 <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
-                    <h3 style="color: #d4af37; margin-bottom: 10px;">🛍️ Merchant's Shadow</h3>
+                    <h3 style="color: #d4af37; margin-bottom: 10px;">ðŸ›ï¸ Merchant's Shadow</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Shop Theme - Calm but mysterious</p>
-                    <button class="btn btn-primary" id="btnPlayShop" style="width: 100%;">▶️ Play</button>
+                    <button class="btn btn-primary" id="btnPlayShop" style="width: 100%;">â–¶ï¸ Play</button>
                 </div>
                 
                 <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
-                    <h3 style="color: #d4af37; margin-bottom: 10px;">👑 Triumph in Darkness</h3>
+                    <h3 style="color: #d4af37; margin-bottom: 10px;">ðŸ‘‘ Triumph in Darkness</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Victory Theme - Epic, celebratory</p>
-                    <button class="btn btn-primary" id="btnPlayVictory" style="width: 100%;">▶️ Play</button>
+                    <button class="btn btn-primary" id="btnPlayVictory" style="width: 100%;">â–¶ï¸ Play</button>
                 </div>
                 
                 <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
-                    <h3 style="color: #d4af37; margin-bottom: 10px;">💀 The Final Darkness</h3>
+                    <h3 style="color: #d4af37; margin-bottom: 10px;">ðŸ’€ The Final Darkness</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Defeat Theme - Dark, respectful</p>
-                    <button class="btn btn-primary" id="btnPlayDefeat" style="width: 100%;">▶️ Play</button>
+                    <button class="btn btn-primary" id="btnPlayDefeat" style="width: 100%;">â–¶ï¸ Play</button>
                 </div>
             </div>
             
@@ -1133,7 +1135,7 @@
     <!-- Modal: Give Up Confirmation -->
     <div class="modal-overlay" id="giveUpModal">
         <div class="modal-content" style="max-width: 500px; text-align: center;">
-            <h2 style="color: #ff6b6b; margin-bottom: 20px;">⚠️ Give Up?</h2>
+            <h2 style="color: #ff6b6b; margin-bottom: 20px;">âš ï¸ Give Up?</h2>
             <p style="color: #ddd; font-size: 1.1em; line-height: 1.6; margin-bottom: 25px;">
                 Are you sure you want to give up this run?<br>
                 <span style="color: #aaa; font-size: 0.9em;">All progress in this dungeon will be lost.</span>
@@ -1148,8 +1150,8 @@
     <!-- Modal: Codex (Unified) -->
     <div class="modal-overlay" id="codexModal">
         <div class="modal-content" style="max-width: 900px;">
-            <button class="modal-close-btn" onclick="document.getElementById('codexModal').classList.remove('active');">✕</button>
-            <h2>📚 CODEX</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('codexModal').classList.remove('active');">âœ•</button>
+            <h2>ðŸ“š CODEX</h2>
             
             <div style="text-align: center; margin-bottom: 20px;">
                 <p style="color: #aaa; font-size: 0.95em;">Your complete game encyclopedia</p>
@@ -1170,7 +1172,7 @@
                     font-size: 0.95em;
                     cursor: pointer;
                     transition: all 0.2s ease;
-                ">⭐ UPGRADES</button>
+                ">â­ UPGRADES</button>
                 
                 <button onclick="switchCodexTab('relics')" id="codexTabRelics" class="codex-tab" style="
                     flex: 1;
@@ -1185,7 +1187,7 @@
                     font-size: 0.95em;
                     cursor: pointer;
                     transition: all 0.2s ease;
-                ">📖 RELICS</button>
+                ">ðŸ“– RELICS</button>
                 
                 <button onclick="switchCodexTab('achievements')" id="codexTabAchievements" class="codex-tab" style="
                     flex: 1;
@@ -1200,7 +1202,7 @@
                     font-size: 0.95em;
                     cursor: pointer;
                     transition: all 0.2s ease;
-                ">🏆 ACHIEVEMENTS</button>
+                ">ðŸ† ACHIEVEMENTS</button>
             </div>
             
             <!-- Tab Content: Upgrades -->
@@ -1211,9 +1213,9 @@
                 <!-- Status Filter -->
                 <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
                     <button onclick="filterUpgradesByStatus('all')" class="upgrade-filter-btn active" data-status="all" style="padding: 8px 16px; background: #4ecdc4; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 1; transition: all 0.2s ease;">All</button>
-                    <button onclick="filterUpgradesByStatus('unlocked')" class="upgrade-filter-btn" data-status="unlocked" style="padding: 8px 16px; background: #6bcf7f; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">✅ Unlocked</button>
-                    <button onclick="filterUpgradesByStatus('available')" class="upgrade-filter-btn" data-status="available" style="padding: 8px 16px; background: #ffd93d; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">✨ Available</button>
-                    <button onclick="filterUpgradesByStatus('locked')" class="upgrade-filter-btn" data-status="locked" style="padding: 8px 16px; background: #888; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">🔒 Locked</button>
+                    <button onclick="filterUpgradesByStatus('unlocked')" class="upgrade-filter-btn" data-status="unlocked" style="padding: 8px 16px; background: #6bcf7f; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">âœ… Unlocked</button>
+                    <button onclick="filterUpgradesByStatus('available')" class="upgrade-filter-btn" data-status="available" style="padding: 8px 16px; background: #ffd93d; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">âœ¨ Available</button>
+                    <button onclick="filterUpgradesByStatus('locked')" class="upgrade-filter-btn" data-status="locked" style="padding: 8px 16px; background: #888; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">ðŸ”’ Locked</button>
                 </div>
                 <div id="upgradesList" style="max-height: 450px; overflow-y: auto; padding-right: 10px;">
                     <!-- Populated by JavaScript -->
@@ -1225,10 +1227,10 @@
                 <!-- Rarity Filter -->
                 <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
                     <button onclick="filterRelicsByRarity('all')" class="rarity-filter-btn active" data-rarity="all" style="padding: 8px 16px; background: #4ecdc4; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">All</button>
-                    <button onclick="filterRelicsByRarity('common')" class="rarity-filter-btn" data-rarity="common" style="padding: 8px 16px; background: #aaa; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">⚪ Common</button>
-                    <button onclick="filterRelicsByRarity('uncommon')" class="rarity-filter-btn" data-rarity="uncommon" style="padding: 8px 16px; background: #6bcf7f; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🟢 Uncommon</button>
-                    <button onclick="filterRelicsByRarity('rare')" class="rarity-filter-btn" data-rarity="rare" style="padding: 8px 16px; background: #4a9eff; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🔵 Rare</button>
-                    <button onclick="filterRelicsByRarity('legendary')" class="rarity-filter-btn" data-rarity="legendary" style="padding: 8px 16px; background: #ff9800; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">🟠 Legendary</button>
+                    <button onclick="filterRelicsByRarity('common')" class="rarity-filter-btn" data-rarity="common" style="padding: 8px 16px; background: #aaa; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">âšª Common</button>
+                    <button onclick="filterRelicsByRarity('uncommon')" class="rarity-filter-btn" data-rarity="uncommon" style="padding: 8px 16px; background: #6bcf7f; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">ðŸŸ¢ Uncommon</button>
+                    <button onclick="filterRelicsByRarity('rare')" class="rarity-filter-btn" data-rarity="rare" style="padding: 8px 16px; background: #4a9eff; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">ðŸ”µ Rare</button>
+                    <button onclick="filterRelicsByRarity('legendary')" class="rarity-filter-btn" data-rarity="legendary" style="padding: 8px 16px; background: #ff9800; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em;">ðŸŸ  Legendary</button>
                 </div>
                 <div id="relicsGlossary" style="max-height: 450px; overflow-y: auto; padding-right: 10px;">
                     <!-- Populated by JavaScript -->
@@ -1239,18 +1241,18 @@
             <div id="codexContentAchievements" class="codex-content" style="display: none;">
                 <p style="text-align: center; color: #aaa; margin-bottom: 15px;">
                     <span id="achievementStatsCodex">0/50 Unlocked</span> | 
-                    🥉 <span id="bronzeCountCodex">0/25</span> | 
-                    🥈 <span id="silverCountCodex">0/15</span> | 
-                    🥇 <span id="goldCountCodex">0/9</span> | 
-                    💎 <span id="platinumCountCodex">0/1</span>
+                    ðŸ¥‰ <span id="bronzeCountCodex">0/25</span> | 
+                    ðŸ¥ˆ <span id="silverCountCodex">0/15</span> | 
+                    ðŸ¥‡ <span id="goldCountCodex">0/9</span> | 
+                    ðŸ’Ž <span id="platinumCountCodex">0/1</span>
                 </p>
                 <!-- Tier Filter -->
                 <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center;">
                     <button onclick="filterAchievementsByTier('all')" class="achievement-filter-btn active" data-tier="all" style="padding: 8px 16px; background: #4ecdc4; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 1; transition: all 0.2s ease;">All</button>
-                    <button onclick="filterAchievementsByTier('bronze')" class="achievement-filter-btn" data-tier="bronze" style="padding: 8px 16px; background: #cd7f32; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">🥉 Bronze</button>
-                    <button onclick="filterAchievementsByTier('silver')" class="achievement-filter-btn" data-tier="silver" style="padding: 8px 16px; background: #c0c0c0; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">🥈 Silver</button>
-                    <button onclick="filterAchievementsByTier('gold')" class="achievement-filter-btn" data-tier="gold" style="padding: 8px 16px; background: #ffd700; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">🥇 Gold</button>
-                    <button onclick="filterAchievementsByTier('platinum')" class="achievement-filter-btn" data-tier="platinum" style="padding: 8px 16px; background: #e5e4e2; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">💎 Platinum</button>
+                    <button onclick="filterAchievementsByTier('bronze')" class="achievement-filter-btn" data-tier="bronze" style="padding: 8px 16px; background: #cd7f32; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">ðŸ¥‰ Bronze</button>
+                    <button onclick="filterAchievementsByTier('silver')" class="achievement-filter-btn" data-tier="silver" style="padding: 8px 16px; background: #c0c0c0; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">ðŸ¥ˆ Silver</button>
+                    <button onclick="filterAchievementsByTier('gold')" class="achievement-filter-btn" data-tier="gold" style="padding: 8px 16px; background: #ffd700; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">ðŸ¥‡ Gold</button>
+                    <button onclick="filterAchievementsByTier('platinum')" class="achievement-filter-btn" data-tier="platinum" style="padding: 8px 16px; background: #e5e4e2; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.85em; opacity: 0.6; transition: all 0.2s ease;">ðŸ’Ž Platinum</button>
                 </div>
                 <div id="achievementsListCodex" style="max-height: 450px; overflow-y: auto; padding-right: 10px;">
                     <!-- Populated by JavaScript -->
@@ -1264,18 +1266,18 @@
     <!-- Modal: Version / What's New -->
     <div class="modal-overlay" id="versionModal">
         <div class="modal-content" style="max-width: 700px;">
-            <button class="modal-close-btn" onclick="document.getElementById('versionModal').classList.remove('active');">✕</button>
-            <h2>🚀 What's New in v1.4.2</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('versionModal').classList.remove('active');">âœ•</button>
+            <h2>ðŸš€ What's New in v1.4.2</h2>
             
             <div style="text-align: center; margin-bottom: 20px;">
-                <p style="color: #6bcf7f; font-size: 1.2em; font-weight: bold;">📱 Mobile & Performance Update!</p>
+                <p style="color: #6bcf7f; font-size: 1.2em; font-weight: bold;">ðŸ“± Mobile & Performance Update!</p>
                 <p style="color: #aaa; font-size: 0.9em;">Released: November 14, 2025</p>
             </div>
 
             <div style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
                 <!-- Mobile & PWA -->
                 <div style="background: rgba(107, 207, 127, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #6bcf7f;">
-                    <h3 style="color: #6bcf7f; margin-top: 0;">📱 Mobile Optimizations & PWA</h3>
+                    <h3 style="color: #6bcf7f; margin-top: 0;">ðŸ“± Mobile Optimizations & PWA</h3>
                     <p style="color: #ddd; margin-bottom: 10px;">Play on mobile with enhanced touch controls and offline support!</p>
                     <ul style="color: #ddd; line-height: 1.8; font-size: 0.95em;">
                         <li><strong>Offline Mode:</strong> Play without internet after first load</li>
@@ -1286,7 +1288,7 @@
                 </div>
 
                 <div style="background: rgba(78, 205, 196, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #4ecdc4;">
-                    <h3 style="color: #4ecdc4; margin-top: 0;">⚡ Major Performance Boost</h3>
+                    <h3 style="color: #4ecdc4; margin-top: 0;">âš¡ Major Performance Boost</h3>
                     <ul style="color: #ddd; line-height: 1.8;">
                         <li><strong>60 FPS on Mobile:</strong> Doubled frame rate from 30 to 60 FPS</li>
                         <li><strong>Faster Loading:</strong> Load time reduced from 5s to 2s (-60%)</li>
@@ -1296,7 +1298,7 @@
                 </div>
 
                 <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ffd700;">
-                    <h3 style="color: #ffd700; margin-top: 0;">💾 Enhanced Save System</h3>
+                    <h3 style="color: #ffd700; margin-top: 0;">ðŸ’¾ Enhanced Save System</h3>
                     <ul style="color: #ddd; line-height: 1.8;">
                         <li><strong>IndexedDB Storage:</strong> More reliable local saves</li>
                         <li><strong>Cloud Saves Fixed:</strong> Connect with Google account to play cross-device</li>
@@ -1306,7 +1308,7 @@
                 </div>
 
                 <div style="background: rgba(138, 43, 226, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #8a2be2;">
-                    <h3 style="color: #c792ea; margin-top: 0;">🔒 Security & Stability</h3>
+                    <h3 style="color: #c792ea; margin-top: 0;">ðŸ”’ Security & Stability</h3>
                     <ul style="color: #ddd; line-height: 1.8;">
                         <li><strong>Code Security Audit:</strong> Comprehensive security review completed</li>
                         <li><strong>Better Error Handling:</strong> Fewer crashes and bugs</li>
@@ -1316,15 +1318,15 @@
             </div>
 
             <div style="text-align: center; margin-top: 20px; padding: 15px; background: rgba(107, 207, 127, 0.1); border-radius: 8px;">
-                <p style="color: #6bcf7f; font-weight: bold; margin: 0;">🎮 Better Experience Everywhere!</p>
-                <p style="color: #aaa; font-size: 0.9em; margin-top: 10px;">Mobile ready • 2x faster • Offline capable • Cloud saves working</p>
+                <p style="color: #6bcf7f; font-weight: bold; margin: 0;">ðŸŽ® Better Experience Everywhere!</p>
+                <p style="color: #aaa; font-size: 0.9em; margin-top: 10px;">Mobile ready â€¢ 2x faster â€¢ Offline capable â€¢ Cloud saves working</p>
             </div>
 
             <div style="text-align: center; margin-top: 15px; padding: 12px; background: rgba(78, 205, 196, 0.08); border-radius: 8px;">
-                <p style="color: #4ecdc4; font-weight: bold; margin: 0; font-size: 0.95em;">📱 Try it on your phone!</p>
+                <p style="color: #4ecdc4; font-weight: bold; margin: 0; font-size: 0.95em;">ðŸ“± Try it on your phone!</p>
                 <p style="color: #aaa; font-size: 0.85em; margin-top: 8px; line-height: 1.6;">
                     Visit dungeonscoundrel.com on mobile and tap "Add to Home Screen"<br>
-                    <span style="font-size: 0.9em;">Full offline support • Native app feel • Play anywhere! 🎮✨</span>
+                    <span style="font-size: 0.9em;">Full offline support â€¢ Native app feel â€¢ Play anywhere! ðŸŽ®âœ¨</span>
                 </p>
             </div>
             
@@ -1335,8 +1337,8 @@
     <!-- Modal: Bug Report -->
     <div class="modal-overlay" id="bugReportModal">
         <div class="modal-content" style="max-width: 600px;">
-            <button class="modal-close-btn" onclick="document.getElementById('bugReportModal').classList.remove('active'); hideHumanVerification();">✕</button>
-            <h2>🐛 Report a Bug</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('bugReportModal').classList.remove('active'); hideHumanVerification();">âœ•</button>
+            <h2>ðŸ› Report a Bug</h2>
             <div style="margin: 10px 0 12px; color: #aaa; font-size: 0.9em;">Describe the bug in detail. Technical info like browser and screen resolution will be sent automatically.</div>
             <textarea id="bugMessage" placeholder="Describe what happened, steps to reproduce, and expected behavior" style="width: 100%; min-height: 160px; resize: vertical; background: rgba(0,0,0,0.4); color: #ddd; border: 1px solid rgba(201,169,97,0.3); border-radius: 6px; padding: 10px;" oninput="updateCharacterCount()"></textarea>
             
@@ -1370,7 +1372,7 @@
             <!-- Human Verification Section -->
             <div id="humanVerification" style="margin-top: 15px; padding: 12px; background: rgba(107, 207, 127, 0.1); border: 1px solid rgba(107, 207, 127, 0.3); border-radius: 6px; display: none;">
                 <div style="color: #6bcf7f; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                    🤖 <span>Human Verification</span>
+                    ðŸ¤– <span>Human Verification</span>
                 </div>
                 <div style="color: #ddd; font-size: 0.9em; margin-bottom: 10px;">
                     Please solve this simple math problem to verify you're human:
@@ -1401,8 +1403,8 @@
     <!-- Modal: Contact -->
     <div class="modal-overlay" id="contactModal">
         <div class="modal-content" style="max-width: 600px;">
-            <button class="modal-close-btn" onclick="document.getElementById('contactModal').classList.remove('active'); resetContactForm();">✕</button>
-            <h2>📧 Contact Developer</h2>
+            <button class="modal-close-btn" onclick="document.getElementById('contactModal').classList.remove('active'); resetContactForm();">âœ•</button>
+            <h2>ðŸ“§ Contact Developer</h2>
             <div style="margin: 10px 0 12px; color: #aaa; font-size: 0.9em;">Get in touch for feedback, suggestions, partnerships, or questions!</div>
             
             <!-- Name Field -->
@@ -1438,11 +1440,11 @@
                     onchange="validateContactForm()"
                 >
                     <option value="">Select a subject...</option>
-                    <option value="feedback">💬 Feedback</option>
-                    <option value="suggestion">💡 Feature Suggestion</option>
-                    <option value="partnership">🤝 Partnership</option>
-                    <option value="question">❓ Question</option>
-                    <option value="other">📝 Other</option>
+                    <option value="feedback">ðŸ’¬ Feedback</option>
+                    <option value="suggestion">ðŸ’¡ Feature Suggestion</option>
+                    <option value="partnership">ðŸ¤ Partnership</option>
+                    <option value="question">â“ Question</option>
+                    <option value="other">ðŸ“ Other</option>
                 </select>
             </div>
             
@@ -1466,7 +1468,7 @@
             <!-- Human Verification Section -->
             <div id="contactHumanVerification" style="margin-top: 15px; padding: 12px; background: rgba(107, 207, 127, 0.1); border: 1px solid rgba(107, 207, 127, 0.3); border-radius: 6px; display: none;">
                 <div style="color: #6bcf7f; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
-                    🤖 <span>Human Verification</span>
+                    ðŸ¤– <span>Human Verification</span>
                 </div>
                 <div style="color: #ddd; font-size: 0.9em; margin-bottom: 10px;">
                     Please solve this simple math problem to verify you're human:
@@ -1580,5 +1582,13 @@
     <!-- ============================================ -->
 
 
+    <!-- ============================================ -->
+    <!-- EMAILJS.JS SCRIPT (faster boot)
+    <!-- ============================================ -->
+    <script src="src/js/init-emailjs.js"></script>
+    <script src="src/js/game.js"></script>
+
+
 </body>
 </html>
+
