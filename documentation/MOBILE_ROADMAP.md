@@ -569,7 +569,7 @@ Usar Chrome DevTools:
 ```bash
 # Lighthouse audit
 npm install -g lighthouse
-lighthouse https://dungeonscoundrel.netlify.app --view --preset=mobile
+lighthouse https://dungeonscoundrel.com --view --preset=mobile
 
 # Metas:
 # - Performance: > 90

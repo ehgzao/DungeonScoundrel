@@ -125,6 +125,6 @@ DungeonScoundrel/
 
 ## 🔗 LINKS ÚTEIS
 
-- **Produção:** https://dungeon-scoundrel.netlify.app
+- **Produção:** https://dungeonscoundrel.com
 - **Local:** http://localhost:8080
 - **GitHub:** https://github.com/ehgzao/DungeonScoundrel

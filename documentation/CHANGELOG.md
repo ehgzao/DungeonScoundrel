@@ -772,5 +772,5 @@ Thank you for playing and helping make Dungeon Scoundrel better! 🎮✨
 ## Links
 
 - [GitHub Repository](https://github.com/ehgzao/DungeonScoundrel)
-- [Play Online](https://dungeonscoundrel.netlify.app)
+- [Play Online](https://dungeonscoundrel.com)
 - [Report Issues](https://github.com/ehgzao/DungeonScoundrel/issues)
