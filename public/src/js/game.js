@@ -3435,13 +3435,6 @@ function checkGameState() {
             btnAvoidRoom.removeAttribute('disabled');
             btnAvoidRoom.disabled = false;
         }
-        
-            btnDrawDisabled: btnDrawRoom.disabled,
-            btnDrawHasAttr: btnDrawRoom.hasAttribute('disabled'),
-            btnAvoidDisabled: btnAvoidRoom.disabled,
-            btnAvoidHasAttr: btnAvoidRoom.hasAttribute('disabled'),
-            roomsCleared: game.stats.roomsCleared
-        });
     }
 
     if (game.health <= 0) {
