@@ -38,6 +38,7 @@ Mobile implementation and progress tracking
 
 ### 🔀 [merge-history/](merge-history/)
 Archived merge documentation and analysis
+- [README.md](merge-history/README.md) - **Overview and context** (why this is archived)
 - [MERGE_ANALYSIS.md](merge-history/MERGE_ANALYSIS.md) - Code review and compatibility analysis
 - [MERGE_GUIDE.md](merge-history/MERGE_GUIDE.md) - Git workflow guide
 - [MERGE_STATUS.md](merge-history/MERGE_STATUS.md) - Merge status tracking
