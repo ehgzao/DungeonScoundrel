@@ -1,75 +1,58 @@
-# 📚 Documentation - Dungeon Scoundrel
+# Dungeon Scoundrel Documentation
 
-Complete project documentation organized by category.
+This directory contains all project documentation, organized by category for easy navigation.
 
----
+## 📚 Documentation Structure
 
-## 📂 Folder Structure
+### 📖 [guides/](guides/)
+Roadmaps, planning documents, and feature backlogs
+- [MOBILE_ROADMAP.md](guides/MOBILE_ROADMAP.md) - Complete mobile implementation roadmap (1308 lines)
+- [BACKLOG_PRIORIZADO.md](guides/BACKLOG_PRIORIZADO.md) - Prioritized feature backlog
+- [PHASE_1.2_PLAN.md](guides/PHASE_1.2_PLAN.md) - Phase 1.2 implementation plan
 
-### 📖 `/guides` - Roadmaps & Planning
-High-level guides and project planning documents.
+### 🏗️ [architecture/](architecture/)
+Technical structure and system design
+- [PROJECT_STRUCTURE.md](architecture/PROJECT_STRUCTURE.md) - Project organization and folder structure
+- [MODULES.md](architecture/MODULES.md) - Module architecture documentation
+- [DEPENDENCY_MAP.md](architecture/DEPENDENCY_MAP.md) - Dependency relationships
 
-- **MOBILE_ROADMAP.md** - Complete mobile/PWA implementation roadmap
-- **BACKLOG_PRIORIZADO.md** - Prioritized feature backlog
-- **PHASE_1.2_PLAN.md** - Phase 1.2 implementation plan
+### 📦 [releases/](releases/)
+Changelog, releases, and bug fix reports
+- [CHANGELOG.md](releases/CHANGELOG.md) - Version history and changes
+- [RELEASE_v1.4.0.md](releases/RELEASE_v1.4.0.md) - v1.4.0 release notes
+- [BUG_FIXES_REPORT.md](releases/BUG_FIXES_REPORT.md) - Comprehensive bug fixes documentation
 
-### 🏗️ `/architecture` - Technical Architecture
-System architecture and technical design documents.
+### 🔒 [security/](security/)
+Security audits and verification reports
+- [SECURITY_AUDIT.md](security/SECURITY_AUDIT.md) - Comprehensive security audit
+- [CRITICAL_VERIFICATION.md](security/CRITICAL_VERIFICATION.md) - Critical security verification
 
-- **PROJECT_STRUCTURE.md** - Project folder and file structure
-- **MODULES.md** - Module organization and dependencies
-- **DEPENDENCY_MAP.md** - Dependency mapping and relationships
+### 💻 [development/](development/)
+Development process and progress tracking
+- [REFACTORING_PROGRESS.md](development/REFACTORING_PROGRESS.md) - Code refactoring progress
+- [MORNING_REVIEW.md](development/MORNING_REVIEW.md) - Development reviews
 
-### 🚀 `/releases` - Releases & Changelog
-Release notes, changelogs, and bug fix reports.
+### 📱 [mobile/](mobile/)
+Mobile implementation and progress tracking
+- [MOBILE_PROGRESS.md](mobile/MOBILE_PROGRESS.md) - Mobile implementation progress
 
-- **CHANGELOG.md** - Complete version history
-- **RELEASE_v1.4.0.md** - v1.4.0 release notes (Tutorial Update)
-- **BUG_FIXES_REPORT.md** - Bug fixes and patches
-
-### 🔒 `/security` - Security Audits
-Security analysis, audits, and verification reports.
-
-- **SECURITY_AUDIT.md** - Complete security audit (npm + Firebase)
-- **CRITICAL_VERIFICATION.md** - Critical security verification
-
-### 🛠️ `/development` - Development Process
-Development progress, refactoring, and daily reports.
-
-- **REFACTORING_PROGRESS.md** - Code refactoring progress
-- **MORNING_REVIEW.md** - Morning standup reviews
-
-### 📱 `/mobile` - Mobile Implementation
-Mobile/PWA implementation progress and notes.
-
-- **MOBILE_PROGRESS.md** - Mobile development progress (Weeks 1-2)
-
-### 🔀 `/merge-history` - Merge History (Archived)
-Historical merge process documentation (mobile → main).
-
-- **MERGE_ANALYSIS.md** - Impact analysis of mobile merge
-- **MERGE_GUIDE.md** - Step-by-step merge guide
-- **MERGE_STATUS.md** - Merge status report
-- **VERIFICATION_COMPLETE.md** - Post-merge verification
-- **FINAL_STATUS.md** - Final merge status
+### 🔀 [merge-history/](merge-history/)
+Archived merge documentation and analysis
+- [MERGE_ANALYSIS.md](merge-history/MERGE_ANALYSIS.md) - Code review and compatibility analysis
+- [MERGE_GUIDE.md](merge-history/MERGE_GUIDE.md) - Git workflow guide
+- [MERGE_STATUS.md](merge-history/MERGE_STATUS.md) - Merge status tracking
+- [VERIFICATION_COMPLETE.md](merge-history/VERIFICATION_COMPLETE.md) - Verification completion report
+- [FINAL_STATUS.md](merge-history/FINAL_STATUS.md) - Final merge status
 
 ---
 
 ## 🔗 Quick Links
 
-- **Main README:** [../README.md](../README.md)
-- **Security Policy:** [../SECURITY.md](../SECURITY.md)
-- **License:** [../LICENSE](../LICENSE)
+- **Main README**: [../README.md](../README.md)
+- **Security Policy**: [../SECURITY.md](../SECURITY.md)
+- **Contributing**: [../CONTRIBUTING.md](../CONTRIBUTING.md)
+- **License**: [../LICENSE](../LICENSE)
 
 ---
 
-## 📊 Documentation Stats
-
-- **Total Documents:** 20+ files
-- **Total Lines:** 4,500+ lines
-- **Categories:** 7 organized folders
-- **Last Updated:** 2025-11-14
-
----
-
-**Note:** This documentation structure was reorganized on 2025-11-14 for better organization and maintainability. Previous location was `/documentation` (flat structure).
+**Total Documentation**: 4100+ lines across 19 files, professionally organized by category.

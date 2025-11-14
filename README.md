@@ -6,7 +6,7 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/6f6196d2-a8fd-451b-bb55-d57f2a5ad668/deploy-status)](https://app.netlify.com/projects/dungeonscoundrel/deploys)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-1.6.25-blue.svg)](https://github.com/ehgzao/DungeonScoundrel/releases)
+[![Version](https://img.shields.io/badge/version-1.4.2-blue.svg)](https://github.com/ehgzao/DungeonScoundrel/releases)
 [![PWA](https://img.shields.io/badge/PWA-100-brightgreen.svg)](https://web.dev/progressive-web-apps/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
@@ -87,7 +87,7 @@
 
 ## 🆕 NEW: Mobile & PWA
 
-### **Version 1.6.25 - Mobile Implementation Complete!**
+### **Version 1.4.2 - Mobile & Performance Update!**
 
 #### ✅ Progressive Web App (PWA)
 - **Install as App**: Add to home screen on any device
@@ -278,11 +278,14 @@ DungeonScoundrel/
 │   │   └── config/           # Firebase configuration
 │   ├── sw.js                 # Service Worker (generated)
 │   └── site.webmanifest      # PWA manifest
-├── docs/             # Project documentation
-│   ├── MOBILE_ROADMAP.md     # Mobile implementation guide (1308 lines)
-│   ├── MOBILE_PROGRESS.md    # Progress tracking
-│   ├── MERGE_ANALYSIS.md     # Code review and analysis
-│   └── MERGE_GUIDE.md        # Git workflow guide
+├── docs/                      # Project documentation
+│   ├── guides/               # Roadmaps and planning
+│   ├── architecture/         # Technical structure
+│   ├── releases/             # Changelog and releases
+│   ├── security/             # Security audits
+│   ├── development/          # Dev process
+│   ├── mobile/               # Mobile implementation
+│   └── merge-history/        # Archived merge docs
 ├── scripts/                   # Build and deploy scripts
 ├── package.json              # npm configuration
 ├── workbox-config.js         # Service Worker config
@@ -340,7 +343,7 @@ npm run deploy       # Deploy to Netlify (production)
 
 ## 📊 Performance
 
-### Current Metrics (v1.6.25)
+### Current Metrics (v1.4.2)
 
 #### Desktop
 - **Load Time**: < 2s (4G connection)
@@ -442,10 +445,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 - **[Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md)** - Complete mobile implementation guide (1308 lines)
 - **[Mobile Progress](docs/mobile/MOBILE_PROGRESS.md)** - Phase 1 tracking (Weeks 1-2 complete)
 - **[Merge Analysis](docs/merge-history/MERGE_ANALYSIS.md)** - Code review and compatibility analysis
-- **[Merge Guide](MERGE_GUIDE.md)** - Git workflow for mobile branch
+- **[Merge Guide](docs/merge-history/MERGE_GUIDE.md)** - Git workflow for mobile branch
 
 ### Development
-- **[CHANGELOG.md](CHANGELOG.md)** - Version history and changes
+- **[CHANGELOG.md](docs/releases/CHANGELOG.md)** - Version history and changes
 - **[BACKLOG_PRIORIZADO.md](docs/guides/BACKLOG_PRIORIZADO.md)** - Prioritized feature backlog
 - **[MODULES.md](docs/architecture/MODULES.md)** - Module architecture documentation
 
@@ -455,20 +458,20 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ## 🗺️ Roadmap
 
-### ✅ Version 1.6 (Current - COMPLETE)
+### ✅ Version 1.4.2 (Current - COMPLETE)
 - ✅ Mobile PWA implementation (Phase 1)
 - ✅ Service Worker and offline mode
 - ✅ IndexedDB for robust saves
-- ✅ Performance optimizations (-94% assets)
-- ✅ Security Policy
-- ✅ Comprehensive documentation
+- ✅ Performance optimizations (60 FPS mobile, -60% load time)
+- ✅ Cloud saves working
+- ✅ Security audit and improvements
 
-### 🔄 Version 1.7 (In Progress - Phase 1 Week 3-4)
+### 🔄 Version 1.5.0 (Next - Planned)
+- ⏳ Additional language support
+- ⏳ Advanced tutorial for experienced players
+- ⏳ Tutorial replay option in menu
 - ⏳ Touch-friendly UI improvements
 - ⏳ Mobile tooltips (tap instead of hover)
-- ⏳ Gesture controls (swipe actions)
-- ⏳ Portrait mode optimization
-- ⏳ Device testing (5+ real devices)
 
 ### 📱 Version 2.0 (Future - Q1 2026)
 - [ ] Native mobile apps (Capacitor)
@@ -559,8 +562,9 @@ furnished to do so, subject to the following conditions:
 ### Resources
 - **📚 Full Documentation**: [docs/](docs/)
 - **🛡️ Security Policy**: [SECURITY.md](SECURITY.md)
+- **🛡️ Security Audit**: [SECURITY_AUDIT.md](docs/security/SECURITY_AUDIT.md)
 - **🗺️ Mobile Roadmap**: [MOBILE_ROADMAP.md](docs/guides/MOBILE_ROADMAP.md)
-- **📝 Changelog**: [CHANGELOG.md](CHANGELOG.md)
+- **📝 Changelog**: [CHANGELOG.md](docs/releases/CHANGELOG.md)
 
 ---
 
@@ -573,7 +577,7 @@ furnished to do so, subject to the following conditions:
 | [🛡️ Security](SECURITY.md) | Report vulnerabilities, security policy |
 | [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues/new) | Found a bug? Let us know |
 | [✨ Request Feature](https://github.com/ehgzao/DungeonScoundrel/issues/new) | Have an idea? Share it |
-| [📖 Documentation](docs/) | Read all docs (4100+ lines) |
+| [📖 Documentation](docs/) | Read all docs (organized by category) |
 | [🤝 Contributing](CONTRIBUTING.md) | Join the development |
 | [📜 License](LICENSE) | MIT License details |
 
@@ -590,7 +594,7 @@ furnished to do so, subject to the following conditions:
 
 [🎮 Play Now](https://dungeonscoundrel.com/) | [📱 Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Issue](https://github.com/ehgzao/DungeonScoundrel/issues)
 
-**Version 1.6.25** | **PWA Score: 100/100** | **Offline Ready** | **Mobile Optimized**
+**Version 1.4.2** | **PWA Score: 100/100** | **Offline Ready** | **Mobile Optimized**
 
 ---
 
