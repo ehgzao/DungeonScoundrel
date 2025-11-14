@@ -412,10 +412,3 @@ try {
         window.doc = doc;
         window.getDoc = getDoc;
         window.setDoc = setDoc;
-        
-
-// Log module load
-    'window.db': !!window.db, 
-    'window.appId': !!window.appId, 
-    'window.auth': !!window.auth 
-});
