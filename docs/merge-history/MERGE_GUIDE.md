@@ -9,7 +9,7 @@
 
 Antes de fazer o merge, verifique:
 
-- [x] Análise de impacto completa (`documentation/MERGE_ANALYSIS.md`)
+- [x] Análise de impacto completa (`docs/MERGE_ANALYSIS.md`)
 - [x] Todos os commits bem documentados (7 commits)
 - [x] Nenhum conflito detectado
 - [x] Código 100% backward compatible
@@ -54,7 +54,7 @@ Performance:
 Totalmente backward compatible com desktop.
 Apenas melhorias, sem impactos negativos.
 
-Análise completa: documentation/MERGE_ANALYSIS.md"
+Análise completa: docs/MERGE_ANALYSIS.md"
 
 # 5. Verificar resultado
 git log --oneline --graph -10
@@ -110,7 +110,7 @@ Arquivos:
 - 3 arquivos modificados (HTML, helpers, gitignore)
 - 7 commits originais squashed
 
-Análise: documentation/MERGE_ANALYSIS.md"
+Análise: docs/MERGE_ANALYSIS.md"
 
 # 6. Push
 git push origin main
@@ -200,8 +200,8 @@ Implementação completa da Fase 1 do roadmap mobile (PWA/Web Mobile).
 **Novos (6):**
 - `public/src/js/utils/mobile-optimization.js` (346 linhas)
 - `public/src/js/utils/offline-storage.js` (548 linhas)
-- `documentation/MOBILE_ROADMAP.md` (1308 linhas)
-- `documentation/MOBILE_PROGRESS.md` (369 linhas)
+- `docs/MOBILE_ROADMAP.md` (1308 linhas)
+- `docs/MOBILE_PROGRESS.md` (369 linhas)
 - `SECURITY.md` (245 linhas)
 - `package.json`, `workbox-config.js`
 
@@ -217,7 +217,7 @@ Implementação completa da Fase 1 do roadmap mobile (PWA/Web Mobile).
 - ✅ Código defensivo (checks em todas otimizações)
 - ✅ Análise de impacto detalhada
 
-Ver: `documentation/MERGE_ANALYSIS.md`
+Ver: `docs/MERGE_ANALYSIS.md`
 
 ### 📋 Commits (7)
 
@@ -248,7 +248,7 @@ Ver: `documentation/MERGE_ANALYSIS.md`
 
 ---
 
-**Análise completa:** [MERGE_ANALYSIS.md](documentation/MERGE_ANALYSIS.md)
+**Análise completa:** [MERGE_ANALYSIS.md](docs/MERGE_ANALYSIS.md)
 ```
 
 **Tempo estimado:** 5 minutos + review

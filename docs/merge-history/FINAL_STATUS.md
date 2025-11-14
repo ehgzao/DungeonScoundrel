@@ -239,9 +239,9 @@ Erro 403 no push devido a limitações do proxy do Claude Code.
 ## 📚 DOCUMENTAÇÃO DISPONÍVEL
 
 ### **No GitHub (Público):**
-- ✅ `documentation/MOBILE_ROADMAP.md`
-- ✅ `documentation/MOBILE_PROGRESS.md`
-- ✅ `documentation/MERGE_ANALYSIS.md`
+- ✅ `docs/MOBILE_ROADMAP.md`
+- ✅ `docs/MOBILE_PROGRESS.md`
+- ✅ `docs/MERGE_ANALYSIS.md`
 - ✅ `MERGE_GUIDE.md`
 - ✅ `SECURITY.md`
 

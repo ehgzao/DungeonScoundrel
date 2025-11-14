@@ -36,13 +36,13 @@
 - **Benefício:** ✅ Política de segurança profissional
 - **Risco:** 🟢 ZERO
 
-#### **`documentation/MOBILE_ROADMAP.md` (1308 linhas)**
+#### **`docs/MOBILE_ROADMAP.md` (1308 linhas)**
 - **Tipo:** Roadmap de implementação mobile
 - **Impacto Desktop:** ❌ NENHUM (apenas documento)
 - **Benefício:** ✅ Documentação completa do projeto mobile
 - **Risco:** 🟢 ZERO
 
-#### **`documentation/MOBILE_PROGRESS.md` (369 linhas)**
+#### **`docs/MOBILE_PROGRESS.md` (369 linhas)**
 - **Tipo:** Relatório de progresso
 - **Impacto Desktop:** ❌ NENHUM (apenas documento)
 - **Benefício:** ✅ Tracking de implementação

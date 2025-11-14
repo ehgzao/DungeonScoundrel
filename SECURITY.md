@@ -180,7 +180,7 @@ These are **not** considered security vulnerabilities:
 - **v1.6.24:** Fixed infinite weapon durability bug
 - **v1.5.x:** Improved Firebase security rules
 
-See [CHANGELOG.md](CHANGELOG.md) for full history.
+See [CHANGELOG.md](docs/releases/CHANGELOG.md) for full history.
 
 ---
 

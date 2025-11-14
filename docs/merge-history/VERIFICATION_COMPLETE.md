@@ -25,9 +25,9 @@
 
 ### **2. Documentação Criada:**
 ```
-✅ documentation/MERGE_ANALYSIS.md (12.9 KB)
-✅ documentation/MOBILE_PROGRESS.md (9.7 KB)
-✅ documentation/MOBILE_ROADMAP.md (32.2 KB)
+✅ docs/MERGE_ANALYSIS.md (12.9 KB)
+✅ docs/MOBILE_PROGRESS.md (9.7 KB)
+✅ docs/MOBILE_ROADMAP.md (32.2 KB)
 ✅ SECURITY.md (presente no repo)
 ✅ MERGE_GUIDE.md (presente no repo)
 ```
@@ -205,9 +205,9 @@ Toda documentação está no repositório:
 
 | Documento | Localização | Tamanho | Status |
 |-----------|-------------|---------|--------|
-| **Mobile Roadmap** | `documentation/MOBILE_ROADMAP.md` | 32 KB | ✅ Completo |
-| **Progress Report** | `documentation/MOBILE_PROGRESS.md` | 9.7 KB | ✅ Atualizado |
-| **Merge Analysis** | `documentation/MERGE_ANALYSIS.md` | 12.9 KB | ✅ Detalhado |
+| **Mobile Roadmap** | `docs/MOBILE_ROADMAP.md` | 32 KB | ✅ Completo |
+| **Progress Report** | `docs/MOBILE_PROGRESS.md` | 9.7 KB | ✅ Atualizado |
+| **Merge Analysis** | `docs/MERGE_ANALYSIS.md` | 12.9 KB | ✅ Detalhado |
 | **Merge Guide** | `MERGE_GUIDE.md` | ~10 KB | ✅ Passo a passo |
 | **Security Policy** | `SECURITY.md` | ~6 KB | ✅ Profissional |
 | **Merge Status** | `MERGE_STATUS.md` | 7 KB | ✅ Final |
