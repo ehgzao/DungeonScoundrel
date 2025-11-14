@@ -1,5 +1,3 @@
-# 🎮 Dungeon Scoundrel
-
 <div align="center">
 
 ![Dungeon Scoundrel Logo](assets/images/title-logo.webp)
