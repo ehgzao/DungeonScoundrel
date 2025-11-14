@@ -3296,21 +3296,10 @@ function handlePotion(potion, index) {
 }
 
 function checkGameState() {
-        roomLength: game.room.length, 
-        roomContent: game.room,
-        gameOver: game.gameOver,
-        btnDrawDisabled: btnDrawRoom.disabled,
-        btnAvoidDisabled: btnAvoidRoom.disabled
-    });
-    
     // Room Cleared?
     const roomEmpty = game.room.length === 0;
     const notGameOver = !game.gameOver;
-        roomEmpty, 
-        notGameOver, 
-        shouldEnableButtons: roomEmpty && notGameOver 
-    });
-    
+
     if (roomEmpty && notGameOver) {
         
         game.potionsUsed = 0;

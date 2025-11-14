@@ -20,11 +20,7 @@ try {
             // __firebase_config and __app_id are injected by the environment
             // CRITICAL: Must use window.* in ES6 modules to access global variables
             const firebaseConfig = typeof window.__firebase_config !== 'undefined' ? JSON.parse(window.__firebase_config) : {};
-            
-                hasConfig: !!window.__firebase_config, 
-                projectId: firebaseConfig.projectId 
-            });
-            
+
             const app = initializeApp(firebaseConfig);
             db = getFirestore(app);
             auth = getAuth(app);
