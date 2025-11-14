@@ -22,8 +22,8 @@ def extract_css_from_html(html_content):
 def extract_js_from_html(html_content):
     """Extrai todo JavaScript inline do HTML"""
     # Encontrar todos os blocos <script> (exceto src externos)
-    script_pattern = r'<script(?!\s+src)(.*?)>(.*?)</script>'
-    scripts = re.findall(script_pattern, html_content, re.DOTALL)
+    script_pattern = r'<script(?!\s+src)(.*?)>(.*?)</script[^>]*>'
+    scripts = re.findall(script_pattern, html_content, re.DOTALL | re.IGNORECASE)
     return '\n\n'.join([script[1] for script in scripts])
 
 def separate_css_by_concern(css_content):
