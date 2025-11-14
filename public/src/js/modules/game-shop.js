@@ -244,12 +244,7 @@ export function closeShop() {
     if (typeof window.music !== 'undefined' && window.music.switchContext) {
         window.music.switchContext('gameplay');
     }
-    
-        roomLength: game.room.length,
-        roomContent: game.room,
-        lastActionWasAvoid: game.lastActionWasAvoid
-    });
-    
+
     // Re-enable buttons based on game state
     if (game.room.length === 0) {
         // No cards in room - enable draw/avoid
