@@ -4614,7 +4614,7 @@ function loadUnlocks() {
      if(saved) {
         try {
             const parsed = JSON.parse(saved);
-            permanentUnlocks = { ...permanentUnlocks, ...parsed }; // This merges the saved data into the default structure
+            Object.assign(permanentUnlocks, parsed); // Modify object in-place (imports are read-only)
         } catch(e) { console.error("Failed to parse unlocks:", e); }
      }
 }
