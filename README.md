@@ -10,7 +10,7 @@
 [![PWA](https://img.shields.io/badge/PWA-100-brightgreen.svg)](https://web.dev/progressive-web-apps/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[🎮 Play Now](https://dungeonscoundrel.com/) | [📱 Mobile Roadmap](documentation/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues)
+[🎮 Play Now](https://dungeonscoundrel.com/) | [📱 Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues)
 
 </div>
 
@@ -119,7 +119,7 @@
 | **PWA Score** | 60 | 100 | **+40** ✨ |
 | **Offline** | ❌ | ✅ | **Working!** 💯 |
 
-See [Mobile Roadmap](documentation/MOBILE_ROADMAP.md) for complete details.
+See [Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md) for complete details.
 
 ---
 
@@ -278,7 +278,7 @@ DungeonScoundrel/
 │   │   └── config/           # Firebase configuration
 │   ├── sw.js                 # Service Worker (generated)
 │   └── site.webmanifest      # PWA manifest
-├── documentation/             # Project documentation
+├── docs/             # Project documentation
 │   ├── MOBILE_ROADMAP.md     # Mobile implementation guide (1308 lines)
 │   ├── MOBILE_PROGRESS.md    # Progress tracking
 │   ├── MERGE_ANALYSIS.md     # Code review and analysis
@@ -373,7 +373,7 @@ npm run deploy       # Deploy to Netlify (production)
 - **Smart Caching**: Workbox strategies
 - **Reduced Animations**: Mobile/low-end optimization
 
-See [Mobile Progress Report](documentation/MOBILE_PROGRESS.md) for detailed metrics.
+See [Mobile Progress Report](docs/mobile/MOBILE_PROGRESS.md) for detailed metrics.
 
 ---
 
@@ -439,15 +439,15 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 - **[LICENSE](LICENSE)** - MIT License
 
 ### Mobile & PWA
-- **[Mobile Roadmap](documentation/MOBILE_ROADMAP.md)** - Complete mobile implementation guide (1308 lines)
-- **[Mobile Progress](documentation/MOBILE_PROGRESS.md)** - Phase 1 tracking (Weeks 1-2 complete)
-- **[Merge Analysis](documentation/MERGE_ANALYSIS.md)** - Code review and compatibility analysis
+- **[Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md)** - Complete mobile implementation guide (1308 lines)
+- **[Mobile Progress](docs/mobile/MOBILE_PROGRESS.md)** - Phase 1 tracking (Weeks 1-2 complete)
+- **[Merge Analysis](docs/merge-history/MERGE_ANALYSIS.md)** - Code review and compatibility analysis
 - **[Merge Guide](MERGE_GUIDE.md)** - Git workflow for mobile branch
 
 ### Development
 - **[CHANGELOG.md](CHANGELOG.md)** - Version history and changes
-- **[BACKLOG_PRIORIZADO.md](documentation/BACKLOG_PRIORIZADO.md)** - Prioritized feature backlog
-- **[MODULES.md](documentation/MODULES.md)** - Module architecture documentation
+- **[BACKLOG_PRIORIZADO.md](docs/guides/BACKLOG_PRIORIZADO.md)** - Prioritized feature backlog
+- **[MODULES.md](docs/architecture/MODULES.md)** - Module architecture documentation
 
 **Total Documentation**: 4100+ lines across 11 files
 
@@ -494,7 +494,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 - [ ] Cloud save sync across platforms
 - [ ] Localization (10+ languages)
 
-See [Mobile Roadmap](documentation/MOBILE_ROADMAP.md) for detailed Phase 2 planning.
+See [Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md) for detailed Phase 2 planning.
 
 ---
 
@@ -557,9 +557,9 @@ furnished to do so, subject to the following conditions:
 - **🔗 Repository**: [DungeonScoundrel](https://github.com/ehgzao/DungeonScoundrel)
 
 ### Resources
-- **📚 Full Documentation**: [documentation/](documentation/)
+- **📚 Full Documentation**: [docs/](docs/)
 - **🛡️ Security Policy**: [SECURITY.md](SECURITY.md)
-- **🗺️ Mobile Roadmap**: [MOBILE_ROADMAP.md](documentation/MOBILE_ROADMAP.md)
+- **🗺️ Mobile Roadmap**: [MOBILE_ROADMAP.md](docs/guides/MOBILE_ROADMAP.md)
 - **📝 Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
 ---
@@ -569,11 +569,11 @@ furnished to do so, subject to the following conditions:
 | Resource | Description |
 |----------|-------------|
 | [🎮 Play Game](https://dungeonscoundrel.com/) | Start playing now (PWA, works offline!) |
-| [📱 Mobile Guide](documentation/MOBILE_ROADMAP.md) | Complete mobile implementation roadmap |
+| [📱 Mobile Guide](docs/guides/MOBILE_ROADMAP.md) | Complete mobile implementation roadmap |
 | [🛡️ Security](SECURITY.md) | Report vulnerabilities, security policy |
 | [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues/new) | Found a bug? Let us know |
 | [✨ Request Feature](https://github.com/ehgzao/DungeonScoundrel/issues/new) | Have an idea? Share it |
-| [📖 Documentation](documentation/) | Read all docs (4100+ lines) |
+| [📖 Documentation](docs/) | Read all docs (4100+ lines) |
 | [🤝 Contributing](CONTRIBUTING.md) | Join the development |
 | [📜 License](LICENSE) | MIT License details |
 
@@ -588,7 +588,7 @@ furnished to do so, subject to the following conditions:
 [![Star on GitHub](https://img.shields.io/github/stars/ehgzao/DungeonScoundrel?style=social)](https://github.com/ehgzao/DungeonScoundrel)
 [![Fork on GitHub](https://img.shields.io/github/forks/ehgzao/DungeonScoundrel?style=social)](https://github.com/ehgzao/DungeonScoundrel/fork)
 
-[🎮 Play Now](https://dungeonscoundrel.com/) | [📱 Mobile Roadmap](documentation/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Issue](https://github.com/ehgzao/DungeonScoundrel/issues)
+[🎮 Play Now](https://dungeonscoundrel.com/) | [📱 Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Issue](https://github.com/ehgzao/DungeonScoundrel/issues)
 
 **Version 1.6.25** | **PWA Score: 100/100** | **Offline Ready** | **Mobile Optimized**
 
