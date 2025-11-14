@@ -1492,20 +1492,11 @@
     <script src="src/js/features/inline-scripts.js?v=1.4.1"></script>
     
     <!-- ============================================ -->
-    <!-- FIREBASE CONFIG (Inline to avoid Netlify secrets scanning)
+    <!-- FIREBASE CONFIG (External file - gitignored)
     <!-- ============================================ -->
-    <script>
-        // Firebase config - API keys are safe to be public (protected by Firestore rules)
-        window.__firebase_config = JSON.stringify({
-            apiKey: "AIzaSyAXQOgiVFS04xU196ANWLu9wHrDRWfpjHw",
-            authDomain: "dungeon-scoundrel.firebaseapp.com",
-            projectId: "dungeon-scoundrel",
-            storageBucket: "dungeon-scoundrel.firebasestorage.app",
-            messagingSenderId: "13386790249",
-            appId: "1:13386790249:web:87cc9a44a310b2e86a79f8"
-        });
-        window.__app_id = "dungeon_scoundrel_v1";
-    </script>
+    <!-- Firebase Web API Keys are public by design - security comes from Firestore Rules -->
+    <!-- See: https://firebase.google.com/docs/projects/api-keys -->
+    <script src="src/config/firebase-config.js"></script>
     
     <!-- ============================================ -->
     <!-- FIREBASE & AUTHENTICATION
