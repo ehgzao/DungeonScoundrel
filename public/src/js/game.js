@@ -1277,6 +1277,12 @@ function useKnightAbility() {
         game.room.splice(index, 1);
         game.discardPile.push(firstMonster);
         game.stats.monstersSlain++;
+
+        // BUGFIX: Monster Tooth bonus for Shield Bash kills
+        if (game.relics.some(r => r.id === 'tooth')) {
+            earnGold(1);
+        }
+
         showMessage(`🛡️ Shield Bash! Monster defeated!`, 'success');
     } else {
         showMessage(`🛡️ Shield Bash! Dealt ${damage} damage! (${firstMonster.numValue} HP left)`, 'success');
@@ -1798,7 +1804,7 @@ function startGame() {
         const playerNameDisplay = document.getElementById('playerNameDisplay');
         const playerClassDisplay = document.getElementById('playerClassDisplay');
         
-        if (playerAvatar) playerAvatar.src = `assets/images/avatar-${game.playerClass}.jpg`;
+        if (playerAvatar) playerAvatar.src = `assets/images/avatar-${game.playerClass}.webp`;
         if (playerNameDisplay) playerNameDisplay.textContent = sanitizePlayerName(playerNameInput.value);
         if (playerClassDisplay) playerClassDisplay.textContent = game.classData.name;
         
@@ -2540,7 +2546,13 @@ function drawRoom() {
         addLog(`Entered dungeon with ${game.room.length} cards`, 'info');
         showMessage(`You entered a dungeon with ${game.room.length} cards!`, 'info');
     }
-    
+
+    // BUGFIX: Fortress Armor (tank relic) gives +1 HP shield at start of each room
+    if (game.relics.some(r => r.id === 'tank')) {
+        game.mirrorShield = 1;
+        showMessage('🏰 Fortress Armor: +1 HP shield', 'success');
+    }
+
     updateUI();
     btnDrawRoom.disabled = true;
     btnAvoidRoom.disabled = true;
@@ -2805,15 +2817,20 @@ function handleMonster(monster, index) {
             // Boss defeated!
             game.stats.monstersSlain++;
             game.stats.bossesKilled++;  // Track for Berserker unlock
-            
+
+            // BUGFIX: Monster Tooth bonus for boss kills
+            if (game.relics.some(r => r.id === 'tooth')) {
+                earnGold(1);
+            }
+
             // Check if this is the final boss
             if (monster.bossNumber === BOSS.FINAL_BOSS_NUMBER) {
                 game.finalBossDefeated = true;
             }
-            
+
             game.room.splice(index, 1);
             game.discardPile.push(monster);
-            
+
             // Boss gold based on difficulty
             const bossGoldByDifficulty = {
                 easy: Math.floor(Math.random() * 16) + 25,    // 25-40 gold
@@ -2981,14 +2998,26 @@ function handleMonster(monster, index) {
     // Track if weapon was used for ATTACK (not just defense)
     // If dodge is active, weapon is not used (even if perfect kill)
     let weaponWasUsed = !game.dodgeActive;
-    
+
     // Track if attack was made (for Power consumption)
     // Power should consume when attacking (with or without weapon)
     // But NOT when using defensive abilities (Dodge, Divine Blessing, etc)
     let attackWasMade = !game.dodgeActive;
-    
+
     playSound('attack');
-    
+
+    // BUGFIX: Cloak relic negates first damage of the room
+    const cloakRelic = game.relics.find(r => r.id === 'cloak' && !r.usedThisRoom);
+    if (cloakRelic && damage > 0) {
+        cloakRelic.usedThisRoom = true;
+        damage = 0;
+        showMessage('🧥 Cloak blocked damage!', 'success');
+        weaponWasUsed = false;
+        attackWasMade = false;
+        game.combo++;
+        game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
+    }
+
     // Dodge (dodgeMaster: avoids 2 attacks instead of 1)
     if (game.dodgeActive && damage > 0) {
         // dodgeMaster unlock: dodge lasts 2 attacks
@@ -3081,16 +3110,34 @@ function handleMonster(monster, index) {
             showMessage(`⚔️ Perfect kill! ${game.combo}x COMBO!`, 'success');
         }
     }
-    // NO WEAPON: Take damage and reset combo
+    // TAKE DAMAGE: Monster hits you
     else {
         game.health -= damage;
         game.stats.totalDamage += damage;
         showDamageNumber(damage, 'damage');
         playSound('damage');
-        addLog(`No weapon! Took ${damage} damage from ${monster.value}${monster.suit}`, 'danger');
-        showMessage(`⚠️ NO WEAPON! -${damage} HP`, 'danger');
+
+        // Different messages depending on whether weapon is equipped
+        if (!game.equippedWeapon) {
+            addLog(`No weapon! Took ${damage} damage from ${monster.value}${monster.suit}`, 'danger');
+            showMessage(`⚠️ NO WEAPON! -${damage} HP`, 'danger');
+        } else {
+            addLog(`Monster hit you for ${damage} damage! ${monster.value}${monster.suit}`, 'danger');
+            showMessage(`💥 Monster hits you! -${damage} HP`, 'danger');
+        }
+
         screenShake();
-        resetCombo();
+
+        // BUGFIX: Rogue Shadow Strike is "combo safe" - don't reset combo
+        const isRogueShadowStrikeActive = (
+            game.playerClass === 'rogue' &&
+            game.classAbilityActive &&
+            game.classAbilityCounter > 0
+        );
+
+        if (!isRogueShadowStrikeActive) {
+            resetCombo();
+        }
     }
     
     // Reset Power (doubleDamage) ONLY if attack was made
@@ -4558,20 +4605,25 @@ let activeUpgradeFilter = 'all';
 
 window.unlockUpgradeWrapper = (unlockId) => {
     const unlockData = UNLOCKS.find(u => u.id === unlockId);
-    
+
     permanentUnlocks[unlockId] = true;
     saveUnlocks();
-    
+
     // Enhanced visual feedback
     showMessage(`✨ ${unlockData.name} UNLOCKED!`, 'success');
     playSound('special');
     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 50);
-    
+
     // Re-apply current filter to update the list
     if (activeUpgradeFilter !== 'all') {
         filterUpgradesByStatus(activeUpgradeFilter);
     } else {
         updateUnlocksDisplay();
+    }
+
+    // BUGFIX: Update codex UI immediately after unlock
+    if (typeof window.populateCodexUpgrades === 'function') {
+        window.populateCodexUpgrades();
     }
 }
 
@@ -4614,7 +4666,7 @@ function loadUnlocks() {
      if(saved) {
         try {
             const parsed = JSON.parse(saved);
-            permanentUnlocks = { ...permanentUnlocks, ...parsed }; // This merges the saved data into the default structure
+            Object.assign(permanentUnlocks, parsed); // Modify object in-place (imports are read-only)
         } catch(e) { console.error("Failed to parse unlocks:", e); }
      }
 }

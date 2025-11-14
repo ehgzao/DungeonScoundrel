@@ -89,11 +89,20 @@ export function giveRelicByRarity(rarity) {
         game.maxHealth += RELIC_CONFIG.BIG_HEALTH_BONUS; 
         game.health += RELIC_CONFIG.BIG_HEALTH_BONUS; 
     }
-    if (randomRelic.effect === 'tinyHealth') { 
-        game.maxHealth += RELIC_CONFIG.TINY_HEALTH_BONUS; 
-        game.health += RELIC_CONFIG.TINY_HEALTH_BONUS; 
+    if (randomRelic.effect === 'tinyHealth') {
+        game.maxHealth += RELIC_CONFIG.TINY_HEALTH_BONUS;
+        game.health += RELIC_CONFIG.TINY_HEALTH_BONUS;
     }
-    
+
+    // BUGFIX: Charm relic gives +10 gold when obtained
+    if (randomRelic.effect === 'startGold') {
+        if (typeof window.earnGold === 'function') {
+            window.earnGold(10);
+        } else {
+            game.gold += 10;
+        }
+    }
+
     const rarityColors = { common: '⚪', uncommon: '🟢', rare: '🔵', legendary: '🟠' };
     if (typeof window.showMessage === 'function') {
         window.showMessage(`${rarityColors[rarity]} Relic: ${randomRelic.name}!`, 'success');
