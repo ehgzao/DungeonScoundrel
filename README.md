@@ -2,11 +2,11 @@
 
 <div align="center">
 
-![Dungeon Scoundrel Logo](assets/title-logo.png)
+![Dungeon Scoundrel Logo](assets/images/title-logo.webp)
 
 **A Dark Medieval Roguelike Card Game**
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge-id/deploy-status)](https://dungeonscoundrel.com/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6f6196d2-a8fd-451b-bb55-d57f2a5ad668/deploy-status)](https://app.netlify.com/projects/dungeonscoundrel/deploys)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-1.6.25-blue.svg)](https://github.com/ehgzao/DungeonScoundrel/releases)
 [![PWA](https://img.shields.io/badge/PWA-100-brightgreen.svg)](https://web.dev/progressive-web-apps/)
