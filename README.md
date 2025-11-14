@@ -6,13 +6,13 @@
 
 **A Dark Medieval Roguelike Card Game**
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge-id/deploy-status)](https://dungeonscoundrel.netlify.app/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge-id/deploy-status)](https://dungeonscoundrel.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-1.6.25-blue.svg)](https://github.com/ehgzao/DungeonScoundrel/releases)
 [![PWA](https://img.shields.io/badge/PWA-100-brightgreen.svg)](https://web.dev/progressive-web-apps/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[🎮 Play Now](https://dungeonscoundrel.netlify.app/) | [📱 Mobile Roadmap](documentation/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues)
+[🎮 Play Now](https://dungeonscoundrel.com/) | [📱 Mobile Roadmap](documentation/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues)
 
 </div>
 
@@ -549,10 +549,10 @@ furnished to do so, subject to the following conditions:
 ## 📞 Contact & Support
 
 ### Play & Connect
-- **🌐 Play Now**: [dungeonscoundrel.netlify.app](https://dungeonscoundrel.netlify.app/)
+- **🌐 Play Now**: [dungeonscoundrel.com](https://dungeonscoundrel.com/)
 - **🐛 Bug Reports**: [GitHub Issues](https://github.com/ehgzao/DungeonScoundrel/issues)
 - **💬 Discussions**: [GitHub Discussions](https://github.com/ehgzao/DungeonScoundrel/discussions)
-- **📧 Email**: Use in-game bug report feature (EmailJS integration)
+- **📧 Email**: hello@dungeonscoundrel.com (or use in-game bug report)
 
 ### Developer
 - **👨‍💻 GitHub**: [@ehgzao](https://github.com/ehgzao)
@@ -570,7 +570,7 @@ furnished to do so, subject to the following conditions:
 
 | Resource | Description |
 |----------|-------------|
-| [🎮 Play Game](https://dungeonscoundrel.netlify.app/) | Start playing now (PWA, works offline!) |
+| [🎮 Play Game](https://dungeonscoundrel.com/) | Start playing now (PWA, works offline!) |
 | [📱 Mobile Guide](documentation/MOBILE_ROADMAP.md) | Complete mobile implementation roadmap |
 | [🛡️ Security](SECURITY.md) | Report vulnerabilities, security policy |
 | [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues/new) | Found a bug? Let us know |
@@ -590,7 +590,7 @@ furnished to do so, subject to the following conditions:
 [![Star on GitHub](https://img.shields.io/github/stars/ehgzao/DungeonScoundrel?style=social)](https://github.com/ehgzao/DungeonScoundrel)
 [![Fork on GitHub](https://img.shields.io/github/forks/ehgzao/DungeonScoundrel?style=social)](https://github.com/ehgzao/DungeonScoundrel/fork)
 
-[🎮 Play Now](https://dungeonscoundrel.netlify.app/) | [📱 Mobile Roadmap](documentation/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Issue](https://github.com/ehgzao/DungeonScoundrel/issues)
+[🎮 Play Now](https://dungeonscoundrel.com/) | [📱 Mobile Roadmap](documentation/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Issue](https://github.com/ehgzao/DungeonScoundrel/issues)
 
 **Version 1.6.25** | **PWA Score: 100/100** | **Offline Ready** | **Mobile Optimized**
 

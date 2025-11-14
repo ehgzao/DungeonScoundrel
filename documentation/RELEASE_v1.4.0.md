@@ -1,7 +1,7 @@
 # Dungeon Scoundrel v1.4.0 - Tutorial Update
 
 Released: November 9, 2025  
-Play Now: dungeonscoundrel.netlify.app
+Play Now: dungeonscoundrel.com
 
 ## What's New
 
@@ -105,7 +105,7 @@ Experienced Players:
 
 ## Links
 
-- Play Game: dungeonscoundrel.netlify.app
+- Play Game: dungeonscoundrel.com
 - Report Bugs: github.com/ehgzao/DungeonScoundrel/issues
 - Full Changelog: CHANGELOG.md
 - Repository: github.com/ehgzao/DungeonScoundrel

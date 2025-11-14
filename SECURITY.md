@@ -14,7 +14,7 @@ We actively maintain and provide security updates for the following versions:
 | 1.5.x   | ⚠️ Limited support | Critical fixes only |
 | < 1.5   | ❌ No              | Please upgrade |
 
-**Recommendation:** Always use the latest version available at [https://dungeonscoundrel.netlify.app/](https://dungeonscoundrel.netlify.app/)
+**Recommendation:** Always use the latest version available at [https://dungeonscoundrel.com/](https://dungeonscoundrel.com/)
 
 ---
 
@@ -219,7 +219,7 @@ In return, we promise:
 
 - **Security Issues:** [GitHub Security Advisories](https://github.com/ehgzao/DungeonScoundrel/security/advisories/new)
 - **General Questions:** [GitHub Issues](https://github.com/ehgzao/DungeonScoundrel/issues)
-- **Email:** In-game bug report feature
+- **Email:** hello@dungeonscoundrel.com (or use in-game bug report)
 - **Community:** [GitHub Discussions](https://github.com/ehgzao/DungeonScoundrel/discussions)
 
 ---
