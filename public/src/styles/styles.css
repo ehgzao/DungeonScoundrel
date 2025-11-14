@@ -514,10 +514,14 @@
         }
         
         .btn:disabled {
-            opacity: 0.4;
+            opacity: 0.5;
             cursor: not-allowed;
             transform: none !important;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+            background: linear-gradient(180deg, #5a4a38 0%, #3a2a18 100%) !important;
+            color: #8b7355 !important;
+            filter: grayscale(60%) !important;
+            border-color: #4a3a28 !important;
         }
 
         /* * =========================================
