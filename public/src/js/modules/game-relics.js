@@ -28,6 +28,14 @@ if (document.readyState === 'loading') {
 }
 
 /**
+ * Escape a string for safe insertion as a single-quoted JS string literal (e.g., in an HTML handler attribute).
+ * Escapes backslashes and single quotes.
+ */
+function escapeForSingleQuotedJs(str) {
+    return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
+/**
  * Give relic by specific rarity
  */
 export function giveRelicByRarity(rarity) {
@@ -142,7 +150,7 @@ export function updateRelicsDisplay() {
         return `
             <div class="relic-item ${r.used ? 'used' : ''}" 
                  title="${dynamicDesc}${r.used ? ' (Used)' : ''}"
-                 onmouseenter="showTooltip(this, '${dynamicDesc.replace(/'/g, "\\'")}', 'bottom')"
+                 onmouseenter="showTooltip(this, '${escapeForSingleQuotedJs(dynamicDesc)}', 'bottom')"
                  onmouseleave="hideTooltip()"
                  style="cursor: help;">
                 <div class="relic-name">${r.name}${dynamicInfo}</div>
