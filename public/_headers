@@ -12,6 +12,10 @@
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Cross-Origin-Embedder-Policy: unsafe-none
 
-  # Content Security Policy
-  # Optimized for Firebase Authentication with minimal attack surface
+  # Content Security Policy: minimal necessary for Firebase auth + sourcemaps
   Content-Security-Policy: default-src 'self'; connect-src 'self' https://www.googleapis.com https://firebasestorage.googleapis.com https://www.gstatic.com https://*.firebasestorage.app https://*.firebaseio.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://www.googleapis.com; img-src 'self' data: https://www.gstatic.com; style-src 'self' 'unsafe-inline';
+
+# Firebase config (allow inline scripts for Firebase initialization)
+# Commented out - consolidated into main CSP above
+#/src/config/firebase-config.js
+#  Content-Security-Policy: script-src 'self' 'unsafe-inline'
