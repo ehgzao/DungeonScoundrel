@@ -241,8 +241,8 @@ npm run deploy      # Deploy Netlify
 4. `workbox-config.js` (115 linhas)
 
 ### **Documentação:**
-5. `documentation/MOBILE_ROADMAP.md` (1308 linhas)
-6. `documentation/MOBILE_PROGRESS.md` (este arquivo)
+5. `docs/MOBILE_ROADMAP.md` (1308 linhas)
+6. `docs/MOBILE_PROGRESS.md` (este arquivo)
 
 ### **Gerados automaticamente:**
 7. `public/sw.js` (Service Worker)
@@ -362,7 +362,7 @@ npm run deploy      # Deploy Netlify
 - [Workbox Documentation](https://developers.google.com/web/tools/workbox)
 - [PWA Guide](https://web.dev/progressive-web-apps/)
 - [IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
-- [Mobile Roadmap](/documentation/MOBILE_ROADMAP.md)
+- [Mobile Roadmap](/docs/MOBILE_ROADMAP.md)
 
 ---
 

@@ -216,9 +216,9 @@ Merge do branch `claude/repository-roadmap-011CV4gK74reHbb3Ve3j1Dfw` para `main`
 ### 🧪 Análise
 
 Ver documentação completa:
-- `documentation/MERGE_ANALYSIS.md` - Análise detalhada
+- `docs/MERGE_ANALYSIS.md` - Análise detalhada
 - `MERGE_GUIDE.md` - Guia de merge
-- `documentation/MOBILE_ROADMAP.md` - Roadmap completo
+- `docs/MOBILE_ROADMAP.md` - Roadmap completo
 
 ### ✅ Aprovação
 
@@ -243,9 +243,9 @@ Toda documentação está no branch mobile e pronta para merge:
 |---------|--------|--------|
 | `MERGE_GUIDE.md` | 400 | ✅ No branch mobile |
 | `SECURITY.md` | 245 | ✅ No branch mobile |
-| `documentation/MERGE_ANALYSIS.md` | 482 | ✅ No branch mobile |
-| `documentation/MOBILE_PROGRESS.md` | 369 | ✅ No branch mobile |
-| `documentation/MOBILE_ROADMAP.md` | 1308 | ✅ No branch mobile |
+| `docs/MERGE_ANALYSIS.md` | 482 | ✅ No branch mobile |
+| `docs/MOBILE_PROGRESS.md` | 369 | ✅ No branch mobile |
+| `docs/MOBILE_ROADMAP.md` | 1308 | ✅ No branch mobile |
 
 **Total:** 2804 linhas de documentação profissional
 
