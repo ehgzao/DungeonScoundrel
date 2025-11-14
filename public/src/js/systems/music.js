@@ -70,7 +70,6 @@ this.updateNowPlayingDisplay();
     }
     
     stopAll() {
-console.log('[MUSIC] Stopping all audio...');
 
 // Clear all oscillators
 this.oscillators.forEach(osc => {
@@ -103,13 +102,11 @@ this.intervals = [];
 this.timeouts = [];
 this.gainNodes = [];
 
-console.log('[MUSIC] All audio stopped.');
     }
     
     // Sistema de troca automática de contexto
     switchContext(newContext) {
 if (this.currentContext === newContext) return;
-console.log(`🎵 Music: ${this.currentContext} → ${newContext}`);
 
 this.currentContext = newContext;
 
@@ -166,7 +163,6 @@ const normalizedVolume = value / 100;
 // Apply exponential curve for better perceived volume control
 const targetVolume = normalizedVolume * normalizedVolume * 0.70; // Max 70%
 this.masterGain.gain.setValueAtTime(targetVolume, this.context.currentTime);
-console.log(`[MUSIC] Volume set to ${value}% (${targetVolume.toFixed(2)})`);
     }
     
     // ============================================
@@ -659,4 +655,3 @@ window.music = music;
 
 // Music button hooks will be set up in game.js after DOM is ready
 // All DOM manipulation and game state access moved to game.js
-console.log('[MUSIC] Dark atmospheric music system loaded');

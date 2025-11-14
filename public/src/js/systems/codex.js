@@ -6,10 +6,8 @@
 // Author: Gabriel Lima
 // Date: 2025-11-11
 
-console.log('[CODEX] Initializing CODEX system...');
 
 function openCodex(tab = 'upgrades') {
-    console.log('[CODEX] Opening CODEX with tab:', tab);
     populateCodexUpgrades();
     populateCodexRelics('all');
     populateCodexAchievements();
@@ -250,11 +248,9 @@ const btnTopRelics = document.getElementById('btnTopRelics');
 
 if (btnCodex) {
     btnCodex.onclick = () => openCodex('upgrades');
-    console.log('[CODEX] Welcome screen button initialized');
 }
 if (btnTopRelics) {
     btnTopRelics.onclick = () => openCodex('relics');
-    console.log('[CODEX] In-game Relics button initialized');
 }
 
 // Expose CODEX functions globally
@@ -264,4 +260,3 @@ window.filterRelicsByRarity = filterCodexRelicsByRarity;
 window.filterUpgradesByStatus = filterUpgradesByStatus;
 window.filterAchievementsByTier = filterAchievementsByTier;
 
-console.log('[CODEX] System initialized successfully');

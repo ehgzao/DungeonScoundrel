@@ -38,7 +38,6 @@ async function submitScoreToLeaderboard(score, gameTime) {
     };
     
     await addDoc(leaderboardCol, scoreData);
-    console.log(`Score submitted to ${collectionName}:`, scoreData);
 }
 
 // Current selected difficulty for leaderboard
@@ -79,7 +78,6 @@ async function loadLeaderboardForDifficulty(difficulty) {
     }
     
     const { db, appId } = getFirebaseGlobals();
-    console.log('[LEADERBOARD] Firebase status:', { db: !!db, appId: !!appId, difficulty });
     
     if (!db || !appId) {
         console.error('[LEADERBOARD] Firebase not ready:', { db: !!db, appId: !!appId });
@@ -195,4 +193,3 @@ window.showLeaderboard = showLeaderboard;
 window.loadLeaderboardForDifficulty = loadLeaderboardForDifficulty;
 
 // Log module load
-console.log('[LEADERBOARD] Firebase leaderboard system loaded');

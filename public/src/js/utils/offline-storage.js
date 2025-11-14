@@ -46,43 +46,36 @@ class OfflineStorage {
                 request.onsuccess = () => {
                     this.db = request.result;
                     this.isReady = true;
-                    console.log('✅ IndexedDB initialized successfully');
                     resolve(this.db);
                 };
 
                 request.onupgradeneeded = (event) => {
                     const db = event.target.result;
-                    console.log('🔄 IndexedDB upgrade needed - Creating object stores...');
 
                     // Object Store: Saves (save games)
                     if (!db.objectStoreNames.contains('saves')) {
                         const savesStore = db.createObjectStore('saves', { keyPath: 'id' });
                         savesStore.createIndex('timestamp', 'timestamp', { unique: false });
                         savesStore.createIndex('difficulty', 'difficulty', { unique: false });
-                        console.log('   ├─ Created: saves store');
                     }
 
                     // Object Store: Stats (statistics)
                     if (!db.objectStoreNames.contains('stats')) {
                         const statsStore = db.createObjectStore('stats', { keyPath: 'id' });
                         statsStore.createIndex('type', 'type', { unique: false });
-                        console.log('   ├─ Created: stats store');
                     }
 
                     // Object Store: Achievements (conquistas)
                     if (!db.objectStoreNames.contains('achievements')) {
                         const achievementsStore = db.createObjectStore('achievements', { keyPath: 'id' });
                         achievementsStore.createIndex('unlocked', 'unlocked', { unique: false });
-                        console.log('   ├─ Created: achievements store');
                     }
 
                     // Object Store: Settings (configurações)
                     if (!db.objectStoreNames.contains('settings')) {
                         const settingsStore = db.createObjectStore('settings', { keyPath: 'key' });
-                        console.log('   └─ Created: settings store');
                     }
 
-                    console.log('✅ IndexedDB schema created successfully');
                 };
             });
         } catch (error) {
@@ -115,7 +108,6 @@ class OfflineStorage {
                 const request = store.put(data);
 
                 request.onsuccess = () => {
-                    console.log(`✅ Saved to IndexedDB (${storeName}):`, data.id);
                     resolve();
                 };
 
@@ -155,10 +147,8 @@ class OfflineStorage {
 
                 request.onsuccess = () => {
                     if (request.result) {
-                        console.log(`✅ Loaded from IndexedDB (${storeName}):`, id);
                         resolve(request.result);
                     } else {
-                        console.log(`ℹ️  No data found in IndexedDB (${storeName}):`, id);
                         resolve(null);
                     }
                 };
@@ -197,7 +187,6 @@ class OfflineStorage {
                 const request = store.getAll();
 
                 request.onsuccess = () => {
-                    console.log(`✅ Loaded ${request.result.length} records from IndexedDB (${storeName})`);
                     resolve(request.result);
                 };
 
@@ -236,7 +225,6 @@ class OfflineStorage {
                 const request = store.delete(id);
 
                 request.onsuccess = () => {
-                    console.log(`✅ Deleted from IndexedDB (${storeName}):`, id);
                     resolve();
                 };
 
@@ -274,7 +262,6 @@ class OfflineStorage {
                 const request = store.clear();
 
                 request.onsuccess = () => {
-                    console.log(`✅ Cleared IndexedDB store: ${storeName}`);
                     resolve();
                 };
 
@@ -298,7 +285,6 @@ class OfflineStorage {
         try {
             const key = `${this.dbName}_${storeName}_${data.id}`;
             localStorage.setItem(key, JSON.stringify(data));
-            console.log(`✅ Saved to localStorage (${storeName}):`, data.id);
         } catch (error) {
             console.error('❌ localStorage save error:', error);
         }
@@ -309,7 +295,6 @@ class OfflineStorage {
             const key = `${this.dbName}_${storeName}_${id}`;
             const data = localStorage.getItem(key);
             if (data) {
-                console.log(`✅ Loaded from localStorage (${storeName}):`, id);
                 return JSON.parse(data);
             }
             return null;
@@ -334,7 +319,6 @@ class OfflineStorage {
                 }
             }
 
-            console.log(`✅ Loaded ${results.length} records from localStorage (${storeName})`);
             return results;
         } catch (error) {
             console.error('❌ localStorage loadAll error:', error);
@@ -346,7 +330,6 @@ class OfflineStorage {
         try {
             const key = `${this.dbName}_${storeName}_${id}`;
             localStorage.removeItem(key);
-            console.log(`✅ Deleted from localStorage (${storeName}):`, id);
         } catch (error) {
             console.error('❌ localStorage delete error:', error);
         }
@@ -365,7 +348,6 @@ class OfflineStorage {
             }
 
             keysToDelete.forEach(key => localStorage.removeItem(key));
-            console.log(`✅ Cleared localStorage store: ${storeName} (${keysToDelete.length} items)`);
         } catch (error) {
             console.error('❌ localStorage clear error:', error);
         }
@@ -494,7 +476,6 @@ class OfflineStorage {
             throw new Error('Invalid backup data');
         }
 
-        console.log('🔄 Importing backup data...');
 
         // Importar cada store
         const imports = [];
@@ -524,7 +505,6 @@ class OfflineStorage {
         }
 
         await Promise.all(imports);
-        console.log('✅ Backup imported successfully');
     }
 }
 
@@ -538,7 +518,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     // Log storage info (debug)
     if (localStorage.getItem('debugMode') === 'true') {
         const info = await window.offlineStorage.getStorageInfo();
-        console.log('📊 Storage Info:', info);
     }
 });
 

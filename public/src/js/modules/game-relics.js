@@ -209,4 +209,3 @@ window.giveRareRelic = giveRareRelic;
 window.updateRelicsDisplay = updateRelicsDisplay;
 window.getRelicBonus = getRelicBonus;
 
-console.log('✅ game-relics.js loaded');

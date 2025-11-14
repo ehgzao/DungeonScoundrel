@@ -21,7 +21,6 @@ try {
             // CRITICAL: Must use window.* in ES6 modules to access global variables
             const firebaseConfig = typeof window.__firebase_config !== 'undefined' ? JSON.parse(window.__firebase_config) : {};
             
-            console.log('[FIREBASE] Initializing with config:', { 
                 hasConfig: !!window.__firebase_config, 
                 projectId: firebaseConfig.projectId 
             });
@@ -31,14 +30,12 @@ try {
             auth = getAuth(app);
             appId = typeof window.__app_id !== 'undefined' ? window.__app_id : 'default-app-id';
             
-            console.log('[FIREBASE] ✅ Initialized successfully:', { appId, hasDb: !!db, hasAuth: !!auth });
             // setLogLevel('debug'); // Useful for debugging
             
             // Anonymous auth for leaderboard - handled separately from Google Auth
             onAuthStateChanged(auth, async (user) => {
                 if (user && !user.isAnonymous) {
                     userId = user.uid;
-                    console.log("Firebase Auth: User signed in:", userId);
                 } else if (!user) {
                     try {
                         const token = typeof window.__initial_auth_token !== 'undefined' ? window.__initial_auth_token : null;
@@ -48,7 +45,6 @@ try {
                             await signInAnonymously(auth);
                         }
                         userId = auth.currentUser?.uid || crypto.randomUUID();
-                        console.log("Firebase Auth: New user session:", userId);
                     } catch (error) {
                         console.error("Firebase Auth Error:", error);
                         userId = crypto.randomUUID(); // Fallback
@@ -74,7 +70,6 @@ try {
                     // Only handle non-anonymous users for cloud sync
                     if (user && !user.isAnonymous) {
                         currentUser = user;
-                        console.log('User logged in:', user.displayName || user.email);
                         updateAuthUI(user);
                         
                         // Prevent race condition
@@ -88,7 +83,6 @@ try {
                         }
                     } else if (!user || user.isAnonymous) {
                         currentUser = null;
-                        console.log('User logged out or anonymous');
                         updateAuthUI(null);
                     }
                 } catch (error) {
@@ -105,7 +99,6 @@ try {
             try {
                 const result = await signInWithPopup(auth, googleProvider);
                 const user = result.user;
-                console.log('Google sign-in successful:', user.displayName);
                 showAuthFeedback('success', `Welcome, ${user.displayName}!`);
                 return user;
             } catch (error) {
@@ -116,12 +109,10 @@ try {
                 
                 if (error.code === 'auth/popup-closed-by-user') {
                     errorMessage = 'Sign in cancelled';
-                    console.log('User closed the popup');
                     return; // Don't show error for user cancellation
                 } else if (error.code === 'auth/popup-blocked') {
                     errorMessage = 'Popup blocked by browser. Please allow popups for this site.';
                 } else if (error.code === 'auth/cancelled-popup-request') {
-                    console.log('Popup request cancelled');
                     return; // Don't show error
                 } else if (error.code === 'auth/unauthorized-domain') {
                     errorMessage = 'This domain is not authorized. Contact support.';
@@ -147,7 +138,6 @@ try {
         // Save progress to cloud
         async function saveProgressToCloud() {
             if (!currentUser || !db) {
-                console.log('Cloud save skipped: no user or db');
                 return false;
             }
             
@@ -173,7 +163,6 @@ try {
                     updatedAt: new Date().toISOString()
                 }, { merge: true });
                 
-                console.log('Progress saved to cloud');
                 return true;
             } catch (error) {
                 console.error('Cloud save error:', error);
@@ -185,14 +174,12 @@ try {
         // Load progress from cloud
         async function loadCloudProgress() {
             if (!currentUser || !db) {
-                console.log('Cloud load skipped: no user or db');
                 return false;
             }
             
             // Check if we already asked in this session
             const askedKey = `cloudSaveAsked_${currentUser.uid}`;
             if (sessionStorage.getItem(askedKey)) {
-                console.log('Cloud save already checked this session');
                 return false;
             }
             
@@ -432,8 +419,6 @@ try {
         
 
 // Log module load
-console.log('[FIREBASE-AUTH] Module loaded. DB:', !!db, 'Auth:', !!auth, 'AppId:', appId);
-console.log('[FIREBASE-AUTH] ✅ Globals exposed:', { 
     'window.db': !!window.db, 
     'window.appId': !!window.appId, 
     'window.auth': !!window.auth 

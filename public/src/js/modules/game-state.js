@@ -162,4 +162,3 @@ window.permanentStats = permanentStats;
 window.permanentUnlocks = permanentUnlocks;
 window.UNLOCKS = UNLOCKS;
 
-console.log('✅ game-state.js loaded');

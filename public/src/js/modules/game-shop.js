@@ -245,7 +245,6 @@ export function closeShop() {
         window.music.switchContext('gameplay');
     }
     
-    console.log('[SHOP] Closing shop, game state:', {
         roomLength: game.room.length,
         roomContent: game.room,
         lastActionWasAvoid: game.lastActionWasAvoid
@@ -254,7 +253,6 @@ export function closeShop() {
     // Re-enable buttons based on game state
     if (game.room.length === 0) {
         // No cards in room - enable draw/avoid
-        console.log('[SHOP] Room empty, enabling buttons');
         if (btnDrawRoom) {
             btnDrawRoom.removeAttribute('disabled');
             btnDrawRoom.disabled = false;
@@ -273,7 +271,6 @@ export function closeShop() {
         }
     } else {
         // Cards in room - disable draw/avoid (player must clear room first)
-        console.log('[SHOP] Room has cards, disabling buttons');
         if (btnDrawRoom) btnDrawRoom.disabled = true;
         if (btnAvoidRoom) btnAvoidRoom.disabled = true;
     }
@@ -285,4 +282,3 @@ window.buyItem = buyItem;
 window.openShop = openShop;
 window.closeShop = closeShop;
 
-console.log('✅ game-shop.js loaded');

@@ -48,4 +48,3 @@ window.addEventListener('unhandledrejection', function(e) {
     e.preventDefault();
 });
 
-console.log('[ERROR HANDLER] Global error handler initialized');

@@ -33,12 +33,10 @@ function showMobileWaitlist() {
     const isMobile = isMobileDevice();
     const hasDismissed = hasDismissedMobileWarning();
     
-    console.log('[WAITLIST] Mobile detection:', { isMobile, hasDismissed, userAgent: navigator.userAgent, width: window.innerWidth });
     
     if (isMobile && !hasDismissed) {
         const modal = document.getElementById('mobileWaitlistModal');
         if (modal) {
-            console.log('[WAITLIST] Showing modal');
             modal.classList.add('active');
             // Prevent scrolling on body
             document.body.style.overflow = 'hidden';
@@ -46,7 +44,6 @@ function showMobileWaitlist() {
             console.error('[WAITLIST] ERROR: Modal element not found!');
         }
     } else {
-        console.log('[WAITLIST] Not showing modal:', isMobile ? 'Already dismissed' : 'Not mobile');
     }
 }
 
@@ -118,13 +115,11 @@ window.joinWaitlist = function() {
         message: `New mobile waitlist signup from ${email}`
     };
     
-    console.log('Sending waitlist signup:', params);
     
     // Send via EmailJS (using waitlist template)
     if (window.emailjs) {
         emailjs.send('service_tfl51qs', 'template_hif1mc1', params)
             .then(function(response) {
-                console.log('Waitlist signup SUCCESS:', response);
                 
                 // Show success message
                 successDiv.style.display = 'block';
@@ -362,7 +357,6 @@ function getScreenInfo() {
 
 // Bug Report Function (Global Scope)
 window.sendBugReport = function() {
-    console.log('sendBugReport called');
     try {
         const now = Date.now();
         
@@ -412,7 +406,6 @@ window.sendBugReport = function() {
             return; 
         }
         const message = (textarea.value || '').trim();
-        console.log('Message:', message);
         
         // Simple anti-spam validation (visual feedback already handled by updateCharacterCount)
         if (!message) { 
@@ -440,7 +433,6 @@ window.sendBugReport = function() {
             return;
         }
         
-        console.log('Checking emailjs:', window.emailjs);
         if (!window.emailjs) { 
             showRateLimitMessage('Email service not loaded. Please refresh the page and try again.');
             return; 
@@ -510,14 +502,9 @@ window.sendBugReport = function() {
             date: new Date().toLocaleString()
         };
         
-        console.log('Sending email with params:', params);
-        console.log('Browser Info:', browserInfo);
-        console.log('Screen Info:', screenInfo);
-        console.log('Service ID: service_tfl51qs, Template ID: template_x3cplm6');
         
         emailjs.send('service_tfl51qs', 'template_x3cplm6', params)
             .then(function(response) {
-                console.log('EmailJS SUCCESS:', response);
                 
                 // Update rate limiting data
                 lastBugReportTime = now;
@@ -599,7 +586,6 @@ function showBugReportError(errorMsg) {
 }
 
 // Check EmailJS on page load
-console.log('EmailJS loaded?', !!window.emailjs);
 
 // ============================================
 // CONTACT FORM SYSTEM
@@ -814,12 +800,10 @@ window.sendContactMessage = function() {
             report_date: new Date().toLocaleString()
         };
         
-        console.log('Sending contact message:', params);
         
         // Send via EmailJS (using bug report template for now)
         emailjs.send('service_tfl51qs', 'template_x3cplm6', params)
             .then(function(response) {
-                console.log('Contact message SUCCESS:', response);
                 
                 // Update rate limiting
                 lastContactTime = now;
@@ -891,4 +875,3 @@ function showContactError(errorMsg) {
 }
 
 // Log module load
-console.log('[INLINE SCRIPTS] Waitlist & Email systems loaded. EmailJS:', !!window.emailjs);

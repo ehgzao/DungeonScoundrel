@@ -55,14 +55,9 @@ class MobileOptimization {
      */
     applyOptimizations(gameConfig) {
         if (!this.isMobile) {
-            console.log('✅ Desktop detected - No mobile optimizations needed');
             return;
         }
 
-        console.log('📱 Mobile device detected - Applying optimizations');
-        console.log(`   ├─ Is low-end device: ${this.isLowEndDevice}`);
-        console.log(`   ├─ Screen width: ${window.innerWidth}px`);
-        console.log(`   └─ CPU cores: ${navigator.hardwareConcurrency || 'unknown'}`);
 
         // Salvar configurações originais
         this.originalSettings = {
@@ -83,7 +78,6 @@ class MobileOptimization {
             this.applyAggressiveOptimizations(gameConfig);
         }
 
-        console.log('✅ Mobile optimizations applied successfully');
     }
 
     /**
@@ -94,7 +88,6 @@ class MobileOptimization {
         const reduction = this.isLowEndDevice ? 0.2 : 0.4; // 80% ou 60% de redução
         config.maxParticles = Math.floor(this.originalSettings.maxParticles * reduction);
 
-        console.log(`   ├─ Particles: ${this.originalSettings.maxParticles} → ${config.maxParticles}`);
     }
 
     /**
@@ -108,8 +101,6 @@ class MobileOptimization {
         // Reduzir screen shake
         config.screenShakeIntensity = this.isLowEndDevice ? 1 : 2;
 
-        console.log(`   ├─ Animation duration: ${this.originalSettings.animationDuration}ms → ${config.animationDuration}ms`);
-        console.log(`   ├─ Screen shake: ${this.originalSettings.screenShakeIntensity} → ${config.screenShakeIntensity}`);
     }
 
     /**
@@ -121,8 +112,6 @@ class MobileOptimization {
         config.enableBlur = false; // Blur é muito pesado
         config.enableShadows = !this.isLowEndDevice; // Sombras apenas em devices melhores
 
-        console.log(`   ├─ Blur effects: ${this.originalSettings.enableBlur} → ${config.enableBlur}`);
-        console.log(`   └─ Shadows: ${this.originalSettings.enableShadows} → ${config.enableShadows}`);
     }
 
     /**
@@ -130,7 +119,6 @@ class MobileOptimization {
      * @param {Object} config
      */
     applyAggressiveOptimizations(config) {
-        console.log('⚠️  Low-end device - Applying aggressive optimizations');
 
         // Reduzir ainda mais partículas
         config.maxParticles = Math.max(5, config.maxParticles);
@@ -143,7 +131,6 @@ class MobileOptimization {
         // Simplificar CSS
         document.body.classList.add('low-end-device');
 
-        console.log('   └─ Aggressive mode: Particles=5, Effects=OFF');
     }
 
     /**
@@ -204,7 +191,6 @@ class MobileOptimization {
         `;
 
         document.head.appendChild(style);
-        console.log('✅ Mobile CSS optimizations applied');
     }
 
     /**
@@ -216,7 +202,6 @@ class MobileOptimization {
         // Desabilitar preload de imagens não-essenciais
         const lazyImages = document.querySelectorAll('img[loading="lazy"]');
 
-        console.log(`📱 Lazy loading ${lazyImages.length} images`);
 
         // Implementar intersection observer para lazy load mais agressivo
         if ('IntersectionObserver' in window) {
@@ -269,7 +254,6 @@ class MobileOptimization {
 
                     // Aplicar otimizações ainda mais agressivas
                     if (window.game && !this._emergencyModeApplied) {
-                        console.log('🆘 Emergency mode: Disabling all effects');
                         window.game.maxParticles = 0;
                         window.game.enableAnimations = false;
                         this._emergencyModeApplied = true;
@@ -287,7 +271,6 @@ class MobileOptimization {
      * Inicializar todas as otimizações
      */
     init() {
-        console.log('🚀 Initializing Mobile Optimization Module');
 
         this.adjustCSS();
         this.optimizeImageLoading();
@@ -297,7 +280,6 @@ class MobileOptimization {
             this.monitorPerformance();
         }
 
-        console.log('✅ Mobile Optimization Module initialized');
     }
 
     /**
@@ -311,7 +293,6 @@ class MobileOptimization {
         }
 
         Object.assign(config, this.originalSettings);
-        console.log('✅ Original settings restored');
     }
 
     /**

@@ -12,4 +12,3 @@ const sfxMasterGain = audioContext.createGain();
 sfxMasterGain.connect(audioContext.destination);
 sfxMasterGain.gain.value = 0.3; // Default SFX volume
 
-console.log('[AUDIO CONTEXT] Initialized successfully');
