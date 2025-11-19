@@ -1526,19 +1526,15 @@
 <script src="src/js/core/audio-context.js?v=1.4.2"></script>
 <script src="src/js/systems/music.js?v=1.4.2"></script>
 
-<!-- GAME SCRIPT (Main game logic - uses imports => module) -->
-<script type="module" src="src/js/game.js?v=1.4.2"></script>
-
 <!-- CODEX (depends on game.js variables) -->
 <script src="src/js/systems/codex.js?v=1.4.2"></script>
 
 <!-- EMAILJS: load CDN first, then init script -->
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script src="src/js/init-emailjs.js"></script>
 
-
+<script src="src/js/init-emailjs.js" defer></script>
+<script src="src/js/firebase-ready.js" defer></script>
+<script type="module" src="src/js/game.js" defer></script>
 
 </body>
 </html>
-
-
