@@ -103,7 +103,7 @@ export function giveRelicByRarity(rarity) {
         }
     }
 
-    const rarityColors = { common: '⚪', uncommon: '🟢', rare: '🔵', legendary: '🟠' };
+    const rarityColors = { common: 'âšª', uncommon: 'ðŸŸ¢', rare: 'ðŸ”µ', legendary: 'ðŸŸ ' };
     if (typeof window.showMessage === 'function') {
         window.showMessage(`${rarityColors[rarity]} Relic: ${randomRelic.name}!`, 'success');
     }

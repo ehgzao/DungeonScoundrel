@@ -1,4 +1,4 @@
-﻿// public/src/js/init-emailjs.js
+// public/src/js/init-emailjs.js
 // Initialize EmailJS safely (non-module script)
 
 document.addEventListener("DOMContentLoaded", function () {

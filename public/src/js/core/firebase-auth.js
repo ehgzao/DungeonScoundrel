@@ -233,7 +233,7 @@ try {
                 overlay.style.zIndex = '10000';
                 overlay.innerHTML = `
                     <div class="modal-content" style="max-width: 500px; border: 3px solid #4ecdc4;">
-                        <h2 style="color: #4ecdc4; margin-top: 0;">☁️ Cloud Save Found</h2>
+                        <h2 style="color: #4ecdc4; margin-top: 0;">â˜ï¸ Cloud Save Found</h2>
                         <p style="color: #ddd; line-height: 1.6;">
                             A saved game was found in the cloud.<br>
                             <strong>Last saved:</strong> ${new Date(lastSaved).toLocaleString()}
@@ -272,8 +272,8 @@ try {
             if (user) {
                 // User is logged in - show checkmark and name
                 loginBtn.innerHTML = `
-                    <span style="font-size: 1.1em;">☁️</span> 
-                    <span style="color: #6bcf7f;">✓</span> 
+                    <span style="font-size: 1.1em;">â˜ï¸</span> 
+                    <span style="color: #6bcf7f;">âœ“</span> 
                     ${user.displayName ? user.displayName.split(' ')[0] : 'Synced'}
                 `;
                 loginBtn.style.borderColor = '#6bcf7f';
@@ -282,7 +282,7 @@ try {
             } else {
                 // User is logged out - show cloud icon only
                 loginBtn.innerHTML = `
-                    <span style="font-size: 1.1em;">☁️</span> Cloud Sync
+                    <span style="font-size: 1.1em;">â˜ï¸</span> Cloud Sync
                 `;
                 loginBtn.style.borderColor = '#5a4a38';
                 loginBtn.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 2px 8px rgba(0, 0, 0, 0.5)';
@@ -297,17 +297,17 @@ try {
             overlay.style.zIndex = '10000';
             overlay.innerHTML = `
                 <div class="modal-content" style="max-width: 450px;">
-                    <button class="modal-close-btn" onclick="this.closest('.modal-overlay').remove();">✕</button>
+                    <button class="modal-close-btn" onclick="this.closest('.modal-overlay').remove();">âœ•</button>
                     <div style="text-align: center; padding: 20px;">
-                        <div style="font-size: 3em; margin-bottom: 10px;">👤</div>
+                        <div style="font-size: 3em; margin-bottom: 10px;">ðŸ‘¤</div>
                         <h2 style="margin: 0 0 5px 0;">${user.displayName || 'Player'}</h2>
                         <p style="color: #aaa; font-size: 0.9em; margin: 0 0 20px 0;">${user.email}</p>
                         
                         <button class="close-modal-btn" id="btnSaveToCloud" style="width: 100%; margin-bottom: 10px; background: linear-gradient(135deg, #4ecdc4, #2fb3b1); border: none; color: #102015;">
-                            ☁️ Save to Cloud
+                            â˜ï¸ Save to Cloud
                         </button>
                         <button class="close-modal-btn" id="btnSignOut" style="width: 100%; background: linear-gradient(135deg, #ff6b6b, #ee5a52); border: none; color: #fff;">
-                            🚪 Sign Out
+                            ðŸšª Sign Out
                         </button>
                     </div>
                 </div>
@@ -334,7 +334,7 @@ try {
         function showAuthFeedback(type, message) {
             const isSuccess = type === 'success';
             const color = isSuccess ? '#6bcf7f' : '#ff6b6b';
-            const icon = isSuccess ? '✅' : '⚠️'; // Changed X to warning icon
+            const icon = isSuccess ? 'âœ…' : 'âš ï¸'; // Changed X to warning icon
             const duration = isSuccess ? 2000 : 3000; // Error stays longer
             
             const overlay = document.createElement('div');

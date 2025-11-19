@@ -28,11 +28,11 @@ this.gainNodes = [];
 this.reverbBuffer = this.createReverbBuffer();
 
 this.contextNames = {
-    menu: '🏰 Dark Awakening',
-    gameplay: '⚔️ Into the Depths',
-    shop: '🛍️ Merchant\'s Shadow',
-    victory: '👑 Triumph in Darkness',
-    defeat: '💀 The Final Darkness'
+    menu: 'ðŸ° Dark Awakening',
+    gameplay: 'âš”ï¸ Into the Depths',
+    shop: 'ðŸ›ï¸ Merchant\'s Shadow',
+    victory: 'ðŸ‘‘ Triumph in Darkness',
+    defeat: 'ðŸ’€ The Final Darkness'
 };
     }
     
@@ -104,7 +104,7 @@ this.gainNodes = [];
 
     }
     
-    // Sistema de troca automática de contexto
+    // Sistema de troca automÃ¡tica de contexto
     switchContext(newContext) {
 if (this.currentContext === newContext) return;
 
@@ -153,7 +153,7 @@ const display = document.getElementById('nowPlayingDisplay');
 if (display) {
     display.textContent = this.isPlaying ? 
         this.getCurrentTrackName() : 
-        '🎵 Music Paused';
+        'ðŸŽµ Music Paused';
 }
     }
     
@@ -169,14 +169,14 @@ this.masterGain.gain.setValueAtTime(targetVolume, this.context.currentTime);
     // TRACK 1: MENU THEME - Dark Awakening
     // ============================================
     playMenuTheme() {
-// Drone grave contínuo (80 Hz)
+// Drone grave contÃ­nuo (80 Hz)
 this.playDrone(80, 0.20, 'sine');
-this.playDrone(120, 0.15, 'triangle'); // Harmônico
+this.playDrone(120, 0.15, 'triangle'); // HarmÃ´nico
 
-// Pad atmosférico dark
+// Pad atmosfÃ©rico dark
 this.playAtmosphericPad([196, 246.94, 293.66], 0.08); // G3, B3, D4 (menor)
 
-// Bells medievais espaçados (a cada 4 segundos)
+// Bells medievais espaÃ§ados (a cada 4 segundos)
 const bellPattern = [523.25, 392, 493.88, 440]; // C5, G4, B4, A4
 let bellIndex = 0;
 const bellTimer = setInterval(() => {
@@ -195,7 +195,7 @@ this.intervals.push(bellTimer);
 this.playDrone(90, 0.18, 'sine');
 
 const bassInterval = 500; // 120 BPM = 500ms
-const bassPattern = [90, 90, 135, 90]; // Tônica, tônica, quinta, tônica
+const bassPattern = [90, 90, 135, 90]; // TÃ´nica, tÃ´nica, quinta, tÃ´nica
 let bassIndex = 0;
 const bassTimer = setInterval(() => {
     if (!this.isPlaying) return;
@@ -204,9 +204,9 @@ const bassTimer = setInterval(() => {
 }, bassInterval);
 this.intervals.push(bassTimer);
 
-// Melodia menor misteriosa (escala frígia de E)
+// Melodia menor misteriosa (escala frÃ­gia de E)
 const melody = [164.81, 174.61, 196, 220, 246.94, 261.63, 293.66]; // E, F, G, A, B, C, D
-const melPattern = [4, 3, 2, 0, 2, 3, 4, 2]; // Padrão misterioso
+const melPattern = [4, 3, 2, 0, 2, 3, 4, 2]; // PadrÃ£o misterioso
 let melIndex = 0;
 const melInterval = 1000;
 const melTimer = setInterval(() => {
@@ -217,7 +217,7 @@ const melTimer = setInterval(() => {
 }, melInterval);
 this.intervals.push(melTimer);
 
-// Percussão dark sutil
+// PercussÃ£o dark sutil
 this.playDarkPercussion(bassInterval * 2);
     }
     
@@ -225,13 +225,13 @@ this.playDarkPercussion(bassInterval * 2);
     // TRACK 3: SHOP THEME - Merchant's Shadow
     // ============================================
     playShopTheme() {
-// Drone mais enérgico
+// Drone mais enÃ©rgico
 this.playDrone(110, 0.14, 'sine');
 
-// Bass rítmico (dá movimento)
+// Bass rÃ­tmico (dÃ¡ movimento)
 const bassPattern = [110, 110, 165, 110]; // Root, root, fifth, root
 let bassIndex = 0;
-const bassInterval = 400; // Mais rápido
+const bassInterval = 400; // Mais rÃ¡pido
 const bassTimer = setInterval(() => {
     if (!this.isPlaying) return;
     this.playPercussiveBass(bassPattern[bassIndex % bassPattern.length], 0.16, 0.12);
@@ -242,7 +242,7 @@ this.intervals.push(bassTimer);
 // Arpejos medievais com ritmo
 const arpNotes = [261.63, 329.63, 392, 493.88]; // C4, E4, G4, B4
 let arpIndex = 0;
-const arpInterval = 400; // Mais rápido (sincronizado com bass)
+const arpInterval = 400; // Mais rÃ¡pido (sincronizado com bass)
 const arpTimer = setInterval(() => {
     if (!this.isPlaying) return;
     this.playNote(arpNotes[arpIndex % arpNotes.length] * 2, 0.10, 0.35, 'triangle');
@@ -250,7 +250,7 @@ const arpTimer = setInterval(() => {
 }, arpInterval);
 this.intervals.push(arpTimer);
 
-// Bells com mais presença e ritmo
+// Bells com mais presenÃ§a e ritmo
 const bellPattern = [523.25, 659.25, 783.99, 659.25]; // C5, E5, G5, E5
 let bellIndex = 0;
 const bellTimer = setInterval(() => {
@@ -260,8 +260,8 @@ const bellTimer = setInterval(() => {
 }, 1600); // Mais frequente
 this.intervals.push(bellTimer);
 
-// REMOVED: Percussão interval removido - causava chiado após vitória
-// A música dark já tem atmosfera suficiente sem percussão contínua
+// REMOVED: PercussÃ£o interval removido - causava chiado apÃ³s vitÃ³ria
+// A mÃºsica dark jÃ¡ tem atmosfera suficiente sem percussÃ£o contÃ­nua
     }
     
     // ============================================
@@ -270,7 +270,7 @@ this.intervals.push(bellTimer);
     playVictoryTheme() {
 // REDESIGNED FROM SCRATCH: All notes have explicit duration, NO continuous drones!
 
-// Fanfarra épica ascendente (0-3s)
+// Fanfarra Ã©pica ascendente (0-3s)
 const fanfare = [
     {freq: 261.63, time: 0, duration: 0.3},      // C4
     {freq: 329.63, time: 0.3, duration: 0.3},    // E4
@@ -290,7 +290,7 @@ fanfare.forEach(note => {
     this.timeouts.push(timeoutId);
 });
 
-// Percussão triunfante (0-2.4s)
+// PercussÃ£o triunfante (0-2.4s)
 for (let i = 0; i < 4; i++) {
     const hitTimeout = setTimeout(() => {
         if (!this.isPlaying) return;
@@ -299,7 +299,7 @@ for (let i = 0; i < 4; i++) {
     this.timeouts.push(hitTimeout);
 }
 
-// Arpejo final celebratório (3-3.6s)
+// Arpejo final celebratÃ³rio (3-3.6s)
 const arpeggio = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
 arpeggio.forEach((freq, index) => {
     const timeoutId = setTimeout(() => {
@@ -312,12 +312,12 @@ arpeggio.forEach((freq, index) => {
 // FINAL NOTE: Note sustentada que PARA automaticamente (3.6-5.1s)
 const finalNoteTimeout = setTimeout(() => {
     if (!this.isPlaying) return;
-    // Nota final C5 com fade out gradual - duração DEFINIDA
+    // Nota final C5 com fade out gradual - duraÃ§Ã£o DEFINIDA
     this.playNote(523.25, 0.18, 1.5, 'sine'); // 1.5s duration - STOPS at 5.1s
 }, 3600);
 this.timeouts.push(finalNoteTimeout);
 
-// REMOVED: Drone contínuo eliminado! Era o culpado do chiado!
+// REMOVED: Drone contÃ­nuo eliminado! Era o culpado do chiado!
 // Victory theme agora termina completamente em ~5.1 segundos
     }
     
@@ -325,7 +325,7 @@ this.timeouts.push(finalNoteTimeout);
     // TRACK 5: DEFEAT THEME - The Final Darkness
     // ============================================
     playDefeatTheme() {
-// Descida cromática sombria
+// Descida cromÃ¡tica sombria
 const descent = [
     {freq: 293.66, time: 0},    // D4
     {freq: 277.18, time: 0.6},  // C#4
@@ -342,7 +342,7 @@ descent.forEach(note => {
     this.timeouts.push(timeoutId);
 });
 
-// Bells fúnebres
+// Bells fÃºnebres
 const bell1TimeoutId = setTimeout(() => {
     if (!this.isPlaying) return;
     this.playBell(523.25, 0.08, 3.0); // C5
@@ -413,12 +413,12 @@ gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 osc.start(now);
 osc.stop(now + duration);
 
-// REMOVED: Não rastreamos notes temporárias (param automaticamente)
+// REMOVED: NÃ£o rastreamos notes temporÃ¡rias (param automaticamente)
     }
     
     playBell(freq, volume, duration) {
-// Bell com harmônicos
-const harmonics = [1, 2.76, 5.4, 8.93]; // Proporções de sino
+// Bell com harmÃ´nicos
+const harmonics = [1, 2.76, 5.4, 8.93]; // ProporÃ§Ãµes de sino
 
 harmonics.forEach((harmonic, index) => {
     const osc = this.context.createOscillator();
@@ -431,14 +431,14 @@ harmonics.forEach((harmonic, index) => {
     gain.connect(this.masterGain);
     
     const now = this.context.currentTime;
-    const vol = volume / (index + 1); // Harmônicos mais baixos
+    const vol = volume / (index + 1); // HarmÃ´nicos mais baixos
     gain.gain.setValueAtTime(vol, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
     
     osc.start(now);
     osc.stop(now + duration);
     
-    // REMOVED: Não rastreamos bells temporários (param automaticamente)
+    // REMOVED: NÃ£o rastreamos bells temporÃ¡rios (param automaticamente)
 });
     }
     
@@ -460,7 +460,7 @@ gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 osc.start(now);
 osc.stop(now + duration);
 
-// REMOVED: Não rastreamos bass temporário (para automaticamente)
+// REMOVED: NÃ£o rastreamos bass temporÃ¡rio (para automaticamente)
     }
     
     playAtmosphericPad(freqs, volume) {
@@ -510,7 +510,7 @@ const percTimer = setInterval(() => {
     kick.start(startTime);
     kick.stop(startTime + 0.1);
     
-    // REMOVED: Não rastreamos oscillators temporários!
+    // REMOVED: NÃ£o rastreamos oscillators temporÃ¡rios!
     // Eles param automaticamente em 0.1s
     // Rastrear causa conflitos com stopAll()
 }, interval);
@@ -542,8 +542,8 @@ playNote(freq, volume, duration, waveType = 'sine') {
 }
 
 playBell(freq, volume, duration) {
-    // Bell com harmônicos
-    const harmonics = [1, 2.76, 5.4, 8.93]; // Proporções de sino
+    // Bell com harmÃ´nicos
+    const harmonics = [1, 2.76, 5.4, 8.93]; // ProporÃ§Ãµes de sino
 
     harmonics.forEach((harmonic, index) => {
         const osc = this.context.createOscillator();
@@ -556,7 +556,7 @@ playBell(freq, volume, duration) {
         gain.connect(this.masterGain);
 
         const now = this.context.currentTime;
-        const vol = volume / (index + 1); // Harmônicos mais baixos
+        const vol = volume / (index + 1); // HarmÃ´nicos mais baixos
         gain.gain.setValueAtTime(vol, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
@@ -635,7 +635,7 @@ playDarkPercussion(interval) {
     this.intervals.push(percTimer);
 }
 
-    // Métodos de compatibilidade com código existente
+    // MÃ©todos de compatibilidade com cÃ³digo existente
     nextTrack() {
         // Compatibilidade
         if (typeof playSound !== 'undefined') playSound('cardFlip');

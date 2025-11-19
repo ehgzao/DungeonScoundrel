@@ -21,7 +21,7 @@ async function submitScoreToLeaderboard(score, gameTime) {
     
     const playerName = playerNameInput.value.trim() || 'Scoundrel';
     
-    // Salvar em collection específica por dificuldade
+    // Salvar em collection especÃ­fica por dificuldade
     const collectionName = `leaderboard_${game.difficulty}`;
     const leaderboardCol = collection(db, `/artifacts/${appId}/public/data/${collectionName}`);
     
@@ -83,7 +83,7 @@ async function loadLeaderboardForDifficulty(difficulty) {
         console.error('[LEADERBOARD] Firebase not ready:', { db: !!db, appId: !!appId });
         listDiv.innerHTML = `
             <div style="text-align: center; padding: 40px 20px;">
-                <p style="color: #ffd93d; font-size: 1.2em; margin-bottom: 15px;">📡 Offline Mode</p>
+                <p style="color: #ffd93d; font-size: 1.2em; margin-bottom: 15px;">ðŸ“¡ Offline Mode</p>
                 <p style="color: #aaa;">Leaderboard requires online connection.</p>
                 <p style="color: #aaa; font-size: 0.9em; margin-top: 10px;">
                     Your progress and achievements are still saved locally!
@@ -94,7 +94,7 @@ async function loadLeaderboardForDifficulty(difficulty) {
     }
 
     try {
-        // Carregar da collection específica da dificuldade
+        // Carregar da collection especÃ­fica da dificuldade
         const collectionName = `leaderboard_${difficulty}`;
         const leaderboardCol = collection(db, `/artifacts/${appId}/public/data/${collectionName}`);
         const q = query(leaderboardCol, limit(100)); // Get latest 100
@@ -109,9 +109,9 @@ async function loadLeaderboardForDifficulty(difficulty) {
         const top10 = scores.slice(0, 10);
         
         if (top10.length === 0) {
-            const diffIcons = { easy: '🟢', normal: '🟡', hard: '🔴', endless: '♾️' };
+            const diffIcons = { easy: 'ðŸŸ¢', normal: 'ðŸŸ¡', hard: 'ðŸ”´', endless: 'â™¾ï¸' };
             const diffName = difficulty ? difficulty.toUpperCase() : 'UNKNOWN';
-            listDiv.innerHTML = `<p style="text-align: center; color: #aaa;">No scores yet for ${diffIcons[difficulty] || '❓'} ${diffName}.<br>Be the first!</p>`;
+            listDiv.innerHTML = `<p style="text-align: center; color: #aaa;">No scores yet for ${diffIcons[difficulty] || 'â“'} ${diffName}.<br>Be the first!</p>`;
             return;
         }
         
@@ -121,7 +121,7 @@ async function loadLeaderboardForDifficulty(difficulty) {
                 <div style="flex: 1;">
                     <div class="leaderboard-name">${entry.name || 'Scoundrel'}</div>
                     <div class="leaderboard-details" style="font-size: 0.8em; color: #aaa;">
-                        ${entry.time}s | ${entry.combo}x Combo | ${entry.gold}🪙
+                        ${entry.time}s | ${entry.combo}x Combo | ${entry.gold}ðŸª™
                     </div>
                 </div>
                 <span class="leaderboard-score">${entry.score}</span>
@@ -147,7 +147,7 @@ async function loadLeaderboardForDifficulty(difficulty) {
         
         listDiv.innerHTML = `
             <div style="text-align: center; padding: 40px 20px;">
-                <div style="font-size: 3em; margin-bottom: 15px;">⚠️</div>
+                <div style="font-size: 3em; margin-bottom: 15px;">âš ï¸</div>
                 <p style="color: #ffd93d; font-size: 1.2em; margin-bottom: 10px;">${errorMsg}</p>
                 <p style="color: #aaa; font-size: 0.95em; line-height: 1.6;">${helpText}</p>
                 <button onclick="loadLeaderboardForDifficulty('${difficulty}')" style="

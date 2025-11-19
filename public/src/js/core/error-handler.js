@@ -19,7 +19,7 @@ window.addEventListener('error', function(e) {
         `;
         errorDiv.innerHTML = `
             <div style="max-width: 500px; text-align: center; color: #ddd;">
-                <div style="font-size: 4em; margin-bottom: 20px;">⚠️</div>
+                <div style="font-size: 4em; margin-bottom: 20px;">âš ï¸</div>
                 <h2 style="color: #ff6b6b; margin: 0 0 15px 0;">Game Error</h2>
                 <p style="line-height: 1.6; margin-bottom: 20px;">
                     Something went wrong. Please try refreshing the page.

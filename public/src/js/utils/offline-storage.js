@@ -29,7 +29,7 @@ class OfflineStorage {
      */
     async init() {
         if (!this.isSupported) {
-            console.warn('⚠️  IndexedDB not supported - Using localStorage fallback');
+            console.warn('âš ï¸  IndexedDB not supported - Using localStorage fallback');
             this.isReady = true;
             return null;
         }
@@ -39,7 +39,7 @@ class OfflineStorage {
                 const request = indexedDB.open(this.dbName, this.version);
 
                 request.onerror = () => {
-                    console.error('❌ IndexedDB open error:', request.error);
+                    console.error('âŒ IndexedDB open error:', request.error);
                     reject(request.error);
                 };
 
@@ -71,7 +71,7 @@ class OfflineStorage {
                         achievementsStore.createIndex('unlocked', 'unlocked', { unique: false });
                     }
 
-                    // Object Store: Settings (configurações)
+                    // Object Store: Settings (configuraÃ§Ãµes)
                     if (!db.objectStoreNames.contains('settings')) {
                         const settingsStore = db.createObjectStore('settings', { keyPath: 'key' });
                     }
@@ -79,7 +79,7 @@ class OfflineStorage {
                 };
             });
         } catch (error) {
-            console.error('❌ IndexedDB initialization failed:', error);
+            console.error('âŒ IndexedDB initialization failed:', error);
             this.isReady = true; // Usar fallback
             return null;
         }
@@ -112,12 +112,12 @@ class OfflineStorage {
                 };
 
                 request.onerror = () => {
-                    console.error(`❌ Error saving to IndexedDB (${storeName}):`, request.error);
+                    console.error(`âŒ Error saving to IndexedDB (${storeName}):`, request.error);
                     reject(request.error);
                 };
             });
         } catch (error) {
-            console.error('❌ Save error:', error);
+            console.error('âŒ Save error:', error);
             // Fallback
             return this.saveToLocalStorage(storeName, data);
         }
@@ -154,12 +154,12 @@ class OfflineStorage {
                 };
 
                 request.onerror = () => {
-                    console.error(`❌ Error loading from IndexedDB (${storeName}):`, request.error);
+                    console.error(`âŒ Error loading from IndexedDB (${storeName}):`, request.error);
                     reject(request.error);
                 };
             });
         } catch (error) {
-            console.error('❌ Load error:', error);
+            console.error('âŒ Load error:', error);
             // Fallback
             return this.loadFromLocalStorage(storeName, id);
         }
@@ -191,12 +191,12 @@ class OfflineStorage {
                 };
 
                 request.onerror = () => {
-                    console.error(`❌ Error loading all from IndexedDB (${storeName}):`, request.error);
+                    console.error(`âŒ Error loading all from IndexedDB (${storeName}):`, request.error);
                     reject(request.error);
                 };
             });
         } catch (error) {
-            console.error('❌ LoadAll error:', error);
+            console.error('âŒ LoadAll error:', error);
             // Fallback
             return this.loadAllFromLocalStorage(storeName);
         }
@@ -229,12 +229,12 @@ class OfflineStorage {
                 };
 
                 request.onerror = () => {
-                    console.error(`❌ Error deleting from IndexedDB (${storeName}):`, request.error);
+                    console.error(`âŒ Error deleting from IndexedDB (${storeName}):`, request.error);
                     reject(request.error);
                 };
             });
         } catch (error) {
-            console.error('❌ Delete error:', error);
+            console.error('âŒ Delete error:', error);
             // Fallback
             return this.deleteFromLocalStorage(storeName, id);
         }
@@ -266,12 +266,12 @@ class OfflineStorage {
                 };
 
                 request.onerror = () => {
-                    console.error(`❌ Error clearing IndexedDB (${storeName}):`, request.error);
+                    console.error(`âŒ Error clearing IndexedDB (${storeName}):`, request.error);
                     reject(request.error);
                 };
             });
         } catch (error) {
-            console.error('❌ Clear error:', error);
+            console.error('âŒ Clear error:', error);
             // Fallback
             return this.clearLocalStorage(storeName);
         }
@@ -286,7 +286,7 @@ class OfflineStorage {
             const key = `${this.dbName}_${storeName}_${data.id}`;
             localStorage.setItem(key, JSON.stringify(data));
         } catch (error) {
-            console.error('❌ localStorage save error:', error);
+            console.error('âŒ localStorage save error:', error);
         }
     }
 
@@ -299,7 +299,7 @@ class OfflineStorage {
             }
             return null;
         } catch (error) {
-            console.error('❌ localStorage load error:', error);
+            console.error('âŒ localStorage load error:', error);
             return null;
         }
     }
@@ -321,7 +321,7 @@ class OfflineStorage {
 
             return results;
         } catch (error) {
-            console.error('❌ localStorage loadAll error:', error);
+            console.error('âŒ localStorage loadAll error:', error);
             return [];
         }
     }
@@ -331,7 +331,7 @@ class OfflineStorage {
             const key = `${this.dbName}_${storeName}_${id}`;
             localStorage.removeItem(key);
         } catch (error) {
-            console.error('❌ localStorage delete error:', error);
+            console.error('âŒ localStorage delete error:', error);
         }
     }
 
@@ -349,7 +349,7 @@ class OfflineStorage {
 
             keysToDelete.forEach(key => localStorage.removeItem(key));
         } catch (error) {
-            console.error('❌ localStorage clear error:', error);
+            console.error('âŒ localStorage clear error:', error);
         }
     }
 
@@ -382,8 +382,8 @@ class OfflineStorage {
     }
 
     /**
-     * Salvar estatísticas
-     * @param {Object} stats - Estatísticas do jogo
+     * Salvar estatÃ­sticas
+     * @param {Object} stats - EstatÃ­sticas do jogo
      * @returns {Promise<void>}
      */
     async saveStats(stats) {
@@ -397,7 +397,7 @@ class OfflineStorage {
     }
 
     /**
-     * Carregar estatísticas
+     * Carregar estatÃ­sticas
      * @returns {Promise<Object|null>}
      */
     async loadStats() {
@@ -405,7 +405,7 @@ class OfflineStorage {
     }
 
     /**
-     * Obter informações de uso de storage
+     * Obter informaÃ§Ãµes de uso de storage
      * @returns {Promise<Object>}
      */
     async getStorageInfo() {
@@ -432,7 +432,7 @@ class OfflineStorage {
     }
 
     /**
-     * Formatar bytes para formato legível
+     * Formatar bytes para formato legÃ­vel
      * @param {number} bytes
      * @returns {string}
      */
@@ -508,7 +508,7 @@ class OfflineStorage {
     }
 }
 
-// Criar instância global
+// Criar instÃ¢ncia global
 window.offlineStorage = new OfflineStorage();
 
 // Auto-inicializar
@@ -521,7 +521,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// Exportar para uso em outros módulos
+// Exportar para uso em outros mÃ³dulos
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = OfflineStorage;
 }

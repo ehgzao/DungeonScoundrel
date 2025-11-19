@@ -1,6 +1,6 @@
 /**
  * Mobile Optimization Module
- * Detecta dispositivos mobile e ajusta performance/animações
+ * Detecta dispositivos mobile e ajusta performance/animaÃ§Ãµes
  *
  * @module MobileOptimization
  * @version 1.0.0
@@ -14,13 +14,13 @@ class MobileOptimization {
     }
 
     /**
-     * Detecta se é um dispositivo mobile
+     * Detecta se Ã© um dispositivo mobile
      * @returns {boolean}
      */
     detectMobile() {
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-        // Verifica múltiplos padrões
+        // Verifica mÃºltiplos padrÃµes
         const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i;
         const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         const isSmallScreen = window.innerWidth <= 768;
@@ -41,7 +41,7 @@ class MobileOptimization {
         // Low-end se:
         // - Menos de 4 cores
         // - Menos de 4GB RAM
-        // - Conexão lenta (2G/3G)
+        // - ConexÃ£o lenta (2G/3G)
         const isLowCpu = cpuCores < 4;
         const isLowMemory = memory < 4;
         const isSlowConnection = connection && (connection.effectiveType === '2g' || connection.effectiveType === '3g');
@@ -50,8 +50,8 @@ class MobileOptimization {
     }
 
     /**
-     * Aplica otimizações mobile
-     * @param {Object} gameConfig - Configurações do jogo
+     * Aplica otimizaÃ§Ãµes mobile
+     * @param {Object} gameConfig - ConfiguraÃ§Ãµes do jogo
      */
     applyOptimizations(gameConfig) {
         if (!this.isMobile) {
@@ -59,7 +59,7 @@ class MobileOptimization {
         }
 
 
-        // Salvar configurações originais
+        // Salvar configuraÃ§Ãµes originais
         this.originalSettings = {
             maxParticles: gameConfig.maxParticles || 50,
             screenShakeIntensity: gameConfig.screenShakeIntensity || 5,
@@ -68,12 +68,12 @@ class MobileOptimization {
             enableShadows: gameConfig.enableShadows !== false
         };
 
-        // Aplicar otimizações
+        // Aplicar otimizaÃ§Ãµes
         this.optimizeParticles(gameConfig);
         this.optimizeAnimations(gameConfig);
         this.optimizeEffects(gameConfig);
 
-        // Se for low-end, aplicar otimizações agressivas
+        // Se for low-end, aplicar otimizaÃ§Ãµes agressivas
         if (this.isLowEndDevice) {
             this.applyAggressiveOptimizations(gameConfig);
         }
@@ -81,21 +81,21 @@ class MobileOptimization {
     }
 
     /**
-     * Otimiza sistema de partículas
+     * Otimiza sistema de partÃ­culas
      * @param {Object} config
      */
     optimizeParticles(config) {
-        const reduction = this.isLowEndDevice ? 0.2 : 0.4; // 80% ou 60% de redução
+        const reduction = this.isLowEndDevice ? 0.2 : 0.4; // 80% ou 60% de reduÃ§Ã£o
         config.maxParticles = Math.floor(this.originalSettings.maxParticles * reduction);
 
     }
 
     /**
-     * Otimiza animações
+     * Otimiza animaÃ§Ãµes
      * @param {Object} config
      */
     optimizeAnimations(config) {
-        // Reduzir duração das animações (mais rápido = menos frames)
+        // Reduzir duraÃ§Ã£o das animaÃ§Ãµes (mais rÃ¡pido = menos frames)
         config.animationDuration = this.isLowEndDevice ? 150 : 250;
 
         // Reduzir screen shake
@@ -109,21 +109,21 @@ class MobileOptimization {
      */
     optimizeEffects(config) {
         // Desabilitar efeitos pesados em mobile
-        config.enableBlur = false; // Blur é muito pesado
+        config.enableBlur = false; // Blur Ã© muito pesado
         config.enableShadows = !this.isLowEndDevice; // Sombras apenas em devices melhores
 
     }
 
     /**
-     * Aplicar otimizações agressivas para low-end devices
+     * Aplicar otimizaÃ§Ãµes agressivas para low-end devices
      * @param {Object} config
      */
     applyAggressiveOptimizations(config) {
 
-        // Reduzir ainda mais partículas
+        // Reduzir ainda mais partÃ­culas
         config.maxParticles = Math.max(5, config.maxParticles);
 
-        // Desabilitar todos os efeitos visuais não-essenciais
+        // Desabilitar todos os efeitos visuais nÃ£o-essenciais
         config.enableShadows = false;
         config.enableGlow = false;
         config.enableTransitions = false;
@@ -147,7 +147,7 @@ class MobileOptimization {
                 -webkit-tap-highlight-color: transparent;
             }
 
-            /* Desabilitar animações pesadas em mobile */
+            /* Desabilitar animaÃ§Ãµes pesadas em mobile */
             @media (max-width: 768px) {
                 * {
                     animation-duration: 0.2s !important;
@@ -181,7 +181,7 @@ class MobileOptimization {
                 box-shadow: none !important;
             }
 
-            /* Touch-friendly: aumentar área de toque */
+            /* Touch-friendly: aumentar Ã¡rea de toque */
             @media (max-width: 768px) {
                 button, .card, .clickable, a {
                     min-width: 44px;
@@ -194,12 +194,12 @@ class MobileOptimization {
     }
 
     /**
-     * Preload crítico: apenas imagens essenciais
+     * Preload crÃ­tico: apenas imagens essenciais
      */
     optimizeImageLoading() {
         if (!this.isMobile) return;
 
-        // Desabilitar preload de imagens não-essenciais
+        // Desabilitar preload de imagens nÃ£o-essenciais
         const lazyImages = document.querySelectorAll('img[loading="lazy"]');
 
 
@@ -221,7 +221,7 @@ class MobileOptimization {
                     }
                 });
             }, {
-                rootMargin: '50px', // Começar a carregar 50px antes de entrar na tela
+                rootMargin: '50px', // ComeÃ§ar a carregar 50px antes de entrar na tela
                 threshold: 0.01
             });
 
@@ -250,9 +250,9 @@ class MobileOptimization {
 
                 // Se FPS < 30, alertar
                 if (fps < 30) {
-                    console.warn(`⚠️ Low FPS detected: ${fps} fps`);
+                    console.warn(`âš ï¸ Low FPS detected: ${fps} fps`);
 
-                    // Aplicar otimizações ainda mais agressivas
+                    // Aplicar otimizaÃ§Ãµes ainda mais agressivas
                     if (window.game && !this._emergencyModeApplied) {
                         window.game.maxParticles = 0;
                         window.game.enableAnimations = false;
@@ -268,7 +268,7 @@ class MobileOptimization {
     }
 
     /**
-     * Inicializar todas as otimizações
+     * Inicializar todas as otimizaÃ§Ãµes
      */
     init() {
 
@@ -283,12 +283,12 @@ class MobileOptimization {
     }
 
     /**
-     * Restaurar configurações originais
+     * Restaurar configuraÃ§Ãµes originais
      * @param {Object} config
      */
     restore(config) {
         if (Object.keys(this.originalSettings).length === 0) {
-            console.warn('⚠️ No settings to restore');
+            console.warn('âš ï¸ No settings to restore');
             return;
         }
 
@@ -296,7 +296,7 @@ class MobileOptimization {
     }
 
     /**
-     * Obter informações do dispositivo
+     * Obter informaÃ§Ãµes do dispositivo
      * @returns {Object}
      */
     getDeviceInfo() {
@@ -314,7 +314,7 @@ class MobileOptimization {
     }
 }
 
-// Criar instância global
+// Criar instÃ¢ncia global
 window.mobileOptimization = new MobileOptimization();
 
 // Auto-inicializar
@@ -322,7 +322,7 @@ window.addEventListener('DOMContentLoaded', () => {
     window.mobileOptimization.init();
 });
 
-// Exportar para uso em outros módulos
+// Exportar para uso em outros mÃ³dulos
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = MobileOptimization;
 }

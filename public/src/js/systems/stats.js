@@ -104,7 +104,7 @@ function showUpgradeAvailableToast(unlock) {
     
     toast.innerHTML = `
         <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="font-size: 2em;">🎁</div>
+            <div style="font-size: 2em;">ðŸŽ</div>
             <div>
                 <div style="font-size: 1.1em; margin-bottom: 4px;">UPGRADE AVAILABLE!</div>
                 <div style="font-size: 0.85em; opacity: 0.9;">${unlock.name}</div>
