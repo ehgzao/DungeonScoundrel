@@ -52,3 +52,6 @@ public/workbox-*.js
 
 # Package lock
 package-lock.json
+
+# Local archived legacy project
+archive/DungeonScoundrel/
