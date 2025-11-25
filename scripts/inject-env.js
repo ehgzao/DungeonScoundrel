@@ -17,7 +17,12 @@
 const fs = require('fs');
 const path = require('path');
 
+console.log('🔧 inject-env.js: Starting...');
+console.log('   Current directory:', process.cwd());
+console.log('   Node version:', process.version);
+
 const configPath = path.join(__dirname, '..', 'public', 'src', 'config', 'firebase-config.js');
+console.log('   Target config path:', configPath);
 
 // Get environment variables with fallbacks for local development
 const config = {
@@ -29,10 +34,22 @@ const config = {
     appId: process.env.FIREBASE_APP_ID || ''
 };
 
-// Only proceed if we have the API key (production build)
+// Log what we found (masking sensitive data)
+console.log('   FIREBASE_API_KEY:', config.apiKey ? `${config.apiKey.substring(0, 10)}...` : '❌ NOT SET');
+console.log('   FIREBASE_AUTH_DOMAIN:', config.authDomain);
+console.log('   FIREBASE_PROJECT_ID:', config.projectId);
+console.log('   FIREBASE_STORAGE_BUCKET:', config.storageBucket);
+console.log('   FIREBASE_MESSAGING_SENDER_ID:', config.messagingSenderId || '❌ NOT SET');
+console.log('   FIREBASE_APP_ID:', config.appId ? `${config.appId.substring(0, 15)}...` : '❌ NOT SET');
+
+// Check if we have the API key
 if (!config.apiKey) {
-    console.log('⚠️  FIREBASE_API_KEY not set. Using existing config or template.');
-    console.log('   For local development, use firebase-config.local.js');
+    console.log('');
+    console.log('⚠️  FIREBASE_API_KEY not set in environment!');
+    console.log('   Make sure you imported the variables in Netlify:');
+    console.log('   Site settings > Build & deploy > Environment variables');
+    console.log('');
+    console.log('   Skipping config generation - using existing file.');
     process.exit(0);
 }
 
