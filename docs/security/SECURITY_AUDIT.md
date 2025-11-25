@@ -26,8 +26,8 @@ All issues found are either:
 **Status:** ✅ **NOT A VULNERABILITY** (False Positive)
 
 **Keys Detected:**
-- Alert #1: `AIzaSyAXQOgiVFS04xU196ANWLu9wHrDRWfpjHw` (6 locations)
-- Alert #2: `AIzaSyDKUBsRGT18VJVlsVIPvmPqCmBL-hQTzLE` (1 location)
+- Alert #1: Firebase Web API Key (6 locations) - See Firebase Console
+- Alert #2: Secondary Firebase Key (1 location) - Legacy/backup
 
 ---
 

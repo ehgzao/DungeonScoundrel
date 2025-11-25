@@ -40,9 +40,11 @@ temp/
 tmp/
 add_img_dims.py
 
-# Firebase config (contains API keys - but they're public for web apps!)
-public/src/config/firebase-config.js
-src/config/firebase-config.js
+# Firebase config LOCAL (contains API keys for development)
+# The main firebase-config.js is a placeholder and MUST be in repo
+# Production keys are injected via Netlify environment variables
+public/src/config/firebase-config.local.js
+src/config/firebase-config.local.js
 
 # Node modules
 node_modules/
