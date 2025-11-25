@@ -124,34 +124,34 @@ function getTotalStat(statName) {
 // ============================================
 export const UNLOCKS = [
     // Tier 1: Beginner (Easy)
-    { id: 'startHealth', name: 'â¤ï¸ Tough Start', description: 'Start each run with +5 max HP', requirement: 'Clear 10 rooms', check: () => getTotalStat('roomsCleared') >= 10 },
-    { id: 'startGold', name: 'ðŸ’° Rich Start', description: 'Start each run with 30 gold', requirement: 'Earn 200 gold (lifetime)', check: () => getTotalStat('totalGoldEarned') >= 200 },
-    { id: 'betterDrops', name: 'ðŸŽ² Lucky Drops', description: 'Better card quality in rooms', requirement: 'Clear 20 rooms', check: () => getTotalStat('roomsCleared') >= 20 },
-    { id: 'extraRelic', name: 'ðŸº Relic Seeker', description: 'Start each run with 1 random relic', requirement: 'Collect 10 relics (lifetime)', check: () => getTotalStat('relicsCollected') >= 10 },
-    { id: 'strongerWeapons', name: 'âš”ï¸ Weapon Master', description: 'All weapons deal +1 damage', requirement: 'Equip 30 weapons (lifetime)', check: () => getTotalStat('weaponsEquipped') >= 30 },
-    { id: 'masterHealer', name: 'ðŸ’Š Master Healer', description: 'All potions heal +2 HP', requirement: 'Use 20 potions (lifetime)', check: () => getTotalStat('potionsUsed') >= 20 },
-    { id: 'richStart', name: 'ðŸ’Ž Wealthy Start', description: 'Start each run with 50 gold total', requirement: 'Earn 500 gold (lifetime)', check: () => getTotalStat('totalGoldEarned') >= 500 },
-    { id: 'comboMaster', name: 'ðŸ”¥ Combo Master', description: 'Start each run with 1x combo', requirement: 'Reach 10x combo', check: () => getTotalStat('maxCombo') >= 10 },
+    { id: 'startHealth', name: '❤️ Tough Start', description: 'Start each run with +5 max HP', requirement: 'Clear 10 rooms', check: () => getTotalStat('roomsCleared') >= 10 },
+    { id: 'startGold', name: '💰 Rich Start', description: 'Start each run with 30 gold', requirement: 'Earn 200 gold (lifetime)', check: () => getTotalStat('totalGoldEarned') >= 200 },
+    { id: 'betterDrops', name: '🎲 Lucky Drops', description: 'Better card quality in rooms', requirement: 'Clear 20 rooms', check: () => getTotalStat('roomsCleared') >= 20 },
+    { id: 'extraRelic', name: '🏺 Relic Seeker', description: 'Start each run with 1 random relic', requirement: 'Collect 10 relics (lifetime)', check: () => getTotalStat('relicsCollected') >= 10 },
+    { id: 'strongerWeapons', name: '⚔️ Weapon Master', description: 'All weapons deal +1 damage', requirement: 'Equip 30 weapons (lifetime)', check: () => getTotalStat('weaponsEquipped') >= 30 },
+    { id: 'masterHealer', name: '💊 Master Healer', description: 'All potions heal +2 HP', requirement: 'Use 20 potions (lifetime)', check: () => getTotalStat('potionsUsed') >= 20 },
+    { id: 'richStart', name: '💎 Wealthy Start', description: 'Start each run with 50 gold total', requirement: 'Earn 500 gold (lifetime)', check: () => getTotalStat('totalGoldEarned') >= 500 },
+    { id: 'comboMaster', name: '🔥 Combo Master', description: 'Start each run with 1x combo', requirement: 'Reach 10x combo', check: () => getTotalStat('maxCombo') >= 10 },
     
     // Tier 2: Intermediate (Normal)
-    { id: 'bigStart', name: 'ðŸ’ª Big Start', description: 'Start each run with +15 max HP total', requirement: 'Win on Normal difficulty', check: () => getTotalStat('normalWins') >= 1 },
-    { id: 'ultraWeapons', name: 'ðŸ—¡ï¸ Ultra Weapons', description: 'All weapons deal +2 damage total', requirement: 'Equip 50 weapons (lifetime)', check: () => getTotalStat('weaponsEquipped') >= 50 },
-    { id: 'godMode', name: 'ðŸ‘‘ God Mode', description: 'Start with +15 HP, 100 gold, 2 relics', requirement: 'Win on Hard difficulty', check: () => getTotalStat('hardWins') >= 1 },
-    { id: 'relicMaster', name: 'ðŸ† Relic Master', description: 'Start each run with 3 random relics', requirement: 'Collect 30 relics (lifetime)', check: () => getTotalStat('relicsCollected') >= 30 },
-    { id: 'shopDiscount', name: 'ðŸª Merchant Friend', description: 'All shop items 20% cheaper', requirement: 'Visit shop 20 times (lifetime)', check: () => getTotalStat('shopsVisited') >= 20 },
-    { id: 'durablePlus', name: 'ðŸ”¨ Durable Weapons', description: 'All weapons have +1 durability', requirement: 'Break 20 weapons (lifetime)', check: () => getTotalStat('weaponsBroken') >= 20 },
-    { id: 'startPower', name: 'âš¡ Power Start', description: 'Start each run with a weapon in room', requirement: 'Win 3 games (any difficulty)', check: () => getTotalStat('gamesWon') >= 3 },
-    { id: 'comboGod', name: 'ðŸ”¥ðŸ”¥ Combo God', description: 'Start with 2x combo + combo damage 2x', requirement: 'Reach 20x combo', check: () => getTotalStat('maxCombo') >= 20 },
+    { id: 'bigStart', name: '💪 Big Start', description: 'Start each run with +15 max HP total', requirement: 'Win on Normal difficulty', check: () => getTotalStat('normalWins') >= 1 },
+    { id: 'ultraWeapons', name: '🗡️ Ultra Weapons', description: 'All weapons deal +2 damage total', requirement: 'Equip 50 weapons (lifetime)', check: () => getTotalStat('weaponsEquipped') >= 50 },
+    { id: 'godMode', name: '👑 God Mode', description: 'Start with +15 HP, 100 gold, 2 relics', requirement: 'Win on Hard difficulty', check: () => getTotalStat('hardWins') >= 1 },
+    { id: 'relicMaster', name: '🏆 Relic Master', description: 'Start each run with 3 random relics', requirement: 'Collect 30 relics (lifetime)', check: () => getTotalStat('relicsCollected') >= 30 },
+    { id: 'shopDiscount', name: '🏪 Merchant Friend', description: 'All shop items 20% cheaper', requirement: 'Visit shop 20 times (lifetime)', check: () => getTotalStat('shopsVisited') >= 20 },
+    { id: 'durablePlus', name: '🔨 Durable Weapons', description: 'All weapons have +1 durability', requirement: 'Break 20 weapons (lifetime)', check: () => getTotalStat('weaponsBroken') >= 20 },
+    { id: 'startPower', name: '⚡ Power Start', description: 'Start each run with a weapon in room', requirement: 'Win 3 games (any difficulty)', check: () => getTotalStat('gamesWon') >= 3 },
+    { id: 'comboGod', name: '🔥🔥 Combo God', description: 'Start with 2x combo + combo damage 2x', requirement: 'Reach 20x combo', check: () => getTotalStat('maxCombo') >= 20 },
     
     // Tier 3: Advanced (Hard)
-    { id: 'megaHealth', name: 'â¤ï¸â¤ï¸ Mega Health', description: 'Start each run with +35 max HP total', requirement: 'Win on Hard 3 times', check: () => getTotalStat('hardWins') >= 3 },
-    { id: 'eventLuck', name: 'ðŸ€ Event Luck', description: '+50% event chance', requirement: 'Complete 30 events (lifetime)', check: () => getTotalStat('eventsCompleted') >= 30 },
-    { id: 'berserkMaster', name: 'ðŸ”¥ Berserk Master', description: 'Berserk cards give +7 damage (instead of +5)', requirement: 'Use 10 Berserk cards (lifetime)', check: () => getTotalStat('berserkUses') >= 10 },
-    { id: 'mirrorMaster', name: 'ðŸªž Mirror Master', description: 'Mirror Shield starts with 5 charges', requirement: 'Reflect 100 damage (lifetime)', check: () => getTotalStat('damageReflected') >= 100 },
-    { id: 'dodgeMaster', name: 'ðŸ›¡ï¸ Dodge Master', description: 'Dodge cards avoid 2 attacks (instead of 1)', requirement: 'Dodge 20 attacks (lifetime)', check: () => getTotalStat('attacksDodged') >= 20 },
-    { id: 'criticalStrike', name: 'ðŸ’¥ Critical Strike', description: '10% chance to deal 3x damage', requirement: 'Deal 500 damage (lifetime)', check: () => getTotalStat('totalDamage') >= 500 },
-    { id: 'lifeSteal', name: 'ðŸ§› Life Steal', description: 'Heal 1 HP on every perfect kill', requirement: 'Kill 100 monsters (lifetime)', check: () => getTotalStat('monstersSlain') >= 100 },
-    { id: 'thornsArmor', name: 'ðŸŒµ Thorns Armor', description: 'Reflect 2 damage to all attackers', requirement: 'Take 200 damage (lifetime)', check: () => getTotalStat('totalDamage') >= 200 }
+    { id: 'megaHealth', name: '❤️❤️ Mega Health', description: 'Start each run with +35 max HP total', requirement: 'Win on Hard 3 times', check: () => getTotalStat('hardWins') >= 3 },
+    { id: 'eventLuck', name: '🍀 Event Luck', description: '+50% event chance', requirement: 'Complete 30 events (lifetime)', check: () => getTotalStat('eventsCompleted') >= 30 },
+    { id: 'berserkMaster', name: '🔥 Berserk Master', description: 'Berserk cards give +7 damage (instead of +5)', requirement: 'Use 10 Berserk cards (lifetime)', check: () => getTotalStat('berserkUses') >= 10 },
+    { id: 'mirrorMaster', name: '🪞 Mirror Master', description: 'Mirror Shield starts with 5 charges', requirement: 'Reflect 100 damage (lifetime)', check: () => getTotalStat('damageReflected') >= 100 },
+    { id: 'dodgeMaster', name: '🛡️ Dodge Master', description: 'Dodge cards avoid 2 attacks (instead of 1)', requirement: 'Dodge 20 attacks (lifetime)', check: () => getTotalStat('attacksDodged') >= 20 },
+    { id: 'criticalStrike', name: '💥 Critical Strike', description: '10% chance to deal 3x damage', requirement: 'Deal 500 damage (lifetime)', check: () => getTotalStat('totalDamage') >= 500 },
+    { id: 'lifeSteal', name: '🧛 Life Steal', description: 'Heal 1 HP on every perfect kill', requirement: 'Kill 100 monsters (lifetime)', check: () => getTotalStat('monstersSlain') >= 100 },
+    { id: 'thornsArmor', name: '🌵 Thorns Armor', description: 'Reflect 2 damage to all attackers', requirement: 'Take 200 damage (lifetime)', check: () => getTotalStat('totalDamage') >= 200 }
 ];
 
 // ============================================

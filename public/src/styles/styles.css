@@ -357,7 +357,6 @@
         #giveUpModal .modal-content { border-color: #ff6b6b; }
         #giveUpModal h2 { color: #ff6b6b; }
         
-
         .modal-content h2 {
             font-size: clamp(1.5em, 5vw, 2em);
             margin-bottom: 25px;

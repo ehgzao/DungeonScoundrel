@@ -250,9 +250,9 @@ class MobileOptimization {
 
                 // Se FPS < 30, alertar
                 if (fps < 30) {
-                    console.warn(`âš ï¸ Low FPS detected: ${fps} fps`);
+                    console.warn(`⚠️ Low FPS detected: ${fps} fps`);
 
-                    // Aplicar otimizaÃ§Ãµes ainda mais agressivas
+                    // Aplicar otimizações ainda mais agressivas
                     if (window.game && !this._emergencyModeApplied) {
                         window.game.maxParticles = 0;
                         window.game.enableAnimations = false;
@@ -268,7 +268,7 @@ class MobileOptimization {
     }
 
     /**
-     * Inicializar todas as otimizaÃ§Ãµes
+     * Inicializar todas as otimizações
      */
     init() {
 
@@ -283,12 +283,12 @@ class MobileOptimization {
     }
 
     /**
-     * Restaurar configuraÃ§Ãµes originais
+     * Restaurar configurações originais
      * @param {Object} config
      */
     restore(config) {
         if (Object.keys(this.originalSettings).length === 0) {
-            console.warn('âš ï¸ No settings to restore');
+            console.warn('⚠️ No settings to restore');
             return;
         }
 

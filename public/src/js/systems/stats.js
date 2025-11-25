@@ -9,17 +9,32 @@ function loadPermanentStats() {
     const saved = localStorage.getItem('scoundrel_permanent_stats');
     if (saved) {
         try {
-            permanentStats = JSON.parse(saved);
+            const parsed = JSON.parse(saved);
+            // Update global
+            Object.assign(permanentStats, parsed);
+            return parsed; // Return for Cloud Save
         } catch(e) {
             permanentStats = { gamesWon: 0, hardWins: 0, fastestWin: 0 };
+            return permanentStats;
         }
     } else {
         permanentStats = { gamesWon: 0, hardWins: 0, fastestWin: 0 };
+        return permanentStats;
     }
 }
+
 function savePermanentStats() {
     localStorage.setItem('scoundrel_permanent_stats', JSON.stringify(permanentStats));
+    
+    // Auto-save to cloud if logged in
+    if (window.currentUser && window.saveProgressToCloud) {
+        window.saveProgressToCloud().catch(err => console.warn('Cloud auto-save failed:', err));
+    }
 }
+
+// Expose functions globally for firebase-auth.js
+window.loadPermanentStats = loadPermanentStats;
+window.savePermanentStats = savePermanentStats;
 
 function getTotalStat(stat) {
     const stats = storage.get('scoundrel_lifetime_stats', {});
@@ -104,7 +119,7 @@ function showUpgradeAvailableToast(unlock) {
     
     toast.innerHTML = `
         <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="font-size: 2em;">ðŸŽ</div>
+            <div style="font-size: 2em;">🎁</div>
             <div>
                 <div style="font-size: 1.1em; margin-bottom: 4px;">UPGRADE AVAILABLE!</div>
                 <div style="font-size: 0.85em; opacity: 0.9;">${unlock.name}</div>

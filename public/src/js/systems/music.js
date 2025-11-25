@@ -28,11 +28,11 @@ this.gainNodes = [];
 this.reverbBuffer = this.createReverbBuffer();
 
 this.contextNames = {
-    menu: 'ðŸ° Dark Awakening',
-    gameplay: 'âš”ï¸ Into the Depths',
-    shop: 'ðŸ›ï¸ Merchant\'s Shadow',
-    victory: 'ðŸ‘‘ Triumph in Darkness',
-    defeat: 'ðŸ’€ The Final Darkness'
+    menu: '🏰 Dark Awakening',
+    gameplay: '⚔️ Into the Depths',
+    shop: '🏛️ Merchant\'s Shadow',
+    victory: '👑 Triumph in Darkness',
+    defeat: '💀 The Final Darkness'
 };
     }
     
@@ -153,7 +153,7 @@ const display = document.getElementById('nowPlayingDisplay');
 if (display) {
     display.textContent = this.isPlaying ? 
         this.getCurrentTrackName() : 
-        'ðŸŽµ Music Paused';
+        '🎵 Music Paused';
 }
     }
     

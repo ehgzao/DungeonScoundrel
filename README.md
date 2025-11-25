@@ -1,6 +1,6 @@
 <div align="center">
 
-![Dungeon Scoundrel Logo](public/assets/images/title-logo.webp)
+![Dungeon Scoundrel Logo](public/og-image.png)
 
 **A Dark Medieval Roguelike Card Game**
 

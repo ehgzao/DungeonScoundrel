@@ -83,7 +83,7 @@ async function loadLeaderboardForDifficulty(difficulty) {
         console.error('[LEADERBOARD] Firebase not ready:', { db: !!db, appId: !!appId });
         listDiv.innerHTML = `
             <div style="text-align: center; padding: 40px 20px;">
-                <p style="color: #ffd93d; font-size: 1.2em; margin-bottom: 15px;">ðŸ“¡ Offline Mode</p>
+                <p style="color: #ffd93d; font-size: 1.2em; margin-bottom: 15px;">📡 Offline Mode</p>
                 <p style="color: #aaa;">Leaderboard requires online connection.</p>
                 <p style="color: #aaa; font-size: 0.9em; margin-top: 10px;">
                     Your progress and achievements are still saved locally!
@@ -109,9 +109,9 @@ async function loadLeaderboardForDifficulty(difficulty) {
         const top10 = scores.slice(0, 10);
         
         if (top10.length === 0) {
-            const diffIcons = { easy: 'ðŸŸ¢', normal: 'ðŸŸ¡', hard: 'ðŸ”´', endless: 'â™¾ï¸' };
+            const diffIcons = { easy: '🟢', normal: '🟡', hard: '🔴', endless: '♾️' };
             const diffName = difficulty ? difficulty.toUpperCase() : 'UNKNOWN';
-            listDiv.innerHTML = `<p style="text-align: center; color: #aaa;">No scores yet for ${diffIcons[difficulty] || 'â“'} ${diffName}.<br>Be the first!</p>`;
+            listDiv.innerHTML = `<p style="text-align: center; color: #aaa;">No scores yet for ${diffIcons[difficulty] || '❓'} ${diffName}.<br>Be the first!</p>`;
             return;
         }
         
@@ -121,7 +121,7 @@ async function loadLeaderboardForDifficulty(difficulty) {
                 <div style="flex: 1;">
                     <div class="leaderboard-name">${entry.name || 'Scoundrel'}</div>
                     <div class="leaderboard-details" style="font-size: 0.8em; color: #aaa;">
-                        ${entry.time}s | ${entry.combo}x Combo | ${entry.gold}ðŸª™
+                        ${entry.time}s | ${entry.combo}x Combo | ${entry.gold}🪙
                     </div>
                 </div>
                 <span class="leaderboard-score">${entry.score}</span>
@@ -147,7 +147,7 @@ async function loadLeaderboardForDifficulty(difficulty) {
         
         listDiv.innerHTML = `
             <div style="text-align: center; padding: 40px 20px;">
-                <div style="font-size: 3em; margin-bottom: 15px;">âš ï¸</div>
+                <div style="font-size: 3em; margin-bottom: 15px;">⚠️</div>
                 <p style="color: #ffd93d; font-size: 1.2em; margin-bottom: 10px;">${errorMsg}</p>
                 <p style="color: #aaa; font-size: 0.95em; line-height: 1.6;">${helpText}</p>
                 <button onclick="loadLeaderboardForDifficulty('${difficulty}')" style="
@@ -191,5 +191,6 @@ window.switchLeaderboardDifficulty = async function(difficulty) {
 // Expose functions globally for HTML onclick handlers
 window.showLeaderboard = showLeaderboard;
 window.loadLeaderboardForDifficulty = loadLeaderboardForDifficulty;
+window.submitScoreToLeaderboard = submitScoreToLeaderboard; // CRITICAL: For auto-submit in game.js
 
 // Log module load

@@ -140,14 +140,14 @@ window.joinWaitlist = function() {
                 validationDiv.textContent = 'Failed to join waitlist. Please try again.';
                 validationDiv.style.display = 'block';
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'âœ¨ Join Waitlist';
+                submitBtn.textContent = '✨ Join Waitlist';
             });
     } else {
         console.error('EmailJS not loaded');
         validationDiv.textContent = 'Email service not available. Please try again later.';
         validationDiv.style.display = 'block';
         submitBtn.disabled = false;
-        submitBtn.textContent = 'âœ¨ Join Waitlist';
+        submitBtn.textContent = '✨ Join Waitlist';
     }
 };
 
@@ -495,7 +495,7 @@ window.sendBugReport = function() {
             // USER EMAIL
             user_email: userEmailValue,
             send_copy: userEmailValue ? 'Yes' : 'No',
-            copy_message: userEmailValue ? 'ðŸ“§ A copy of this report has been sent to your email.' : '',
+            copy_message: userEmailValue ? '📧 A copy of this report has been sent to your email.' : '',
             
             // LEGACY FIELDS
             version: 'v1.4.1',
@@ -545,7 +545,7 @@ function showBugReportSuccess() {
     overlay.innerHTML = `
         <div class="modal-content" style="max-width: 450px; border: 3px solid #6bcf7f; animation: modalSlideIn 0.3s ease;">
             <div style="text-align: center; padding: 20px;">
-                <div style="font-size: 4em; margin-bottom: 15px;">âœ…</div>
+                <div style="font-size: 4em; margin-bottom: 15px;">✅</div>
                 <h2 style="color: #6bcf7f; margin: 0 0 15px 0;">Bug Report Sent!</h2>
                 <p style="color: #ddd; font-size: 1.1em; line-height: 1.6; margin: 0 0 20px 0;">
                     Thank you for helping improve Dungeon Scoundrel!<br>
@@ -568,7 +568,7 @@ function showBugReportError(errorMsg) {
     overlay.innerHTML = `
         <div class="modal-content" style="max-width: 450px; border: 3px solid #ff6b6b; animation: modalSlideIn 0.3s ease;">
             <div style="text-align: center; padding: 20px;">
-                <div style="font-size: 4em; margin-bottom: 15px;">âŒ</div>
+                <div style="font-size: 4em; margin-bottom: 15px;">❌</div>
                 <h2 style="color: #ff6b6b; margin: 0 0 15px 0;">Failed to Send</h2>
                 <p style="color: #ddd; font-size: 1em; line-height: 1.6; margin: 0 0 10px 0;">
                     Could not send the bug report.
@@ -751,11 +751,11 @@ window.sendContactMessage = function() {
         
         // Get subject label
         const subjectLabels = {
-            'feedback': 'ðŸ’¬ Feedback',
-            'suggestion': 'ðŸ’¡ Feature Suggestion',
-            'partnership': 'ðŸ¤ Partnership',
-            'question': 'â“ Question',
-            'other': 'ðŸ“ Other'
+            'feedback': '💬 Feedback',
+            'suggestion': '💡 Feature Suggestion',
+            'partnership': '🤝 Partnership',
+            'question': '❓ Question',
+            'other': '📝 Other'
         };
         
         // Get browser info
@@ -835,7 +835,7 @@ function showContactSuccess() {
     overlay.innerHTML = `
         <div class="modal-content" style="max-width: 450px; border: 3px solid #6bcf7f; animation: modalSlideIn 0.3s ease;">
             <div style="text-align: center; padding: 20px;">
-                <div style="font-size: 4em; margin-bottom: 15px;">âœ…</div>
+                <div style="font-size: 4em; margin-bottom: 15px;">✅</div>
                 <h2 style="color: #6bcf7f; margin: 0 0 15px 0;">Message Sent!</h2>
                 <p style="color: #ddd; font-size: 1.1em; line-height: 1.6; margin: 0 0 20px 0;">
                     Thank you for reaching out! I'll get back to you as soon as possible.
@@ -857,7 +857,7 @@ function showContactError(errorMsg) {
     overlay.innerHTML = `
         <div class="modal-content" style="max-width: 450px; border: 3px solid #ff6b6b; animation: modalSlideIn 0.3s ease;">
             <div style="text-align: center; padding: 20px;">
-                <div style="font-size: 4em; margin-bottom: 15px;">âŒ</div>
+                <div style="font-size: 4em; margin-bottom: 15px;">❌</div>
                 <h2 style="color: #ff6b6b; margin: 0 0 15px 0;">Failed to Send</h2>
                 <p style="color: #ddd; font-size: 1em; line-height: 1.6; margin: 0 0 10px 0;">
                     Could not send your message.

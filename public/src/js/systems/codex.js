@@ -60,7 +60,7 @@ function populateCodexUpgrades() {
     upgradesList.innerHTML = sortedUnlocks.map(unlock => {
         const isUnlocked = permanentUnlocks[unlock.id];
         const canUnlock = !isUnlocked && unlock.check();
-        return `<div class="unlock-item ${isUnlocked ? 'unlocked' : (canUnlock ? '' : 'locked')}"><div class="item-info"><div class="item-name">${unlock.name}</div><div class="item-description">${unlock.description}</div><div class="unlock-requirement">${isUnlocked ? 'âœ… UNLOCKED' : (canUnlock ? 'âœ¨ READY TO UNLOCK!' : `ðŸ”’ ${unlock.requirement}`)}</div></div>${!isUnlocked && canUnlock ? `<button class="buy-btn" onclick="unlockUpgradeWrapper('${unlock.id}')">Unlock</button>` : ''}</div>`;
+        return `<div class="unlock-item ${isUnlocked ? 'unlocked' : (canUnlock ? '' : 'locked')}"><div class="item-info"><div class="item-name">${unlock.name}</div><div class="item-description">${unlock.description}</div><div class="unlock-requirement">${isUnlocked ? '✅ UNLOCKED' : (canUnlock ? '✨ READY TO UNLOCK!' : `🔒 ${unlock.requirement}`)}</div></div>${!isUnlocked && canUnlock ? `<button class="buy-btn" onclick="unlockUpgradeWrapper('${unlock.id}')">Unlock</button>` : ''}</div>`;
     }).join('');
 }
 
@@ -70,7 +70,7 @@ function populateCodexRelics(rarityFilter = 'all') {
     
     let filteredRelics = rarityFilter === 'all' ? RELICS : RELICS.filter(r => r.rarity === rarityFilter);
     const rarityOrder = ['common', 'uncommon', 'rare', 'legendary'];
-    const rarityColors = {common: {bg: 'rgba(170, 170, 170, 0.1)', border: '#aaa', emoji: 'âšª', name: 'Common'}, uncommon: {bg: 'rgba(107, 207, 127, 0.1)', border: '#6bcf7f', emoji: 'ðŸŸ¢', name: 'Uncommon'}, rare: {bg: 'rgba(74, 158, 255, 0.1)', border: '#4a9eff', emoji: 'ðŸ”µ', name: 'Rare'}, legendary: {bg: 'rgba(255, 152, 0, 0.1)', border: '#ff9800', emoji: 'ðŸŸ ', name: 'Legendary'}};
+    const rarityColors = {common: {bg: 'rgba(170, 170, 170, 0.1)', border: '#aaa', emoji: '⚫', name: 'Common'}, uncommon: {bg: 'rgba(107, 207, 127, 0.1)', border: '#6bcf7f', emoji: '💚', name: 'Uncommon'}, rare: {bg: 'rgba(74, 158, 255, 0.1)', border: '#4a9eff', emoji: '💎', name: 'Rare'}, legendary: {bg: 'rgba(255, 152, 0, 0.1)', border: '#ff9800', emoji: '🔥', name: 'Legendary'}};
     let html = '';
     if (rarityFilter === 'all') {
         rarityOrder.forEach(rarity => {
@@ -109,7 +109,7 @@ function populateCodexAchievements() {
     
     const categories = ['bronze', 'silver', 'gold', 'platinum'];
     const tierColors = {bronze: '#cd7f32', silver: '#c0c0c0', gold: '#ffd700', platinum: '#e5e4e2'};
-    const tierIcons = {bronze: 'ðŸ¥‰', silver: 'ðŸ¥ˆ', gold: 'ðŸ¥‡', platinum: 'ðŸ’Ž'};
+    const tierIcons = {bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎'};
     let html = '';
     categories.forEach(tier => {
         const tierAchievements = ACHIEVEMENTS.filter(a => a.tier === tier);
@@ -117,7 +117,7 @@ function populateCodexAchievements() {
         html += `<div style="margin-bottom: 20px;"><h3 style="color: ${tierColors[tier]}; text-transform: uppercase; margin-bottom: 10px; font-family: 'Cinzel', serif; letter-spacing: 0.05em;">${tierIcons[tier]} ${tier} (${tierAchievements.length})</h3><div style="display: grid; gap: 8px;">`;
         tierAchievements.forEach(achievement => {
             const unlocked = unlockedIds.includes(achievement.id);
-            html += `<div style="background: ${unlocked ? 'rgba(107, 207, 127, 0.1)' : 'rgba(90, 74, 56, 0.3)'}; border: 2px solid ${unlocked ? '#6bcf7f' : '#5a4a38'}; border-radius: 6px; padding: 10px 12px; opacity: ${unlocked ? '1' : '0.6'}; transition: all 0.2s ease;" onmouseover="this.style.borderColor='${unlocked ? '#d4af37' : '#6b5a48'}'" onmouseout="this.style.borderColor='${unlocked ? '#6bcf7f' : '#5a4a38'}'"><div style="font-weight: bold; margin-bottom: 4px; color: ${unlocked ? '#6bcf7f' : '#c9a961'};">${unlocked ? 'âœ…' : 'ðŸ”’'} ${achievement.icon} ${achievement.title}</div><div style="font-size: 0.85em; color: #bbb;">${achievement.description}</div></div>`;
+            html += `<div style="background: ${unlocked ? 'rgba(107, 207, 127, 0.1)' : 'rgba(90, 74, 56, 0.3)'}; border: 2px solid ${unlocked ? '#6bcf7f' : '#5a4a38'}; border-radius: 6px; padding: 10px 12px; opacity: ${unlocked ? '1' : '0.6'}; transition: all 0.2s ease;" onmouseover="this.style.borderColor='${unlocked ? '#d4af37' : '#6b5a48'}'" onmouseout="this.style.borderColor='${unlocked ? '#6bcf7f' : '#5a4a38'}'"><div style="font-weight: bold; margin-bottom: 4px; color: ${unlocked ? '#6bcf7f' : '#c9a961'};">${unlocked ? '✅' : '🔒'} ${achievement.icon} ${achievement.title}</div><div style="font-size: 0.85em; color: #bbb;">${achievement.description}</div></div>`;
         });
         html += `</div></div>`;
     });
@@ -176,7 +176,7 @@ function filterUpgradesByStatus(status) {
     upgradesList.innerHTML = filteredUnlocks.map(unlock => {
         const isUnlocked = permanentUnlocks[unlock.id];
         const canUnlock = !isUnlocked && unlock.check();
-        return `<div class="unlock-item ${isUnlocked ? 'unlocked' : (canUnlock ? '' : 'locked')}"><div class="item-info"><div class="item-name">${unlock.name}</div><div class="item-description">${unlock.description}</div><div class="unlock-requirement">${isUnlocked ? 'âœ… UNLOCKED' : (canUnlock ? 'âœ¨ READY TO UNLOCK!' : `ðŸ”’ ${unlock.requirement}`)}</div></div>${!isUnlocked && canUnlock ? `<button class="buy-btn" onclick="unlockUpgradeWrapper('${unlock.id}')">Unlock</button>` : ''}</div>`;
+        return `<div class="unlock-item ${isUnlocked ? 'unlocked' : (canUnlock ? '' : 'locked')}"><div class="item-info"><div class="item-name">${unlock.name}</div><div class="item-description">${unlock.description}</div><div class="unlock-requirement">${isUnlocked ? '✅ UNLOCKED' : (canUnlock ? '✨ READY TO UNLOCK!' : `🔒 ${unlock.requirement}`)}</div></div>${!isUnlocked && canUnlock ? `<button class="buy-btn" onclick="unlockUpgradeWrapper('${unlock.id}')">Unlock</button>` : ''}</div>`;
     }).join('');
     
     // Update button styles
@@ -201,7 +201,7 @@ function filterAchievementsByTier(tier) {
     let filteredAchievements = tier === 'all' ? ACHIEVEMENTS : ACHIEVEMENTS.filter(a => a.tier === tier);
     
     const tierColors = {bronze: '#cd7f32', silver: '#c0c0c0', gold: '#ffd700', platinum: '#e5e4e2'};
-    const tierIcons = {bronze: 'ðŸ¥‰', silver: 'ðŸ¥ˆ', gold: 'ðŸ¥‡', platinum: 'ðŸ’Ž'};
+    const tierIcons = {bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎'};
     
     let html = '';
     
@@ -213,7 +213,7 @@ function filterAchievementsByTier(tier) {
             html += `<div style="margin-bottom: 20px;"><h3 style="color: ${tierColors[t]}; text-transform: uppercase; margin-bottom: 10px; font-family: 'Cinzel', serif; letter-spacing: 0.05em;">${tierIcons[t]} ${t} (${tierAchievements.length})</h3><div style="display: grid; gap: 8px;">`;
             tierAchievements.forEach(achievement => {
                 const unlocked = unlockedIds.includes(achievement.id);
-                html += `<div style="background: ${unlocked ? 'rgba(107, 207, 127, 0.1)' : 'rgba(90, 74, 56, 0.3)'}; border: 2px solid ${unlocked ? '#6bcf7f' : '#5a4a38'}; border-radius: 6px; padding: 10px 12px; opacity: ${unlocked ? '1' : '0.6'}; transition: all 0.2s ease;" onmouseover="this.style.borderColor='${unlocked ? '#d4af37' : '#6b5a48'}'" onmouseout="this.style.borderColor='${unlocked ? '#6bcf7f' : '#5a4a38'}'"><div style="font-weight: bold; margin-bottom: 4px; color: ${unlocked ? '#6bcf7f' : '#c9a961'};">${unlocked ? 'âœ…' : 'ðŸ”’'} ${achievement.icon} ${achievement.title}</div><div style="font-size: 0.85em; color: #bbb;">${achievement.description}</div></div>`;
+                html += `<div style="background: ${unlocked ? 'rgba(107, 207, 127, 0.1)' : 'rgba(90, 74, 56, 0.3)'}; border: 2px solid ${unlocked ? '#6bcf7f' : '#5a4a38'}; border-radius: 6px; padding: 10px 12px; opacity: ${unlocked ? '1' : '0.6'}; transition: all 0.2s ease;" onmouseover="this.style.borderColor='${unlocked ? '#d4af37' : '#6b5a48'}'" onmouseout="this.style.borderColor='${unlocked ? '#6bcf7f' : '#5a4a38'}'"><div style="font-weight: bold; margin-bottom: 4px; color: ${unlocked ? '#6bcf7f' : '#c9a961'};">${unlocked ? '✅' : '🔒'} ${achievement.icon} ${achievement.title}</div><div style="font-size: 0.85em; color: #bbb;">${achievement.description}</div></div>`;
             });
             html += `</div></div>`;
         });
@@ -221,7 +221,7 @@ function filterAchievementsByTier(tier) {
         html += '<div style="display: grid; gap: 8px;">';
         filteredAchievements.forEach(achievement => {
             const unlocked = unlockedIds.includes(achievement.id);
-            html += `<div style="background: ${unlocked ? 'rgba(107, 207, 127, 0.1)' : 'rgba(90, 74, 56, 0.3)'}; border: 2px solid ${unlocked ? '#6bcf7f' : '#5a4a38'}; border-radius: 6px; padding: 10px 12px; opacity: ${unlocked ? '1' : '0.6'}; transition: all 0.2s ease;" onmouseover="this.style.borderColor='${unlocked ? '#d4af37' : '#6b5a48'}'" onmouseout="this.style.borderColor='${unlocked ? '#6bcf7f' : '#5a4a38'}'"><div style="font-weight: bold; margin-bottom: 4px; color: ${unlocked ? '#6bcf7f' : '#c9a961'};">${unlocked ? 'âœ…' : 'ðŸ”’'} ${achievement.icon} ${achievement.title}</div><div style="font-size: 0.85em; color: #bbb;">${achievement.description}</div></div>`;
+            html += `<div style="background: ${unlocked ? 'rgba(107, 207, 127, 0.1)' : 'rgba(90, 74, 56, 0.3)'}; border: 2px solid ${unlocked ? '#6bcf7f' : '#5a4a38'}; border-radius: 6px; padding: 10px 12px; opacity: ${unlocked ? '1' : '0.6'}; transition: all 0.2s ease;" onmouseover="this.style.borderColor='${unlocked ? '#d4af37' : '#6b5a48'}'" onmouseout="this.style.borderColor='${unlocked ? '#6bcf7f' : '#5a4a38'}'"><div style="font-weight: bold; margin-bottom: 4px; color: ${unlocked ? '#6bcf7f' : '#c9a961'};">${unlocked ? '✅' : '🔒'} ${achievement.icon} ${achievement.title}</div><div style="font-size: 0.85em; color: #bbb;">${achievement.description}</div></div>`;
         });
         html += '</div>';
     }

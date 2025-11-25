@@ -96,7 +96,7 @@ export function showEventModal(event) {
                     window.earnGold(2);
                 }
                 if (typeof window.showMessage === 'function') {
-                    window.showMessage('ðŸ® Lantern: +2 gold from event!', 'info');
+                    window.showMessage('🏮 Lantern: +2 gold from event!', 'info');
                 }
             }
             
@@ -104,7 +104,7 @@ export function showEventModal(event) {
             if (game.relics.some(r => r.id === 'necklace')) {
                 game.health = Math.min(game.maxHealth, game.health + 2);
                 if (typeof window.showMessage === 'function') {
-                    window.showMessage('ðŸ“¿ Holy Necklace: +2 HP!', 'success');
+                    window.showMessage('📿 Holy Necklace: +2 HP!', 'success');
                 }
             }
             

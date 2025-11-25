@@ -199,7 +199,7 @@ if (btnWelcomeMusicToggle && typeof music !== 'undefined') {
     btnWelcomeMusicToggle.onclick = () => {
         if (music.isPlaying) {
             music.stop();
-            btnWelcomeMusicToggle.textContent = 'â–¶ï¸';
+            btnWelcomeMusicToggle.textContent = 'â?¶ï¸';
         } else {
             music.start();
             btnWelcomeMusicToggle.textContent = 'â¸ï¸';
@@ -222,7 +222,7 @@ if (btnMusicToggle && typeof music !== 'undefined') {
     btnMusicToggle.onclick = () => {
         if (music.isPlaying) {
             music.stop();
-            btnMusicToggle.textContent = 'â–¶ï¸';
+            btnMusicToggle.textContent = 'â?¶ï¸';
         } else {
             music.start();
             btnMusicToggle.textContent = 'â¸ï¸';
@@ -318,14 +318,14 @@ btnStartGameModal.onclick = () => {
     const name = sanitizePlayerName(playerNameInput.value);
     
     if (name.length < 3) {
-        nameError.textContent = 'âŒ Name must have at least 3 characters!';
+        nameError.textContent = 'â? Name must have at least 3 characters!';
         nameError.style.display = 'block';
         playerNameInput.style.borderColor = '#ff6b6b';
         playerNameInput.focus();
         return;
     }
     if (name.length > 10) {
-        nameError.textContent = 'âŒ Name must have maximum 10 characters!';
+        nameError.textContent = 'â? Name must have maximum 10 characters!';
         nameError.style.display = 'block';
         playerNameInput.style.borderColor = '#ff6b6b';
         playerNameInput.focus();
@@ -365,8 +365,8 @@ const CLASSES = {
     scoundrel: {
         name: 'SCOUNDREL',
         motivation: '"I have no honor, no glory, only survival in the dark."',
-        mechanics: '<strong>âš”ï¸ Passive:</strong> None - Pure skill and luck<br><br><strong>âœ¨ Active:</strong> None - Just you and your wits<br><br><em style="color: #8b7355; font-size: 0.9em;">This is the baseline class. Master the basics before seeking power.</em>',
-        icon: 'ğŸ­',
+        mechanics: '<strong>â??ï¸ Passive:</strong> None - Pure skill and luck<br><br><strong>â?¨ Active:</strong> None - Just you and your wits<br><br><em style="color: #8b7355; font-size: 0.9em;">This is the baseline class. Master the basics before seeking power.</em>',
+        icon: 'ğ??­',
         unlocked: true,
         unlockRequirement: 'Always available',
         passive: {},
@@ -375,8 +375,8 @@ const CLASSES = {
     knight: {
         name: 'KNIGHT',
         motivation: '"Honor and steel shall guide my path through the darkness."',
-        mechanics: '<strong>ğŸ›¡ï¸ Passive:</strong> +5 Max HP | Weapons have +1 durability<br><br><strong>âš”ï¸ Active (Shield Bash):</strong> Deal damage equal to your weapon value to the first monster in the room. Cooldown: 3 rooms.',
-        icon: 'ğŸ›¡ï¸',
+        mechanics: '<strong>ğ??¡ï¸ Passive:</strong> +5 Max HP | Weapons have +1 durability<br><br><strong>â??ï¸ Active (Shield Bash):</strong> Deal damage equal to your weapon value to the first monster in the room. Cooldown: 3 rooms.',
+        icon: 'ğ??¡ï¸',
         unlocked: false,
         unlockRequirement: 'Win on Easy difficulty',
         passive: { maxHpBonus: 5, weaponDurabilityBonus: 1 },
@@ -384,14 +384,14 @@ const CLASSES = {
             name: 'Shield Bash',
             description: 'Deal weapon damage to first monster',
             cooldown: CLASS_COOLDOWNS.WARRIOR,
-            icon: 'ğŸ›¡ï¸'
+            icon: 'ğ??¡ï¸'
         }
     },
     rogue: {
         name: 'ROGUE',
         motivation: '"In shadows I thrive, through cunning I survive."',
-        mechanics: '<strong>ğŸ—¡ï¸ Passive:</strong> Can hold 2 cards instead of 1 | Start with 1 extra gold per room<br><br><strong>ğŸ”ª Active (Shadow Strike):</strong> Next monster takes double weapon damage and doesn\'t break combo. Cooldown: 4 rooms.',
-        icon: 'ğŸ—¡ï¸',
+        mechanics: '<strong>ğ??¡ï¸ Passive:</strong> Can hold 2 cards instead of 1 | Start with 1 extra gold per room<br><br><strong>ğ??ª Active (Shadow Strike):</strong> Next monster takes double weapon damage and doesn\'t break combo. Cooldown: 4 rooms.',
+        icon: 'ğ??¡ï¸',
         unlocked: false,
         unlockRequirement: 'Win on Normal difficulty',
         passive: { maxHoldCards: 2, bonusGoldPerRoom: 1 },
@@ -399,14 +399,14 @@ const CLASSES = {
             name: 'Shadow Strike',
             description: 'Next monster: 2x damage, combo safe',
             cooldown: CLASS_COOLDOWNS.ROGUE,
-            icon: 'ğŸ”ª'
+            icon: 'ğ??ª'
         }
     },
     dancer: {
         name: 'DANCER',
         motivation: '"Grace in motion, life in every step, death in every turn."',
-        mechanics: '<strong>ğŸ’ƒ Passive:</strong> Potions heal +3 HP | Can use 2 potions per room | Higher event chance (luck)<br><br><strong>âœ¨ Active (Healing Dance):</strong> Heal 5 HP and gain +2 weapon damage for next 2 monsters. Cooldown: 5 rooms.',
-        icon: 'ğŸ’ƒ',
+        mechanics: '<strong>ğ??? Passive:</strong> Potions heal +3 HP | Can use 2 potions per room | Higher event chance (luck)<br><br><strong>â?¨ Active (Healing Dance):</strong> Heal 5 HP and gain +2 weapon damage for next 2 monsters. Cooldown: 5 rooms.',
+        icon: 'ğ???',
         unlocked: false,
         unlockRequirement: 'Win on Hard difficulty',
         passive: { potionHealBonus: 3, maxPotionsPerRoom: POTIONS.DANCER_MAX_PER_ROOM, eventChanceBonus: 15 },
@@ -414,14 +414,14 @@ const CLASSES = {
             name: 'Healing Dance',
             description: 'Heal 5 HP + damage buff',
             cooldown: CLASS_COOLDOWNS.DANCER,
-            icon: 'âœ¨'
+            icon: 'â?¨'
         }
     },
     berserker: {
         name: 'BERSERKER',
         motivation: '"Through pain I find power. Through fury I find victory."',
-        mechanics: '<strong>ğŸ’¢ Passive (Bloodlust):</strong> Damage increases as HP decreases<br>â€¢ +1 damage at â‰¤70% HP<br>â€¢ +2 damage at â‰¤50% HP<br>â€¢ +3 damage at â‰¤30% HP<br><br><strong>âš”ï¸ Active (Rage Strike):</strong> Sacrifice 5 HP for triple damage (3x) on next 3 attacks. Breaks combo. Cooldown: 4 rooms.<br><em style="color: #ff6b6b; font-size: 0.9em;">âš ï¸ Cannot use if HP â‰¤ 5</em>',
-        icon: 'ğŸ’¢',
+        mechanics: '<strong>ğ??¢ Passive (Bloodlust):</strong> Damage increases as HP decreases<br>â?¢ +1 damage at â?¤70% HP<br>â?¢ +2 damage at â?¤50% HP<br>â?¢ +3 damage at â?¤30% HP<br><br><strong>â??ï¸ Active (Rage Strike):</strong> Sacrifice 5 HP for triple damage (3x) on next 3 attacks. Breaks combo. Cooldown: 4 rooms.<br><em style="color: #ff6b6b; font-size: 0.9em;">â? ï¸ Cannot use if HP â?¤ 5</em>',
+        icon: 'ğ??¢',
         unlocked: false,
         unlockRequirement: 'Win on Hard + Kill 5 bosses total',
         passive: { bloodlust: true },
@@ -429,14 +429,14 @@ const CLASSES = {
             name: 'Rage Strike',
             description: 'Sacrifice 5 HP: 3x damage for 3 attacks, breaks combo',
             cooldown: CLASS_COOLDOWNS.BERSERKER,
-            icon: 'âš”ï¸'
+            icon: 'â??ï¸'
         }
     },
     priest: {
         name: 'PRIEST',
         motivation: '"The light protects me. The divine guides me. Chaos shall be purified."',
-        mechanics: '<strong>ğŸ•Šï¸ Passive (Divine Blessing):</strong> 15% chance to negate damage completely | Potions heal +2 HP | Start with +2 Max HP<br><br><strong>ğŸ“¿ Active (Purification):</strong> Permanently remove the strongest monster from current dungeon OR transform a monster into a potion. Cooldown: 6 rooms.<br><em style="color: #ffd700; font-size: 0.9em;">âœ¨ Strategic: Eliminate threats before facing them</em>',
-        icon: 'ğŸ“¿',
+        mechanics: '<strong>ğ???ï¸ Passive (Divine Blessing):</strong> 15% chance to negate damage completely | Potions heal +2 HP | Start with +2 Max HP<br><br><strong>ğ??¿ Active (Purification):</strong> Permanently remove the strongest monster from current dungeon OR transform a monster into a potion. Cooldown: 6 rooms.<br><em style="color: #ffd700; font-size: 0.9em;">â?¨ Strategic: Eliminate threats before facing them</em>',
+        icon: 'ğ??¿',
         unlocked: false,
         unlockRequirement: 'Collect 20 relics + 10 events + 5 wins total',
         passive: { divineBlessing: true, potionHealBonus: 2, startMaxHpBonus: 2 },
@@ -444,7 +444,7 @@ const CLASSES = {
             name: 'Purification',
             description: 'Remove strongest monster or convert to potion',
             cooldown: 6,
-            icon: 'ğŸ“¿'
+            icon: 'ğ??¿'
         }
     }
 };
@@ -524,7 +524,7 @@ function showClassSelection() {
                     z-index: 10;
                     pointer-events: none;
                 `;
-                lockOverlay.textContent = 'ğŸ”’';
+                lockOverlay.textContent = 'ğ???';
                 card.style.position = 'relative';
                 card.appendChild(lockOverlay);
             }
@@ -551,13 +551,13 @@ classCards.forEach(card => {
         // Check if locked
         if (!classData.unlocked) {
             // Show lock message
-            classSelectionTitle.textContent = classData.name + ' ğŸ”’';
+            classSelectionTitle.textContent = classData.name + ' ğ???';
             classSelectionSubtitle.textContent = 'LOCKED';
             classDescTitle.textContent = classData.name + ' (LOCKED)';
             classDescMotivation.textContent = '';
             classDescMechanics.innerHTML = `
                 <div style="text-align: center; padding: 20px;">
-                    <div style="font-size: 3em; margin-bottom: 15px;">ğŸ”’</div>
+                    <div style="font-size: 3em; margin-bottom: 15px;">ğ???</div>
                     <div style="color: #ff6b6b; font-weight: bold; font-size: 1.2em; margin-bottom: 10px;">
                         CLASS LOCKED
                     </div>
@@ -643,7 +643,7 @@ btnOpenShop.onclick = openShop;
 if (btnTopGiveUp && giveUpModal && btnCancelGiveUp && btnConfirmGiveUp) {
     btnTopGiveUp.addEventListener('click', function() {
         if (game.gameOver || game.gameStartTime === 0) {
-            showMessage('âš ï¸ Start a game first!', 'warning');
+            showMessage('â? ï¸ Start a game first!', 'warning');
             return;
         }
         giveUpModal.classList.add('active');
@@ -659,7 +659,7 @@ if (btnTopGiveUp && giveUpModal && btnCancelGiveUp && btnConfirmGiveUp) {
     });
     
 } else {
-    console.error('âŒ Give Up elements not found:', {
+    console.error('â? Give Up elements not found:', {
         btnTopGiveUp: !!btnTopGiveUp,
         giveUpModal: !!giveUpModal,
         btnCancelGiveUp: !!btnCancelGiveUp,
@@ -810,16 +810,16 @@ game.stats = {
 
 // Special Cards Types
 const specialCards = [
-    { id: 'dodge', name: 'ğŸ›¡ï¸ Dodge', description: 'Avoid next damage', effect: () => { game.dodgeActive = true; showMessage('ğŸ›¡ï¸ Dodge active!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#4ecdc4', 20); } },
-    { id: 'double_damage', name: 'âš¡ Power', description: 'Weapon 2x stronger', effect: () => { game.doubleDamage = true; showMessage('âš¡ Power Strike!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 25); } },
-    { id: 'super_heal', name: 'ğŸ’Š Super Potion', description: 'Heal to full HP', effect: () => { const healed = game.maxHealth - game.health; game.health = game.maxHealth; showDamageNumber(healed, 'heal'); showMessage('ğŸ’Š HP Full!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#6bcf7f', 30); } },
-    { id: 'treasure', name: 'ğŸ’° Treasure', description: '+5 Max HP', effect: () => { game.maxHealth += SPECIAL_CARDS.TREASURE_MAX_HP_BONUS; game.health += SPECIAL_CARDS.TREASURE_MAX_HP_BONUS; showDamageNumber('+5 MAX', 'heal'); showMessage('ğŸ’° Max HP increased!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 35); } },
+    { id: 'dodge', name: 'ğ??¡ï¸ Dodge', description: 'Avoid next damage', effect: () => { game.dodgeActive = true; showMessage('ğ??¡ï¸ Dodge active!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#4ecdc4', 20); } },
+    { id: 'double_damage', name: 'â?¡ Power', description: 'Weapon 2x stronger', effect: () => { game.doubleDamage = true; showMessage('â?¡ Power Strike!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 25); } },
+    { id: 'super_heal', name: 'ğ??? Super Potion', description: 'Heal to full HP', effect: () => { const healed = game.maxHealth - game.health; game.health = game.maxHealth; showDamageNumber(healed, 'heal'); showMessage('ğ??? HP Full!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#6bcf7f', 30); } },
+    { id: 'treasure', name: 'ğ??° Treasure', description: '+5 Max HP', effect: () => { game.maxHealth += SPECIAL_CARDS.TREASURE_MAX_HP_BONUS; game.health += SPECIAL_CARDS.TREASURE_MAX_HP_BONUS; showDamageNumber('+5 MAX', 'heal'); showMessage('ğ??° Max HP increased!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 35); } },
     
-    // ğŸ†• NOVAS CARTAS ESPECIAIS
-    { id: 'berserk_card', name: 'ğŸ”¥ Berserk', description: 'Next 3 attacks +5 damage', effect: () => { 
+    // ğ??? NOVAS CARTAS ESPECIAIS
+    { id: 'berserk_card', name: 'ğ??¥ Berserk', description: 'Next 3 attacks +5 damage', effect: () => { 
         // Hourglass: +1 extra berserk turn
         game.berserkStacks = game.relics.some(r => r.id === 'hourglass') ? SPECIAL_CARDS.BERSERK_HOURGLASS_STACKS : SPECIAL_CARDS.BERSERK_DEFAULT_STACKS; 
-        showMessage('ğŸ”¥ BERSERK MODE! Next 3 attacks +5 damage!', 'success'); 
+        showMessage('ğ??¥ BERSERK MODE! Next 3 attacks +5 damage!', 'success'); 
         playSound('special');
         createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 40);
         
@@ -847,28 +847,28 @@ const specialCards = [
             showMessage('â° Time Warp! Not enough cards in deck!', 'warning');
         }
     } },
-    { id: 'card_destroy', name: 'ğŸ’¥ Obliterate', description: 'Remove a card permanently', effect: () => {
+    { id: 'card_destroy', name: 'ğ??¥ Obliterate', description: 'Remove a card permanently', effect: () => {
         if (game.room.length > 0) {
-            showMessage('ğŸ’¥ Choose a card to OBLITERATE (left-click)!', 'warning');
+            showMessage('ğ??¥ Choose a card to OBLITERATE (left-click)!', 'warning');
             game.obliterateMode = true;
             playSound('special');
             createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 35);
         } else {
-            showMessage('ğŸ’¥ No cards to obliterate!', 'warning');
+            showMessage('ğ??¥ No cards to obliterate!', 'warning');
         }
     } },
-    { id: 'gamble', name: 'ğŸ° Gamble', description: '50% chance: +15 HP or -10 HP', effect: () => {
+    { id: 'gamble', name: 'ğ??° Gamble', description: '50% chance: +15 HP or -10 HP', effect: () => {
         const win = Math.random() < 0.5;
         if (win) {
             const heal = Math.min(15, game.maxHealth - game.health);
             game.health = Math.min(game.maxHealth, game.health + 15);
             showDamageNumber(heal, 'heal');
-            showMessage('ğŸ° JACKPOT! +15 HP!', 'success');
+            showMessage('ğ??° JACKPOT! +15 HP!', 'success');
             createParticles(window.innerWidth / 2, window.innerHeight / 2, '#6bcf7f', 50);
         } else {
             game.health -= 10;
             showDamageNumber(10, 'damage');
-            showMessage('ğŸ° Bad luck... -10 HP!', 'danger');
+            showMessage('ğ??° Bad luck... -10 HP!', 'danger');
             screenShake();
             createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 30);
         }
@@ -881,7 +881,7 @@ const specialCards = [
         lifetimeStats.gambleCards = (lifetimeStats.gambleCards || 0) + 1;
         localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
     } },
-    { id: 'lucky_draw', name: 'ğŸ² Lucky Draw', description: 'Draw 3 cards with favorable odds', effect: () => {
+    { id: 'lucky_draw', name: 'ğ??² Lucky Draw', description: 'Draw 3 cards with favorable odds', effect: () => {
         // BALANCED: Draw exactly 3 cards with controlled probabilities
         // 40% potion, 40% weapon, 20% monster (much better than random!)
         const drawnCards = [];
@@ -927,7 +927,7 @@ const specialCards = [
         const weaponCount = drawnCards.filter(c => c.suitName === 'diamonds').length;
         const potionCount = drawnCards.filter(c => c.suitName === 'hearts').length;
         
-        showMessage(`ğŸ² Lucky Draw! Drew ${drawnCards.length} cards (${weaponCount}âš”ï¸ ${potionCount}â¤ï¸)`, 'success');
+        showMessage(`ğ??² Lucky Draw! Drew ${drawnCards.length} cards (${weaponCount}â??ï¸ ${potionCount}â¤ï¸)`, 'success');
         earnGold(5);
         
         playSound('cardDraw');
@@ -937,7 +937,7 @@ const specialCards = [
 ];
 
 // Card suits and values
-const suits = {'â™ ': 'spades', 'â™£': 'clubs', 'â™¥': 'hearts', 'â™¦': 'diamonds'};
+const suits = {'â? ': 'spades', 'â?£': 'clubs', 'â?¥': 'hearts', 'â?¦': 'diamonds'};
 const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 // ===== 50 ACHIEVEMENTS SYSTEM =====
@@ -1225,7 +1225,7 @@ function useClassAbility() {
     
     // Scoundrel has no ability
     if (!game.classData.active) {
-        showMessage('âŒ Scoundrel has no special abilities!', 'warning');
+        showMessage('â? Scoundrel has no special abilities!', 'warning');
         playSound('error');
         return;
     }
@@ -1256,14 +1256,14 @@ function useClassAbility() {
 function useKnightAbility() {
     // Shield Bash: Deal weapon damage to first monster
     if (!game.equippedWeapon) {
-        showMessage('âš ï¸ Need a weapon equipped to use Shield Bash!', 'warning');
+        showMessage('â? ï¸ Need a weapon equipped to use Shield Bash!', 'warning');
         playSound('error');
         return;
     }
     
     const firstMonster = game.room.find(c => getCardType(c) === 'monster');
     if (!firstMonster) {
-        showMessage('âš ï¸ No monsters in room!', 'warning');
+        showMessage('â? ï¸ No monsters in room!', 'warning');
         playSound('error');
         return;
     }
@@ -1283,9 +1283,9 @@ function useKnightAbility() {
             earnGold(1);
         }
 
-        showMessage(`ğŸ›¡ï¸ Shield Bash! Monster defeated!`, 'success');
+        showMessage(`ğ??¡ï¸ Shield Bash! Monster defeated!`, 'success');
     } else {
-        showMessage(`ğŸ›¡ï¸ Shield Bash! Dealt ${damage} damage! (${firstMonster.numValue} HP left)`, 'success');
+        showMessage(`ğ??¡ï¸ Shield Bash! Dealt ${damage} damage! (${firstMonster.numValue} HP left)`, 'success');
     }
     
     game.classAbilityCooldown = game.classData.active.cooldown;
@@ -1301,7 +1301,7 @@ function useRogueAbility() {
     game.classAbilityCounter = 1; // Next monster only
     game.classAbilityCooldown = game.classData.active.cooldown;
     
-    showMessage('ğŸ”ª Shadow Strike activated! Next kill: 2x damage, combo safe!', 'success');
+    showMessage('ğ??ª Shadow Strike activated! Next kill: 2x damage, combo safe!', 'success');
     playSound('special');
     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#667eea', 40);
     updateUI();
@@ -1314,7 +1314,7 @@ function useDancerAbility() {
     game.classAbilityCounter = 2; // Next 2 monsters
     game.classAbilityCooldown = game.classData.active.cooldown;
     
-    showMessage('âœ¨ Healing Dance! +5 HP and damage buff for 2 attacks!', 'success');
+    showMessage('â?¨ Healing Dance! +5 HP and damage buff for 2 attacks!', 'success');
     playSound('heal');
     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 50);
     updateUI();
@@ -1323,7 +1323,7 @@ function useDancerAbility() {
 function useBerserkerAbility() {
     // Rage Strike: Sacrifice 5 HP for 3x damage
     if (game.health <= HEALTH.CRITICAL_THRESHOLD) {
-        showMessage(`âš ï¸ Not enough HP! Need more than ${HEALTH.CRITICAL_THRESHOLD} HP to use Rage Strike.`, 'danger');
+        showMessage(`â? ï¸ Not enough HP! Need more than ${HEALTH.CRITICAL_THRESHOLD} HP to use Rage Strike.`, 'danger');
         playSound('error');
         return;
     }
@@ -1339,10 +1339,10 @@ function useBerserkerAbility() {
     
     // Break combo (high risk)
     if (game.combo > 0) {
-        showMessage(`ğŸ’¢ Rage Strike! -5 HP, next attack: 3x damage! âš ï¸ Combo broken! (Lost ${game.combo}x)`, 'warning');
+        showMessage(`ğ??¢ Rage Strike! -5 HP, next attack: 3x damage! â? ï¸ Combo broken! (Lost ${game.combo}x)`, 'warning');
         game.combo = 0;
     } else {
-        showMessage('ğŸ’¢ Rage Strike! -5 HP, next attack: 3x damage!', 'warning');
+        showMessage('ğ??¢ Rage Strike! -5 HP, next attack: 3x damage!', 'warning');
     }
     
     playSound('special');
@@ -1356,7 +1356,7 @@ function usePriestAbility() {
     const monsters = game.dungeon.filter(c => getCardType(c) === 'monster');
     
     if (monsters.length === 0) {
-        showMessage('âš ï¸ No monsters in dungeon to purify!', 'warning');
+        showMessage('â? ï¸ No monsters in dungeon to purify!', 'warning');
         playSound('error');
         return;
     }
@@ -1368,11 +1368,11 @@ function usePriestAbility() {
     
     // Ask player what to do
     const choice = confirm(
-        `ğŸ“¿ PURIFICATION\n\n` +
+        `ğ??¿ PURIFICATION\n\n` +
         `Strongest monster: ${strongestMonster.value}${strongestMonster.suit} (${strongestMonster.numValue} HP)\n\n` +
         `Choose:\n` +
-        `â€¢ OK = Remove permanently\n` +
-        `â€¢ Cancel = Transform into potion`
+        `â?¢ OK = Remove permanently\n` +
+        `â?¢ Cancel = Transform into potion`
     );
     
     const index = game.dungeon.indexOf(strongestMonster);
@@ -1380,17 +1380,17 @@ function usePriestAbility() {
     if (choice) {
         // Remove permanently
         game.dungeon.splice(index, 1);
-        showMessage(`ğŸ“¿ Purification! ${strongestMonster.value}${strongestMonster.suit} removed from existence!`, 'success');
+        showMessage(`ğ??¿ Purification! ${strongestMonster.value}${strongestMonster.suit} removed from existence!`, 'success');
     } else {
         // Transform to potion (random value 2-10)
         const potionValue = Math.floor(Math.random() * 9) + 2;
         game.dungeon[index] = {
             value: potionValue.toString(),
-            suit: 'â™¥',
+            suit: 'â?¥',
             numValue: potionValue,
             suitName: 'hearts'
         };
-        showMessage(`ğŸ“¿ Purification! ${strongestMonster.value}${strongestMonster.suit} transformed into ${potionValue}â™¥ potion!`, 'success');
+        showMessage(`ğ??¿ Purification! ${strongestMonster.value}${strongestMonster.suit} transformed into ${potionValue}â?¥ potion!`, 'success');
     }
     
     game.classAbilityCooldown = game.classData.active.cooldown;
@@ -1432,7 +1432,7 @@ function updateAbilityUI() {
     
     // Show active buff
     if (game.classAbilityActive && game.classAbilityCounter > 0) {
-        desc.innerHTML = `<strong style="color: #6bcf7f;">âœ¨ ACTIVE! ${game.classAbilityCounter} uses left</strong>`;
+        desc.innerHTML = `<strong style="color: #6bcf7f;">â?¨ ACTIVE! ${game.classAbilityCounter} uses left</strong>`;
     } else {
         desc.textContent = game.classData.active.description;
     }
@@ -1444,13 +1444,13 @@ function generateTooltip(card) {
     
     // Obliterate mode
     if (game.obliterateMode) {
-        return `<span class="tooltip-negative">ğŸ’¥ OBLITERATE: Remove this card permanently!</span>`;
+        return `<span class="tooltip-negative">ğ??¥ OBLITERATE: Remove this card permanently!</span>`;
     }
     
     // Boss special tooltip
     if (card.isBoss) {
         const bossName = card.bossName || 'Boss';
-        return `<span class="tooltip-negative">ğŸ‘¹ <strong>${bossName}</strong> - ${card.numValue}/${card.maxHP || card.numValue} HP<br>${card.bossFlavor || 'Defeat this boss to continue!'}</span>`;
+        return `<span class="tooltip-negative">ğ??¹ <strong>${bossName}</strong> - ${card.numValue}/${card.maxHP || card.numValue} HP<br>${card.bossFlavor || 'Defeat this boss to continue!'}</span>`;
     }
     
     const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
@@ -1484,49 +1484,49 @@ function generateTooltip(card) {
         }
 
         if (baseWeapon === 0) {
-            return `<span class="tooltip-negative">âš ï¸ No weapon! Damage: -${card.numValue} HP</span>`;
+            return `<span class="tooltip-negative">â? ï¸ No weapon! Damage: -${card.numValue} HP</span>`;
         }
         
         let actualDamage = card.numValue - effectiveWeapon;
         
         // Add info about active buffs
         let buffInfo = '';
-        if (game.berserkStacks > 0) buffInfo += `ğŸ”¥+${berserkBonus} `;
-        if (comboBonus > 0) buffInfo += `ğŸ”¥ğŸ”¥+${comboBonus} `;
-        if (game.doubleDamage) buffInfo += `âš¡2x `;
-        if (game.mirrorShield > 0) buffInfo += `ğŸª${game.mirrorShield} `;
-        if (classBonus > 0) buffInfo += `ğŸ’ƒ+${classBonus} `;
-        if (bloodlustBonus > 0) buffInfo += `ğŸ’¢+${bloodlustBonus} `;
-        if (game.classAbilityActive && game.classAbilityCounter > 0 && game.playerClass === 'rogue') buffInfo += `ğŸ”ª2x `;
-        if (game.rageStrikeActive && game.classAbilityCounter > 0) buffInfo += `âš”ï¸3x `;
+        if (game.berserkStacks > 0) buffInfo += `ğ??¥+${berserkBonus} `;
+        if (comboBonus > 0) buffInfo += `ğ??¥ğ??¥+${comboBonus} `;
+        if (game.doubleDamage) buffInfo += `â?¡2x `;
+        if (game.mirrorShield > 0) buffInfo += `ğ?ª?${game.mirrorShield} `;
+        if (classBonus > 0) buffInfo += `ğ???+${classBonus} `;
+        if (bloodlustBonus > 0) buffInfo += `ğ??¢+${bloodlustBonus} `;
+        if (game.classAbilityActive && game.classAbilityCounter > 0 && game.playerClass === 'rogue') buffInfo += `ğ??ª2x `;
+        if (game.rageStrikeActive && game.classAbilityCounter > 0) buffInfo += `â??ï¸3x `;
         
-        if (game.dodgeActive) return `<span class="tooltip-positive">ğŸ›¡ï¸ Dodge: No damage! ${buffInfo}</span>`;
+        if (game.dodgeActive) return `<span class="tooltip-positive">ğ??¡ï¸ Dodge: No damage! ${buffInfo}</span>`;
         
         if (game.mirrorShield > 0 && actualDamage > 0) {
             const reflected = Math.min(actualDamage, game.mirrorShield);
             const remaining = actualDamage - reflected;
             if (remaining <= 0) {
-                return `<span class="tooltip-positive">ğŸª Mirror blocks all! ${buffInfo}</span>`;
+                return `<span class="tooltip-positive">ğ?ª? Mirror blocks all! ${buffInfo}</span>`;
             } else {
-                return `<span class="tooltip-warning">ğŸª Mirror -${reflected}, Take -${remaining} ${buffInfo}</span>`;
+                return `<span class="tooltip-warning">ğ?ª? Mirror -${reflected}, Take -${remaining} ${buffInfo}</span>`;
             }
         }
         
-        if (actualDamage > 0) return `<span class="tooltip-negative">âš”ï¸ Fight: -${actualDamage} HP ${buffInfo}</span>`;
-        else return `<span class="tooltip-positive">âš”ï¸ Perfect! No damage! ${buffInfo}</span>`;
+        if (actualDamage > 0) return `<span class="tooltip-negative">â??ï¸ Fight: -${actualDamage} HP ${buffInfo}</span>`;
+        else return `<span class="tooltip-positive">â??ï¸ Perfect! No damage! ${buffInfo}</span>`;
         
     } else if (type === 'weapon') {
         const current = (game.equippedWeapon?.numValue || 0) + powerBonus;
         const cardValue = card.numValue + powerBonus;
 
-        if (cardValue > current) return `<span class="tooltip-positive">â¬†ï¸ Better Weapon! (${current} â†’ ${cardValue})</span>`;
-        else if (cardValue < current) return `<span class="tooltip-negative">â¬‡ï¸ Worse Weapon (${current} â†’ ${cardValue})</span>`;
-        else return `<span class="tooltip-neutral">â†”ï¸ Same Weapon (${cardValue})</span>`;
+        if (cardValue > current) return `<span class="tooltip-positive">â¬?ï¸ Better Weapon! (${current} â?? ${cardValue})</span>`;
+        else if (cardValue < current) return `<span class="tooltip-negative">â¬?ï¸ Worse Weapon (${current} â?? ${cardValue})</span>`;
+        else return `<span class="tooltip-neutral">â??ï¸ Same Weapon (${cardValue})</span>`;
         
     } else if (type === 'potion') {
         const maxPotions = (game.classData && game.classData.passive.maxPotionsPerRoom) || 1;
         if (game.potionsUsed >= maxPotions) {
-            return `<span class="tooltip-negative">âŒ Potion limit reached (${maxPotions}/${maxPotions})</span>`;
+            return `<span class="tooltip-negative">â? Potion limit reached (${maxPotions}/${maxPotions})</span>`;
         }
         
         const healBonus = getRelicBonus('healBonus');
@@ -1536,13 +1536,13 @@ function generateTooltip(card) {
 
         if (heal > 0) {
             let bonusText = totalHealBonus > 0 ? ` (+${totalHealBonus} bonus)` : '';
-            return `<span class="tooltip-positive">ğŸ’š Heal: +${heal} HP${bonusText}</span>`;
+            return `<span class="tooltip-positive">ğ??? Heal: +${heal} HP${bonusText}</span>`;
         } else {
-            return `<span class="tooltip-neutral">ğŸ’š HP Full</span>`;
+            return `<span class="tooltip-neutral">ğ??? HP Full</span>`;
         }
         
     } else if (card.special) {
-        return `<span class="tooltip-positive">âœ¨ ${card.special.description}</span>`;
+        return `<span class="tooltip-positive">â?¨ ${card.special.description}</span>`;
     }
     return '';
 }
@@ -1625,12 +1625,12 @@ function createDeck() {
     let deck = [];
     
     // SCOUNDREL ORIGINAL RULES:
-    // Remove: Jokers, Red Face Cards (Jâ™¥,Qâ™¥,Kâ™¥,Jâ™¦,Qâ™¦,Kâ™¦), Red Aces (Aâ™¥,Aâ™¦)
+    // Remove: Jokers, Red Face Cards (Jâ?¥,Qâ?¥,Kâ?¥,Jâ?¦,Qâ?¦,Kâ?¦), Red Aces (Aâ?¥,Aâ?¦)
     
-    // 26 MONSTERS (â™  Spades + â™£ Clubs): A(14), 2-10, J(11), Q(12), K(13)
+    // 26 MONSTERS (â?  Spades + â?£ Clubs): A(14), 2-10, J(11), Q(12), K(13)
     const monsterSuits = [
-        { suit: 'â™ ', suitName: 'spades' },
-        { suit: 'â™£', suitName: 'clubs' }
+        { suit: 'â? ', suitName: 'spades' },
+        { suit: 'â?£', suitName: 'clubs' }
     ];
     const monsterValues = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
     const monsterNumValues = [14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
@@ -1646,27 +1646,27 @@ function createDeck() {
         }
     }
     
-    // 9 WEAPONS (â™¦ Diamonds): 2-10 only (NO face cards, NO Ace)
+    // 9 WEAPONS (â?¦ Diamonds): 2-10 only (NO face cards, NO Ace)
     const weaponValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
     const weaponNumValues = [2, 3, 4, 5, 6, 7, 8, 9, 10];
     
     for (let i = 0; i < weaponValues.length; i++) {
         deck.push({ 
             value: weaponValues[i], 
-            suit: 'â™¦', 
+            suit: 'â?¦', 
             numValue: weaponNumValues[i], 
             suitName: 'diamonds' 
         });
     }
     
-    // 9 POTIONS (â™¥ Hearts): 2-10 only (NO face cards, NO Ace)
+    // 9 POTIONS (â?¥ Hearts): 2-10 only (NO face cards, NO Ace)
     const potionValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
     const potionNumValues = [2, 3, 4, 5, 6, 7, 8, 9, 10];
     
     for (let i = 0; i < potionValues.length; i++) {
         deck.push({ 
             value: potionValues[i], 
-            suit: 'â™¥', 
+            suit: 'â?¥', 
             numValue: potionNumValues[i], 
             suitName: 'hearts' 
         });
@@ -1683,7 +1683,7 @@ function createDeck() {
     if (game.relics.some(r => r.id === 'orb')) specialCount += 6;
     for (let i = 0; i < specialCount; i++) {
         deck.push({ 
-            value: 'âœ¨', 
+            value: 'â?¨', 
             suit: '', 
             numValue: 0, 
             suitName: 'special', 
@@ -1830,24 +1830,24 @@ function startGame() {
         const passiveIcons = {
             knight: [
                 { icon: 'â¤ï¸', text: '+5 HP', title: 'Start with +5 Max HP' },
-                { icon: 'ğŸ”¨', text: '+1 Dur', title: 'Weapons last +1 use' }
+                { icon: 'ğ??¨', text: '+1 Dur', title: 'Weapons last +1 use' }
             ],
             rogue: [
-                { icon: 'ğŸ“Œ', text: 'x2 Hold', title: 'Can hold 2 cards' },
-                { icon: 'ğŸ’°', text: '+1 Gold', title: '+1 gold per room' }
+                { icon: 'ğ???', text: 'x2 Hold', title: 'Can hold 2 cards' },
+                { icon: 'ğ??°', text: '+1 Gold', title: '+1 gold per room' }
             ],
             dancer: [
-                { icon: 'ğŸ’Š', text: '+3 HP', title: 'Potions heal +3 HP' },
-                { icon: 'ğŸ’Š', text: 'x2 Use', title: 'Use 2 potions per room' },
-                { icon: 'ğŸ²', text: '+15%', title: '+15% event chance' }
+                { icon: 'ğ???', text: '+3 HP', title: 'Potions heal +3 HP' },
+                { icon: 'ğ???', text: 'x2 Use', title: 'Use 2 potions per room' },
+                { icon: 'ğ??²', text: '+15%', title: '+15% event chance' }
             ],
             berserker: [
-                { icon: 'ğŸ’¢', text: 'Bloodlust', title: 'Damage increases as HP decreases' },
-                { icon: 'âš”ï¸', text: 'High Risk', title: '+1/+2/+3 damage at â‰¤70%/50%/30% HP' }
+                { icon: 'ğ??¢', text: 'Bloodlust', title: 'Damage increases as HP decreases' },
+                { icon: 'â??ï¸', text: 'High Risk', title: '+1/+2/+3 damage at â?¤70%/50%/30% HP' }
             ],
             priest: [
-                { icon: 'ğŸ•Šï¸', text: '15% Dodge', title: '15% chance to dodge damage' },
-                { icon: 'ğŸ’Š', text: '+2 HP', title: 'Potions heal +2 HP' },
+                { icon: 'ğ???ï¸', text: '15% Dodge', title: '15% chance to dodge damage' },
+                { icon: 'ğ???', text: '+2 HP', title: 'Potions heal +2 HP' },
                 { icon: 'â¤ï¸', text: '+2 HP', title: 'Start with +2 Max HP' }
             ]
         };
@@ -1989,8 +1989,8 @@ let inGameTutorialStep = 0;
 const IN_GAME_TUTORIAL_STEPS = [
     {
         id: 'welcome',
-        title: 'ğŸ´ Welcome to Dungeon Scoundrel!',
-        text: 'Your Quest Begins!\n\nYou are a SCOUNDREL exploring dark medieval dungeons filled with monsters, treasures, and ancient relics.\n\nğŸ¯ GOAL: Clear all cards from the dungeon deck without dying!',
+        title: 'ğ??´ Welcome to Dungeon Scoundrel!',
+        text: 'Your Quest Begins!\n\nYou are a SCOUNDREL exploring dark medieval dungeons filled with monsters, treasures, and ancient relics.\n\nğ??¯ GOAL: Clear all cards from the dungeon deck without dying!',
         visual: null, // No visual for in-game tutorial
         highlight: null,
         position: 'center',
@@ -2000,14 +2000,14 @@ const IN_GAME_TUTORIAL_STEPS = [
     {
         id: 'health',
         title: 'â¤ï¸ Your Health',
-        text: 'This is your HP. If it reaches 0, game over! Heal with potions (â™¥ Hearts) and avoid damage.',
+        text: 'This is your HP. If it reaches 0, game over! Heal with potions (â?¥ Hearts) and avoid damage.',
         highlight: '#health',
         position: 'top-right',
         buttonText: 'Got it!'
     },
     {
         id: 'gold',
-        title: 'ğŸ’° Gold',
+        title: 'ğ??° Gold',
         text: 'You earn gold by clearing rooms. Save it to buy items that will help you survive!',
         highlight: '#goldAmount',
         position: 'top-right',
@@ -2015,24 +2015,24 @@ const IN_GAME_TUTORIAL_STEPS = [
     },
     {
         id: 'weapon',
-        title: 'âš”ï¸ Weapons',
-        text: 'You need a weapon to fight monsters! Equip weapons (â™¦ Diamonds) from the cards you draw.',
+        title: 'â??ï¸ Weapons',
+        text: 'You need a weapon to fight monsters! Equip weapons (â?¦ Diamonds) from the cards you draw.',
         highlight: '#equippedWeapon',
         position: 'bottom',
         buttonText: 'Next'
     },
     {
         id: 'codex',
-        title: 'ğŸ“– Codex (Relics & Upgrades)',
-        text: 'Click the ğŸ“– RELICS button at the top to see all relics and permanent upgrades!\n\nRelics give you powerful passive bonuses. Upgrades make you stronger for all future runs. Unlock them by completing challenges!',
+        title: 'ğ??? Codex (Relics & Upgrades)',
+        text: 'Click the ğ??? RELICS button at the top to see all relics and permanent upgrades!\n\nRelics give you powerful passive bonuses. Upgrades make you stronger for all future runs. Unlock them by completing challenges!',
         highlight: '#btnTopRelics',
         position: 'top',
         buttonText: 'Got it!'
     },
     {
         id: 'score',
-        title: 'ğŸ† Score System',
-        text: 'Your SCORE is the ultimate challenge! Points are earned by:\n\nâ€¢ Defeating monsters\nâ€¢ Finding relics\nâ€¢ Clearing rooms quickly\nâ€¢ Avoiding damage\n\nCompete for the highest score! Can you master the dungeon?',
+        title: 'ğ?? Score System',
+        text: 'Your SCORE is the ultimate challenge! Points are earned by:\n\nâ?¢ Defeating monsters\nâ?¢ Finding relics\nâ?¢ Clearing rooms quickly\nâ?¢ Avoiding damage\n\nCompete for the highest score! Can you master the dungeon?',
         highlight: '#mainScoreDisplay',
         position: 'bottom',
         buttonText: 'I\'ll Do My Best!'
@@ -2040,7 +2040,7 @@ const IN_GAME_TUTORIAL_STEPS = [
     // === MEIO DA TELA (Middle elements) ===
     {
         id: 'merchant',
-        title: 'ğŸº Merchant',
+        title: 'ğ?º Merchant',
         text: 'Click the MERCHANT button to buy healing potions, weapons, and powerful relics. Spend your gold wisely to survive the dungeon!',
         highlight: '#btnOpenShop',
         position: 'top-right',
@@ -2048,7 +2048,7 @@ const IN_GAME_TUTORIAL_STEPS = [
     },
     {
         id: 'held_card',
-        title: 'âœ‹ Held Cards (Unique Mechanic!)',
+        title: 'â?? Held Cards (Unique Mechanic!)',
         text: 'Right-click a card to HOLD it! This is a unique mechanic in Dungeon Scoundrel.\n\nHeld cards are saved for later and won\'t clutter your room. Perfect for saving strong weapons or potions for when you really need them!',
         highlight: '#holdAreaContainer',
         position: 'left',
@@ -2057,27 +2057,27 @@ const IN_GAME_TUTORIAL_STEPS = [
     // === BAIXO DA TELA (Bottom elements - game start) ===
     {
         id: 'draw',
-        title: 'ğŸ² Drawing Rooms',
+        title: 'ğ??² Drawing Rooms',
         text: 'Click "Draw Room" to draw 4 cards. Each room is a new challenge!',
         highlight: '#btnDrawRoom',
         position: 'top',
         buttonText: 'Draw My First Room!',
         action: () => {
-            // Directly call drawRoom to draw the first hand of cards
-            drawRoom();
+            // Auto-click draw room
+            document.getElementById('btnDrawRoom').click();
         }
     },
     {
         id: 'cards',
-        title: 'ğŸƒ Understanding Cards',
-        text: 'â™ ï¸â™£ï¸ = Monsters (damage you)\nâ™¦ï¸ = Weapons (equip to fight)\nâ™¥ï¸ = Potions (heal you)\nâœ¨ = Special (powerful effects)',
+        title: 'ğ?? Understanding Cards',
+        text: 'â? ï¸â?£ï¸ = Monsters (damage you)\nâ?¦ï¸ = Weapons (equip to fight)\nâ?¥ï¸ = Potions (heal you)\nâ?¨ = Special (powerful effects)',
         highlight: '#room',
         position: 'top',
         buttonText: 'I Understand!'
     },
     {
         id: 'combat',
-        title: 'âš”ï¸ Combat Basics',
+        title: 'â??ï¸ Combat Basics',
         text: 'Click a MONSTER card to attack it! Your weapon damage is subtracted from the monster\'s HP. If the monster has more HP than your weapon, you take the difference as damage.',
         highlight: '#room',
         position: 'top',
@@ -2086,7 +2086,7 @@ const IN_GAME_TUTORIAL_STEPS = [
     // === FINAL (Strategy & Finish) ===
     {
         id: 'strategy',
-        title: 'ğŸ§  Strategy Tips',
+        title: 'ğ?§  Strategy Tips',
         text: '1. Always equip a weapon first!\n2. Use potions when HP is low\n3. Save strong weapons for tough monsters\n4. Clear the room before drawing a new one\n5. Use held cards wisely!',
         highlight: null,
         position: 'center',
@@ -2094,7 +2094,7 @@ const IN_GAME_TUTORIAL_STEPS = [
     },
     {
         id: 'finish',
-        title: 'ğŸ† You\'re Ready!',
+        title: 'ğ?? You\'re Ready!',
         text: 'That\'s all you need to know! The dungeon is yours to conquer. Good luck, Scoundrel!',
         highlight: null,
         position: 'center',
@@ -2201,10 +2201,10 @@ function showTutorialStep(step) {
                 targetElement.classList.add('tutorial-highlighted');
                 
             } else {
-                console.warn('[TUTORIAL] âš ï¸ Element not visible (0 dimensions):', step.highlight);
+                console.warn('[TUTORIAL] â? ï¸ Element not visible (0 dimensions):', step.highlight);
             }
         } else {
-            console.warn('[TUTORIAL] âš ï¸ Element not found:', step.highlight);
+            console.warn('[TUTORIAL] â? ï¸ Element not found:', step.highlight);
         }
     }
     
@@ -2235,19 +2235,19 @@ function showTutorialStep(step) {
         visualHTML = `
             <div style="display: flex; gap: 12px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
                 <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #8b4513; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center;">
-                    <div style="font-size: 2em;">Kâ™ </div>
+                    <div style="font-size: 2em;">Kâ? </div>
                     <div style="font-size: 0.7em; color: #aaa; margin-top: 4px;">Monster</div>
                 </div>
                 <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #8b4513; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center;">
-                    <div style="font-size: 2em; color: #ff6b6b;">10â™¦</div>
+                    <div style="font-size: 2em; color: #ff6b6b;">10â?¦</div>
                     <div style="font-size: 0.7em; color: #aaa; margin-top: 4px;">Weapon</div>
                 </div>
                 <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #8b4513; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center;">
-                    <div style="font-size: 2em; color: #ff6b6b;">7â™¥</div>
+                    <div style="font-size: 2em; color: #ff6b6b;">7â?¥</div>
                     <div style="font-size: 0.7em; color: #aaa; margin-top: 4px;">Potion</div>
                 </div>
                 <div class="card" style="background: linear-gradient(135deg, #1a1410 0%, #2d2520 100%); border: 2px solid #ffd700; padding: 12px; border-radius: 8px; min-width: 70px; text-align: center; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);">
-                    <div style="font-size: 2em; color: #ffd700;">âš¡</div>
+                    <div style="font-size: 2em; color: #ffd700;">â?¡</div>
                     <div style="font-size: 0.7em; color: #ffd700; margin-top: 4px;">Special</div>
                 </div>
             </div>
@@ -2313,7 +2313,7 @@ function showTutorialStep(step) {
             `;
             
             confirmModal.innerHTML = `
-                <h2 style="color: #ff4444; margin-bottom: 20px; font-size: 1.6em;">âš ï¸ Skip Tutorial?</h2>
+                <h2 style="color: #ff4444; margin-bottom: 20px; font-size: 1.6em;">â? ï¸ Skip Tutorial?</h2>
                 <p style="color: #e0e0e0; line-height: 1.6; margin-bottom: 25px;">Are you SURE you want to skip the tutorial? This is your first time playing and learning the basics will greatly help your survival!</p>
                 <div style="display: flex; gap: 15px; justify-content: center;">
                     <button class="btn btn-secondary" id="cancelSkip" style="min-width: 120px;">Keep Learning</button>
@@ -2398,7 +2398,7 @@ function completeTutorial() {
     // Unlock achievement ONLY when completing (not skipping)
     unlockAchievement('tutorial_master');
     
-    showMessage('ğŸ“ Tutorial completed! Good luck in the dungeon!', 'success');
+    showMessage('ğ??? Tutorial completed! Good luck in the dungeon!', 'success');
 }
 
 // Add CSS animation for pulse (BRIGHT glow, no dark shadow)
@@ -2434,7 +2434,7 @@ function drawRoom() {
                 }
             });
             
-            showMessage(`â™¾ï¸ ENDLESS MODE: Deck ${game.endlessLevel} loaded! Monsters +${Math.floor(difficultyScaling * 100)}% HP!`, 'warning');
+            showMessage(`â?¾ï¸ ENDLESS MODE: Deck ${game.endlessLevel} loaded! Monsters +${Math.floor(difficultyScaling * 100)}% HP!`, 'warning');
             playSound('special');
             createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 50);
         } else {
@@ -2455,9 +2455,9 @@ function drawRoom() {
     
     // Warn player about upcoming miniboss
     if (nextRoomNumber === 14) {
-        showMessage('âš ï¸ MINIBOSS APPROACHING! Prepare for a tough fight!', 'warning');
+        showMessage('â? ï¸ MINIBOSS APPROACHING! Prepare for a tough fight!', 'warning');
     } else if (nextRoomNumber === 24) {
-        showMessage('âš ï¸ FINAL MINIBOSS APPROACHING! Get ready!', 'warning');
+        showMessage('â? ï¸ FINAL MINIBOSS APPROACHING! Get ready!', 'warning');
     }
     
     if (isMiniboss1 || isMiniboss2) {
@@ -2485,8 +2485,8 @@ function drawRoom() {
         const boss = minibossData[minibossNumber - 1];
         
         const bossCard = {
-            suit: 'ğŸ‘¹',
-            value: 'ğŸ‘¹',
+            suit: 'ğ??¹',
+            value: 'ğ??¹',
             numValue: bossHP,
             maxHP: bossHP, // Store max HP for HP bar
             isBoss: true,
@@ -2507,8 +2507,8 @@ function drawRoom() {
         game.lastActionWasAvoid = false;
         
         playSound('special');
-        addLog(`âš ï¸ MINIBOSS #${minibossNumber} BATTLE! ${boss.name} has ${bossHP} HP!`, 'danger');
-        showMessage(`ğŸ‘¹ MINIBOSS: ${boss.name}`, 'danger');
+        addLog(`â? ï¸ MINIBOSS #${minibossNumber} BATTLE! ${boss.name} has ${bossHP} HP!`, 'danger');
+        showMessage(`ğ??¹ MINIBOSS: ${boss.name}`, 'danger');
         
         // Show miniboss intro with flavor
         setTimeout(() => {
@@ -2529,7 +2529,7 @@ function drawRoom() {
                 const weapon = game.dungeon.splice(weaponIndex, 1)[0];
                 const otherCards = game.dungeon.splice(0, Math.min(3, game.dungeon.length));
                 game.room.push(weapon, ...otherCards);
-                showMessage('ğŸ”° Beginner help: Weapon included!', 'success');
+                showMessage('ğ??° Beginner help: Weapon included!', 'success');
             } else {
                 // No weapons left, draw normally
                 const drawnCards = game.dungeon.splice(0, Math.min(numToDraw, game.dungeon.length));
@@ -2550,7 +2550,7 @@ function drawRoom() {
     // BUGFIX: Fortress Armor (tank relic) gives +1 HP shield at start of each room
     if (game.relics.some(r => r.id === 'tank')) {
         game.mirrorShield = 1;
-        showMessage('ğŸ° Fortress Armor: +1 HP shield', 'success');
+        showMessage('ğ?° Fortress Armor: +1 HP shield', 'success');
     }
 
     updateUI();
@@ -2563,7 +2563,7 @@ function avoidRoom() {
     const hasClover = game.relics.some(r => r.id === 'clover');
     
     if (game.lastActionWasAvoid && !hasClover) {
-        showMessage('âŒ You cannot avoid 2 dungeons in a row!', 'warning');
+        showMessage('â? You cannot avoid 2 dungeons in a row!', 'warning');
         playSound('error');
         return;
     }
@@ -2609,7 +2609,7 @@ function saveGameState() {
 
 function undoLastMove() {
     if (!game.undoAvailable || !game.lastGameState) {
-        showMessage('âŒ No move to undo!', 'warning');
+        showMessage('â? No move to undo!', 'warning');
         return;
     }
     
@@ -2627,7 +2627,7 @@ function undoLastMove() {
     game.undoAvailable = false;
     game.lastGameState = null;
     
-    showMessage('â†©ï¸ Move undone!', 'info');
+    showMessage('â?©ï¸ Move undone!', 'info');
     playSound('cardFlip');
     updateUI();
 }
@@ -2645,7 +2645,7 @@ function handleCardClick(card, index) {
         game.room.splice(index, 1);
         // Don't add to discard - it's obliterated!
         game.obliterateMode = false;
-        showMessage('ğŸ’¥ Card OBLITERATED from existence!', 'success');
+        showMessage('ğ??¥ Card OBLITERATED from existence!', 'success');
         playSound('special');
         createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 40);
         
@@ -2775,14 +2775,14 @@ function handleMonster(monster, index) {
             game.room.splice(index, 1);
             game.discardPile.push(monster);
             
-            showMessage(`ğŸ‘¹ ${monster.bossName || 'Boss'} attacked and fled! -${bossDamage} HP (NO REWARD!)`, 'danger');
+            showMessage(`ğ??¹ ${monster.bossName || 'Boss'} attacked and fled! -${bossDamage} HP (NO REWARD!)`, 'danger');
             playSound('damage');
             screenShake();
             createParticles(window.innerWidth / 2, window.innerWidth / 2, '#ff6b6b', 60);
             
             // Additional warning message
             setTimeout(() => {
-                showMessage(`âš ï¸ No weapon equipped = No gold! Always bring a weapon to boss fights!`, 'warning');
+                showMessage(`â? ï¸ No weapon equipped = No gold! Always bring a weapon to boss fights!`, 'warning');
             }, 1500);
             
             // Break combo
@@ -2802,7 +2802,7 @@ function handleMonster(monster, index) {
             
             if (game.equippedWeapon.durability <= 0) {
                 // Weapon broke!
-                showMessage(`ğŸ’” Your weapon broke!`, 'danger');
+                showMessage(`ğ??? Your weapon broke!`, 'danger');
                 playSound('error');
                 game.discardPile.push(game.equippedWeapon);
                 game.equippedWeapon = null;
@@ -2843,15 +2843,15 @@ function handleMonster(monster, index) {
             
             // Victory messages based on boss
             const victoryMessages = [
-                'âš”ï¸ The Knight falls silent. The curse is broken...',
-                'ğŸ’‰ The Warden collapses. The path ahead is now open.',
-                'âœ¨ The Shadow dissolves into nothingness. Light returns.',
-                'ğŸŒŸ The Abyss Keeper is no more. You are the legend now.'
+                'â??ï¸ The Knight falls silent. The curse is broken...',
+                'ğ??? The Warden collapses. The path ahead is now open.',
+                'â?¨ The Shadow dissolves into nothingness. Light returns.',
+                'ğ??? The Abyss Keeper is no more. You are the legend now.'
             ];
             
             const victoryMsg = victoryMessages[Math.min(monster.bossNumber - 1, victoryMessages.length - 1)];
             
-            showMessage(`ğŸ‘¹ ${monster.bossName} DEFEATED! +${bossGold} GOLD!`, 'success');
+            showMessage(`ğ??¹ ${monster.bossName} DEFEATED! +${bossGold} GOLD!`, 'success');
             setTimeout(() => showMessage(victoryMsg, 'success'), TIMING.EVENT_DELAY);
             
             createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 80);
@@ -2867,7 +2867,7 @@ function handleMonster(monster, index) {
             return;
         } else {
             // Boss still alive - show HP remaining
-            showMessage(`âš”ï¸ Hit boss for ${effectiveWeapon} damage! Boss HP: ${monster.numValue}`, 'info');
+            showMessage(`â??ï¸ Hit boss for ${effectiveWeapon} damage! Boss HP: ${monster.numValue}`, 'info');
             playSound('attack');
             updateUI();
             // DON'T return - let player continue in same room with boss
@@ -2885,7 +2885,7 @@ function handleMonster(monster, index) {
         mirrorShardRelic.usedThisRoom = true;
         const reflectDamage = 2;
         monster.numValue -= reflectDamage;
-        showMessage(`ğŸª Mirror Shard reflected ${reflectDamage} damage!`, 'info');
+        showMessage(`ğ?ª? Mirror Shard reflected ${reflectDamage} damage!`, 'info');
         
         // Check if reflection killed the monster
         if (monster.numValue <= 0) {
@@ -2901,7 +2901,7 @@ function handleMonster(monster, index) {
             }
             
             addLog(`Mirror Shard defeated ${monster.value}${monster.suit}!`, 'success');
-            showMessage('ğŸª Mirror Shard killed the monster!', 'success');
+            showMessage('ğ?ª? Mirror Shard killed the monster!', 'success');
             playSound('special');
             updateUI();
             checkGameState();
@@ -2912,7 +2912,7 @@ function handleMonster(monster, index) {
     // Thorns Armor permanent unlock: Reflect 2 damage (doesn't prevent damage to player)
     if (permanentUnlocks.thornsArmor && damage > 0) {
         monster.numValue -= 2;
-        showMessage('ğŸŒµ Thorns Armor reflected 2 damage!', 'info');
+        showMessage('ğ??µ Thorns Armor reflected 2 damage!', 'info');
         
         // Check if thorns killed the monster
         if (monster.numValue <= 0) {
@@ -2931,7 +2931,7 @@ function handleMonster(monster, index) {
             }
             
             addLog(`Thorns Armor defeated ${monster.value}${monster.suit}!`, 'success');
-            showMessage('ğŸŒµ Thorns Armor killed the monster (after taking damage)!', 'warning');
+            showMessage('ğ??µ Thorns Armor killed the monster (after taking damage)!', 'warning');
             resetCombo();
             updateUI();
             checkGameState();
@@ -2942,7 +2942,7 @@ function handleMonster(monster, index) {
     // Weak Thorns: Reflect 1 damage (doesn't prevent damage to player) (stacks with thornsArmor)
     if (game.relics.some(r => r.id === 'weak_thorns') && damage > 0) {
         monster.numValue -= 1;
-        showMessage('ğŸŒ¿ Weak Thorns reflected 1 damage!', 'info');
+        showMessage('ğ??¿ Weak Thorns reflected 1 damage!', 'info');
         
         // Check if thorns killed the monster
         if (monster.numValue <= 0) {
@@ -2961,7 +2961,7 @@ function handleMonster(monster, index) {
             }
             
             addLog(`Weak Thorns defeated ${monster.value}${monster.suit}!`, 'success');
-            showMessage('ğŸŒ¿ Weak Thorns killed the monster (after taking damage)!', 'warning');
+            showMessage('ğ??¿ Weak Thorns killed the monster (after taking damage)!', 'warning');
             resetCombo();
             updateUI();
             checkGameState();
@@ -2975,9 +2975,9 @@ function handleMonster(monster, index) {
         damage = Math.max(0, damage - 1);
         if (damage < originalDamage) {
             if (damage === 0) {
-                showMessage(`ğŸ¦¾ Iron Armor absorbed all ${originalDamage} damage!`, 'success');
+                showMessage(`ğ?¦¾ Iron Armor absorbed all ${originalDamage} damage!`, 'success');
             } else {
-                showMessage(`ğŸ¦¾ Iron Armor reduced damage! (${originalDamage} â†’ ${damage})`, 'info');
+                showMessage(`ğ?¦¾ Iron Armor reduced damage! (${originalDamage} â?? ${damage})`, 'info');
             }
         }
     }
@@ -2989,9 +2989,9 @@ function handleMonster(monster, index) {
         const originalDamage = damage;
         damage = Math.max(0, damage - 1);
         if (damage === 0) {
-            showMessage(`ğŸª¨ Stone absorbed all ${originalDamage} damage!`, 'success');
+            showMessage(`ğ?ª¨ Stone absorbed all ${originalDamage} damage!`, 'success');
         } else {
-            showMessage(`ğŸª¨ Stone reduced damage by 1! (${originalDamage} â†’ ${damage})`, 'info');
+            showMessage(`ğ?ª¨ Stone reduced damage by 1! (${originalDamage} â?? ${damage})`, 'info');
         }
     }
     
@@ -3011,7 +3011,7 @@ function handleMonster(monster, index) {
     if (cloakRelic && damage > 0) {
         cloakRelic.usedThisRoom = true;
         damage = 0;
-        showMessage('ğŸ§¥ Cloak blocked damage!', 'success');
+        showMessage('ğ?§¥ Cloak blocked damage!', 'success');
         weaponWasUsed = false;
         attackWasMade = false;
         game.combo++;
@@ -3034,7 +3034,7 @@ function handleMonster(monster, index) {
         }
         playSound('special');
         addLog(`Dodged attack from ${monster.value}${monster.suit}!`, 'heal');
-        showMessage('ğŸ›¡ï¸ Dodged! No damage!', 'success');
+        showMessage('ğ??¡ï¸ Dodged! No damage!', 'success');
     }
     // Priest Divine Blessing - 15% chance to dodge
     else if (damage > 0 && game.classData && game.classData.passive.divineBlessing && Math.random() < COMBAT.DIVINE_BLESSING_CHANCE) {
@@ -3042,7 +3042,7 @@ function handleMonster(monster, index) {
         attackWasMade = false; // Divine Blessing = no attack made
         playSound('special');
         addLog(`Divine Blessing! Dodged attack from ${monster.value}${monster.suit}!`, 'heal');
-        showMessage('ğŸ•Šï¸ Divine Blessing! No damage!', 'success');
+        showMessage('ğ???ï¸ Divine Blessing! No damage!', 'success');
         createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 40);
         game.combo++;
         game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
@@ -3060,7 +3060,7 @@ function handleMonster(monster, index) {
             playSound('damage');
         }
         
-        showMessage(`ğŸª Mirror reflected ${reflected} damage! Shield: ${game.mirrorShield}`, 'success');
+        showMessage(`ğ?ª? Mirror reflected ${reflected} damage! Shield: ${game.mirrorShield}`, 'success');
         createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 30);
         
         if (remaining <= 0) {
@@ -3091,7 +3091,7 @@ function handleMonster(monster, index) {
         
         if (lifesteal > 0) {
             game.health = Math.min(game.maxHealth, game.health + lifesteal);
-            showMessage(`ğŸ§› +${lifesteal} HP from Vampirism!`, 'success');
+            showMessage(`ğ?§? +${lifesteal} HP from Vampirism!`, 'success');
         }
         
         // Monster Tooth: +1 gold per monster
@@ -3101,13 +3101,13 @@ function handleMonster(monster, index) {
         
         addLog(`Defeated ${monster.value}${monster.suit}! (Combo: ${game.combo})`, 'info');
         if (criticalHit) {
-            showMessage(`ğŸ’¥ MEGA CRITICAL! ${game.combo}x COMBO!`, 'success');
+            showMessage(`ğ??¥ MEGA CRITICAL! ${game.combo}x COMBO!`, 'success');
             createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 50);
         } else if (thunderCrit) {
-            showMessage(`âš¡ CRITICAL HIT! ${game.combo}x COMBO!`, 'success');
+            showMessage(`â?¡ CRITICAL HIT! ${game.combo}x COMBO!`, 'success');
             createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 30);
         } else {
-            showMessage(`âš”ï¸ Perfect kill! ${game.combo}x COMBO!`, 'success');
+            showMessage(`â??ï¸ Perfect kill! ${game.combo}x COMBO!`, 'success');
         }
     }
     // TAKE DAMAGE: Monster hits you
@@ -3120,10 +3120,10 @@ function handleMonster(monster, index) {
         // Different messages depending on whether weapon is equipped
         if (!game.equippedWeapon) {
             addLog(`No weapon! Took ${damage} damage from ${monster.value}${monster.suit}`, 'danger');
-            showMessage(`âš ï¸ NO WEAPON! -${damage} HP`, 'danger');
+            showMessage(`â? ï¸ NO WEAPON! -${damage} HP`, 'danger');
         } else {
             addLog(`Monster hit you for ${damage} damage! ${monster.value}${monster.suit}`, 'danger');
-            showMessage(`ğŸ’¥ Monster hits you! -${damage} HP`, 'danger');
+            showMessage(`ğ??¥ Monster hits you! -${damage} HP`, 'danger');
         }
 
         screenShake();
@@ -3151,7 +3151,7 @@ function handleMonster(monster, index) {
     // Same logic as Power: consumes when attacking, not when defending
     if (attackWasMade && game.berserkStacks > 0 && berserkBonus > 0) {
         game.berserkStacks--;
-        showMessage(`ğŸ”¥ Berserk +5 damage! (${game.berserkStacks} left)`, 'info');
+        showMessage(`ğ??¥ Berserk +5 damage! (${game.berserkStacks} left)`, 'info');
     }
     
     // Weapon durability system - ONLY if weapon was actually USED
@@ -3161,13 +3161,13 @@ function handleMonster(monster, index) {
         
         if (game.equippedWeapon.durability <= 0) {
             // Weapon broke!
-            showMessage(`ğŸ’” Your weapon broke!`, 'danger');
+            showMessage(`ğ??? Your weapon broke!`, 'danger');
             playSound('error');
             game.discardPile.push(game.equippedWeapon);
             game.equippedWeapon = null;
         } else {
             // Show remaining durability
-            const emoji = game.equippedWeapon.durability === 1 ? 'âš ï¸' : 'âš”ï¸';
+            const emoji = game.equippedWeapon.durability === 1 ? 'â? ï¸' : 'â??ï¸';
             addLog(`${emoji} Weapon: ${game.equippedWeapon.durability}/${game.equippedWeapon.maxDurability} uses left`, 'info');
         }
     }
@@ -3179,7 +3179,7 @@ function handleMonster(monster, index) {
         if (game.classAbilityCounter === 0) {
             game.classAbilityActive = false;
             game.rageStrikeActive = false; // Reset Berserker flag
-            showMessage('âœ¨ Class ability buff expired!', 'info');
+            showMessage('â?¨ Class ability buff expired!', 'info');
         }
     }
     
@@ -3198,7 +3198,7 @@ function handleMonster(monster, index) {
         };
         const bossGold = bossGoldByDifficulty[game.difficulty] || 20;
         earnGold(bossGold);
-        showMessage(`ğŸ‘¹ BOSS DEFEATED! +${bossGold} gold!`, 'success');
+        showMessage(`ğ??¹ BOSS DEFEATED! +${bossGold} gold!`, 'success');
         createParticles(window.innerWidth / 2, window.innerHeight / 2, '#d4af37', 50);
     } else {
         // Normal monster gold
@@ -3218,7 +3218,7 @@ function handleMonster(monster, index) {
         if (phoenix) {
             phoenix.used = true;
             game.health = 10;
-            showMessage('ğŸ¦ Phoenix Feather activated! Revived with 10 HP!', 'success');
+            showMessage('ğ?¦ Phoenix Feather activated! Revived with 10 HP!', 'success');
             playSound('special');
             updateRelicsDisplay();
         }
@@ -3240,7 +3240,7 @@ function handleWeapon(weapon, index) {
         const brokenCombo = game.combo;
         resetCombo();
         if (brokenCombo >= 3) {
-            showMessage(`ğŸ’” ${brokenCombo}x combo broken! (equipped weapon)`, 'warning');
+            showMessage(`ğ??? ${brokenCombo}x combo broken! (equipped weapon)`, 'warning');
         }
     }
     
@@ -3272,7 +3272,7 @@ function handleWeapon(weapon, index) {
     // Master Smith: +1 damage when equipping weapon
     if (game.relics.some(r => r.id === 'master_smith')) {
         game.equippedWeapon.numValue += 1;
-        showMessage('ğŸ”¨ Master Smith enhanced your weapon (+1 damage)!', 'success');
+        showMessage('ğ??¨ Master Smith enhanced your weapon (+1 damage)!', 'success');
     }
     
     // Check for Durable Weapons relic
@@ -3285,7 +3285,7 @@ function handleWeapon(weapon, index) {
     playSound('equip');
     const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
     addLog(`Equipped ${weapon.value}${weapon.suit}!`, 'equip');
-    showMessage(`âš”ï¸ Equipped weapon with value ${weapon.numValue + powerBonus}! (${game.equippedWeapon.durability}/${game.equippedWeapon.maxDurability} uses)`, 'success');
+    showMessage(`â??ï¸ Equipped weapon with value ${weapon.numValue + powerBonus}! (${game.equippedWeapon.durability}/${game.equippedWeapon.maxDurability} uses)`, 'success');
     
     updateUI();
     checkGameState();
@@ -3330,9 +3330,9 @@ function handlePotion(potion, index) {
         showDamageNumber(actualHeal, 'heal');
         playSound('heal');
         addLog(`Used ${potion.value}${potion.suit}, healed ${actualHeal} HP`, 'heal');
-        showMessage(`ğŸ’š Healed ${actualHeal} HP!`, 'success');
+        showMessage(`ğ??? Healed ${actualHeal} HP!`, 'success');
     } else {
-         showMessage(`ğŸ’š HP is full!`, 'info');
+         showMessage(`ğ??? HP is full!`, 'info');
     }
     
     game.room.splice(index, 1);
@@ -3354,7 +3354,7 @@ function checkGameState() {
         
         // Show combo message if active (combo now persists between rooms!)
         if (game.combo >= COMBO.MIN_VISUAL_COMBO) {
-            showMessage(`ğŸ”¥ ${game.combo}x COMBO! DUNGEON CLEAR! Keep it going!`, 'success');
+            showMessage(`ğ??¥ ${game.combo}x COMBO! DUNGEON CLEAR! Keep it going!`, 'success');
             createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', UI.ROOM_CLEAR_PARTICLES);
         }
         
@@ -3368,7 +3368,7 @@ function checkGameState() {
         if (game.classAbilityCooldown > 0) {
             game.classAbilityCooldown--;
             if (game.classAbilityCooldown === 0) {
-                showMessage('âœ¨ Class ability ready!', 'success');
+                showMessage('â?¨ Class ability ready!', 'success');
             }
         }
         
@@ -3420,7 +3420,7 @@ function checkGameState() {
         // Reset weapon durability at room clear (Master Smith relic)
         if (game.equippedWeapon && game.relics.some(r => r.id === 'master_smith')) {
             game.equippedWeapon.durability = game.equippedWeapon.maxDurability;
-            showMessage('ğŸ”¨ Master Smith repaired your weapon!', 'success');
+            showMessage('ğ??¨ Master Smith repaired your weapon!', 'success');
         }
         
         // Room clear bonus (difficulty-based)
@@ -3519,7 +3519,7 @@ function checkGameState() {
             }
         });
         
-        showMessage(`â™¾ï¸ ENDLESS MODE: Deck ${game.endlessLevel} loaded! Monsters +${Math.floor(difficultyScaling * 100)}% HP!`, 'warning');
+        showMessage(`â?¾ï¸ ENDLESS MODE: Deck ${game.endlessLevel} loaded! Monsters +${Math.floor(difficultyScaling * 100)}% HP!`, 'warning');
         playSound('special');
         createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 50);
         
@@ -3555,7 +3555,7 @@ function endGame(reason, gaveUp = false) {
     let title, message, score, scoreLabel, isVictory = false;
 
     if (reason === 'death') {
-        title = 'ğŸ’€ DEFEAT';
+        title = 'ğ??? DEFEAT';
         const deathNarratives = [
             'The darkness claimed another soul...',
             'Your tale ends here, in the depths.',
@@ -3569,7 +3569,7 @@ function endGame(reason, gaveUp = false) {
         playSound('defeat');
     } else if (reason === 'victory') {
         isVictory = true;
-        title = 'ğŸ† VICTORY';
+        title = 'ğ?? VICTORY';
         const victoryNarratives = [
             'Against all odds, you emerge victorious!',
             'The dungeon is conquered. You are the legend.',
@@ -3654,18 +3654,12 @@ function calculateWinScore() {
 }
 
 function calculateDeathScore() {
-    // Score based on progress made before death
-    const roomsBonus = game.stats.roomsCleared * 50;
-    const monstersBonus = game.stats.monstersSlain * 10;
-    const goldBonus = game.totalGoldEarned * 2;
-    const comboBonus = game.stats.maxCombo * 5;
-    
-    // Time penalty (less harsh for deaths)
-    const timeInSeconds = Math.max(1, Math.floor((Date.now() - game.gameStartTime) / 1000));
-    const timePenalty = Math.floor(timeInSeconds * 0.5);
-    
-    const total = roomsBonus + monstersBonus + goldBonus + comboBonus - timePenalty;
-    return Math.max(0, total); // Score cannot be negative
+    // Original logic from Letterboard
+    const monstersInDiscard = game.discardPile.filter(c => 
+        c.suitName === 'clubs' || c.suitName === 'spades'
+    );
+    const totalValue = monstersInDiscard.reduce((sum, card) => sum + card.numValue, 0);
+    return game.health - totalValue; // Will be a negative number
 }
 
 function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, reason, gaveUp) {
@@ -3673,7 +3667,7 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
     overlay.className = 'modal-overlay active game-over'; // Use modal class
     
     const submitButtonHTML = isVictory ? 
-        `<button class="btn btn-success" id="btnSubmitScore">ğŸš€ Submit Score</button>` : '';
+        `<button class="btn btn-success" id="btnSubmitScore">ğ??? Submit Score</button>` : '';
     
     // Score Breakdown
     let scoreBreakdownHTML = '';
@@ -3698,110 +3692,23 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
         const subTotal = (baseScore + healthBonus + goldBonus + comboBonus + monsterBonus + speedrunBonus + perfectRunBonus) - timePenalty - shopPenalty;
 
         let bonusesHTML = '';
-        if (speedrunBonus > 0) bonusesHTML += `<p style="color: #6bcf7f;">âš¡ Speedrun Bonus (${Math.floor(timeInSeconds/60)}m${timeInSeconds%60}s): +${speedrunBonus}</p>`;
-        if (perfectRunBonus > 0) bonusesHTML += `<p style="color: #ffd700;">ğŸ† Perfect Run (No Damage): +${perfectRunBonus}</p>`;
-        if (shopPenalty > 0) bonusesHTML += `<p style="color: #ff6b6b;">ğŸº Shop Penalty (${game.stats.shopsVisited || 0} visits): -${shopPenalty}</p>`;
-
-        // Relics collected - extract emoji from name (first character/emoji)
-        const relicsHTML = game.relics.length > 0 
-            ? game.relics.map(r => {
-                const emoji = r.name ? r.name.split(' ')[0] : 'ğŸ“¿';
-                const fullName = r.name || 'Unknown Relic';
-                return `<span title="${fullName}" style="font-size: 1.2em; cursor: help;">${emoji}</span>`;
-            }).join(' ')
-            : '<span style="color: #888;">None</span>';
+        if (speedrunBonus > 0) bonusesHTML += `<p style="color: #6bcf7f;">â?¡ Speedrun Bonus (${Math.floor(timeInSeconds/60)}m${timeInSeconds%60}s): +${speedrunBonus}</p>`;
+        if (perfectRunBonus > 0) bonusesHTML += `<p style="color: #ffd700;">ğ?? Perfect Run (No Damage): +${perfectRunBonus}</p>`;
+        if (shopPenalty > 0) bonusesHTML += `<p style="color: #ff6b6b;">ğ?º Shop Penalty (${game.stats.shopsVisited || 0} visits): -${shopPenalty}</p>`;
 
         scoreBreakdownHTML = `
-            <div class="game-over-stats" style="background: rgba(0,0,0,0.4); border: 1px solid #ffd700; margin-bottom: 15px; text-align: left; padding: 15px; border-radius: 8px;">
-                <p style="color: #ffd700; font-weight: bold; font-size: 1.1em; margin-bottom: 12px;">ğŸ“Š Score Breakdown:</p>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
-                    <p>ğŸ¯ Win Bonus: <strong style="color: #6bcf7f;">+1000</strong></p>
-                    <p>â¤ï¸ Health (${game.health} HP): <strong style="color: #6bcf7f;">+${healthBonus}</strong></p>
-                    <p>ğŸ’° Gold (${game.totalGoldEarned}): <strong style="color: #6bcf7f;">+${goldBonus}</strong></p>
-                    <p>ğŸ”¥ Combo (${game.stats.maxCombo}x): <strong style="color: #6bcf7f;">+${comboBonus}</strong></p>
-                    <p>âš”ï¸ Monsters (${game.stats.monstersSlain}): <strong style="color: #6bcf7f;">+${monsterBonus}</strong></p>
-                    <p>ğŸšª Rooms Cleared: <strong style="color: #ffd700;">${game.stats.roomsCleared}</strong></p>
-                    <p>ğŸ’” Damage Taken: <strong style="color: #ff6b6b;">${game.stats.totalDamage}</strong></p>
-                    <p>ğŸ’Š Potions Used: <strong style="color: #aaa;">${game.stats.potionsUsed || 0}</strong></p>
-                </div>
-                
+            <div class="game-over-stats" style="background: rgba(0,0,0,0.4); border: 1px solid #ffd700; margin-bottom: 15px; text-align: left;">
+                <p style="color: #ffd700; font-weight: bold; font-size: 1.1em; margin-bottom: 10px;">ğ??? Score Breakdown:</p>
+                <p>ğ??¯ Win Bonus: +1000</p>
+                <p>â¤ï¸ Health Bonus (${game.health} HP): +${healthBonus}</p>
+                <p>ğ??° Gold Bonus (${game.totalGoldEarned} ğ?ª?): +${goldBonus}</p>
+                <p>ğ??¥ Combo Bonus (${game.stats.maxCombo}x): +${comboBonus}</p>
+                <p>â??ï¸ Monster Bonus (${game.stats.monstersSlain}): +${monsterBonus}</p>
                 ${bonusesHTML}
-                
-                <p style="color: #ff6b6b; margin-top: 8px;">â±ï¸ Time Penalty (${Math.floor(timeInSeconds/60)}m${timeInSeconds%60}s): -${timePenalty}</p>
-                
-                <p style="margin-top: 10px;">ğŸ“¿ Relics: ${relicsHTML}</p>
-        </div>
-    `;
-    } else {
-        // DEATH: Show run statistics (same format as victory)
-        const timeInSeconds = Math.max(1, gameTime);
-        const roomsBonus = game.stats.roomsCleared * 50;
-        const monstersBonus = game.stats.monstersSlain * 10;
-        const goldBonus = game.totalGoldEarned * 2;
-        const comboBonus = game.stats.maxCombo * 5;
-        const timePenalty = Math.floor(timeInSeconds * 0.5);
-        const shopsVisited = game.stats.shopsVisited || 0;
-        
-        // Relics collected - extract emoji from name (first character/emoji)
-        const relicsHTML = game.relics.length > 0 
-            ? game.relics.map(r => {
-                const emoji = r.name ? r.name.split(' ')[0] : 'ğŸ“¿';
-                const fullName = r.name || 'Unknown Relic';
-                return `<span title="${fullName}" style="font-size: 1.2em; cursor: help;">${emoji}</span>`;
-            }).join(' ')
-            : '<span style="color: #888;">None</span>';
-        
-        scoreBreakdownHTML = `
-            <div class="game-over-stats" style="background: rgba(0,0,0,0.4); border: 1px solid #ff6b6b; margin-bottom: 15px; text-align: left; padding: 15px; border-radius: 8px;">
-                <p style="color: #ff6b6b; font-weight: bold; font-size: 1.1em; margin-bottom: 12px;">ğŸ“Š Run Statistics:</p>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
-                    <p>ğŸšª Rooms Cleared: <strong style="color: #ffd700;">${game.stats.roomsCleared}</strong></p>
-                    <p>âš”ï¸ Monsters Slain: <strong style="color: #ffd700;">${game.stats.monstersSlain}</strong></p>
-                    <p>ğŸ’° Gold Earned: <strong style="color: #ffd700;">${game.totalGoldEarned}</strong></p>
-                    <p>ğŸ”¥ Max Combo: <strong style="color: #ffd700;">${game.stats.maxCombo}x</strong></p>
-                    <p>ğŸ’” Damage Taken: <strong style="color: #ff6b6b;">${game.stats.totalDamage}</strong></p>
-                    <p>â±ï¸ Time: <strong style="color: #aaa;">${Math.floor(timeInSeconds/60)}m${timeInSeconds%60}s</strong></p>
-                    <p>ğŸº Shop Visits: <strong style="color: #aaa;">${shopsVisited}</strong></p>
-                    <p>ğŸ’Š Potions Used: <strong style="color: #6bcf7f;">${game.stats.potionsUsed || 0}</strong></p>
-                </div>
-                
-                <p style="margin-top: 10px;">ğŸ“¿ Relics: ${relicsHTML}</p>
-                
-                <hr style="border: none; border-top: 1px solid #5a4a38; margin: 12px 0;">
-                
-                <p style="font-size: 0.9em; color: #aaa;">
-                    Score: ğŸšª ${roomsBonus} + âš”ï¸ ${monstersBonus} + ğŸ’° ${goldBonus} + ğŸ”¥ ${comboBonus} - â±ï¸ ${timePenalty}
-                </p>
-            </div>
-        `;
-    }
-    
-    // Build the game over modal HTML
-    overlay.innerHTML = `
-        <div class="modal-content game-over-content" style="max-width: 550px; border: 3px solid ${isVictory ? '#ffd700' : '#ff6b6b'};">
-            <h2 style="color: ${isVictory ? '#ffd700' : '#ff6b6b'}; font-size: 2em; margin-bottom: 15px;">${title}</h2>
-            <p style="color: #ddd; font-size: 1.1em; margin-bottom: 20px; font-style: italic;">${message}</p>
-            
-            ${scoreBreakdownHTML}
-            
-            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <p style="color: #aaa; font-size: 0.9em; margin-bottom: 5px;">${scoreLabel}</p>
-                <p style="color: ${isVictory ? '#ffd700' : '#ff6b6b'}; font-size: 2.5em; font-weight: bold;">${score}</p>
-            </div>
-            
-            <div class="modal-controls" style="display: flex; gap: 10px; justify-content: center;">
-                ${submitButtonHTML}
-                <button class="btn btn-primary" id="btnPlayAgain">ğŸ® Play Again</button>
-            </div>
+                <p style="color: #ff6b6b;">â±ï¸ Time Penalty (${Math.floor(timeInSeconds/60)}m${timeInSeconds%60}s): -${timePenalty}</p>
         </div>
     `;
     
-    // Add overlay to DOM
-    document.body.appendChild(overlay);
-    
-    // Now attach event handlers (elements exist in DOM now)
     document.getElementById('btnPlayAgain').onclick = () => {
         overlay.remove();
         btnStartGameModal.disabled = false; // Reset button
@@ -3833,12 +3740,12 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
         (async () => {
             const btn = btnSubmitScore;
             setButtonLoading(btn, true);
-            btn.textContent = 'ğŸ“¤ Sending...';
+            btn.textContent = 'ğ??¤ Sending...';
             hapticFeedback('medium');
             
             try {
                 await submitScoreToLeaderboard(score, gameTime);
-                btn.textContent = 'âœ… Score Submitted!';
+                btn.textContent = 'â?? Score Submitted!';
                 btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
                 btn.disabled = true; // Prevent re-submission
                 hapticFeedback('success');
@@ -3851,7 +3758,7 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                 }, 2000);
             } catch (err) {
                 setButtonLoading(btn, false);
-                btn.textContent = 'âŒ Submission Failed';
+                btn.textContent = 'â? Submission Failed';
                 btn.style.background = 'linear-gradient(180deg, #ff6b6b 0%, #d63031 100%)';
                 hapticFeedback('error');
                 shakeElement(btn);
@@ -3859,18 +3766,18 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                 
                 // Allow manual retry on error
                 btn.disabled = false;
-                btn.textContent = 'ğŸ”„ Retry Submit';
+                btn.textContent = 'ğ??? Retry Submit';
                 btn.onclick = async () => {
                     setButtonLoading(btn, true);
                     try {
                         await submitScoreToLeaderboard(score, gameTime);
-                        btn.textContent = 'âœ… Score Submitted!';
+                        btn.textContent = 'â?? Score Submitted!';
                         btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
                         btn.disabled = true;
                         hapticFeedback('success');
                     } catch (retryErr) {
                         setButtonLoading(btn, false);
-                        btn.textContent = 'âŒ Failed Again';
+                        btn.textContent = 'â? Failed Again';
                         console.error("Retry failed:", retryErr);
                     }
                 };
@@ -3934,7 +3841,7 @@ function showEncouragingModal(isFullVersion = true, onCloseCallback = null) {
         // FIRST DEATH: Full modal with tips
         overlay.innerHTML = `
             <div class="modal-content" style="max-width: 600px; border: 3px solid #ffd700;">
-                <button class="modal-close-btn" id="btnEncouragingClose1">âœ•</button>
+                <button class="modal-close-btn" id="btnEncouragingClose1">â??</button>
                 <h1 style="color: #ffd700;">DON'T GIVE UP!</h1>
                 <div style="text-align: left; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 8px; margin: 20px 0;">
                     <p style="font-size: 1.1em; color: #ddd; margin-bottom: 15px;"><strong style="color: #ff6b6b;">Death is just the beginning.</strong> This game is intentionally challenging!</p>
@@ -3979,7 +3886,7 @@ function showEncouragingModal(isFullVersion = true, onCloseCallback = null) {
         // EVERY 5TH DEATH: Simplified motivational modal
         overlay.innerHTML = `
             <div class="modal-content" style="max-width: 550px; border: 3px solid #ffd700; text-align: center;">
-                <button class="modal-close-btn" id="btnEncouragingClose2">âœ•</button>
+                <button class="modal-close-btn" id="btnEncouragingClose2">â??</button>
                 
                 <div style="padding: 40px 30px;">
                     <h1 style="font-family: 'Cinzel Decorative', 'Cinzel', serif; font-size: 2.5em; font-weight: 900; color: #ffd700; margin: 0 0 30px 0; text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.8); letter-spacing: 0.08em; line-height: 1.3;">
@@ -4128,7 +4035,7 @@ function updateUI() {
         document.body.classList.add('hp-critical');
         // Show warning message first time
         if (!game.criticalWarningShown) {
-            showMessage('âš ï¸ CRITICAL HP! Find healing soon!', 'danger');
+            showMessage('â? ï¸ CRITICAL HP! Find healing soon!', 'danger');
             game.criticalWarningShown = true;
         }
     } else {
@@ -4146,10 +4053,10 @@ function updateUI() {
     
     if (hasMap && game.dungeon.length > 0) {
         const preview = game.dungeon.slice(0, 3).map(c => `${c.value}${c.suit}`).join(' ');
-        dungeonCountEl.textContent = `${game.dungeon.length} (ğŸ—ºï¸ ${preview})`;
+        dungeonCountEl.textContent = `${game.dungeon.length} (ğ??ºï¸ ${preview})`;
     } else if (hasCandle && game.dungeon.length > 0) {
         const preview = game.dungeon[0];
-        dungeonCountEl.textContent = `${game.dungeon.length} (ğŸ•¯ï¸ ${preview.value}${preview.suit})`;
+        dungeonCountEl.textContent = `${game.dungeon.length} (ğ??¯ï¸ ${preview.value}${preview.suit})`;
     } else {
         dungeonCountEl.textContent = game.dungeon.length;
     }
@@ -4168,9 +4075,9 @@ function updateUI() {
         }
         
         if (game.playerClass === 'rogue') {
-            buffIndicator.innerHTML = `ğŸ”ª SHADOW STRIKE<br><small>2x damage, combo safe!</small>`;
+            buffIndicator.innerHTML = `ğ??ª SHADOW STRIKE<br><small>2x damage, combo safe!</small>`;
         } else if (game.playerClass === 'dancer') {
-            buffIndicator.innerHTML = `ğŸ’ƒ HEALING DANCE<br><small>+2 dmg (${game.classAbilityCounter} left)</small>`;
+            buffIndicator.innerHTML = `ğ??? HEALING DANCE<br><small>+2 dmg (${game.classAbilityCounter} left)</small>`;
         }
     } else if (buffIndicator) {
         buffIndicator.remove();
@@ -4185,7 +4092,7 @@ function updateUI() {
             berserkIndicator.id = 'berserkIndicator';
             document.body.appendChild(berserkIndicator);
         }
-        berserkIndicator.innerHTML = `ğŸ”¥ BERSERK x${game.berserkStacks}<br><small>+5 damage per attack</small>`;
+        berserkIndicator.innerHTML = `ğ??¥ BERSERK x${game.berserkStacks}<br><small>+5 damage per attack</small>`;
     } else {
         // Remove indicator when stacks reach 0
         if (berserkIndicator) {
@@ -4258,7 +4165,7 @@ function updateUI() {
             durabilityBar.appendChild(durabilityFill);
             
             const durabilityText = document.createElement('div');
-            const durabilityIcon = game.equippedWeapon.durability === 1 ? 'âš ï¸' : 'âš”ï¸';
+            const durabilityIcon = game.equippedWeapon.durability === 1 ? 'â? ï¸' : 'â??ï¸';
             durabilityText.style.cssText = 'position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.8);color:white;padding:2px 6px;border-radius:8px;font-size:0.7em;font-weight:bold;white-space:nowrap;';
             durabilityText.textContent = `${durabilityIcon} ${game.equippedWeapon.durability}/${game.equippedWeapon.maxDurability}`;
             
@@ -4514,7 +4421,7 @@ function createCardElement(card) {
         cardEl.innerHTML = `
             <div class="card-value">${card.special.name.split(' ')[0]}</div>
             <div style="font-size: 0.8em; padding: 0 5px;">${card.special.name.split(' ').slice(1).join(' ')}</div>
-            <div class="card-suit">âœ¨</div>
+            <div class="card-suit">â?¨</div>
         `;
     } else if (card.isBoss) {
         // Calculate HP percentage for bar
@@ -4522,7 +4429,7 @@ function createCardElement(card) {
         const hpColor = hpPercent > 66 ? '#6bcf7f' : (hpPercent > 33 ? '#ffd93d' : '#ff6b6b');
         
         cardEl.innerHTML = `
-            <div class="card-value" style="font-size: 2em;">ğŸ‘¹</div>
+            <div class="card-value" style="font-size: 2em;">ğ??¹</div>
             <div style="font-size: 0.9em; color: #ff6b6b; font-weight: bold;">BOSS</div>
             <div class="card-suit" style="font-size: 1.2em; color: #ff6b6b;">${card.numValue} HP</div>
             <div style="width: 90%; height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; margin: 5px auto 0; overflow: hidden;">
@@ -4547,13 +4454,13 @@ function createCardElement(card) {
             dmgBadge.style.cssText = 'position:absolute;top:5px;left:5px;padding:4px 8px;border-radius:8px;font-size:0.75em;font-weight:bold;box-shadow:0 2px 4px rgba(0,0,0,0.3);color:#fff;';
             
             if (totalDamage === 0) {
-                dmgBadge.textContent = 'âœŠ 0';
+                dmgBadge.textContent = 'â?? 0';
                 dmgBadge.style.background = 'linear-gradient(135deg,#999,#666)';
             } else if (netDamage <= 0) {
-                dmgBadge.textContent = `âš”ï¸ ${totalDamage}`;
+                dmgBadge.textContent = `â??ï¸ ${totalDamage}`;
                 dmgBadge.style.background = 'linear-gradient(135deg,#6bcf7f,#2fbf71)';
             } else {
-                dmgBadge.textContent = `âš”ï¸ ${totalDamage} (-${netDamage})`;
+                dmgBadge.textContent = `â??ï¸ ${totalDamage} (-${netDamage})`;
                 dmgBadge.style.background = 'linear-gradient(135deg,#ff6b6b,#ee5a52)';
             }
             cardEl.appendChild(dmgBadge);
@@ -4563,7 +4470,7 @@ function createCardElement(card) {
         if (game.relics.some(r => r.id === 'bell') && card.numValue > 0) {
             const goldBadge = document.createElement('div');
             goldBadge.style.cssText = 'position:absolute;top:5px;right:5px;background:rgba(255,215,0,0.9);color:#000;padding:2px 6px;border-radius:8px;font-size:0.7em;font-weight:bold;';
-            goldBadge.textContent = `ğŸ’°${card.numValue}`;
+            goldBadge.textContent = `ğ??°${card.numValue}`;
             cardEl.appendChild(goldBadge);
         }
     }
@@ -4577,7 +4484,7 @@ function createMiniCardElement(card) {
     cardEl.classList.add(type);
 
     if (type === 'special') {
-        cardEl.innerHTML = `<span class="card-value">âœ¨</span>`;
+        cardEl.innerHTML = `<span class="card-value">â?¨</span>`;
     } else {
         cardEl.innerHTML = `
             <span class="card-value">${card.value}</span>
@@ -4652,8 +4559,8 @@ function updateUnlocksDisplay() {
                 <div class="item-name">${unlock.name}</div>
                 <div class="item-description">${unlock.description}</div>
                 <div class="unlock-requirement">
-                    ${isUnlocked ? 'âœ… UNLOCKED' : 
-                      (canUnlock ? 'âœ¨ READY TO UNLOCK!' : `ğŸ”’ ${unlock.requirement}`)}
+                    ${isUnlocked ? 'â?? UNLOCKED' : 
+                      (canUnlock ? 'â?¨ READY TO UNLOCK!' : `ğ??? ${unlock.requirement}`)}
                 </div>
             </div>
             ${!isUnlocked && canUnlock ? `
@@ -4675,7 +4582,7 @@ window.unlockUpgradeWrapper = (unlockId) => {
     saveUnlocks();
 
     // Enhanced visual feedback
-    showMessage(`âœ¨ ${unlockData.name} UNLOCKED!`, 'success');
+    showMessage(`â?¨ ${unlockData.name} UNLOCKED!`, 'success');
     playSound('special');
     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 50);
 
@@ -4732,15 +4639,9 @@ function loadUnlocks() {
         try {
             const parsed = JSON.parse(saved);
             Object.assign(permanentUnlocks, parsed); // Modify object in-place (imports are read-only)
-            return Object.keys(permanentUnlocks).filter(k => permanentUnlocks[k]); // Return unlocked IDs for Cloud Save
-        } catch(e) { 
-            console.error("Failed to parse unlocks:", e); 
-            return [];
-        }
+        } catch(e) { console.error("Failed to parse unlocks:", e); }
      }
-     return [];
 }
-
 function saveUnlocks() { 
     UNLOCKS.forEach(unlock => {
         if (!permanentUnlocks[unlock.id] && unlock.check()) {
@@ -4748,16 +4649,7 @@ function saveUnlocks() {
         }
     });
     localStorage.setItem('scoundrel_unlocks', JSON.stringify(permanentUnlocks)); 
-    
-    // Auto-save to cloud if logged in
-    if (window.currentUser && window.saveProgressToCloud) {
-        window.saveProgressToCloud().catch(err => console.warn('Cloud auto-save failed:', err));
-    }
 }
-
-// Expose for firebase-auth.js
-window.loadUnlocks = loadUnlocks;
-window.saveUnlocks = saveUnlocks;
 
 function applyPermanentUnlocks() {
     // Gold unlocks
@@ -4793,12 +4685,12 @@ function applyPermanentUnlocks() {
         const randomValue = weaponValues[Math.floor(Math.random() * weaponValues.length)];
         const weaponCard = {
             value: randomValue.toString(),
-            suit: 'â™¦',
+            suit: 'â?¦',
             numValue: randomValue,
             suitName: 'diamonds'
         };
         game.room.push(weaponCard);
-        showMessage('âš¡ Power Start! Free weapon in room!', 'success');
+        showMessage('â?¡ Power Start! Free weapon in room!', 'success');
     }
 }
 
@@ -4806,8 +4698,40 @@ function applyPermanentUnlocks() {
 // ============================================
 // PERMANENT STATS (LOCALSTORAGE)
 // ============================================
-// BUG REPORT & CONTACT: Handled by inline-scripts.js
+// BUG REPORT (EmailJS)
 // ============================================
+const EMAILJS_SERVICE_ID = 'service_1zs9c54';
+const EMAILJS_TEMPLATE_ID = 'template_x3cplm6';
+const GAME_VERSION = 'v1.3.0';
+function sendBugReport() {
+    try {
+        const textarea = document.getElementById('bugMessage');
+        if (!textarea) { alert('Bug report unavailable.'); return; }
+        const message = (textarea.value || '').trim();
+        if (!message) { alert('Please describe the bug.'); return; }
+        if (!window.emailjs) { alert('Email service not loaded.'); return; }
+        const params = {
+            from_name: 'Player',
+            reply_to: '',
+            message: message,
+            browser: navigator.userAgent,
+            screen: `${window.innerWidth}x${window.innerHeight}`,
+            version: GAME_VERSION,
+            date: new Date().toLocaleString()
+        };
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+            .then(() => {
+                document.getElementById('bugReportModal')?.classList.remove('active');
+                textarea.value = '';
+                alert('Bug report sent. Thank you!');
+            })
+            .catch(() => {
+                alert('Failed to send the bug report. Try again later.');
+            });
+    } catch (e) {
+        alert('Unexpected error while sending.');
+    }
+}
 
 // ============================================
 // INITIALIZATION
@@ -4864,3 +4788,4 @@ window.createMiniCardElement = createMiniCardElement; // For tutorial - mini car
 // Check orientation on load and resize
 checkMobileOrientation();
 window.addEventListener('resize', debounce(checkMobileOrientation, 300));
+

@@ -69,7 +69,7 @@ export function updateShopDisplay() {
         const increasePercent = Math.round((game.shopPriceMultiplier - 1) * 100);
         const warningBanner = document.createElement('div');
         warningBanner.style.cssText = 'background: rgba(255, 107, 107, 0.2); border: 2px solid #ff6b6b; padding: 10px; margin-bottom: 15px; text-align: center; border-radius: 8px;';
-        warningBanner.innerHTML = `âš ï¸ <strong>Prices increased by ${increasePercent}%</strong> due to repeated purchases!`;
+        warningBanner.innerHTML = `⚠️ <strong>Prices increased by ${increasePercent}%</strong> due to repeated purchases!`;
         shopItems.appendChild(warningBanner);
     }
     
@@ -98,7 +98,7 @@ export function updateShopDisplay() {
         let priceDisplayHTML = '';
         if (discount < 1.0 && game.shopPriceMultiplier > 1.0) {
             // Show both original and base (with multiplier) if both active
-            priceDisplayHTML = `<span style="text-decoration: line-through; opacity: 0.5;">${item.price}</span> â†’ <span style="text-decoration: line-through; opacity: 0.5;">${basePrice}</span> `;
+            priceDisplayHTML = `<span style="text-decoration: line-through; opacity: 0.5;">${item.price}</span> → <span style="text-decoration: line-through; opacity: 0.5;">${basePrice}</span> `;
         } else if (discount < 1.0) {
             // Just discount
             priceDisplayHTML = `<span style="text-decoration: line-through; opacity: 0.5;">${item.price}</span> `;
@@ -112,11 +112,11 @@ export function updateShopDisplay() {
                 <div class="item-name">${item.name}</div>
                 <div class="item-description">${item.description}</div>
                 <div class="item-price" style="color: ${priceColor}; font-weight: bold;">
-                    ${priceDisplayHTML}${finalPrice} ðŸª™
+                    ${priceDisplayHTML}${finalPrice} 🪙
                     ${!canAfford ? ' <span style="color: #ff6b6b; font-size: 0.9em;">(Need ' + (finalPrice - game.gold) + ' more)</span>' : ''}
                 </div>
             </div>
-            <button class="buy-btn" data-item-id="${item.id}" data-price="${finalPrice}">${canAfford ? 'Buy' : 'ðŸ”’ Locked'}</button>
+            <button class="buy-btn" data-item-id="${item.id}" data-price="${finalPrice}">${canAfford ? 'Buy' : '🔒 Locked'}</button>
         `;
         
         const buyBtn = itemEl.querySelector('.buy-btn');
@@ -134,7 +134,7 @@ export function updateShopDisplay() {
     if (discount < 1.0) {
         const banner = document.createElement('div');
         banner.style.cssText = 'background: rgba(255, 215, 0, 0.2); border: 2px solid #ffd700; padding: 10px; margin-bottom: 15px; text-align: center; border-radius: 8px;';
-        banner.innerHTML = 'ðŸª <strong>Merchant Friend Active!</strong> 20% discount on all items!';
+        banner.innerHTML = '🏬 <strong>Merchant Friend Active!</strong> 20% discount on all items!';
         shopItems.prepend(banner);
     }
 }
@@ -145,7 +145,7 @@ export function updateShopDisplay() {
 export function buyItem(item, finalPrice) {
     if (game.gold < finalPrice) {
         if (typeof window.showMessage === 'function') {
-            window.showMessage(`âŒ Not enough gold! Need ${finalPrice - game.gold} more.`, 'danger');
+            window.showMessage(`❌ Not enough gold! Need ${finalPrice - game.gold} more.`, 'danger');
         }
         if (typeof window.playSound === 'function') {
             window.playSound('error');
@@ -161,7 +161,7 @@ export function buyItem(item, finalPrice) {
             if (keyRelic) {
                 keyRelic.used = true;
                 if (typeof window.showMessage === 'function') {
-                    window.showMessage('ðŸ—ï¸ Old Key used - 1 free item!', 'info');
+                    window.showMessage('🗝️ Old Key used - 1 free item!', 'info');
                 }
             }
         }
