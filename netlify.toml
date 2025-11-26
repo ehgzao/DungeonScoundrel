@@ -4,10 +4,8 @@
 
 [build]
   publish = "public"
-  command = "node scripts/inject-env.js"
-
-[build.environment]
-  NODE_VERSION = "20"
+  # No build command needed - static site with Firebase config in repo
+  # Firebase Web API Keys are public by design (security via Firebase Rules)
 
 # ============================================
 # SECURITY HEADERS
