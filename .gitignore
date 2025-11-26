@@ -28,6 +28,7 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+build.log
 
 # Deployment
 .netlify/
@@ -57,5 +58,13 @@ public/workbox-*.js
 # Package lock
 package-lock.json
 
-# Local archived legacy project
-archive/DungeonScoundrel/
+# Backups and archives (não subir para o repo)
+archive/
+docs/archive/
+*.bak
+*.backup
+*.old
+backups/
+
+# Temporary scripts
+add_img_dims.py
