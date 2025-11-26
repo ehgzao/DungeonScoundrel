@@ -1,6 +1,7 @@
 <div align="center">
+  
+<img width="1310" height="165" alt="Image" src="https://github.com/user-attachments/assets/de61f7a0-3c7a-4ae4-b621-2b8e532061c3" />
 
-![Dungeon Scoundrel Logo](https://raw.githubusercontent.com/ehgzao/DungeonScoundrel/main/public/assets/images/title-logo-readme.png)
 
 **A Dark Medieval Roguelike Card Game**
 
