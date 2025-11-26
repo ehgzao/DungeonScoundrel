@@ -1,6 +1,6 @@
 # 📋 DUNGEON SCOUNDREL - BACKLOG UNIFICADO
 
-**Última atualização:** 2025-11-25
+**Última atualização:** 2025-11-26
 **Versão atual:** 1.4.3
 **Single Source of Truth para planejamento**
 
@@ -63,9 +63,9 @@
 | ID | Tarefa | Impacto | Esforço | Status |
 |----|--------|---------|---------|--------|
 | P0-1 | **Service Worker não registra** - PWA quebrado | Player | 2h | 🔴 Pendente |
-| P0-2 | **Configurar variáveis Netlify** - Deploy funcional | Deploy | 30min | 🟡 Aguardando usuário |
-| P0-3 | **Testar Leaderboard em produção** | Player | 1h | 🔴 Pendente |
-| P0-4 | **Testar Cloud Save em produção** | Player | 1h | 🔴 Pendente |
+| P0-2 | **Configurar variáveis Netlify** - Deploy funcional | Deploy | 30min | 🟢 Concluído |
+| P0-3 | **Testar Leaderboard em produção** | Player | 1h | 🟢 Concluído |
+| P0-4 | **Testar Cloud Save em produção** | Player | 1h | 🟢 Concluído |
 
 #### P1 - Alta Prioridade (Esta semana)
 | ID | Tarefa | Impacto | Esforço | Status |
@@ -202,9 +202,9 @@
 
 ### Sprint 1 (Esta semana)
 - [ ] P0-1: Corrigir Service Worker
-- [ ] P0-2: Configurar Netlify env vars
-- [ ] P0-3: Testar Leaderboard
-- [ ] P0-4: Testar Cloud Save
+- [x] P0-2: Configurar Netlify env vars ✅
+- [x] P0-3: Testar Leaderboard ✅
+- [x] P0-4: Testar Cloud Save ✅
 - [ ] P1-3: Minificar JS
 - [ ] P1-4: Minificar CSS
 
@@ -228,18 +228,13 @@
 
 ## 📝 NOTAS DE IMPLEMENTAÇÃO
 
-### Configuração Netlify (P0-2)
-Arquivo `.env.netlify` criado com as variáveis:
-```
-FIREBASE_API_KEY=...
-FIREBASE_AUTH_DOMAIN=...
-FIREBASE_PROJECT_ID=...
-FIREBASE_STORAGE_BUCKET=...
-FIREBASE_MESSAGING_SENDER_ID=...
-FIREBASE_APP_ID=...
-```
+### Configuração Netlify (P0-2) ✅ CONCLUÍDO
 
-**Ação necessária:** Importar via Netlify Dashboard > Site settings > Build & deploy > Environment variables > Import variables
+**Solução final aplicada:**
+- Firebase config com credenciais diretas no repo (keys são públicas por design)
+- Variável `SECRETS_SCAN_SMART_DETECTION_ENABLED=false` no Netlify
+- CSP headers atualizados com gstatic.com e googleapis.com
+- Deploy funcionando em produção desde 2025-11-26
 
 ### Service Worker (P0-1)
 O Service Worker não está sendo registrado corretamente. Verificar:
