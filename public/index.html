@@ -1488,5 +1488,16 @@
 <!-- CODEX (loads after game.js) -->
 <script src="src/js/systems/codex.js?v=1.4.3" defer></script>
 
+<!-- SERVICE WORKER REGISTRATION -->
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('SW registered:', reg.scope))
+            .catch(err => console.warn('SW registration failed:', err));
+    });
+}
+</script>
+
 </body>
 </html>

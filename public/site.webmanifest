@@ -1,17 +1,26 @@
 {
   "name": "Dungeon Scoundrel - Roguelike Card Game",
   "short_name": "Dungeon Scoundrel",
-  "description": "Um jogo roguelike de cartas medieval. Explore masmorras, lute contra monstros, colete relíquias e prove sua habilidade neste desafiante card game!",
+  "description": "A dark medieval roguelike card game. Explore dungeons, fight monsters, collect powerful relics!",
   "icons": [
     {
       "src": "favicon.svg",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ],
   "theme_color": "#2c2416",
   "background_color": "#2c2416",
   "display": "standalone",
+  "orientation": "portrait",
   "start_url": "/",
-  "scope": "/"
+  "scope": "/",
+  "id": "dungeon-scoundrel"
 }
