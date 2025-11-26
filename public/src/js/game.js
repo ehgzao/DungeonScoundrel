@@ -61,6 +61,44 @@ import {
     getRelicBonus
 } from './modules/game-relics.js';
 
+// Import game classes module
+import {
+    CLASSES,
+    PASSIVE_ICONS,
+    checkClassUnlocks,
+    getBloodlustBonus,
+    useClassAbility,
+    updateAbilityUI,
+    startGameWithClass,
+    getPassiveIcons
+} from './modules/game-classes.js';
+
+// Import game sounds module
+import { playSound } from './modules/game-sounds.js';
+
+// Import game deck module
+import { 
+    specialCards, 
+    createDeck, 
+    shuffleDeck, 
+    balanceEasyModeDeck 
+} from './modules/game-deck.js';
+
+// Import game combat module
+import {
+    addLog,
+    getBerserkBonus,
+    getComboBonus,
+    getCardType,
+    handleSpecial,
+    handleWeapon,
+    handlePotion,
+    handleMonster,
+    saveGameState,
+    undoLastMove,
+    handleCardClick
+} from './modules/game-combat.js';
+
 // ============================================
 // DOM ELEMENTS
 // ============================================
@@ -360,128 +398,7 @@ const classSelectionSubtitle = document.getElementById('classSelectionSubtitle')
 
 let selectedClass = null;
 
-// Class definitions
-const CLASSES = {
-    scoundrel: {
-        name: 'SCOUNDREL',
-        motivation: '"I have no honor, no glory, only survival in the dark."',
-        mechanics: '<strong>⚔️ Passive:</strong> None - Pure skill and luck<br><br><strong>✨ Active:</strong> None - Just you and your wits<br><br><em style="color: #8b7355; font-size: 0.9em;">This is the baseline class. Master the basics before seeking power.</em>',
-        icon: '🎭',
-        unlocked: true,
-        unlockRequirement: 'Always available',
-        passive: {},
-        active: null
-    },
-    knight: {
-        name: 'KNIGHT',
-        motivation: '"Honor and steel shall guide my path through the darkness."',
-        mechanics: '<strong>🛡️ Passive:</strong> +5 Max HP | Weapons have +1 durability<br><br><strong>⚔️ Active (Shield Bash):</strong> Deal damage equal to your weapon value to the first monster in the room. Cooldown: 3 rooms.',
-        icon: '🛡️',
-        unlocked: false,
-        unlockRequirement: 'Win on Easy difficulty',
-        passive: { maxHpBonus: 5, weaponDurabilityBonus: 1 },
-        active: {
-            name: 'Shield Bash',
-            description: 'Deal weapon damage to first monster',
-            cooldown: CLASS_COOLDOWNS.WARRIOR,
-            icon: '🛡️'
-        }
-    },
-    rogue: {
-        name: 'ROGUE',
-        motivation: '"In shadows I thrive, through cunning I survive."',
-        mechanics: '<strong>🗡️ Passive:</strong> Can hold 2 cards instead of 1 | Start with 1 extra gold per room<br><br><strong>🔪 Active (Shadow Strike):</strong> Next monster takes double weapon damage and doesn\'t break combo. Cooldown: 4 rooms.',
-        icon: '🗡️',
-        unlocked: false,
-        unlockRequirement: 'Win on Normal difficulty',
-        passive: { maxHoldCards: 2, bonusGoldPerRoom: 1 },
-        active: {
-            name: 'Shadow Strike',
-            description: 'Next monster: 2x damage, combo safe',
-            cooldown: CLASS_COOLDOWNS.ROGUE,
-            icon: '🔪'
-        }
-    },
-    dancer: {
-        name: 'DANCER',
-        motivation: '"Grace in motion, life in every step, death in every turn."',
-        mechanics: '<strong>💃 Passive:</strong> Potions heal +3 HP | Can use 2 potions per room | Higher event chance (luck)<br><br><strong>✨ Active (Healing Dance):</strong> Heal 5 HP and gain +2 weapon damage for next 2 monsters. Cooldown: 5 rooms.',
-        icon: '💃',
-        unlocked: false,
-        unlockRequirement: 'Win on Hard difficulty',
-        passive: { potionHealBonus: 3, maxPotionsPerRoom: POTIONS.DANCER_MAX_PER_ROOM, eventChanceBonus: 15 },
-        active: {
-            name: 'Healing Dance',
-            description: 'Heal 5 HP + damage buff',
-            cooldown: CLASS_COOLDOWNS.DANCER,
-            icon: '✨'
-        }
-    },
-    berserker: {
-        name: 'BERSERKER',
-        motivation: '"Through pain I find power. Through fury I find victory."',
-        mechanics: '<strong>💢 Passive (Bloodlust):</strong> Damage increases as HP decreases<br>• +1 damage at ≤70% HP<br>• +2 damage at ≤50% HP<br>• +3 damage at ≤30% HP<br><br><strong>⚔️ Active (Rage Strike):</strong> Sacrifice 5 HP for triple damage (3x) on next 3 attacks. Breaks combo. Cooldown: 4 rooms.<br><em style="color: #ff6b6b; font-size: 0.9em;">⚠️ Cannot use if HP ≤ 5</em>',
-        icon: '💢',
-        unlocked: false,
-        unlockRequirement: 'Win on Hard + Kill 5 bosses total',
-        passive: { bloodlust: true },
-        active: {
-            name: 'Rage Strike',
-            description: 'Sacrifice 5 HP: 3x damage for 3 attacks, breaks combo',
-            cooldown: CLASS_COOLDOWNS.BERSERKER,
-            icon: '⚔️'
-        }
-    },
-    priest: {
-        name: 'PRIEST',
-        motivation: '"The light protects me. The divine guides me. Chaos shall be purified."',
-        mechanics: '<strong>🕊️ Passive (Divine Blessing):</strong> 15% chance to negate damage completely | Potions heal +2 HP | Start with +2 Max HP<br><br><strong>📿 Active (Purification):</strong> Permanently remove the strongest monster from current dungeon OR transform a monster into a potion. Cooldown: 6 rooms.<br><em style="color: #ffd700; font-size: 0.9em;">✨ Strategic: Eliminate threats before facing them</em>',
-        icon: '📿',
-        unlocked: false,
-        unlockRequirement: 'Collect 20 relics + 10 events + 5 wins total',
-        passive: { divineBlessing: true, potionHealBonus: 2, startMaxHpBonus: 2 },
-        active: {
-            name: 'Purification',
-            description: 'Remove strongest monster or convert to potion',
-            cooldown: 6,
-            icon: '📿'
-        }
-    }
-};
-
-// Function to check class unlocks based on wins
-function checkClassUnlocks() {
-    const stats = storage.get('scoundrel_lifetime_stats', {});
-    
-    // Knight unlocks after Easy win
-    if (stats.easyWins >= 1) {
-        CLASSES.knight.unlocked = true;
-    }
-    
-    // Rogue unlocks after Normal win
-    if (stats.normalWins >= 1) {
-        CLASSES.rogue.unlocked = true;
-    }
-    
-    // Dancer unlocks after Hard win
-    if (stats.hardWins >= 1) {
-        CLASSES.dancer.unlocked = true;
-    }
-    
-    // Berserker unlocks after Hard win + 5 bosses killed
-    if (stats.hardWins >= 1 && (stats.bossesKilled || 0) >= 5) {
-        CLASSES.berserker.unlocked = true;
-    }
-    
-    // Priest unlocks after 20 relics + 10 events + 5 wins
-    const totalRelics = stats.totalRelicsCollected || 0;
-    const totalEvents = stats.eventsTriggered || 0;
-    const totalWins = stats.gamesWon || 0;
-    
-    if (totalRelics >= 20 && totalEvents >= 10 && totalWins >= 5) {
-        CLASSES.priest.unlocked = true;
-    }
-}
+// NOTE: CLASSES and checkClassUnlocks moved to modules/game-classes.js
 
 function showClassSelection() {
     newGameModal.classList.remove('active');
@@ -609,15 +526,7 @@ btnCancelClass.onclick = () => {
     newGameModal.classList.add('active');
 };
 
-// Store class in game object
-function startGameWithClass(className) {
-    game.playerClass = className;
-    game.classData = CLASSES[className];
-    game.classAbilityCooldown = 0; // Tracks rooms until ability is ready
-    game.classAbilityActive = false; // For buffs like Shadow Strike
-    game.classAbilityCounter = 0; // For counting buff duration
-    startGame();
-}
+// NOTE: startGameWithClass moved to modules/game-classes.js
 
 // FIXED HOOK: Difficulty Selector
 difficultySelector.addEventListener('click', (e) => {
@@ -808,133 +717,7 @@ game.stats = {
     musicWasOn: false
 };
 
-// Special Cards Types
-const specialCards = [
-    { id: 'dodge', name: '🛡️ Dodge', description: 'Avoid next damage', effect: () => { game.dodgeActive = true; showMessage('🛡️ Dodge active!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#4ecdc4', 20); } },
-    { id: 'double_damage', name: '⚡ Power', description: 'Weapon 2x stronger', effect: () => { game.doubleDamage = true; showMessage('⚡ Power Strike!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 25); } },
-    { id: 'super_heal', name: '💊 Super Potion', description: 'Heal to full HP', effect: () => { const healed = game.maxHealth - game.health; game.health = game.maxHealth; showDamageNumber(healed, 'heal'); showMessage('💊 HP Full!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#6bcf7f', 30); } },
-    { id: 'treasure', name: '💰 Treasure', description: '+5 Max HP', effect: () => { game.maxHealth += SPECIAL_CARDS.TREASURE_MAX_HP_BONUS; game.health += SPECIAL_CARDS.TREASURE_MAX_HP_BONUS; showDamageNumber('+5 MAX', 'heal'); showMessage('💰 Max HP increased!', 'success'); createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 35); } },
-    
-    // 🆕 NOVAS CARTAS ESPECIAIS
-    { id: 'berserk_card', name: '🔥 Berserk', description: 'Next 3 attacks +5 damage', effect: () => { 
-        // Hourglass: +1 extra berserk turn
-        game.berserkStacks = game.relics.some(r => r.id === 'hourglass') ? SPECIAL_CARDS.BERSERK_HOURGLASS_STACKS : SPECIAL_CARDS.BERSERK_DEFAULT_STACKS; 
-        showMessage('🔥 BERSERK MODE! Next 3 attacks +5 damage!', 'success'); 
-        playSound('special');
-        createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 40);
-        
-        // Track berserk use for achievement
-        const saved = localStorage.getItem('scoundrel_lifetime_stats');
-        let lifetimeStats = saved ? JSON.parse(saved) : {};
-        lifetimeStats.berserkUses = (lifetimeStats.berserkUses || 0) + 1;
-        localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
-    } },
-    { id: 'time_warp', name: '⏰ Time Warp', description: 'Draw 2 extra cards this room', effect: () => {
-        if (game.dungeon.length >= SPECIAL_CARDS.TIME_WARP_CARDS) {
-            const extraCards = game.dungeon.splice(0, SPECIAL_CARDS.TIME_WARP_CARDS);
-            game.room.push(...extraCards);
-            showMessage('⏰ Time Warp! +2 cards drawn!', 'success');
-            playSound('cardDraw');
-            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 30);
-            updateUI();
-            
-            // Track time warp use for achievement
-            const saved = localStorage.getItem('scoundrel_lifetime_stats');
-            let lifetimeStats = saved ? JSON.parse(saved) : {};
-            lifetimeStats.timeWarps = (lifetimeStats.timeWarps || 0) + 1;
-            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
-        } else {
-            showMessage('⏰ Time Warp! Not enough cards in deck!', 'warning');
-        }
-    } },
-    { id: 'card_destroy', name: '💥 Obliterate', description: 'Remove a card permanently', effect: () => {
-        if (game.room.length > 0) {
-            showMessage('💥 Choose a card to OBLITERATE (left-click)!', 'warning');
-            game.obliterateMode = true;
-            playSound('special');
-            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 35);
-        } else {
-            showMessage('💥 No cards to obliterate!', 'warning');
-        }
-    } },
-    { id: 'gamble', name: '🎰 Gamble', description: '50% chance: +15 HP or -10 HP', effect: () => {
-        const win = Math.random() < 0.5;
-        if (win) {
-            const heal = Math.min(15, game.maxHealth - game.health);
-            game.health = Math.min(game.maxHealth, game.health + 15);
-            showDamageNumber(heal, 'heal');
-            showMessage('🎰 JACKPOT! +15 HP!', 'success');
-            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#6bcf7f', 50);
-        } else {
-            game.health -= 10;
-            showDamageNumber(10, 'damage');
-            showMessage('🎰 Bad luck... -10 HP!', 'danger');
-            screenShake();
-            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 30);
-        }
-        playSound('special');
-        updateUI();
-        
-        // Track gamble use for achievement
-        const saved = localStorage.getItem('scoundrel_lifetime_stats');
-        let lifetimeStats = saved ? JSON.parse(saved) : {};
-        lifetimeStats.gambleCards = (lifetimeStats.gambleCards || 0) + 1;
-        localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
-    } },
-    { id: 'lucky_draw', name: '🎲 Lucky Draw', description: 'Draw 3 cards with favorable odds', effect: () => {
-        // BALANCED: Draw exactly 3 cards with controlled probabilities
-        // 40% potion, 40% weapon, 20% monster (much better than random!)
-        const drawnCards = [];
-        const cardsToDraw = Math.min(3, game.dungeon.length);
-        
-        for (let i = 0; i < cardsToDraw; i++) {
-            if (game.dungeon.length === 0) break;
-            
-            // Find cards by type in dungeon
-            const potions = game.dungeon.filter(c => c.suitName === 'hearts');
-            const weapons = game.dungeon.filter(c => c.suitName === 'diamonds');
-            const monsters = game.dungeon.filter(c => c.suitName === 'clubs' || c.suitName === 'spades');
-            
-            let selectedCard = null;
-            const roll = Math.random();
-            
-            // 40% chance for potion
-            if (roll < LUCKY_DRAW.POTION_CHANCE && potions.length > 0) {
-                selectedCard = potions[Math.floor(Math.random() * potions.length)];
-            }
-            // 40% chance for weapon (cumulative 0.40-0.80)
-            else if (roll < LUCKY_DRAW.WEAPON_CHANCE && weapons.length > 0) {
-                selectedCard = weapons[Math.floor(Math.random() * weapons.length)];
-            }
-            // 20% chance for monster OR fallback if preferred types unavailable
-            else if (monsters.length > 0) {
-                selectedCard = monsters[Math.floor(Math.random() * monsters.length)];
-            }
-            // Fallback: draw any card if specific type unavailable
-            else {
-                selectedCard = game.dungeon[Math.floor(Math.random() * game.dungeon.length)];
-            }
-            
-            if (selectedCard) {
-                const index = game.dungeon.indexOf(selectedCard);
-                game.dungeon.splice(index, 1);
-                drawnCards.push(selectedCard);
-            }
-        }
-        
-        game.room.push(...drawnCards);
-        
-        const weaponCount = drawnCards.filter(c => c.suitName === 'diamonds').length;
-        const potionCount = drawnCards.filter(c => c.suitName === 'hearts').length;
-        
-        showMessage(`🎲 Lucky Draw! Drew ${drawnCards.length} cards (${weaponCount}⚔️ ${potionCount}❤️)`, 'success');
-        earnGold(5);
-        
-        playSound('cardDraw');
-        createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 25);
-        updateUI();
-    } }
-];
+// NOTE: specialCards moved to modules/game-deck.js
 
 // Card suits and values
 const suits = {'♠': 'spades', '♣': 'clubs', '♥': 'hearts', '♦': 'diamonds'};
@@ -942,501 +725,14 @@ const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 // ===== 50 ACHIEVEMENTS SYSTEM =====
 
-// ===== ADVANCED SOUND EFFECTS SYSTEM =====
-// audioContext is now loaded from audio-context.js (loaded before this file)
-
-const soundEffects = {
-    cardDraw: (ctx, time) => {
-        for (let i = 0; i < 8; i++) {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'square';
-            osc.frequency.value = 200 + Math.random() * 400;
-            osc.connect(gain);
-            gain.connect(sfxMasterGain);
-            const startTime = time + (i * 0.03);
-            gain.gain.setValueAtTime(0.03, startTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.05);
-            osc.start(startTime);
-            osc.stop(startTime + 0.05);
-        }
-    },
-    cardFlip: (ctx, time) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(600, time);
-        osc.frequency.exponentialRampToValueAtTime(800, time + 0.1);
-        osc.connect(gain);
-        gain.connect(sfxMasterGain);
-        gain.gain.setValueAtTime(0.15, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.15);
-        osc.start(time);
-        osc.stop(time + 0.15);
-    },
-    attack: (ctx, time) => {
-        const noise = ctx.createBufferSource();
-        const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.3, ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < data.length; i++) { data[i] = (Math.random() * 2 - 1) * (1 - i / data.length); }
-        noise.buffer = buffer;
-        const filter = ctx.createBiquadFilter();
-        filter.type = 'highpass';
-        filter.frequency.value = 1000;
-        const gain = ctx.createGain();
-        noise.connect(filter);
-        filter.connect(gain);
-        gain.connect(sfxMasterGain);
-        gain.gain.setValueAtTime(0.2, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.3);
-        const clang = ctx.createOscillator();
-        const clangGain = ctx.createGain();
-        clang.type = 'square';
-        clang.frequency.value = 800;
-        clang.connect(clangGain);
-        clangGain.connect(sfxMasterGain);
-        clangGain.gain.setValueAtTime(0.15, time + 0.1);
-        clangGain.gain.exponentialRampToValueAtTime(0.001, time + 0.25);
-        noise.start(time);
-        clang.start(time + 0.1);
-        clang.stop(time + 0.25);
-    },
-    damage: (ctx, time) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(150, time);
-        osc.frequency.exponentialRampToValueAtTime(50, time + 0.4);
-        osc.connect(gain);
-        gain.connect(sfxMasterGain);
-        gain.gain.setValueAtTime(0.3, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
-        osc.start(time);
-        osc.stop(time + 0.4);
-        const crack = ctx.createOscillator();
-        const crackGain = ctx.createGain();
-        crack.type = 'square';
-        crack.frequency.value = 200;
-        crack.connect(crackGain);
-        crackGain.connect(sfxMasterGain);
-        crackGain.gain.setValueAtTime(0.1, time + 0.05);
-        crackGain.gain.exponentialRampToValueAtTime(0.001, time + 0.15);
-        crack.start(time + 0.05);
-        crack.stop(time + 0.15);
-    },
-    heal: (ctx, time) => {
-        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-        notes.forEach((freq, i) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.value = freq;
-            osc.connect(gain);
-            gain.connect(sfxMasterGain);
-            const startTime = time + (i * 0.08);
-            gain.gain.setValueAtTime(0.1, startTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.3);
-            osc.start(startTime);
-            osc.stop(startTime + 0.3);
-        });
-    },
-    equip: (ctx, time) => {
-        const osc1 = ctx.createOscillator();
-        const osc2 = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc1.type = 'square';
-        osc2.type = 'square';
-        osc1.frequency.value = 400;
-        osc2.frequency.value = 600;
-        osc1.connect(gain);
-        osc2.connect(gain);
-        gain.connect(sfxMasterGain);
-        gain.gain.setValueAtTime(0.15, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.2);
-        osc1.start(time);
-        osc2.start(time);
-        osc1.stop(time + 0.2);
-        osc2.stop(time + 0.2);
-    },
-    hold: (ctx, time) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(400, time);
-        osc.frequency.exponentialRampToValueAtTime(600, time + 0.1);
-        osc.connect(gain);
-        gain.connect(sfxMasterGain);
-        gain.gain.setValueAtTime(0.2, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.15);
-        osc.start(time);
-        osc.stop(time + 0.15);
-    },
-    special: (ctx, time) => {
-        for (let i = 0; i < 6; i++) {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.value = 800 + (i * 200) + (Math.random() * 100);
-            osc.connect(gain);
-            gain.connect(sfxMasterGain);
-            const startTime = time + (i * 0.05);
-            gain.gain.setValueAtTime(0.08, startTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.3);
-            osc.start(startTime);
-            osc.stop(startTime + 0.3);
-        }
-    },
-    combo: (ctx, time) => {
-        const chord = [659.25, 783.99, 987.77]; // E5, G5, B5
-        chord.forEach((freq, i) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.value = freq;
-            osc.connect(gain);
-            gain.connect(sfxMasterGain);
-            gain.gain.setValueAtTime(0.12, time);
-            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
-            osc.start(time);
-            osc.stop(time + 0.4);
-        });
-    },
-    roomClear: (ctx, time) => {
-        const melody = [523.25, 659.25, 783.99]; // C5, E5, G5
-        melody.forEach((freq, i) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.value = freq;
-            osc.connect(gain);
-            gain.connect(sfxMasterGain);
-            const startTime = time + (i * 0.12);
-            gain.gain.setValueAtTime(0.15, startTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.3);
-            osc.start(startTime);
-            osc.stop(startTime + 0.3);
-        });
-    },
-    avoid: (ctx, time) => {
-        const noise = ctx.createBufferSource();
-        const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.4, ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < data.length; i++) { data[i] = (Math.random() * 2 - 1) * (1 - i / data.length); }
-        noise.buffer = buffer;
-        const filter = ctx.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(2000, time);
-        filter.frequency.exponentialRampToValueAtTime(200, time + 0.4);
-        const gain = ctx.createGain();
-        noise.connect(filter);
-        filter.connect(gain);
-        gain.connect(sfxMasterGain);
-        gain.gain.setValueAtTime(0.2, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
-        noise.start(time);
-    },
-    victory: (ctx, time) => {
-        const fanfare = [{freq: 523.25, start: 0}, {freq: 659.25, start: 0.15}, {freq: 783.99, start: 0.3}, {freq: 1046.50, start: 0.45}];
-        fanfare.forEach(note => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.value = note.freq;
-            osc.connect(gain);
-            gain.connect(sfxMasterGain);
-            const startTime = time + note.start;
-            gain.gain.setValueAtTime(0.2, startTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.5);
-            osc.start(startTime);
-            osc.stop(startTime + 0.5);
-        });
-    },
-    defeat: (ctx, time) => {
-        const descent = [{freq: 493.88, start: 0}, {freq: 440.00, start: 0.2}, {freq: 392.00, start: 0.4}, {freq: 293.66, start: 0.6}];
-        descent.forEach(note => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.value = note.freq;
-            osc.connect(gain);
-            gain.connect(sfxMasterGain);
-            const startTime = time + note.start;
-            gain.gain.setValueAtTime(0.15, startTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.6);
-            osc.start(startTime);
-            osc.stop(startTime + 0.6);
-        });
-    },
-    start: (ctx, time) => {
-        const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
-        notes.forEach((freq, i) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'sine';
-            osc.frequency.value = freq;
-            osc.connect(gain);
-            gain.connect(sfxMasterGain);
-            const startTime = time + (i * 0.1);
-            gain.gain.setValueAtTime(0.12, startTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.5);
-            osc.start(startTime);
-            osc.stop(startTime + 0.5);
-        });
-    },
-    error: (ctx, time) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.value = 150;
-        osc.connect(gain);
-        gain.connect(sfxMasterGain);
-        gain.gain.setValueAtTime(0.2, time);
-        gain.gain.setValueAtTime(0, time + 0.1);
-        gain.gain.setValueAtTime(0.2, time + 0.2);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.3);
-        osc.start(time);
-        osc.stop(time + 0.3);
-    }
-};
-
-// Unified playSound function
-function playSound(soundName) {
-    if (!game.settings.soundEnabled || !audioContext) return;
-    const soundFn = soundEffects[soundName];
-    if (!soundFn) {
-        console.warn('Sound not found:', soundName);
-        return;
-    }
-    try {
-        const time = audioContext.currentTime;
-        soundFn(audioContext, time);
-    } catch (e) {
-        // console.warn("Audio context error", e);
-    }
-}
+// ===== SOUND EFFECTS SYSTEM =====
+// NOTE: soundEffects and playSound moved to modules/game-sounds.js
 
 // ============================================
+// NOTE: CLASS ABILITIES moved to modules/game-classes.js
+// useClassAbility, useKnightAbility, useRogueAbility, useDancerAbility,
+// useBerserkerAbility, usePriestAbility, updateAbilityUI
 // ============================================
-// CLASS ABILITIES
-// ============================================
-
-function useClassAbility() {
-    if (!game.classData) return;
-    
-    // Scoundrel has no ability
-    if (!game.classData.active) {
-        showMessage('❌ Scoundrel has no special abilities!', 'warning');
-        playSound('error');
-        return;
-    }
-    
-    // Check cooldown
-    if (game.classAbilityCooldown > 0) {
-        showMessage(`⏳ Ability on cooldown! ${game.classAbilityCooldown} rooms remaining.`, 'warning');
-        playSound('error');
-        return;
-    }
-    
-    // Execute ability based on class
-    if (game.playerClass === 'knight') {
-        useKnightAbility();
-    } else if (game.playerClass === 'rogue') {
-        useRogueAbility();
-    } else if (game.playerClass === 'dancer') {
-        useDancerAbility();
-    } else if (game.playerClass === 'berserker') {
-        useBerserkerAbility();
-    } else if (game.playerClass === 'priest') {
-        usePriestAbility();
-    }
-    
-    updateAbilityUI();
-}
-
-function useKnightAbility() {
-    // Shield Bash: Deal weapon damage to first monster
-    if (!game.equippedWeapon) {
-        showMessage('⚠️ Need a weapon equipped to use Shield Bash!', 'warning');
-        playSound('error');
-        return;
-    }
-    
-    const firstMonster = game.room.find(c => getCardType(c) === 'monster');
-    if (!firstMonster) {
-        showMessage('⚠️ No monsters in room!', 'warning');
-        playSound('error');
-        return;
-    }
-    
-    const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
-    const damage = game.equippedWeapon.numValue + powerBonus;
-    firstMonster.numValue -= damage;
-    
-    if (firstMonster.numValue <= 0) {
-        const index = game.room.indexOf(firstMonster);
-        game.room.splice(index, 1);
-        game.discardPile.push(firstMonster);
-        game.stats.monstersSlain++;
-
-        // BUGFIX: Monster Tooth bonus for Shield Bash kills
-        if (game.relics.some(r => r.id === 'tooth')) {
-            earnGold(1);
-        }
-
-        showMessage(`🛡️ Shield Bash! Monster defeated!`, 'success');
-    } else {
-        showMessage(`🛡️ Shield Bash! Dealt ${damage} damage! (${firstMonster.numValue} HP left)`, 'success');
-    }
-    
-    game.classAbilityCooldown = game.classData.active.cooldown;
-    playSound('special');
-    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#c9a961', 40);
-    updateUI();
-    checkGameState();
-}
-
-function useRogueAbility() {
-    // Shadow Strike: Next monster 2x damage, combo safe
-    game.classAbilityActive = true;
-    game.classAbilityCounter = 1; // Next monster only
-    game.classAbilityCooldown = game.classData.active.cooldown;
-    
-    showMessage('🔪 Shadow Strike activated! Next kill: 2x damage, combo safe!', 'success');
-    playSound('special');
-    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#667eea', 40);
-    updateUI();
-}
-
-function useDancerAbility() {
-    // Healing Dance: Heal 5 HP + damage buff
-    game.health = Math.min(game.maxHealth, game.health + 5);
-    game.classAbilityActive = true;
-    game.classAbilityCounter = 2; // Next 2 monsters
-    game.classAbilityCooldown = game.classData.active.cooldown;
-    
-    showMessage('✨ Healing Dance! +5 HP and damage buff for 2 attacks!', 'success');
-    playSound('heal');
-    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 50);
-    updateUI();
-}
-
-function useBerserkerAbility() {
-    // Rage Strike: Sacrifice 5 HP for 3x damage
-    if (game.health <= HEALTH.CRITICAL_THRESHOLD) {
-        showMessage(`⚠️ Not enough HP! Need more than ${HEALTH.CRITICAL_THRESHOLD} HP to use Rage Strike.`, 'danger');
-        playSound('error');
-        return;
-    }
-    
-    // Sacrifice HP
-    game.health -= 5;
-    
-    // Activate 3x damage buff
-    game.classAbilityActive = true;
-    game.classAbilityCounter = 3; // 3 attacks (buffed for balance)
-    game.rageStrikeActive = true; // Special flag for triple damage
-    game.classAbilityCooldown = game.classData.active.cooldown;
-    
-    // Break combo (high risk)
-    if (game.combo > 0) {
-        showMessage(`💢 Rage Strike! -5 HP, next attack: 3x damage! ⚠️ Combo broken! (Lost ${game.combo}x)`, 'warning');
-        game.combo = 0;
-    } else {
-        showMessage('💢 Rage Strike! -5 HP, next attack: 3x damage!', 'warning');
-    }
-    
-    playSound('special');
-    screenShake();
-    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 60);
-    updateUI();
-}
-
-function usePriestAbility() {
-    // Purification: Remove strongest monster or convert to potion
-    const monsters = game.dungeon.filter(c => getCardType(c) === 'monster');
-    
-    if (monsters.length === 0) {
-        showMessage('⚠️ No monsters in dungeon to purify!', 'warning');
-        playSound('error');
-        return;
-    }
-    
-    // Find strongest monster
-    const strongestMonster = monsters.reduce((max, card) => 
-        card.numValue > max.numValue ? card : max
-    );
-    
-    // Ask player what to do
-    const choice = confirm(
-        `📿 PURIFICATION\n\n` +
-        `Strongest monster: ${strongestMonster.value}${strongestMonster.suit} (${strongestMonster.numValue} HP)\n\n` +
-        `Choose:\n` +
-        `• OK = Remove permanently\n` +
-        `• Cancel = Transform into potion`
-    );
-    
-    const index = game.dungeon.indexOf(strongestMonster);
-    
-    if (choice) {
-        // Remove permanently
-        game.dungeon.splice(index, 1);
-        showMessage(`📿 Purification! ${strongestMonster.value}${strongestMonster.suit} removed from existence!`, 'success');
-    } else {
-        // Transform to potion (random value 2-10)
-        const potionValue = Math.floor(Math.random() * 9) + 2;
-        game.dungeon[index] = {
-            value: potionValue.toString(),
-            suit: '♥',
-            numValue: potionValue,
-            suitName: 'hearts'
-        };
-        showMessage(`📿 Purification! ${strongestMonster.value}${strongestMonster.suit} transformed into ${potionValue}♥ potion!`, 'success');
-    }
-    
-    game.classAbilityCooldown = game.classData.active.cooldown;
-    playSound('special');
-    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 70);
-    updateUI();
-}
-
-function updateAbilityUI() {
-    const btn = document.getElementById('btnClassAbility');
-    const cooldownDisplay = document.getElementById('abilityCooldownDisplay');
-    const desc = document.getElementById('abilityDescription');
-    
-    if (!game.classData) return;
-    
-    // Scoundrel has no ability - disable button
-    if (!game.classData.active) {
-        btn.disabled = true;
-        btn.style.opacity = '0.3';
-        btn.style.display = 'none'; // Hide button for Scoundrel
-        cooldownDisplay.style.display = 'none';
-        if (desc) desc.textContent = 'No abilities available';
-        return;
-    }
-    
-    // Show button for classes with abilities
-    btn.style.display = 'block';
-    
-    if (game.classAbilityCooldown > 0) {
-        btn.disabled = true;
-        btn.style.opacity = '0.5';
-        cooldownDisplay.textContent = `${game.classAbilityCooldown} rooms`;
-        cooldownDisplay.style.display = 'block';
-    } else {
-        btn.disabled = false;
-        btn.style.opacity = '1';
-        cooldownDisplay.style.display = 'none';
-    }
-    
-    // Show active buff
-    if (game.classAbilityActive && game.classAbilityCounter > 0) {
-        desc.innerHTML = `<strong style="color: #6bcf7f;">✨ ACTIVE! ${game.classAbilityCounter} uses left</strong>`;
-    } else {
-        desc.textContent = game.classData.active.description;
-    }
-}
 
 // Tooltip Generation
 function generateTooltip(card) {
@@ -1459,9 +755,9 @@ function generateTooltip(card) {
         const baseWeapon = game.equippedWeapon?.numValue || 0;
         const berserkBonus = getBerserkBonus();
         
-        // Add class ability bonuses
+        // Add class ability bonuses (CRITICAL: only if weapon equipped, same as handleMonster)
         let classBonus = 0;
-        if (game.classAbilityActive && game.classAbilityCounter > 0) {
+        if (game.equippedWeapon && game.classAbilityActive && game.classAbilityCounter > 0) {
             if (game.playerClass === 'dancer') {
                 classBonus = COMBAT.DANCER_DAMAGE_BONUS;
             }
@@ -1473,13 +769,13 @@ function generateTooltip(card) {
         const totalWeapon = baseWeapon + powerBonus + berserkBonus + classBonus + bloodlustBonus + comboBonus;
         let effectiveWeapon = game.doubleDamage ? totalWeapon * 2 : totalWeapon;
         
-        // Rogue Shadow Strike (2x)
-        if (game.classAbilityActive && game.classAbilityCounter > 0 && game.playerClass === 'rogue') {
+        // Rogue Shadow Strike (2x) - CRITICAL: only if weapon equipped
+        if (game.equippedWeapon && game.classAbilityActive && game.classAbilityCounter > 0 && game.playerClass === 'rogue') {
             effectiveWeapon *= 2;
         }
         
-        // Berserker Rage Strike (3x)
-        if (game.rageStrikeActive && game.classAbilityCounter > 0) {
+        // Berserker Rage Strike (3x) - CRITICAL: only if weapon equipped
+        if (game.equippedWeapon && game.rageStrikeActive && game.classAbilityCounter > 0) {
             effectiveWeapon *= 3;
         }
 
@@ -1497,8 +793,8 @@ function generateTooltip(card) {
         if (game.mirrorShield > 0) buffInfo += `🪞${game.mirrorShield} `;
         if (classBonus > 0) buffInfo += `💃+${classBonus} `;
         if (bloodlustBonus > 0) buffInfo += `💢+${bloodlustBonus} `;
-        if (game.classAbilityActive && game.classAbilityCounter > 0 && game.playerClass === 'rogue') buffInfo += `🔪2x `;
-        if (game.rageStrikeActive && game.classAbilityCounter > 0) buffInfo += `⚔️3x `;
+        if (game.equippedWeapon && game.classAbilityActive && game.classAbilityCounter > 0 && game.playerClass === 'rogue') buffInfo += `🔪2x `;
+        if (game.equippedWeapon && game.rageStrikeActive && game.classAbilityCounter > 0) buffInfo += `⚔️3x `;
         
         if (game.dodgeActive) return `<span class="tooltip-positive">🛡️ Dodge: No damage! ${buffInfo}</span>`;
         
@@ -1566,10 +862,7 @@ function checkAchievements() {
     }
 }
 
-// Game Log (now in a modal or sidebar? For now, no visible log)
-function addLog(message, type = 'info') {
-    // (The log UI was removed for a cleaner layout)
-}
+// NOTE: addLog moved to modules/game-combat.js
 
 // Helper: Reset combo with unlocks
 function resetCombo() {
@@ -1578,191 +871,9 @@ function resetCombo() {
     else game.combo = 0;
 }
 
-// Helper: Calculate berserk bonus
-function getBerserkBonus() {
-    if (game.berserkStacks <= 0) return 0;
-    // CRITICAL: Berserk bonus ONLY applies if weapon is equipped
-    if (!game.equippedWeapon) return 0;
-    return permanentUnlocks.berserkMaster ? 7 : 5;
-}
-
-// Helper: Calculate bloodlust bonus
-function getBloodlustBonus() {
-    if (!game.classData || !game.classData.passive.bloodlust) return 0;
-    // CRITICAL: Bloodlust bonus ONLY applies if weapon is equipped
-    if (!game.equippedWeapon) return 0;
-    const hpPercent = (game.health / game.maxHealth) * 100;
-    if (hpPercent <= 30) return 3;
-    if (hpPercent <= 50) return 2;
-    if (hpPercent <= 70) return 1;
-    return 0;
-}
-
-// Helper: Calculate combo bonus
-function getComboBonus() {
-    if (game.combo === 0) return 0;
-    
-    // CRITICAL: Combo bonus ONLY applies if weapon is equipped
-    // Without weapon, you cannot deal damage regardless of combo
-    if (!game.equippedWeapon) return 0;
-    
-    // Combo God: +2 damage per combo level (stacks with base)
-    // Base: 2 combo = +1, 3 combo = +2, etc.
-    // With Combo God: 2 combo = +2, 3 combo = +4, etc.
-    const comboMultiplier = permanentUnlocks.comboGod ? 2 : 1;
-    let bonus = game.combo >= COMBO.COMBO_MASTER_START + 1 ? (game.combo - 1) * comboMultiplier : 0;
-    
-    // Fire Ring: +1 damage per combo stack
-    if (game.relics.some(r => r.id === 'ring_fire') && game.combo >= 1) {
-        bonus += game.combo;
-    }
-    
-    return bonus;
-}
-
-// Initialize deck
-function createDeck() {
-    let deck = [];
-    
-    // SCOUNDREL ORIGINAL RULES:
-    // Remove: Jokers, Red Face Cards (J♥,Q♥,K♥,J♦,Q♦,K♦), Red Aces (A♥,A♦)
-    
-    // 26 MONSTERS (♠ Spades + ♣ Clubs): A(14), 2-10, J(11), Q(12), K(13)
-    const monsterSuits = [
-        { suit: '♠', suitName: 'spades' },
-        { suit: '♣', suitName: 'clubs' }
-    ];
-    const monsterValues = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-    const monsterNumValues = [14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    
-    for (let suit of monsterSuits) {
-        for (let i = 0; i < monsterValues.length; i++) {
-            deck.push({ 
-                value: monsterValues[i], 
-                suit: suit.suit, 
-                numValue: monsterNumValues[i], 
-                suitName: suit.suitName 
-            });
-        }
-    }
-    
-    // 9 WEAPONS (♦ Diamonds): 2-10 only (NO face cards, NO Ace)
-    const weaponValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
-    const weaponNumValues = [2, 3, 4, 5, 6, 7, 8, 9, 10];
-    
-    for (let i = 0; i < weaponValues.length; i++) {
-        deck.push({ 
-            value: weaponValues[i], 
-            suit: '♦', 
-            numValue: weaponNumValues[i], 
-            suitName: 'diamonds' 
-        });
-    }
-    
-    // 9 POTIONS (♥ Hearts): 2-10 only (NO face cards, NO Ace)
-    const potionValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10'];
-    const potionNumValues = [2, 3, 4, 5, 6, 7, 8, 9, 10];
-    
-    for (let i = 0; i < potionValues.length; i++) {
-        deck.push({ 
-            value: potionValues[i], 
-            suit: '♥', 
-            numValue: potionNumValues[i], 
-            suitName: 'hearts' 
-        });
-    }
-    
-    // SPECIAL CARDS (our addition for gamification)
-    // Base: 6 special cards (deck = 50 cards total)
-    let specialCount = 6;
-    
-    // Old Book: +10% more special cards (+1)
-    if (game.relics.some(r => r.id === 'book')) specialCount += 1;
-    
-    // Magic Orb: +100% special cards (2x = +6)
-    if (game.relics.some(r => r.id === 'orb')) specialCount += 6;
-    for (let i = 0; i < specialCount; i++) {
-        deck.push({ 
-            value: '✨', 
-            suit: '', 
-            numValue: 0, 
-            suitName: 'special', 
-            special: specialCards[Math.floor(Math.random() * specialCards.length)] 
-        });
-    }
-    
-    // TOTAL: 26 monsters + 9 weapons + 9 potions + 6 specials = 50 cards
-    let finalDeck = shuffleDeck(deck);
-    
-    // EASY MODE BALANCING: First 10 rooms should be beginner-friendly
-    if (game.difficulty === 'easy' && game.stats.roomsCleared < 10) {
-        finalDeck = balanceEasyModeDeck(finalDeck);
-    }
-    
-    return finalDeck;
-}
-
-function balanceEasyModeDeck(deck) {
-    // EASY MODE: 70% monstros <5 damage, 70% armas 4-8 damage (first 10 rooms)
-    let balanced = [...deck];
-    
-    // Find all monsters and weapons
-    const monsters = balanced.filter(c => c.suitName === 'clubs' || c.suitName === 'spades');
-    const weapons = balanced.filter(c => c.suitName === 'diamonds');
-    
-    // Balance monsters: 70% should be <5 damage
-    const targetLowMonsters = Math.floor(monsters.length * 0.70);
-    const lowMonsters = monsters.filter(c => c.numValue < 5);
-    const highMonsters = monsters.filter(c => c.numValue >= 5);
-    
-    if (lowMonsters.length < targetLowMonsters && highMonsters.length > 0) {
-        // Replace high monsters with low ones
-        const toReplace = Math.min(targetLowMonsters - lowMonsters.length, highMonsters.length);
-        for (let i = 0; i < toReplace; i++) {
-            const highMonster = highMonsters[i];
-            const index = balanced.indexOf(highMonster);
-            // Replace with random low monster (2, 3, 4)
-            const newValue = [2, 3, 4][Math.floor(Math.random() * 3)];
-            balanced[index] = {
-                ...highMonster,
-                value: newValue.toString(),
-                numValue: newValue
-            };
-        }
-    }
-    
-    // Balance weapons: 70% should be 4-8 damage
-    const targetMidWeapons = Math.floor(weapons.length * 0.70);
-    const midWeapons = weapons.filter(c => c.numValue >= 4 && c.numValue <= 8);
-    const offWeapons = weapons.filter(c => c.numValue < 4 || c.numValue > 8);
-    
-    if (midWeapons.length < targetMidWeapons && offWeapons.length > 0) {
-        // Replace off-range weapons with mid-range ones
-        const toReplace = Math.min(targetMidWeapons - midWeapons.length, offWeapons.length);
-        for (let i = 0; i < toReplace; i++) {
-            const offWeapon = offWeapons[i];
-            const index = balanced.indexOf(offWeapon);
-            // Replace with random mid weapon (4, 5, 6, 7, 8)
-            const newValue = [4, 5, 6, 7, 8][Math.floor(Math.random() * 5)];
-            balanced[index] = {
-                ...offWeapon,
-                value: newValue.toString(),
-                numValue: newValue
-            };
-        }
-    }
-    
-    return balanced;
-}
-
-function shuffleDeck(deck) {
-    let shuffled = [...deck];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-}
+// NOTE: getBerserkBonus, getComboBonus moved to modules/game-combat.js
+// NOTE: getBloodlustBonus moved to modules/game-classes.js
+// NOTE: createDeck, shuffleDeck, balanceEasyModeDeck moved to modules/game-deck.js
 
 function startGame() {
     // Mark that player has played before (for first-time Easy suggestion)
@@ -1819,40 +930,13 @@ function startGame() {
             if (abilityDescription) abilityDescription.textContent = game.classData.active.description;
         }
         
-        // Show passive icons
+        // Show passive icons (using PASSIVE_ICONS from game-classes.js module)
         const passiveIconsDisplay = document.getElementById('passiveIconsDisplay');
         if (!passiveIconsDisplay) {
             console.warn('[GAME] passiveIconsDisplay element not found');
         } else {
             passiveIconsDisplay.innerHTML = '';
-        
-        // Create passive icons based on class
-        const passiveIcons = {
-            knight: [
-                { icon: '❤️', text: '+5 HP', title: 'Start with +5 Max HP' },
-                { icon: '🔨', text: '+1 Dur', title: 'Weapons last +1 use' }
-            ],
-            rogue: [
-                { icon: '📌', text: 'x2 Hold', title: 'Can hold 2 cards' },
-                { icon: '💰', text: '+1 Gold', title: '+1 gold per room' }
-            ],
-            dancer: [
-                { icon: '💊', text: '+3 HP', title: 'Potions heal +3 HP' },
-                { icon: '💊', text: 'x2 Use', title: 'Use 2 potions per room' },
-                { icon: '🎲', text: '+15%', title: '+15% event chance' }
-            ],
-            berserker: [
-                { icon: '💢', text: 'Bloodlust', title: 'Damage increases as HP decreases' },
-                { icon: '⚔️', text: 'High Risk', title: '+1/+2/+3 damage at ≤70%/50%/30% HP' }
-            ],
-            priest: [
-                { icon: '🕊️', text: '15% Dodge', title: '15% chance to dodge damage' },
-                { icon: '💊', text: '+2 HP', title: 'Potions heal +2 HP' },
-                { icon: '❤️', text: '+2 HP', title: 'Start with +2 Max HP' }
-            ]
-        };
-        
-            const icons = passiveIcons[game.playerClass] || [];
+            const icons = PASSIVE_ICONS[game.playerClass] || [];
             icons.forEach(passive => {
                 const iconEl = document.createElement('div');
                 iconEl.style.cssText = 'background: rgba(0,0,0,0.5); border: 1px solid #5a4a38; border-radius: 6px; padding: 4px 8px; font-size: 0.7em; display: flex; align-items: center; gap: 4px; color: #ffd700;';
@@ -2591,756 +1675,8 @@ function avoidRoom() {
     }
 }
 
-// Undo System - Save game state before action
-function saveGameState() {
-    game.lastGameState = {
-        health: game.health,
-        gold: game.gold,
-        room: [...game.room],
-        dungeon: [...game.dungeon],
-        discardPile: [...game.discardPile],
-        equippedWeapon: game.equippedWeapon ? {...game.equippedWeapon} : null,
-        potionsUsed: game.potionsUsed,
-        combo: game.combo,
-        heldCard: game.heldCard ? (Array.isArray(game.heldCard) ? [...game.heldCard] : {...game.heldCard}) : null
-    };
-    game.undoAvailable = true;
-}
-
-function undoLastMove() {
-    if (!game.undoAvailable || !game.lastGameState) {
-        showMessage('❌ No move to undo!', 'warning');
-        return;
-    }
-    
-    // Restore game state
-    game.health = game.lastGameState.health;
-    game.gold = game.lastGameState.gold;
-    game.room = [...game.lastGameState.room];
-    game.dungeon = [...game.lastGameState.dungeon];
-    game.discardPile = [...game.lastGameState.discardPile];
-    game.equippedWeapon = game.lastGameState.equippedWeapon ? {...game.lastGameState.equippedWeapon} : null;
-    game.potionsUsed = game.lastGameState.potionsUsed;
-    game.combo = game.lastGameState.combo;
-    game.heldCard = game.lastGameState.heldCard ? (Array.isArray(game.lastGameState.heldCard) ? [...game.lastGameState.heldCard] : {...game.lastGameState.heldCard}) : null;
-    
-    game.undoAvailable = false;
-    game.lastGameState = null;
-    
-    showMessage('↩️ Move undone!', 'info');
-    playSound('cardFlip');
-    updateUI();
-}
-
-function handleCardClick(card, index) {
-    if (game.gameOver) return;
-    
-    // Save state for undo (Easy/Normal only)
-    if (game.difficulty === 'easy' || game.difficulty === 'normal') {
-        saveGameState();
-    }
-
-    // Obliterate mode - remove ANY card permanently
-    if (game.obliterateMode) {
-        game.room.splice(index, 1);
-        // Don't add to discard - it's obliterated!
-        game.obliterateMode = false;
-        showMessage('💥 Card OBLITERATED from existence!', 'success');
-        playSound('special');
-        createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 40);
-        
-        // Track obliteration for achievement
-        const saved = localStorage.getItem('scoundrel_lifetime_stats');
-        let lifetimeStats = saved ? JSON.parse(saved) : {};
-        lifetimeStats.cardsObliterated = (lifetimeStats.cardsObliterated || 0) + 1;
-        localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
-        
-        updateUI();
-        checkGameState();
-        checkAchievements();
-        return;
-    }
-
-    const cardType = getCardType(card);
-
-    if (cardType === 'monster') handleMonster(card, index);
-    else if (cardType === 'weapon') handleWeapon(card, index);
-    else if (cardType === 'potion') handlePotion(card, index);
-    else if (cardType === 'special') handleSpecial(card, index);
-}
-
-function getCardType(card) {
-    if (card.special) return 'special';
-    if (card.isBoss) return 'monster'; // Boss is a monster!
-    if (card.suitName === 'clubs' || card.suitName === 'spades') return 'monster';
-    if (card.suitName === 'diamonds') return 'weapon';
-    if (card.suitName === 'hearts') return 'potion';
-}
-
-function handleSpecial(card, index) {
-    game.room.splice(index, 1);
-    game.discardPile.push(card);
-    game.stats.specialsUsed++;
-    
-    playSound('special');
-    addLog(`Used special: ${card.special.name}`, 'heal');
-    card.special.effect();
-    
-    updateUI();
-    checkGameState();
-    checkAchievements();
-}
-
-function handleMonster(monster, index) {
-    const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
-    const baseWeapon = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
-    
-    // Calculate all bonuses using helpers (DRY principle)
-    const berserkBonus = getBerserkBonus();
-    const bloodlustBonus = getBloodlustBonus();
-    const comboBonus = getComboBonus();
-    
-    // Power Gauntlet: +3 damage on first attack each room
-    let gauntletBonus = 0;
-    if (game.equippedWeapon && game.relics.some(r => r.id === 'gauntlet') && !game.firstAttackDone) {
-        gauntletBonus = COMBAT.GAUNTLET_BONUS;
-        game.firstAttackDone = true; // Mark first attack as done
-    }
-    
-    // Thunder Gauntlet: 20% chance to deal double damage (flag only)
-    let thunderCrit = false;
-    if (game.relics.some(r => r.id === 'warrior') && Math.random() < 0.2) {
-        thunderCrit = true;
-    }
-    
-    // Critical Strike permanent unlock: 10% chance to deal 3x damage (flag only)
-    let criticalHit = false;
-    if (permanentUnlocks.criticalStrike && Math.random() < 0.1) {
-        criticalHit = true;
-    }
-    
-    // Add class ability bonuses
-    let classBonus = 0;
-    let rogueDoubleActive = false;
-    let berserkerTripleActive = false;
-    // CRITICAL: Class abilities ONLY apply if weapon is equipped
-    if (game.equippedWeapon && game.classAbilityActive && game.classAbilityCounter > 0) {
-        if (game.playerClass === 'rogue') {
-            // Rogue: 2x damage on next attack
-            rogueDoubleActive = true;
-        } else if (game.playerClass === 'dancer') {
-            // Dancer: +2 damage for next 2 monsters
-            classBonus = COMBAT.DANCER_DAMAGE_BONUS;
-        } else if (game.playerClass === 'berserker' && game.rageStrikeActive) {
-            // Berserker: 3x damage on next attack
-            berserkerTripleActive = true;
-        }
-    }
-    
-    const totalWeapon = baseWeapon + powerBonus + berserkBonus + classBonus + bloodlustBonus + comboBonus + gauntletBonus;
-    let effectiveWeapon = game.doubleDamage ? totalWeapon * 2 : totalWeapon;
-    
-    // Thunder Gauntlet: 20% chance to deal double damage
-    if (thunderCrit) {
-        effectiveWeapon *= 2;
-    }
-    
-    // Critical Strike permanent unlock: 10% chance to deal 3x damage
-    if (criticalHit) {
-        effectiveWeapon *= 3;
-    }
-    
-    // Apply Rogue Shadow Strike (2x damage)
-    if (rogueDoubleActive) {
-        effectiveWeapon *= 2;
-    }
-    
-    // Apply Berserker Rage Strike (3x damage)
-    if (berserkerTripleActive) {
-        effectiveWeapon *= 3;
-    }
-    
-    // Track if weapon durability was already reduced (for boss battles)
-    let weaponDurabilityReduced = false;
-    
-    // Boss battle: reduce HP instead of instant kill
-    if (monster.isBoss) {
-        // SPECIAL CASE: Boss without weapon - boss attacks once and flees!
-        if (!game.equippedWeapon) {
-            const bossDamage = monster.numValue;
-            game.health -= bossDamage;
-            game.stats.totalDamage += bossDamage;
-            
-            // Remove boss from room
-            game.room.splice(index, 1);
-            game.discardPile.push(monster);
-            
-            showMessage(`👹 ${monster.bossName || 'Boss'} attacked and fled! -${bossDamage} HP (NO REWARD!)`, 'danger');
-            playSound('damage');
-            screenShake();
-            createParticles(window.innerWidth / 2, window.innerWidth / 2, '#ff6b6b', 60);
-            
-            // Additional warning message
-            setTimeout(() => {
-                showMessage(`⚠️ No weapon equipped = No gold! Always bring a weapon to boss fights!`, 'warning');
-            }, 1500);
-            
-            // Break combo
-            resetCombo();
-            
-            updateUI();
-            checkGameState();
-            return;
-        }
-        
-        monster.numValue -= effectiveWeapon;
-        
-        // Weapon durability for boss attacks
-        if (game.equippedWeapon && game.equippedWeapon.durability < 999) {
-            game.equippedWeapon.durability--;
-            weaponDurabilityReduced = true; // Mark that durability was already reduced
-            
-            if (game.equippedWeapon.durability <= 0) {
-                // Weapon broke!
-                showMessage(`💔 Your weapon broke!`, 'danger');
-                playSound('error');
-                game.discardPile.push(game.equippedWeapon);
-                game.equippedWeapon = null;
-                
-                // Check if room is now cleared after weapon broke
-                updateUI();
-                checkGameState();
-            }
-        }
-        
-        if (monster.numValue <= 0) {
-            // Boss defeated!
-            game.stats.monstersSlain++;
-            game.stats.bossesKilled++;  // Track for Berserker unlock
-
-            // BUGFIX: Monster Tooth bonus for boss kills
-            if (game.relics.some(r => r.id === 'tooth')) {
-                earnGold(1);
-            }
-
-            // Check if this is the final boss
-            if (monster.bossNumber === BOSS.FINAL_BOSS_NUMBER) {
-                game.finalBossDefeated = true;
-            }
-
-            game.room.splice(index, 1);
-            game.discardPile.push(monster);
-
-            // Boss gold based on difficulty
-            const bossGoldByDifficulty = {
-                easy: Math.floor(Math.random() * 16) + 25,    // 25-40 gold
-                normal: Math.floor(Math.random() * 11) + 20,  // 20-30 gold
-                hard: Math.floor(Math.random() * 11) + 15,    // 15-25 gold
-                endless: Math.floor(Math.random() * 11) + 20  // 20-30 gold
-            };
-            const bossGold = bossGoldByDifficulty[game.difficulty] || 20;
-            earnGold(bossGold);
-            
-            // Victory messages based on boss
-            const victoryMessages = [
-                '⚔️ The Knight falls silent. The curse is broken...',
-                '💉 The Warden collapses. The path ahead is now open.',
-                '✨ The Shadow dissolves into nothingness. Light returns.',
-                '🌟 The Abyss Keeper is no more. You are the legend now.'
-            ];
-            
-            const victoryMsg = victoryMessages[Math.min(monster.bossNumber - 1, victoryMessages.length - 1)];
-            
-            showMessage(`👹 ${monster.bossName} DEFEATED! +${bossGold} GOLD!`, 'success');
-            setTimeout(() => showMessage(victoryMsg, 'success'), TIMING.EVENT_DELAY);
-            
-            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 80);
-            playSound('special');
-            
-            // Increment combo for boss kill
-            game.combo++;
-            game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
-            
-            updateUI();
-            checkGameState();
-            checkAchievements();
-            return;
-        } else {
-            // Boss still alive - show HP remaining
-            showMessage(`⚔️ Hit boss for ${effectiveWeapon} damage! Boss HP: ${monster.numValue}`, 'info');
-            playSound('attack');
-            updateUI();
-            // DON'T return - let player continue in same room with boss
-            return;
-        }
-    }
-    
-    let damage = Math.max(0, monster.numValue - effectiveWeapon);
-    
-    // === RELIC DEFENSE SYSTEM (BEFORE DAMAGE CALCULATION) ===
-    
-    // Mirror Shard: Reflect 2 damage once per room (BEFORE taking damage)
-    const mirrorShardRelic = game.relics.find(r => r.id === 'mirror_shard');
-    if (mirrorShardRelic && !mirrorShardRelic.usedThisRoom && damage > 0) {
-        mirrorShardRelic.usedThisRoom = true;
-        const reflectDamage = 2;
-        monster.numValue -= reflectDamage;
-        showMessage(`🪞 Mirror Shard reflected ${reflectDamage} damage!`, 'info');
-        
-        // Check if reflection killed the monster
-        if (monster.numValue <= 0) {
-            game.room.splice(index, 1);
-            game.discardPile.push(monster);
-            game.stats.monstersSlain++;
-            game.combo++;
-            game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
-            
-            // Monster Tooth bonus
-            if (game.relics.some(r => r.id === 'tooth')) {
-                earnGold(1);
-            }
-            
-            addLog(`Mirror Shard defeated ${monster.value}${monster.suit}!`, 'success');
-            showMessage('🪞 Mirror Shard killed the monster!', 'success');
-            playSound('special');
-            updateUI();
-            checkGameState();
-            return;
-        }
-    }
-    
-    // Thorns Armor permanent unlock: Reflect 2 damage (doesn't prevent damage to player)
-    if (permanentUnlocks.thornsArmor && damage > 0) {
-        monster.numValue -= 2;
-        showMessage('🌵 Thorns Armor reflected 2 damage!', 'info');
-        
-        // Check if thorns killed the monster
-        if (monster.numValue <= 0) {
-            game.room.splice(index, 1);
-            game.discardPile.push(monster);
-            game.stats.monstersSlain++;
-            
-            // Still take damage but monster is dead
-            game.health -= damage;
-            game.stats.totalDamage += damage;
-            showDamageNumber(damage, 'damage');
-            
-            // Monster Tooth bonus
-            if (game.relics.some(r => r.id === 'tooth')) {
-                earnGold(1);
-            }
-            
-            addLog(`Thorns Armor defeated ${monster.value}${monster.suit}!`, 'success');
-            showMessage('🌵 Thorns Armor killed the monster (after taking damage)!', 'warning');
-            resetCombo();
-            updateUI();
-            checkGameState();
-            return;
-        }
-    }
-    
-    // Weak Thorns: Reflect 1 damage (doesn't prevent damage to player) (stacks with thornsArmor)
-    if (game.relics.some(r => r.id === 'weak_thorns') && damage > 0) {
-        monster.numValue -= 1;
-        showMessage('🌿 Weak Thorns reflected 1 damage!', 'info');
-        
-        // Check if thorns killed the monster
-        if (monster.numValue <= 0) {
-            game.room.splice(index, 1);
-            game.discardPile.push(monster);
-            game.stats.monstersSlain++;
-            
-            // Still take damage but monster is dead
-            game.health -= damage;
-            game.stats.totalDamage += damage;
-            showDamageNumber(damage, 'damage');
-            
-            // Monster Tooth bonus
-            if (game.relics.some(r => r.id === 'tooth')) {
-                earnGold(1);
-            }
-            
-            addLog(`Weak Thorns defeated ${monster.value}${monster.suit}!`, 'success');
-            showMessage('🌿 Weak Thorns killed the monster (after taking damage)!', 'warning');
-            resetCombo();
-            updateUI();
-            checkGameState();
-            return;
-        }
-    }
-    
-    // Iron Armor: Reduce ALL damage by 1 (permanent effect)
-    if (game.relics.some(r => r.id === 'armor') && damage > 0) {
-        const originalDamage = damage;
-        damage = Math.max(0, damage - 1);
-        if (damage < originalDamage) {
-            if (damage === 0) {
-                showMessage(`🦾 Iron Armor absorbed all ${originalDamage} damage!`, 'success');
-            } else {
-                showMessage(`🦾 Iron Armor reduced damage! (${originalDamage} → ${damage})`, 'info');
-            }
-        }
-    }
-    
-    // Stone Relic - Reduce first damage by 1 each room (stacks with armor)
-    let stoneRelic = game.relics.find(r => r.id === 'stone' && !r.stoneUsed);
-    if (stoneRelic && damage > 0) {
-        stoneRelic.stoneUsed = true;
-        const originalDamage = damage;
-        damage = Math.max(0, damage - 1);
-        if (damage === 0) {
-            showMessage(`🪨 Stone absorbed all ${originalDamage} damage!`, 'success');
-        } else {
-            showMessage(`🪨 Stone reduced damage by 1! (${originalDamage} → ${damage})`, 'info');
-        }
-    }
-    
-    // Track if weapon was used for ATTACK (not just defense)
-    // If dodge is active, weapon is not used (even if perfect kill)
-    let weaponWasUsed = !game.dodgeActive;
-
-    // Track if attack was made (for Power consumption)
-    // Power should consume when attacking (with or without weapon)
-    // But NOT when using defensive abilities (Dodge, Divine Blessing, etc)
-    let attackWasMade = !game.dodgeActive;
-
-    playSound('attack');
-
-    // BUGFIX: Cloak relic negates first damage of the room
-    const cloakRelic = game.relics.find(r => r.id === 'cloak' && !r.usedThisRoom);
-    if (cloakRelic && damage > 0) {
-        cloakRelic.usedThisRoom = true;
-        damage = 0;
-        showMessage('🧥 Cloak blocked damage!', 'success');
-        weaponWasUsed = false;
-        attackWasMade = false;
-        game.combo++;
-        game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
-    }
-
-    // Dodge (dodgeMaster: avoids 2 attacks instead of 1)
-    if (game.dodgeActive && damage > 0) {
-        // dodgeMaster unlock: dodge lasts 2 attacks
-        if (!permanentUnlocks.dodgeMaster) {
-            game.dodgeActive = false;
-        } else {
-            // Track dodge counter for dodgeMaster
-            if (!game.dodgeCounter) game.dodgeCounter = 2;
-            game.dodgeCounter--;
-            if (game.dodgeCounter <= 0) {
-                game.dodgeActive = false;
-                game.dodgeCounter = 0;
-            }
-        }
-        playSound('special');
-        addLog(`Dodged attack from ${monster.value}${monster.suit}!`, 'heal');
-        showMessage('🛡️ Dodged! No damage!', 'success');
-    }
-    // Priest Divine Blessing - 15% chance to dodge
-    else if (damage > 0 && game.classData && game.classData.passive.divineBlessing && Math.random() < COMBAT.DIVINE_BLESSING_CHANCE) {
-        weaponWasUsed = false; // Divine Blessing = no weapon used
-        attackWasMade = false; // Divine Blessing = no attack made
-        playSound('special');
-        addLog(`Divine Blessing! Dodged attack from ${monster.value}${monster.suit}!`, 'heal');
-        showMessage('🕊️ Divine Blessing! No damage!', 'success');
-        createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', 40);
-        game.combo++;
-        game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
-    } 
-    // Mirror Shield - Reflect damage
-    else if (damage > 0 && game.mirrorShield > 0) {
-        const reflected = Math.min(damage, game.mirrorShield);
-        game.mirrorShield -= reflected;
-        const remaining = damage - reflected;
-        
-        if (remaining > 0) {
-            game.health -= remaining;
-            game.stats.totalDamage += remaining;
-            showDamageNumber(remaining, 'damage');
-            playSound('damage');
-        }
-        
-        showMessage(`🪞 Mirror reflected ${reflected} damage! Shield: ${game.mirrorShield}`, 'success');
-        createParticles(window.innerWidth / 2, window.innerHeight / 2, '#a8edea', 30);
-        
-        if (remaining <= 0) {
-            weaponWasUsed = false; // Mirror blocked all = no weapon used
-            attackWasMade = false; // Mirror blocked all = no attack made
-            game.combo++;
-            game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
-        } else {
-            resetCombo();
-        }
-    }
-    // Perfect Kill (ONLY if weapon is equipped!)
-    else if (game.equippedWeapon && damage <= 0) {
-        game.combo++;
-        game.stats.maxCombo = Math.max(game.stats.maxCombo, game.combo);
-        if (game.combo >= COMBO.COMBO_MASTER_START + 1) {
-            showCombo(game.combo);
-            playSound('combo');
-        }
-        
-        // Lifesteal (relic + permanent unlock)
-        let lifesteal = game.relics.filter(r => r.id === 'vampire').length * 2;
-        
-        // Permanent unlock: lifeSteal (1 HP on perfect kill)
-        if (permanentUnlocks.lifeSteal) {
-            lifesteal += 1;
-        }
-        
-        if (lifesteal > 0) {
-            game.health = Math.min(game.maxHealth, game.health + lifesteal);
-            showMessage(`🧛 +${lifesteal} HP from Vampirism!`, 'success');
-        }
-        
-        // Monster Tooth: +1 gold per monster
-        if (game.relics.some(r => r.id === 'tooth')) {
-            earnGold(1);
-        }
-        
-        addLog(`Defeated ${monster.value}${monster.suit}! (Combo: ${game.combo})`, 'info');
-        if (criticalHit) {
-            showMessage(`💥 MEGA CRITICAL! ${game.combo}x COMBO!`, 'success');
-            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 50);
-        } else if (thunderCrit) {
-            showMessage(`⚡ CRITICAL HIT! ${game.combo}x COMBO!`, 'success');
-            createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd93d', 30);
-        } else {
-            showMessage(`⚔️ Perfect kill! ${game.combo}x COMBO!`, 'success');
-        }
-    }
-    // TAKE DAMAGE: Monster hits you
-    else {
-        game.health -= damage;
-        game.stats.totalDamage += damage;
-        showDamageNumber(damage, 'damage');
-        playSound('damage');
-
-        // Different messages depending on whether weapon is equipped
-        if (!game.equippedWeapon) {
-            addLog(`No weapon! Took ${damage} damage from ${monster.value}${monster.suit}`, 'danger');
-            showMessage(`⚠️ NO WEAPON! -${damage} HP`, 'danger');
-        } else {
-            addLog(`Monster hit you for ${damage} damage! ${monster.value}${monster.suit}`, 'danger');
-            showMessage(`💥 Monster hits you! -${damage} HP`, 'danger');
-        }
-
-        screenShake();
-
-        // BUGFIX: Rogue Shadow Strike is "combo safe" - don't reset combo
-        const isRogueShadowStrikeActive = (
-            game.playerClass === 'rogue' &&
-            game.classAbilityActive &&
-            game.classAbilityCounter > 0
-        );
-
-        if (!isRogueShadowStrikeActive) {
-            resetCombo();
-        }
-    }
-    
-    // Reset Power (doubleDamage) ONLY if attack was made
-    // Power consumes when attacking (with or without weapon)
-    // But NOT when using defensive abilities (Dodge, Divine Blessing, Mirror, Cloak)
-    if (attackWasMade && game.doubleDamage) {
-        game.doubleDamage = false;
-    }
-    
-    // Consume Berserk stack ONLY if attack was made
-    // Same logic as Power: consumes when attacking, not when defending
-    if (attackWasMade && game.berserkStacks > 0 && berserkBonus > 0) {
-        game.berserkStacks--;
-        showMessage(`🔥 Berserk +5 damage! (${game.berserkStacks} left)`, 'info');
-    }
-    
-    // Weapon durability system - ONLY if weapon was actually USED
-    // AND durability wasn't already reduced (boss battles reduce durability earlier)
-    if (weaponWasUsed && game.equippedWeapon && game.equippedWeapon.durability < 999 && !weaponDurabilityReduced) {
-        game.equippedWeapon.durability--;
-        
-        if (game.equippedWeapon.durability <= 0) {
-            // Weapon broke!
-            showMessage(`💔 Your weapon broke!`, 'danger');
-            playSound('error');
-            game.discardPile.push(game.equippedWeapon);
-            game.equippedWeapon = null;
-        } else {
-            // Show remaining durability
-            const emoji = game.equippedWeapon.durability === 1 ? '⚠️' : '⚔️';
-            addLog(`${emoji} Weapon: ${game.equippedWeapon.durability}/${game.equippedWeapon.maxDurability} uses left`, 'info');
-        }
-    }
-    
-    // Decrement class ability counter ONLY if attack was made
-    // Same logic as Power and Berserk: consumes when attacking, not when defending
-    if (attackWasMade && game.classAbilityActive && game.classAbilityCounter > 0) {
-        game.classAbilityCounter--;
-        if (game.classAbilityCounter === 0) {
-            game.classAbilityActive = false;
-            game.rageStrikeActive = false; // Reset Berserker flag
-            showMessage('✨ Class ability buff expired!', 'info');
-        }
-    }
-    
-    game.stats.monstersSlain++;
-    game.room.splice(index, 1);
-    game.discardPile.push(monster);
-    
-    // Monster gold (difficulty-based, with boss bonus)
-    if (monster.isBoss) {
-        // Boss gold rewards (much more generous!)
-        const bossGoldByDifficulty = {
-            easy: Math.floor(Math.random() * 16) + 25,    // 25-40 gold
-            normal: Math.floor(Math.random() * 11) + 20,  // 20-30 gold
-            hard: Math.floor(Math.random() * 11) + 15,    // 15-25 gold
-            endless: Math.floor(Math.random() * 11) + 20  // 20-30 gold
-        };
-        const bossGold = bossGoldByDifficulty[game.difficulty] || 20;
-        earnGold(bossGold);
-        showMessage(`👹 BOSS DEFEATED! +${bossGold} gold!`, 'success');
-        createParticles(window.innerWidth / 2, window.innerHeight / 2, '#d4af37', 50);
-    } else {
-        // Normal monster gold
-        const goldByDifficulty = {
-            easy: Math.floor(Math.random() * 4) + 3,    // 3-6 gold
-            normal: Math.floor(Math.random() * 3) + 2,  // 2-4 gold
-            hard: Math.floor(Math.random() * 3) + 2,    // 2-4 gold (buffed from 1-2)
-            endless: Math.floor(Math.random() * 3) + 2  // 2-4 gold
-        };
-        const baseGold = goldByDifficulty[game.difficulty] || 2;
-        earnGold(baseGold);
-    }
-    
-    // Revive
-    if (game.health <= 0) {
-        const phoenix = game.relics.find(r => r.id === 'phoenix' && !r.used);
-        if (phoenix) {
-            phoenix.used = true;
-            game.health = 10;
-            showMessage('🐦 Phoenix Feather activated! Revived with 10 HP!', 'success');
-            playSound('special');
-            updateRelicsDisplay();
-        }
-    }
-    
-    updateRunningScore(); // Update score
-    updateUI();
-    checkGameState();
-    checkAchievements();
-}
-
-function handleWeapon(weapon, index) {
-    if (game.equippedWeapon) {
-        game.discardPile.push(game.equippedWeapon);
-    }
-    
-    // BREAKING COMBO: Equiping weapon breaks combo (strategic choice!)
-    if (game.combo > 0) {
-        const brokenCombo = game.combo;
-        resetCombo();
-        if (brokenCombo >= 3) {
-            showMessage(`💔 ${brokenCombo}x combo broken! (equipped weapon)`, 'warning');
-        }
-    }
-    
-    game.equippedWeapon = weapon;
-    game.room.splice(index, 1);
-    game.stats.weaponsEquipped++;
-    
-    // Set durability based on difficulty
-    const durabilityMap = { easy: 3, normal: 2, hard: 1, endless: 2 };
-    game.equippedWeapon.maxDurability = durabilityMap[game.difficulty] || 2;
-    
-    // Apply Knight bonus (+1 durability)
-    if (game.classData && game.classData.passive.weaponDurabilityBonus) {
-        game.equippedWeapon.maxDurability += game.classData.passive.weaponDurabilityBonus;
-    }
-    
-    // Apply permanent unlock bonus (+1 durability)
-    if (permanentUnlocks.durablePlus) {
-        game.equippedWeapon.maxDurability += 1;
-    }
-    
-    // Gloves relic: +1 durability
-    if (game.relics.some(r => r.id === 'gloves')) {
-        game.equippedWeapon.maxDurability += 1;
-    }
-    
-    game.equippedWeapon.durability = game.equippedWeapon.maxDurability;
-    
-    // Master Smith: +1 damage when equipping weapon
-    if (game.relics.some(r => r.id === 'master_smith')) {
-        game.equippedWeapon.numValue += 1;
-        showMessage('🔨 Master Smith enhanced your weapon (+1 damage)!', 'success');
-    }
-    
-    // Check for Durable Weapons relic
-    if (game.relics.some(r => r.id === 'durable_weapons')) {
-        game.equippedWeapon.maxDurability = 999; // Infinite durability
-        game.equippedWeapon.durability = 999;
-    } else {
-    }
-    
-    playSound('equip');
-    const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
-    addLog(`Equipped ${weapon.value}${weapon.suit}!`, 'equip');
-    showMessage(`⚔️ Equipped weapon with value ${weapon.numValue + powerBonus}! (${game.equippedWeapon.durability}/${game.equippedWeapon.maxDurability} uses)`, 'success');
-    
-    updateUI();
-    checkGameState();
-    checkAchievements();
-}
-
-function handlePotion(potion, index) {
-    // Max potions per dungeon (Herb relic: 2x instead of 1x)
-    let maxPotionsPerDungeon = POTIONS.DEFAULT_MAX_PER_ROOM;
-    if (game.relics.some(r => r.id === 'herb')) maxPotionsPerDungeon = POTIONS.DANCER_MAX_PER_ROOM;
-    
-    // Dancer can use 2 potions per ROOM (different from dungeon limit)
-    const maxPotionsPerRoom = (game.classData && game.classData.passive.maxPotionsPerRoom) || POTIONS.DEFAULT_MAX_PER_ROOM;
-    
-    // Check if potion limit reached (per dungeon)
-    if (game.potionsUsed >= maxPotionsPerDungeon) {
-        showMessage(`Only ${maxPotionsPerDungeon} potion(s) per dungeon! Discarding...`, 'warning');
-        game.room.splice(index, 1);
-        game.discardPile.push(potion);
-        addLog(`Discarded potion ${potion.value}${potion.suit}`, 'info');
-        updateUI();
-        checkGameState();
-        return;
-    }
-
-    // POTIONS DO NOT BREAK COMBO! (Strategic choice - different from weapons)
-    // This allows for healing while maintaining combo chains
-    
-    const healBonus = getRelicBonus('healBonus');
-    // Add class bonus (Dancer: +3 HP)
-    const classHealBonus = (game.classData && game.classData.passive.potionHealBonus) || 0;
-    const heal = potion.numValue + healBonus + classHealBonus;
-    
-    const oldHealth = game.health;
-    game.health = Math.min(game.health + heal, game.maxHealth);
-    const actualHeal = game.health - oldHealth;
-    
-    if (actualHeal > 0) {
-        game.potionsUsed++;
-        game.stats.potionsUsed++;
-        game.stats.totalHealing += actualHeal;
-        showDamageNumber(actualHeal, 'heal');
-        playSound('heal');
-        addLog(`Used ${potion.value}${potion.suit}, healed ${actualHeal} HP`, 'heal');
-        showMessage(`💚 Healed ${actualHeal} HP!`, 'success');
-    } else {
-         showMessage(`💚 HP is full!`, 'info');
-    }
-    
-    game.room.splice(index, 1);
-    game.discardPile.push(potion);
-    updateUI();
-    checkGameState();
-    checkAchievements();
-}
+// NOTE: saveGameState, undoLastMove, handleCardClick moved to modules/game-combat.js
+// NOTE: getCardType, handleSpecial, handleMonster, handleWeapon, handlePotion moved to modules/game-combat.js
 
 function checkGameState() {
     // Room Cleared?
@@ -3545,8 +1881,8 @@ function endGame(reason, gaveUp = false) {
     const isEveryFifthDeath = reason === 'death' && !gaveUp && totalDeaths >= 5 && totalDeaths % 5 === 0;
     
     // Switch music based on outcome
-    if (reason === 'victory') {
-        music.switchContext('victory');
+    if (reason === 'victory' || reason === 'boss_fled') {
+        music.switchContext('victory'); // Boss fled is still a win
     } else {
         music.switchContext('defeat');
     }
@@ -3567,6 +1903,35 @@ function endGame(reason, gaveUp = false) {
         score = gaveUp ? 0 : calculateDeathScore(); // Score is 0 if gave up
         scoreLabel = 'Final Score:';
         playSound('defeat');
+    } else if (reason === 'boss_fled') {
+        // Special case: Boss fled, player survived but didn't defeat the boss
+        isVictory = true; // Still counts as a win for stats
+        title = '🏃 BOSS FLED';
+        const fledNarratives = [
+            'The boss fled into the shadows... You survived, but at what cost?',
+            'Your resilience scared the boss away. A hollow victory.',
+            'The coward escaped! You live another day, but glory eludes you.',
+            'Without a weapon, you could only endure. The boss retreats in shame.'
+        ];
+        const randomFled = fledNarratives[Math.floor(Math.random() * fledNarratives.length)];
+        message = randomFled;
+        score = calculateBossFledScore(); // -50% score penalty
+        scoreLabel = 'Score (Boss Fled -50%):';
+        playSound('roomClear'); // Not defeat, not full victory
+        
+        // Muted celebration particles
+        for (let i = 0; i < 2; i++) {
+            setTimeout(() => {
+                const x = window.innerWidth / 2 + (Math.random() - 0.5) * 200;
+                const y = window.innerHeight / 2;
+                createParticles(x, y, '#888888', 20); // Gray particles - bittersweet
+            }, i * 300);
+        }
+        
+        game.stats.gamesWon = 1;
+        permanentStats.gamesWon = (permanentStats.gamesWon || 0) + 1;
+        permanentStats.bossesFled = (permanentStats.bossesFled || 0) + 1; // Track this separately
+        
     } else if (reason === 'victory') {
         isVictory = true;
         title = '🏆 VICTORY';
@@ -3651,6 +2016,15 @@ function calculateWinScore() {
     );
     
     return Math.max(1, totalScore); // Score must be at least 1
+}
+
+function calculateBossFledScore() {
+    // Boss fled = Victory with -50% penalty
+    // Uses same calculation as win, but halved
+    const baseWinScore = calculateWinScore();
+    const penaltyMultiplier = 0.5; // -50% penalty
+    
+    return Math.max(1, Math.floor(baseWinScore * penaltyMultiplier));
 }
 
 function calculateDeathScore() {
@@ -3787,8 +2161,29 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
             ${scoreBreakdownHTML}
             
             <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <p style="color: #aaa; font-size: 0.9em; margin-bottom: 5px;">${scoreLabel}</p>
-                <p style="color: ${isVictory ? '#ffd700' : '#ff6b6b'}; font-size: 2.5em; font-weight: bold;">${score}</p>
+                ${reason === 'boss_fled' ? `
+                    <p style="color: #aaa; font-size: 0.9em; margin-bottom: 5px;">Score:</p>
+                    <p style="color: #ffd700; font-size: 2.5em; font-weight: bold; margin-bottom: 10px;">${score}</p>
+                    <p class="boss-fled-penalty" style="
+                        color: #ff4444;
+                        font-size: 1.2em;
+                        font-weight: bold;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        animation: pulsePenalty 0.8s ease-in-out infinite;
+                        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+                        margin-top: 5px;
+                    ">⚠️ BOSS FLED: -50% PENALTY ⚠️</p>
+                    <style>
+                        @keyframes pulsePenalty {
+                            0%, 100% { opacity: 1; transform: scale(1); }
+                            50% { opacity: 0.7; transform: scale(1.05); }
+                        }
+                    </style>
+                ` : `
+                    <p style="color: #aaa; font-size: 0.9em; margin-bottom: 5px;">${scoreLabel}</p>
+                    <p style="color: ${isVictory ? '#ffd700' : '#ff6b6b'}; font-size: 2.5em; font-weight: bold;">${score}</p>
+                `}
             </div>
             
             <div class="modal-controls" style="display: flex; gap: 10px; justify-content: center;">
@@ -3837,12 +2232,24 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
             hapticFeedback('medium');
             
             try {
-                await submitScoreToLeaderboard(score, gameTime);
-                btn.textContent = '✅ Score Submitted!';
-                btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
+                const result = await submitScoreToLeaderboard(score, gameTime);
+                
+                // Check if score made it to top 10
+                if (result && result.rankPosition) {
+                    btn.textContent = `🏆 TOP 10! #${result.rankPosition}`;
+                    btn.style.background = 'linear-gradient(180deg, #ffd700 0%, #f5a623 100%)';
+                    btn.style.color = '#1a1410';
+                    btn.style.fontWeight = 'bold';
+                    btn.style.animation = 'pulsePenalty 0.5s ease-in-out 3'; // Reuse pulse animation
+                    playSound('victory'); // Special sound for top 10!
+                    createParticles(btn.offsetLeft + btn.offsetWidth/2, btn.offsetTop, '#ffd700', 30);
+                } else {
+                    btn.textContent = '✅ Score Submitted!';
+                    btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
+                }
                 btn.disabled = true; // Prevent re-submission
                 hapticFeedback('success');
-                pulseElement(btn, '#6bcf7f');
+                pulseElement(btn, result?.rankPosition ? '#ffd700' : '#6bcf7f');
                 
                 // Auto-close modal after 2 seconds on success
                 setTimeout(() => {
@@ -3863,9 +2270,16 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                 btn.onclick = async () => {
                     setButtonLoading(btn, true);
                     try {
-                        await submitScoreToLeaderboard(score, gameTime);
-                        btn.textContent = '✅ Score Submitted!';
-                        btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
+                        const retryResult = await submitScoreToLeaderboard(score, gameTime);
+                        if (retryResult && retryResult.rankPosition) {
+                            btn.textContent = `🏆 TOP 10! #${retryResult.rankPosition}`;
+                            btn.style.background = 'linear-gradient(180deg, #ffd700 0%, #f5a623 100%)';
+                            btn.style.color = '#1a1410';
+                            playSound('victory');
+                        } else {
+                            btn.textContent = '✅ Score Submitted!';
+                            btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
+                        }
                         btn.disabled = true;
                         hapticFeedback('success');
                     } catch (retryErr) {
@@ -4067,9 +2481,9 @@ function updateRunningScore() {
 // HOLD CARD FUNCTION
 // ============================================
 function holdCard(card, index) {
-    // Calculate max hold capacity
-    let maxHold = CARDS.DEFAULT_HOLD_CAPACITY;
-    if (game.selectedClass === 'rogue') maxHold = CARDS.ROGUE_HOLD_CAPACITY;
+    // Calculate max hold capacity (uses classData like updateUI)
+    let maxHold = (game.classData && game.classData.passive.maxHoldCards) || CARDS.DEFAULT_HOLD_CAPACITY;
+    // Feather relic: +1 hold slot
     if (game.relics.some(r => r.id === 'feather')) maxHold += CARDS.FEATHER_BONUS_SLOTS;
     
     // Check if already at capacity
@@ -4697,7 +3111,7 @@ window.tryGiveUp = () => {
     if (game.gameStartTime > 0 && !game.gameOver) {
         document.getElementById('giveUpModal').classList.add('active');
     } else {
-        alert('Start a game first!');
+        showMessage('⚠️ Start a game first!', 'warning');
     }
 }
 
@@ -4851,6 +3265,13 @@ if (typeof getCardType !== 'undefined') window.getCardType = getCardType; // For
 if (typeof loadUnlocks !== 'undefined') window.loadUnlocks = loadUnlocks;
 if (typeof saveUnlocks !== 'undefined') window.saveUnlocks = saveUnlocks;
 
+// Expose additional functions for game-classes.js module
+if (typeof startGame !== 'undefined') window.startGame = startGame;
+if (typeof checkGameState !== 'undefined') window.checkGameState = checkGameState;
+if (typeof getRelicBonus !== 'undefined') window.getRelicBonus = getRelicBonus;
+if (typeof screenShake !== 'undefined') window.screenShake = screenShake;
+if (typeof createParticles !== 'undefined') window.createParticles = createParticles;
+
 // Expose game state, inputs and unlocks for modules (leaderboard.js, stats.js, codex.js)
 window.game = game;
 window.playerNameInput = playerNameInput;
@@ -4860,6 +3281,93 @@ window.RELIC_CONFIG = RELIC_CONFIG; // For game-relics.js
 window.createCardElement = createCardElement; // For tutorial - FULL styled cards
 window.createMiniCardElement = createMiniCardElement; // For tutorial - mini cards
 
+// Expose additional functions for game-combat.js module
+if (typeof checkAchievements !== 'undefined') window.checkAchievements = checkAchievements;
+if (typeof updateRunningScore !== 'undefined') window.updateRunningScore = updateRunningScore;
+if (typeof endGame !== 'undefined') window.endGame = endGame;
+// NOTE: addLog, getBerserkBonus, getComboBonus, getCardType now exposed by game-combat.js
+
+// ============================================
+// DEBUG FUNCTIONS (remove in production)
+// ============================================
+window.DEBUG = {
+    // Simulate boss fled scenario: empty dungeon, boss in room, no weapon
+    bossFledScenario: function() {
+        if (!game.gameStartTime) {
+            console.error('❌ Start a game first!');
+            return;
+        }
+        
+        // Setup scenario
+        game.dungeon = []; // Empty dungeon
+        game.equippedWeapon = null; // No weapon
+        game.health = 30; // Enough HP to survive
+        game.finalBossSpawned = false;
+        
+        // Spawn boss directly
+        const finalBoss = {
+            suit: '',
+            value: '',
+            numValue: 20, // Boss damage
+            maxHP: 20,
+            isBoss: true,
+            bossNumber: 99,
+            bossName: 'Test Boss',
+            bossFlavor: 'DEBUG: Click this boss without weapon!'
+        };
+        
+        game.room = [finalBoss];
+        updateUI();
+        
+        console.log('✅ Boss Fled scenario ready!');
+        console.log('📋 State: Dungeon empty, No weapon, HP=30, Boss HP=20');
+        console.log('👆 Click the boss to trigger "Boss Fled" ending');
+    },
+    
+    // Simulate boss respawn scenario: dungeon has cards
+    bossRespawnScenario: function() {
+        if (!game.gameStartTime) {
+            console.error('❌ Start a game first!');
+            return;
+        }
+        
+        // Setup scenario
+        game.dungeon = [{ suit: '♦', suitName: 'diamonds', value: '10', numValue: 10 }]; // Has a weapon card
+        game.equippedWeapon = null; // No weapon
+        game.health = 30;
+        game.finalBossSpawned = false;
+        
+        const finalBoss = {
+            suit: '',
+            value: '',
+            numValue: 20,
+            maxHP: 20,
+            isBoss: true,
+            bossNumber: 99,
+            bossName: 'Test Boss',
+            bossFlavor: 'DEBUG: Boss should respawn after fleeing!'
+        };
+        
+        game.room = [finalBoss];
+        updateUI();
+        
+        console.log('✅ Boss Respawn scenario ready!');
+        console.log('📋 State: Dungeon has 1 card, No weapon, HP=30, Boss HP=20');
+        console.log('👆 Click the boss - it should flee and respawn');
+    },
+    
+    // Quick win
+    win: function() {
+        endGame('victory');
+    },
+    
+    // Quick boss fled
+    bossFled: function() {
+        endGame('boss_fled');
+    }
+};
+
+console.log('🔧 DEBUG functions available: DEBUG.bossFledScenario(), DEBUG.bossRespawnScenario(), DEBUG.win(), DEBUG.bossFled()');
 
 // Check orientation on load and resize
 checkMobileOrientation();

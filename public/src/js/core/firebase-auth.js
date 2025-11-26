@@ -9,7 +9,7 @@
 // ============================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, signInAnonymously, signInWithCustomToken, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, doc, addDoc, collection, query, getDocs, getDoc, setDoc, limit, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { getFirestore, doc, addDoc, collection, query, getDocs, getDoc, setDoc, limit, orderBy, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 // ============================================
 // FIREBASE INITIALIZATION
@@ -407,8 +407,13 @@ try {
         // CRITICAL: Expose Firebase globals for leaderboard.js and other modules
         window.db = db;
         window.appId = appId;
-        window.userId = userId;
         window.auth = auth;
+        
+        // CRITICAL: Use getter for userId to handle async auth timing
+        Object.defineProperty(window, 'userId', {
+            get: () => userId,
+            set: (val) => { userId = val; }
+        });
         
         // CRITICAL: Expose Firestore functions for leaderboard.js (non-module script)
         window.collection = collection;
@@ -416,6 +421,7 @@ try {
         window.getDocs = getDocs;
         window.query = query;
         window.limit = limit;
+        window.orderBy = orderBy;
         window.doc = doc;
         window.getDoc = getDoc;
         window.setDoc = setDoc;

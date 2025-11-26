@@ -1,7 +1,7 @@
 # 📋 DUNGEON SCOUNDREL - BACKLOG UNIFICADO
 
 **Última atualização:** 2025-11-26
-**Versão atual:** 1.4.3
+**Versão atual:** 1.4.3 (Lighthouse Optimized)
 **Single Source of Truth para planejamento**
 
 ---
@@ -70,10 +70,10 @@
 #### P1 - Alta Prioridade (Esta semana)
 | ID | Tarefa | Impacto | Esforço | Status |
 |----|--------|---------|---------|--------|
-| P1-1 | **LCP alto (3.7s)** - Otimizar carregamento inicial | UX | 4h | 🔴 Pendente |
+| P1-1 | **LCP alto (3.7s)** - Otimizar carregamento inicial | UX | 4h | 🟢 Concluído (v1.4.3) |
 | P1-2 | **Unused JS (180KB!)** - Remover código morto | Performance | 8h | 🔴 Pendente |
-| P1-3 | **Minificar JS** - Reduzir tamanho de download | Performance | 2h | 🔴 Pendente |
-| P1-4 | **Minificar CSS** - Reduzir tamanho | Performance | 1h | 🔴 Pendente |
+| P1-3 | **Minificar JS** - Reduzir tamanho de download | Performance | 2h | 🟢 Concluído (Netlify) |
+| P1-4 | **Minificar CSS** - Reduzir tamanho | Performance | 1h | 🟢 Concluído (Netlify) |
 
 ---
 
@@ -82,11 +82,11 @@
 #### P2 - Otimizações de Performance (Próximas 2 semanas)
 | ID | Tarefa | Impacto | Esforço | Status |
 |----|--------|---------|---------|--------|
-| P2-1 | **Render-blocking resources** - 157ms de economia | Lighthouse | 2h | 🔴 Pendente |
+| P2-1 | **Render-blocking resources** - defer scripts | Lighthouse | 2h | 🟢 Concluído (v1.4.3) |
 | P2-2 | **Unused CSS (10KB)** - Purge CSS não usado | Lighthouse | 3h | 🔴 Pendente |
-| P2-3 | **Imagens responsivas** - Servir tamanho correto | Lighthouse | 4h | 🔴 Pendente |
-| P2-4 | **Cache headers** - Otimizar TTL | Lighthouse | 1h | 🟢 Implementado |
-| P2-5 | **Preconnect fonts** - Corrigir crossorigin | Lighthouse | 30min | 🔴 Pendente |
+| P2-3 | **Imagens responsivas** - Servir tamanho correto | Lighthouse | 4h | 🟢 Concluído (Netlify) |
+| P2-4 | **Cache headers** - Otimizar TTL | Lighthouse | 1h | 🟢 Concluído |
+| P2-5 | **Preconnect fonts** - Corrigir crossorigin | Lighthouse | 30min | 🟢 Concluído (v1.4.3) |
 
 #### P3 - PWA Compliance (Próximas 2 semanas)
 | ID | Tarefa | Impacto | Esforço | Status |
@@ -102,12 +102,12 @@
 #### P4 - Modularização do game.js (Próximo mês)
 | ID | Tarefa | Impacto | Esforço | Status |
 |----|--------|---------|---------|--------|
-| P4-1 | **Extrair Sistema de Classes** → `modules/game-classes.js` | Manutenibilidade | 4h | 🔴 Pendente |
-| P4-2 | **Extrair Sistema de Combate** → `modules/game-combat.js` | Manutenibilidade | 6h | 🔴 Pendente |
-| P4-3 | **Extrair Sistema de Deck** → `modules/game-deck.js` | Manutenibilidade | 4h | 🔴 Pendente |
+| P4-1 | **Extrair Sistema de Classes** → `modules/game-classes.js` | Manutenibilidade | 4h | 🟢 Concluído |
+| P4-2 | **Extrair Sistema de Combate** → `modules/game-combat.js` | Manutenibilidade | 6h | 🟢 Concluído |
+| P4-3 | **Extrair Sistema de Deck** → `modules/game-deck.js` | Manutenibilidade | 4h | 🟢 Concluído |
 | P4-4 | **Extrair Sistema de Tutorial** → `systems/tutorial.js` | Manutenibilidade | 3h | 🔴 Pendente |
 | P4-5 | **Extrair Sistema de Sons** → `systems/sfx.js` | Manutenibilidade | 2h | 🔴 Pendente |
-| P4-6 | **Extrair Sistema de UI** → `systems/ui-manager.js` | Manutenibilidade | 4h | 🔴 Pendente |
+| P4-6 | **Extrair Sistema de UI** → `systems/ui-manager.js` | Manutenibilidade | 4h | ⚪ Cancelado (complexo) |
 
 #### P5 - Limpeza de Código
 | ID | Tarefa | Impacto | Esforço | Status |

@@ -15,15 +15,57 @@ const getFirebaseGlobals = () => ({
 // ============================================
 // LEADERBOARD (FIREBASE)
 // ============================================
+
+// Helper: Wait for Firebase to be ready (with timeout)
+async function waitForFirebase(maxWaitMs = 5000, checkIntervalMs = 200) {
+    const startTime = Date.now();
+    while (Date.now() - startTime < maxWaitMs) {
+        const { db, appId, userId } = getFirebaseGlobals();
+        if (db && appId && userId) {
+            return true; // Firebase is ready
+        }
+        await new Promise(resolve => setTimeout(resolve, checkIntervalMs));
+    }
+    return false; // Timeout
+}
+
 async function submitScoreToLeaderboard(score, gameTime) {
+    // Wait for Firebase to be ready (handles async auth timing)
+    const isReady = await waitForFirebase(5000);
+    
     const { db, appId, userId } = getFirebaseGlobals();
-    if (!db || !appId || !userId) throw new Error("Firebase is not ready");
+    if (!isReady || !db || !appId || !userId) {
+        throw new Error("Firebase is not ready. Please try again in a few seconds.");
+    }
     
     const playerName = playerNameInput.value.trim() || 'Scoundrel';
     
-    // Salvar em collection especÃ­fica por dificuldade
+    // Salvar em collection específica por dificuldade
     const collectionName = `leaderboard_${game.difficulty}`;
     const leaderboardCol = collection(db, `/artifacts/${appId}/public/data/${collectionName}`);
+    
+    // Check current top 10 to determine ranking position
+    let rankPosition = null;
+    try {
+        const q = query(leaderboardCol, orderBy('score', 'desc'), limit(10));
+        const snapshot = await getDocs(q);
+        const topScores = snapshot.docs.map(doc => doc.data().score);
+        
+        // Find where this score would rank
+        if (topScores.length < 10) {
+            // Less than 10 scores, automatically in top 10
+            rankPosition = topScores.filter(s => s > score).length + 1;
+        } else {
+            // Check if score beats any in top 10
+            const lowestTop10 = topScores[topScores.length - 1];
+            if (score > lowestTop10) {
+                rankPosition = topScores.filter(s => s > score).length + 1;
+            }
+        }
+    } catch (e) {
+        console.warn('[LEADERBOARD] Could not check ranking:', e);
+        // Continue anyway, just won't show rank
+    }
     
     const scoreData = {
         name: playerName.substring(0, 20),
@@ -38,6 +80,9 @@ async function submitScoreToLeaderboard(score, gameTime) {
     };
     
     await addDoc(leaderboardCol, scoreData);
+    
+    // Return the rank position (null if not in top 10)
+    return { rankPosition };
 }
 
 // Current selected difficulty for leaderboard

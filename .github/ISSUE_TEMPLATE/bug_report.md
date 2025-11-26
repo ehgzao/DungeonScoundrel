@@ -34,13 +34,13 @@ If applicable, add screenshots to help explain your problem.
 **Desktop:**
 - OS: [e.g. Windows 11, macOS 13]
 - Browser: [e.g. Chrome 120, Firefox 121, Safari 17]
-- Game Version: [e.g. 1.4.2 - check footer]
+- Game Version: [e.g. 1.4.3 - check footer]
 
 **Mobile:**
 - Device: [e.g. iPhone 14, Samsung Galaxy S23]
 - OS: [e.g. iOS 17, Android 14]
 - Browser: [e.g. Safari, Chrome]
-- Game Version: [e.g. 1.4.2]
+- Game Version: [e.g. 1.4.3]
 
 ## 🎮 Game State (if relevant)
 

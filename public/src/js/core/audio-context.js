@@ -11,4 +11,5 @@ window.audioContext = audioContext; // Expose globally for music.js
 const sfxMasterGain = audioContext.createGain();
 sfxMasterGain.connect(audioContext.destination);
 sfxMasterGain.gain.value = 0.3; // Default SFX volume
+window.sfxMasterGain = sfxMasterGain; // Expose globally for game-sounds.js
 

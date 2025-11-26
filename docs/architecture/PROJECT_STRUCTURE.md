@@ -1,6 +1,6 @@
 # 📁 ESTRUTURA DO PROJETO - Dungeon Scoundrel
 
-## 🎯 ORGANIZAÇÃO ATUAL (v1.4.2)
+## 🎯 ORGANIZAÇÃO ATUAL (v1.4.3)
 
 ```
 DungeonScoundrel/
@@ -224,7 +224,7 @@ favicon-*.svg             # Favicons
 ```json
 {
   "name": "dungeon-scoundrel",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "devDependencies": {
     "workbox-cli": "^7.0.0"
   }
@@ -301,7 +301,7 @@ favicon-*.svg             # Favicons
 
 ## 📅 INFORMAÇÕES DA VERSÃO
 
-- **Versão atual:** v1.4.2
+- **Versão atual:** v1.4.3
 - **Data de release:** 2025-11-14
 - **Última atualização deste doc:** 2025-11-14
 - **Status:** ✅ Estrutura organizada e otimizada

@@ -7,7 +7,7 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/6f6196d2-a8fd-451b-bb55-d57f2a5ad668/deploy-status)](https://app.netlify.com/projects/dungeonscoundrel/deploys)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-1.4.2-blue.svg)](https://github.com/ehgzao/DungeonScoundrel/releases)
+[![Version](https://img.shields.io/badge/version-1.4.3-blue.svg)](https://github.com/ehgzao/DungeonScoundrel/releases)
 [![PWA](https://img.shields.io/badge/PWA-100-brightgreen.svg)](https://web.dev/progressive-web-apps/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
@@ -88,7 +88,7 @@
 
 ## 🆕 NEW: Mobile & PWA
 
-### **Version 1.4.2 - Mobile & Performance Update!**
+### **Version 1.4.3 - Lighthouse Performance Update!**
 
 #### ✅ Progressive Web App (PWA)
 - **Install as App**: Add to home screen on any device
@@ -344,7 +344,7 @@ npm run deploy       # Deploy to Netlify (production)
 
 ## 📊 Performance
 
-### Current Metrics (v1.4.2)
+### Current Metrics (v1.4.3)
 
 #### Desktop
 - **Load Time**: < 2s (4G connection)
@@ -459,7 +459,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ## 🗺️ Roadmap
 
-### ✅ Version 1.4.2 (Current - COMPLETE)
+### ✅ Version 1.4.3 (Current - COMPLETE)
 - ✅ Mobile PWA implementation (Phase 1)
 - ✅ Service Worker and offline mode
 - ✅ IndexedDB for robust saves
@@ -595,7 +595,7 @@ furnished to do so, subject to the following conditions:
 
 [🎮 Play Now](https://dungeonscoundrel.com/) | [📱 Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Issue](https://github.com/ehgzao/DungeonScoundrel/issues)
 
-**Version 1.4.2** | **PWA Score: 100/100** | **Offline Ready** | **Mobile Optimized**
+**Version 1.4.3** | **PWA Score: 100/100** | **Offline Ready** | **Lighthouse Optimized**
 
 ---
 

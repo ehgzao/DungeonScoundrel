@@ -8,6 +8,27 @@
   # Firebase Web API Keys are public by design (security via Firebase Rules)
 
 # ============================================
+# ASSET OPTIMIZATION (Minification & Compression)
+# ============================================
+
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = false
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
+
+# ============================================
 # SECURITY HEADERS
 # ============================================
 

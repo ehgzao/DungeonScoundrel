@@ -5,6 +5,16 @@
    ============================================ */
 
 // ============================================
+// GAME VERSION (Single Source of Truth)
+// ============================================
+
+// Get game version from footer badge
+function getGameVersion() {
+    const badge = document.getElementById('gameVersionBadge');
+    return badge ? badge.textContent.trim() : 'v1.4.3';
+}
+
+// ============================================
 // MOBILE DETECTION & WAITLIST SYSTEM
 // ============================================
 
@@ -477,7 +487,7 @@ window.sendBugReport = function() {
             from_name: 'Player',
             reply_to: userEmailValue || 'hello@dungeonscoundrel.com',
             message: message,
-            game_version: 'v1.4.1',
+            game_version: getGameVersion(),
             report_date: new Date().toLocaleString(),
             
             // BROWSER INFO
@@ -498,7 +508,7 @@ window.sendBugReport = function() {
             copy_message: userEmailValue ? '📧 A copy of this report has been sent to your email.' : '',
             
             // LEGACY FIELDS
-            version: 'v1.4.1',
+            version: getGameVersion(),
             date: new Date().toLocaleString()
         };
         
@@ -533,7 +543,7 @@ window.sendBugReport = function() {
             });
     } catch (e) {
         console.error('sendBugReport exception:', e);
-        alert('Unexpected error: ' + e.message);
+        showUnexpectedError(e.message);
     }
 };
 
@@ -823,7 +833,7 @@ window.sendContactMessage = function() {
             
     } catch (e) {
         console.error('sendContactMessage exception:', e);
-        alert('Unexpected error: ' + e.message);
+        showUnexpectedError(e.message);
     }
 };
 
@@ -864,6 +874,33 @@ function showContactError(errorMsg) {
                 </p>
                 <p style="color: #aaa; font-size: 0.9em; margin: 0 0 20px 0;">
                     Error: ${errorMsg}
+                </p>
+                <button class="close-modal-btn" onclick="this.closest('.modal-overlay').remove();" style="font-size: 1.1em; padding: 12px 32px;">
+                    Close
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+}
+
+// ============================================
+// UNEXPECTED ERROR MODAL (styled, no alert)
+// ============================================
+function showUnexpectedError(errorMsg) {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay active';
+    overlay.style.zIndex = '10000';
+    overlay.innerHTML = `
+        <div class="modal-content" style="max-width: 450px; border: 3px solid #ff6b6b; animation: modalSlideIn 0.3s ease;">
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 4em; margin-bottom: 15px;">⚠️</div>
+                <h2 style="color: #ff6b6b; margin: 0 0 15px 0;">Unexpected Error</h2>
+                <p style="color: #ddd; font-size: 1em; line-height: 1.6; margin: 0 0 10px 0;">
+                    Something went wrong. Please try again.
+                </p>
+                <p style="color: #888; font-size: 0.85em; font-family: monospace; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; margin: 0 0 20px 0; word-break: break-word;">
+                    ${errorMsg}
                 </p>
                 <button class="close-modal-btn" onclick="this.closest('.modal-overlay').remove();" style="font-size: 1.1em; padding: 12px 32px;">
                     Close

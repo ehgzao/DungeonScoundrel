@@ -5,6 +5,47 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] - 2025-11-26 - ⚡ Lighthouse Performance Update
+
+### 🎯 Major Improvements
+
+#### **Lighthouse Performance Optimizations** ⚡
+- **Critical CSS**: Inline styles for faster First Contentful Paint
+- **Deferred Scripts**: All non-critical JS now uses defer attribute
+- **Preconnects**: Added preconnect for CDN resources
+- **Auto Minification**: Netlify now minifies JS/CSS/images automatically
+- **Removed Duplicates**: Cleaned up duplicate meta tags and preconnects
+
+#### **Combat System Modularization** 🛠️
+- **game-combat.js**: New module with ~900 lines of combat code
+- **game-classes.js**: Class abilities and passives modularized
+- **game-deck.js**: Deck management modularized
+- **Reduced game.js**: From ~4000 to ~3375 lines (-16%)
+
+### 🐛 Bug Fixes
+
+#### **Bug #1: Rogue Hold Cards**
+- **Fixed**: Rogue couldn't hold 2 cards as intended
+- **Cause**: Used wrong variable `game.selectedClass` instead of `game.classData`
+- **Solution**: Corrected to use `game.classData.passive.maxHoldCards`
+
+#### **Bug #2: Dancer Potions Per Room**
+- **Fixed**: Dancer couldn't use 2 potions per room
+- **Cause**: `maxPotionsPerRoom` was calculated but never used
+- **Solution**: Changed verification to use `maxPotionsPerRoom`
+
+#### **Bug #3: Tooltip Class Abilities**
+- **Fixed**: Tooltips showed class abilities without weapon equipped
+- **Cause**: Missing `game.equippedWeapon` check
+- **Solution**: Added weapon check to tooltip calculations
+
+### 📝 Documentation
+- Updated README.md with v1.4.3 info
+- Updated BACKLOG.md with completed tasks
+- Updated modal version display
+
+---
+
 ## [1.6.24] - 2025-11-11 - 📦 Modularization Phase 1.2 + Bug Fixes
 
 ### 🎯 Major Improvements
