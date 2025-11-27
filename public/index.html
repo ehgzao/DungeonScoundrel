@@ -1490,7 +1490,8 @@
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
 <script src="src/js/features/inline-scripts.js?v=1.4.3" defer></script>
-<script type="module" src="src/js/core/firebase-auth.js?v=1.4.3" defer></script>
+<!-- Firebase: Conditional loader (loads Firebase only if user has cloud sync history) -->
+<script src="src/js/core/firebase-loader.js?v=1.4.3" defer></script>
 <script src="src/js/utils/helpers.js?v=1.4.3" defer></script>
 <script src="src/js/utils/mobile-optimization.js?v=1.4.3" defer></script>
 <script src="src/js/utils/offline-storage.js?v=1.4.3" defer></script>

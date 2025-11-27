@@ -425,3 +425,7 @@ try {
         window.doc = doc;
         window.getDoc = getDoc;
         window.setDoc = setDoc;
+        
+        // CRITICAL: Signal that Firebase is fully initialized
+        window._firebaseReady = true;
+        (window.silentLog || console.log)('[Firebase] Fully initialized');
