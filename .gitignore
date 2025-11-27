@@ -51,8 +51,7 @@ src/config/firebase-config.local.js
 # Node modules
 node_modules/
 
-# Generated Service Worker
-public/sw.js
+# Generated Workbox files (sw.js is now manually maintained)
 public/workbox-*.js
 
 # Package lock
