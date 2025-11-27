@@ -30,11 +30,6 @@
     <!-- Preload LCP image for faster rendering -->
     <link rel="preload" as="image" href="assets/images/dungeon-bg.webp" fetchpriority="high">
     
-    <!-- Preload Firebase modules with low priority (don't block critical path) -->
-    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js" fetchpriority="low">
-    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js" fetchpriority="low">
-    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js" fetchpriority="low">
-    
     <!-- SEO Meta Tags -->
     <meta name="description" content="A dark medieval roguelike card game. Explore dungeons, fight monsters, collect powerful relics and prove your skill in this challenging card game! 4 difficulties, 50 achievements, permanent unlock system.">
     <meta name="keywords" content="roguelike, card game, medieval, dungeon crawler, RPG, strategy, browser game, HTML5 game, dark fantasy, atmospheric">
@@ -77,33 +72,18 @@
         .loading-screen{position:fixed;inset:0;background:#1a1510;display:flex;align-items:center;justify-content:center;z-index:9999}
         .loading-spinner{width:50px;height:50px;border:3px solid rgba(201,169,97,0.3);border-top-color:#c9a961;border-radius:50%;animation:spin 1s linear infinite}
         @keyframes spin{to{transform:rotate(360deg)}}
-        /* Welcome screen buttons (prevent FOUC) */
-        .menu-btn-secondary{font-family:'Cinzel',serif;font-size:clamp(0.85em,2.2vw,1em);font-weight:500;text-transform:uppercase;letter-spacing:0.08em;padding:12px 18px;background:linear-gradient(180deg,#3d3328 0%,#2a2318 100%);border:1px solid #5a4a38;box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 2px 8px rgba(0,0,0,0.5);color:#c9a961;cursor:pointer;transition:all 0.2s ease;border-radius:6px}
-        #btnWelcomeMusicToggle{font-size:1.3em;padding:8px 16px;background:linear-gradient(180deg,#3d3328 0%,#2a2318 100%);border:1px solid #5a4a38;color:#c9a961;cursor:pointer;border-radius:6px}
-        #welcomeMusicVolume{width:140px;height:6px;cursor:pointer;-webkit-appearance:none;appearance:none;border-radius:3px;border:1px solid #5a4a38;background:linear-gradient(90deg,#2a2318 0%,#5a4a38 100%)}
     </style>
     
     <!-- Fonts (with display=swap for better FCP) -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&display=swap" rel="stylesheet">
     
-    <!-- Critical CSS: Variables (tiny, must block) -->
+    <!-- CSS -->
     <link rel="stylesheet" href="src/styles/variables.css">
-    
-    <!-- Non-critical CSS: Async loading for better FCP -->
-    <link rel="preload" href="src/styles/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="src/styles/animations.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="src/styles/scrollbar.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="src/styles/components/waitlist.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="src/styles/components/buttons.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    
-    <!-- Fallback for no-JS browsers -->
-    <noscript>
-        <link rel="stylesheet" href="src/styles/styles.css">
-        <link rel="stylesheet" href="src/styles/animations.css">
-        <link rel="stylesheet" href="src/styles/scrollbar.css">
-        <link rel="stylesheet" href="src/styles/components/waitlist.css">
-        <link rel="stylesheet" href="src/styles/components/buttons.css">
-    </noscript>
+    <link rel="stylesheet" href="src/styles/styles.css">
+    <link rel="stylesheet" href="src/styles/animations.css">
+    <link rel="stylesheet" href="src/styles/scrollbar.css">
+    <link rel="stylesheet" href="src/styles/components/waitlist.css">
+    <link rel="stylesheet" href="src/styles/components/buttons.css">
 
 </head>
 <body>
