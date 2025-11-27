@@ -165,20 +165,23 @@
         <!-- Content Container -->
         <div style="position: relative; z-index: 4; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px;">
         
-        <!-- Title Logo Image -->
+        <!-- Title Logo Image (responsive: 800px for mobile, full for desktop) -->
         <div style="text-align: center; margin-bottom: 12px;">
-            <img src="assets/images/title-logo.webp" alt="Dungeon Scoundrel" 
-                fetchpriority="high" decoding="async"
-                style="
-                max-width: min(85vw, 800px);
-                height: auto;
-                display: block;
-                margin: 0 auto;
-                filter: drop-shadow(0 0 18px rgba(201, 169, 97, 0.45))
-                        drop-shadow(0 7px 25px rgba(0, 0, 0, 0.85));
-                image-rendering: crisp-edges;
-                -webkit-user-drag: none;
-            " width="1310" height="165">
+            <picture>
+                <source srcset="assets/images/title-logo-800.webp" media="(max-width: 900px)">
+                <img src="assets/images/title-logo.webp" alt="Dungeon Scoundrel" 
+                    fetchpriority="high" decoding="async"
+                    style="
+                    max-width: min(85vw, 800px);
+                    height: auto;
+                    display: block;
+                    margin: 0 auto;
+                    filter: drop-shadow(0 0 18px rgba(201, 169, 97, 0.45))
+                            drop-shadow(0 7px 25px rgba(0, 0, 0, 0.85));
+                    image-rendering: crisp-edges;
+                    -webkit-user-drag: none;
+                " width="1310" height="165">
+            </picture>
         </div>
         
         <!-- Subtitle -->
