@@ -1876,6 +1876,10 @@ function checkGameState() {
 // Removes all visual indicators/popups when game ends or returning to menu
 // ============================================
 function cleanupGameIndicators() {
+    // Guard: Only cleanup if a game was actually started
+    // This prevents errors on initial page load
+    if (!game || game.gameStartTime === 0) return;
+    
     // Remove Berserk indicator
     const berserkIndicator = document.getElementById('berserkIndicator');
     if (berserkIndicator) berserkIndicator.remove();
