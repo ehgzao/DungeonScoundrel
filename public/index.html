@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
+    <!-- CRITICAL: Production-aware silent logging (must be first) -->
+    <script>
+    (function(){
+        var p = location.hostname.includes('netlify.app') || location.hostname === 'dungeonscoundrel.com';
+        window.silentLog = p ? function(){} : console.log.bind(console);
+        window.silentWarn = p ? function(){} : console.warn.bind(console);
+        window.silentError = p ? function(){} : console.error.bind(console);
+        window.isProduction = p;
+        // Override console methods in production to prevent any errors showing
+        if (p) {
+            window.onerror = function() { return true; };
+            window.onunhandledrejection = function(e) { e.preventDefault(); };
+        }
+    })();
+    </script>
+    
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
