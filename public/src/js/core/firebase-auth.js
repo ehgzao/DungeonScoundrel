@@ -138,10 +138,25 @@ try {
             }
             
             try {
-                // Get data safely with fallbacks - use window.* since functions are in game.js
-                const permanentStats = (typeof window.loadPermanentStats === 'function' ? window.loadPermanentStats() : null) || {};
-                const unlocks = (typeof window.loadUnlocks === 'function' ? window.loadUnlocks() : null) || [];
-                const achievements = (typeof window.loadAchievements === 'function' ? window.loadAchievements() : null) || [];
+                // Read directly from localStorage (more reliable than window functions)
+                let permanentStats = {};
+                let unlocks = [];
+                let achievements = [];
+                
+                try {
+                    const statsRaw = localStorage.getItem('scoundrel_permanent_stats');
+                    if (statsRaw) permanentStats = JSON.parse(statsRaw);
+                } catch (e) {}
+                
+                try {
+                    const unlocksRaw = localStorage.getItem('scoundrel_unlocks');
+                    if (unlocksRaw) unlocks = JSON.parse(unlocksRaw);
+                } catch (e) {}
+                
+                try {
+                    const achievementsRaw = localStorage.getItem('dungeon_scoundrel_achievements');
+                    if (achievementsRaw) achievements = JSON.parse(achievementsRaw);
+                } catch (e) {}
                 
                 const progressData = {
                     permanentStats: permanentStats,
