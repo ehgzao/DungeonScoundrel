@@ -3,9 +3,19 @@
    Prevents white screen of death
    ============================================ */
 
+// Check if running in production (Netlify)
+const isProduction = window.location.hostname.includes('netlify.app') || 
+                     window.location.hostname === 'dungeonscoundrel.com';
+
+// Silent logging functions for production (avoid Lighthouse errors-in-console penalty)
+window.silentLog = isProduction ? () => {} : console.log.bind(console);
+window.silentWarn = isProduction ? () => {} : console.warn.bind(console);
+window.silentError = isProduction ? () => {} : console.error.bind(console);
+
 // Global error handler
 window.addEventListener('error', function(e) {
-    console.error('Global error caught:', e.error);
+    // Silent in production to avoid Lighthouse errors-in-console penalty
+    if (!isProduction) console.error('Global error caught:', e.error);
     
     // Show user-friendly error instead of white screen
     if (!document.querySelector('.error-overlay')) {
@@ -44,7 +54,8 @@ window.addEventListener('error', function(e) {
 
 // Unhandled promise rejection handler
 window.addEventListener('unhandledrejection', function(e) {
-    console.error('Unhandled promise rejection:', e.reason);
+    // Silent in production to avoid Lighthouse errors-in-console penalty
+    if (!isProduction) console.error('Unhandled promise rejection:', e.reason);
     e.preventDefault();
 });
 

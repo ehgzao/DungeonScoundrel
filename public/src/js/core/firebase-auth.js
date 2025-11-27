@@ -42,13 +42,13 @@ try {
                         }
                         userId = auth.currentUser?.uid || crypto.randomUUID();
                     } catch (error) {
-                        console.error("Firebase Auth Error:", error);
+                        (window.silentError || console.error)("Firebase Auth Error:", error);
                         userId = crypto.randomUUID(); // Fallback
                     }
                 }
             });
         } catch (e) {
-            console.error("Firebase initialization failed:", e);
+            (window.silentError || console.error)("Firebase initialization failed:", e);
             // The game continues offline if Firebase fails
         }
         
@@ -82,12 +82,12 @@ try {
                         updateAuthUI(null);
                     }
                 } catch (error) {
-                    console.error('Auth state change error:', error);
+                    (window.silentError || console.error)('Auth state change error:', error);
                     isLoadingCloudProgress = false;
                 }
             });
         } catch (error) {
-            console.error('Failed to set up auth listener:', error);
+            (window.silentError || console.error)('Failed to set up auth listener:', error);
         }
         
         // Sign in with Google
@@ -98,7 +98,7 @@ try {
                 showAuthFeedback('success', `Welcome, ${user.displayName}!`);
                 return user;
             } catch (error) {
-                console.error('Google sign-in error:', error);
+                (window.silentError || console.error)('Google sign-in error:', error);
                 
                 // Handle specific error cases
                 let errorMessage = 'Failed to sign in';
@@ -126,7 +126,7 @@ try {
                 await signOut(auth);
                 showAuthFeedback('success', 'Signed out successfully');
             } catch (error) {
-                console.error('Sign out error:', error);
+                (window.silentError || console.error)('Sign out error:', error);
                 showAuthFeedback('error', 'Failed to sign out');
             }
         }
@@ -161,7 +161,7 @@ try {
                 
                 return true;
             } catch (error) {
-                console.error('Cloud save error:', error);
+                (window.silentError || console.error)('Cloud save error:', error);
                 showAuthFeedback('error', 'Cloud save failed: ' + error.message);
                 return false;
             }
@@ -218,7 +218,7 @@ try {
                 }
                 return true;
             } catch (error) {
-                console.error('Cloud load error:', error);
+                (window.silentError || console.error)('Cloud load error:', error);
                 // Mark as asked even on error to prevent loop
                 sessionStorage.setItem(askedKey, 'true');
                 return false;

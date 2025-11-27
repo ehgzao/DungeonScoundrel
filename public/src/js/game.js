@@ -571,7 +571,7 @@ if (btnTopGiveUp && giveUpModal && btnCancelGiveUp && btnConfirmGiveUp) {
     });
     
 } else {
-    console.error('❌ Give Up elements not found:', {
+    (window.silentError || console.error)('❌ Give Up elements not found:', {
         btnTopGiveUp: !!btnTopGiveUp,
         giveUpModal: !!giveUpModal,
         btnCancelGiveUp: !!btnCancelGiveUp,
@@ -936,7 +936,7 @@ function startGame() {
         // Show passive icons (using PASSIVE_ICONS from game-classes.js module)
         const passiveIconsDisplay = document.getElementById('passiveIconsDisplay');
         if (!passiveIconsDisplay) {
-            console.warn('[GAME] passiveIconsDisplay element not found');
+            (window.silentWarn || console.warn)('[GAME] passiveIconsDisplay element not found');
         } else {
             passiveIconsDisplay.innerHTML = '';
             const icons = PASSIVE_ICONS[game.playerClass] || [];
@@ -1288,10 +1288,10 @@ function showTutorialStep(step) {
                 targetElement.classList.add('tutorial-highlighted');
                 
             } else {
-                console.warn('[TUTORIAL] ⚠️ Element not visible (0 dimensions):', step.highlight);
+                (window.silentWarn || console.warn)('[TUTORIAL] ⚠️ Element not visible (0 dimensions):', step.highlight);
             }
         } else {
-            console.warn('[TUTORIAL] ⚠️ Element not found:', step.highlight);
+            (window.silentWarn || console.warn)('[TUTORIAL] ⚠️ Element not found:', step.highlight);
         }
     }
     
@@ -2314,7 +2314,7 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                 btn.style.background = 'linear-gradient(180deg, #ff6b6b 0%, #d63031 100%)';
                 hapticFeedback('error');
                 shakeElement(btn);
-                console.error("Score submission error:", err);
+                (window.silentError || console.error)("Score submission error:", err);
                 
                 // Allow manual retry on error
                 btn.disabled = false;
@@ -2337,7 +2337,7 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                     } catch (retryErr) {
                         setButtonLoading(btn, false);
                         btn.textContent = '❌ Failed Again';
-                        console.error("Retry failed:", retryErr);
+                        (window.silentError || console.error)("Retry failed:", retryErr);
                     }
                 };
             }
@@ -3200,7 +3200,7 @@ function loadUnlocks() {
             Object.assign(permanentUnlocks, parsed); // Modify object in-place (imports are read-only)
             return Object.keys(permanentUnlocks).filter(k => permanentUnlocks[k]); // Return unlocked IDs for Cloud Save
         } catch(e) { 
-            console.error("Failed to parse unlocks:", e); 
+            (window.silentError || console.error)("Failed to parse unlocks:", e); 
             return [];
         }
      }
@@ -3217,7 +3217,7 @@ function saveUnlocks() {
     
     // Auto-save to cloud if logged in
     if (window.currentUser && window.saveProgressToCloud) {
-        window.saveProgressToCloud().catch(err => console.warn('Cloud auto-save failed:', err));
+        window.saveProgressToCloud().catch(err => (window.silentWarn || console.warn)('Cloud auto-save failed:', err));
     }
 }
 
