@@ -42,21 +42,19 @@ async function loadFirebase() {
         script.src = 'src/js/core/firebase-auth.js?v=1.4.3';
         
         script.onload = () => {
-            // Wait a bit for module to initialize
+            // Wait for module to initialize (check every 100ms for up to 30s)
+            let attempts = 0;
+            const maxAttempts = 300;
             const checkReady = setInterval(() => {
+                attempts++;
                 if (window._firebaseReady) {
                     clearInterval(checkReady);
                     resolve(true);
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(checkReady);
+                    resolve(false); // Resolve with false instead of rejecting
                 }
-            }, 50);
-            
-            // Timeout after 10s
-            setTimeout(() => {
-                clearInterval(checkReady);
-                if (!window._firebaseReady) {
-                    reject(new Error('Firebase initialization timeout'));
-                }
-            }, 10000);
+            }, 100);
         };
         
         script.onerror = () => {
@@ -78,13 +76,9 @@ async function loadFirebase() {
 function initFirebaseConditional() {
     if (hasUsedCloudSync()) {
         // User has used cloud sync - load Firebase now
-        (window.silentLog || console.log)('[Firebase] User has cloud sync history, loading...');
-        loadFirebase().catch(err => {
-            (window.silentError || console.error)('[Firebase] Failed to load:', err);
-        });
+        loadFirebase().catch(() => {});
     } else {
         // User hasn't used cloud sync - defer loading
-        (window.silentLog || console.log)('[Firebase] No cloud sync history, deferring load');
         setupLazyCloudSyncButton();
     }
 }
@@ -123,7 +117,6 @@ function setupLazyCloudSyncButton() {
                 window.signInWithGoogle();
             }
         } catch (err) {
-            (window.silentError || console.error)('[Firebase] Load error:', err);
             btn.innerHTML = '<span style="font-size: 1.1em;">❌</span> Error';
             btn.disabled = false;
             

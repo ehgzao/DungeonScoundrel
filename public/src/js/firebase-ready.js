@@ -13,11 +13,10 @@
                     return;
                 }
             } catch (e) {
-                console.warn('Firebase check error:', e);
+                // Silent error
             }
             if (tries > 50) {
                 // Don't reject - just resolve with null (offline mode)
-                console.warn('Firebase not initialized after 10s - continuing in offline mode');
                 resolve(null);
                 return;
             }
