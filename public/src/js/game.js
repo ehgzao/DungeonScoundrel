@@ -3194,15 +3194,12 @@ window.confirmGiveUp = () => {
 
 function loadUnlocks() {
      const saved = localStorage.getItem('scoundrel_unlocks');
-     console.log('[DEBUG] Loading unlocks from localStorage:', saved);
      if(saved) {
         try {
             const parsed = JSON.parse(saved);
-            Object.assign(permanentUnlocks, parsed); // Modify object in-place (imports are read-only)
-            console.log('[DEBUG] Loaded unlocks:', permanentUnlocks);
-            return Object.keys(permanentUnlocks).filter(k => permanentUnlocks[k]); // Return unlocked IDs for Cloud Save
+            Object.assign(permanentUnlocks, parsed);
+            return Object.keys(permanentUnlocks).filter(k => permanentUnlocks[k]);
         } catch(e) { 
-            (window.silentError || console.error)("Failed to parse unlocks:", e); 
             return [];
         }
      }
@@ -3215,9 +3212,7 @@ function saveUnlocks() {
             // We don't unlock here, just check. Unlocking is manual.
         }
     });
-    const dataToSave = JSON.stringify(permanentUnlocks);
-    localStorage.setItem('scoundrel_unlocks', dataToSave);
-    console.log('[DEBUG] Saving unlocks:', dataToSave); 
+    localStorage.setItem('scoundrel_unlocks', JSON.stringify(permanentUnlocks)); 
     
     // Auto-save to cloud if logged in
     if (window.currentUser && window.saveProgressToCloud) {
