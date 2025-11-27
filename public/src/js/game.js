@@ -157,6 +157,9 @@ function showWelcomeScreen() {
     welcomeScreen.style.display = 'flex';
     gameWrapper.classList.remove('active');
     newGameModal.classList.remove('active');
+    
+    // CRITICAL: Clean up any remaining game indicators (Berserk, Class Buffs, etc.)
+    cleanupGameIndicators();
 }
 
 function showNewGameModal() {
@@ -1868,11 +1871,56 @@ function checkGameState() {
     }
 }
 
+// ============================================
+// CLEANUP GAME INDICATORS
+// Removes all visual indicators/popups when game ends or returning to menu
+// ============================================
+function cleanupGameIndicators() {
+    // Remove Berserk indicator
+    const berserkIndicator = document.getElementById('berserkIndicator');
+    if (berserkIndicator) berserkIndicator.remove();
+    
+    // Remove Class Buff indicator (Rogue, Dancer, Berserker, etc.)
+    const buffIndicator = document.getElementById('classBuffIndicator');
+    if (buffIndicator) buffIndicator.remove();
+    
+    // Remove tutorial elements if present
+    const tutorialOverlay = document.querySelector('.tutorial-overlay');
+    if (tutorialOverlay) tutorialOverlay.remove();
+    const tutorialModal = document.querySelector('.tutorial-modal');
+    if (tutorialModal) tutorialModal.remove();
+    const tutorialSpotlight = document.querySelector('.tutorial-spotlight');
+    if (tutorialSpotlight) tutorialSpotlight.remove();
+    const tutorialSkipConfirm = document.getElementById('tutorialSkipConfirm');
+    if (tutorialSkipConfirm) tutorialSkipConfirm.remove();
+    
+    // Reset game states that create visual indicators
+    game.berserkStacks = 0;
+    game.classAbilityActive = false;
+    game.classAbilityCounter = 0;
+    game.rageStrikeActive = false;
+    game.dodgeActive = false;
+    game.doubleDamage = false;
+    game.mirrorShield = 0;
+    game.obliterateMode = false;
+    
+    // Close any dynamic modals that might be open (except game-over)
+    document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+        // Don't close the game-over modal or new-game modal
+        if (!modal.classList.contains('game-over') && modal.id !== 'newGameModal') {
+            modal.classList.remove('active');
+        }
+    });
+}
+
 function endGame(reason, gaveUp = false) {
     if (game.gameStartTime === 0 || game.gameOver) return;
     
     game.gameOver = true;
     if (game.gameTimerInterval) clearInterval(game.gameTimerInterval); // Stop clock
+    
+    // CRITICAL: Clean up all game indicators/popups immediately
+    cleanupGameIndicators();
     
     // Check if this is the first death or every 5th death (show encouraging modal)
     const lifetimeStats = storage.get('scoundrel_lifetime_stats', {});
