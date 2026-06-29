@@ -709,6 +709,19 @@ playDarkPercussion(interval) {
         osc.stop(at + 0.22);
     }
 
+    // Music Chamber preview: a few heartbeats, scheduled on the audio clock so
+    // they auto-stop. Bypasses the isPlaying gate (unlike the in-game loop) so
+    // it auditions even with ambient music paused.
+    previewHeartbeat(beats = 5) {
+        if (!this.context || !this.masterGain) return;
+        const base = this.context.currentTime;
+        for (let i = 0; i < beats; i++) {
+            const t = base + i * 1.3;
+            this._heartThump(t, 0.20);        // lub
+            this._heartThump(t + 0.22, 0.14); // dub
+        }
+    }
+
     // MÃ©todos de compatibilidade com cÃ³digo existente
     nextTrack() {
         // Compatibilidade

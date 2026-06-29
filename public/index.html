@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.4.7"></script>
+    <script src="src/js/core/silent-logging.js?v=1.4.8"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1137,6 +1137,18 @@
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Defeat Theme - Dark, respectful</p>
                     <button class="btn btn-primary" id="btnPlayDefeat" style="width: 100%;">▶️ Play</button>
                 </div>
+
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
+                    <h3 style="color: #d4af37; margin-bottom: 10px;">👹 Dread Awakens</h3>
+                    <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Boss Stinger - Plays when a boss appears</p>
+                    <button class="btn btn-primary" id="btnPlayBossStinger" style="width: 100%;">▶️ Play</button>
+                </div>
+
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
+                    <h3 style="color: #d4af37; margin-bottom: 10px;">❤️ Last Breaths</h3>
+                    <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Critical-HP Heartbeat - Pulses when health is low</p>
+                    <button class="btn btn-primary" id="btnPlayHeartbeat" style="width: 100%;">▶️ Play</button>
+                </div>
             </div>
             
             <button class="close-modal-btn" id="btnCloseSoundboard" style="margin-top: 20px;">Close</button>
@@ -1479,38 +1491,38 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.4.7"></script>
+<script src="src/js/core/error-handler.js?v=1.4.8"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.4.7" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.4.8" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.4.7" defer></script>
-<script src="src/js/utils/helpers.js?v=1.4.7" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.4.7" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.4.7" defer></script>
-<script src="src/js/systems/achievements.js?v=1.4.7" defer></script>
-<script src="src/js/data/game-data.js?v=1.4.7" defer></script>
-<script src="src/js/systems/stats.js?v=1.4.7" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.4.7" defer></script>
-<script src="src/js/core/audio-context.js?v=1.4.7" defer></script>
-<script src="src/js/systems/music.js?v=1.4.7" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.4.8" defer></script>
+<script src="src/js/utils/helpers.js?v=1.4.8" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.4.8" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.4.8" defer></script>
+<script src="src/js/systems/achievements.js?v=1.4.8" defer></script>
+<script src="src/js/data/game-data.js?v=1.4.8" defer></script>
+<script src="src/js/systems/stats.js?v=1.4.8" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.4.8" defer></script>
+<script src="src/js/core/audio-context.js?v=1.4.8" defer></script>
+<script src="src/js/systems/music.js?v=1.4.8" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async></script>
-<script src="src/js/init-emailjs.js?v=1.4.7" defer></script>
-<script src="src/js/firebase-ready.js?v=1.4.7" defer></script>
+<script src="src/js/init-emailjs.js?v=1.4.8" defer></script>
+<script src="src/js/firebase-ready.js?v=1.4.8" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.4.7" defer></script>
+<script type="module" src="src/js/game.js?v=1.4.8" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.4.7" defer></script>
+<script src="src/js/systems/codex.js?v=1.4.8" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.4.7" defer></script>
+<script src="src/js/register-sw.js?v=1.4.8" defer></script>
 
 </body>
 </html>

@@ -325,6 +325,23 @@ if (btnPlayDefeat && typeof music !== 'undefined') {
     };
 }
 
+const btnPlayBossStinger = document.getElementById('btnPlayBossStinger');
+const btnPlayHeartbeat = document.getElementById('btnPlayHeartbeat');
+
+if (btnPlayBossStinger && typeof music !== 'undefined') {
+    btnPlayBossStinger.onclick = () => {
+        music.stop(); // isolate the sting from ambient music
+        music.playBossStinger();
+    };
+}
+
+if (btnPlayHeartbeat && typeof music !== 'undefined') {
+    btnPlayHeartbeat.onclick = () => {
+        music.stop(); // isolate the heartbeat preview
+        music.previewHeartbeat();
+    };
+}
+
 // Learn to Play Modal Hooks
 btnStartInteractiveTutorial.onclick = () => {
     learnToPlayModal.classList.remove('active');
