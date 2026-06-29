@@ -38,8 +38,8 @@
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     
     <!-- Preload LCP image for faster rendering -->
     <link rel="preload" as="image" href="assets/images/dungeon-bg.webp" fetchpriority="high">
@@ -92,13 +92,19 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&display=swap"></noscript>
     
-    <!-- CSS -->
+    <!-- CSS: critical (render-blocking, needed above the fold) -->
     <link rel="stylesheet" href="src/styles/variables.css">
     <link rel="stylesheet" href="src/styles/styles.css">
-    <link rel="stylesheet" href="src/styles/animations.css">
-    <link rel="stylesheet" href="src/styles/scrollbar.css">
-    <link rel="stylesheet" href="src/styles/components/waitlist.css">
     <link rel="stylesheet" href="src/styles/components/buttons.css">
+    <!-- CSS: non-critical (deferred to speed up FCP/LCP) -->
+    <link rel="preload" as="style" href="src/styles/animations.css" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="src/styles/scrollbar.css" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="src/styles/components/waitlist.css" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="src/styles/animations.css">
+        <link rel="stylesheet" href="src/styles/scrollbar.css">
+        <link rel="stylesheet" href="src/styles/components/waitlist.css">
+    </noscript>
 
 </head>
 <body>
