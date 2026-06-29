@@ -12,7 +12,7 @@
 // Model ids are overridable (APIs change): OPENAI_IMAGE_MODEL, GEMINI_IMAGE_MODEL.
 // Node 18+ (global fetch). No npm deps.
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CARDS, promptFor } from './cards.config.mjs';
@@ -51,19 +51,28 @@ async function genOpenAI(prompt) {
   return Buffer.from(b64, 'base64');
 }
 
-async function genGemini(prompt) {
+// refBuf (optional): a previously generated card image used as a STYLE anchor so
+// the whole deck shares one palette/lighting/framing — gemini-2.5-flash-image
+// accepts image parts as references. This is the deck-consistency mechanism.
+async function genGemini(prompt, refBuf) {
   const key = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
   if (!key) throw new Error('GEMINI_API_KEY not set');
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`;
+  const parts = [];
+  if (refBuf) {
+    parts.push({ text: 'Use the attached image as the exact style reference — match its palette, lighting, ink/woodcut rendering, framing and scale. Keep the SAME treatment, only change the subject.' });
+    parts.push({ inlineData: { mimeType: 'image/png', data: refBuf.toString('base64') } });
+  }
+  parts.push({ text: prompt });
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+    body: JSON.stringify({ contents: [{ parts }] }),
   });
   if (!res.ok) throw new Error(`Gemini ${res.status}: ${await res.text()}`);
   const json = await res.json();
-  const parts = json.candidates?.[0]?.content?.parts || [];
-  const img = parts.find((p) => p.inlineData?.data);
+  const rparts = json.candidates?.[0]?.content?.parts || [];
+  const img = rparts.find((p) => p.inlineData?.data);
   if (!img) throw new Error('Gemini: no inlineData image in response (model may not be an image model)');
   return Buffer.from(img.inlineData.data, 'base64');
 }
@@ -73,6 +82,16 @@ const gen = provider === 'gemini' ? genGemini : genOpenAI;
 (async () => {
   await mkdir(outDir, { recursive: true });
   console.log(`provider=${provider} model=${provider === 'gemini' ? GEMINI_MODEL : OPENAI_MODEL} dryRun=${dryRun}`);
+
+  // Style anchor for deck consistency (Gemini only). --ref <path> locks every
+  // card to one approved image; otherwise the first generated card becomes the
+  // anchor for the rest.
+  let anchor = null;
+  if (args.ref && !dryRun) {
+    anchor = await readFile(args.ref);
+    console.log(`style anchor: ${args.ref}`);
+  }
+
   for (const card of CARDS) {
     const prompt = promptFor(card);
     if (dryRun) {
@@ -81,9 +100,11 @@ const gen = provider === 'gemini' ? genGemini : genOpenAI;
       continue;
     }
     try {
-      const buf = await gen(prompt);
+      const buf = await gen(prompt, anchor);
       await writeFile(join(outDir, `${card.id}.png`), buf);
-      console.log(`✓ ${card.id} (${(buf.length / 1024).toFixed(0)}KB)`);
+      console.log(`✓ ${card.id} (${(buf.length / 1024).toFixed(0)}KB)${anchor ? ' [anchored]' : ' [anchor]'}`);
+      // First successful Gemini card becomes the anchor for the rest.
+      if (!anchor && provider === 'gemini') anchor = buf;
     } catch (e) {
       console.error(`✗ ${card.id}: ${e.message}`);
     }
