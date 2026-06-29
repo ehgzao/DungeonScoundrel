@@ -87,7 +87,7 @@ export const specialCards = [
             const saved = localStorage.getItem('scoundrel_lifetime_stats');
             let lifetimeStats = saved ? JSON.parse(saved) : {};
             lifetimeStats.berserkUses = (lifetimeStats.berserkUses || 0) + 1;
-            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
+            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
         } 
     },
     { 
@@ -107,7 +107,7 @@ export const specialCards = [
                 const saved = localStorage.getItem('scoundrel_lifetime_stats');
                 let lifetimeStats = saved ? JSON.parse(saved) : {};
                 lifetimeStats.timeWarps = (lifetimeStats.timeWarps || 0) + 1;
-                localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
+                localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
             } else {
                 window.showMessage('⏰ Time Warp! Not enough cards in deck!', 'warning');
             }
@@ -163,7 +163,7 @@ export const specialCards = [
             const saved = localStorage.getItem('scoundrel_lifetime_stats');
             let lifetimeStats = saved ? JSON.parse(saved) : {};
             lifetimeStats.gambleCards = (lifetimeStats.gambleCards || 0) + 1;
-            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
+            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
         } 
     },
     { 

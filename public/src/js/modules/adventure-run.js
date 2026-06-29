@@ -208,6 +208,7 @@
         _shop(node) {
             const act = node.act || 0;
             AR._merchantAct = act;
+            AR._bumpLifetime('shopsVisited'); // parity with Classic shop (shopper achievement)
             const prices = { weapon: 12 + act * 4, potion: 12 + act * 4, remove: 18 + act * 4, upgrade: 20 + act * 5, relic: 35 + act * 10 };
             let overlay = document.getElementById('advMerchant');
             if (!overlay) { overlay = document.createElement('div'); overlay.id = 'advMerchant'; overlay.className = 'modal-overlay'; overlay.style.zIndex = '10001'; document.body.appendChild(overlay); }
@@ -271,6 +272,7 @@
                 msg = 'Acquired a relic.';
             }
             game.gold -= cost;
+            AR._bumpLifetime('itemsBought'); // parity with Classic buyItem (shopaholic achievement)
             if (window.updateUI) window.updateUI();
             if (window.showMessage && msg) window.showMessage('🏛️ ' + msg, 'success');
             return true;
@@ -351,7 +353,18 @@
             ];
         },
 
+        // QA cross-mode parity: bump a lifetime counter through the storage cache
+        // (write-through) so achievement/unlock checks see it, same as Classic.
+        _bumpLifetime(key) {
+            if (window.storage) window.storage.update('scoundrel_lifetime_stats', s => { s[key] = (s[key] || 0) + 1; return s; });
+            if (typeof window.checkAchievements === 'function') window.checkAchievements();
+        },
+
         _event(node) {
+            // Parity with Classic events: eventsTriggered (Priest unlock, persisted
+            // via updateLifetimeStats from game.stats) + eventsCompleted (achievement).
+            if (game.stats) game.stats.eventsTriggered = (game.stats.eventsTriggered || 0) + 1;
+            AR._bumpLifetime('eventsCompleted');
             const pool = AR._eventPool(node);
             const ev = pool[Math.floor(Math.random() * pool.length)];
             AR._choiceModal(ev);

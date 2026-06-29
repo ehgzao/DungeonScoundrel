@@ -1701,6 +1701,7 @@ function endGame(reason, gaveUp = false) {
     // Update permanent stats
     updateLifetimeStats(reason, gaveUp); // Save stats
     checkAchievements(); // Check one last time
+    checkClassUnlocks(); // QA: re-derive class unlocks at end-of-run (both modes)
     savePermanentStats(); // Save progress
     saveUnlocks(); // Save unlocks
 

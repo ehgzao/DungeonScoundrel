@@ -908,7 +908,7 @@ export function handleCardClick(card, index) {
         const saved = localStorage.getItem('scoundrel_lifetime_stats');
         let lifetimeStats = saved ? JSON.parse(saved) : {};
         lifetimeStats.cardsObliterated = (lifetimeStats.cardsObliterated || 0) + 1;
-        localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
+        localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
         
         window.updateUI();
         window.checkGameState();

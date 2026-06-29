@@ -114,7 +114,7 @@ export function showEventModal(event) {
             const saved = localStorage.getItem('scoundrel_lifetime_stats');
             let lifetimeStats = saved ? JSON.parse(saved) : {};
             lifetimeStats.eventsCompleted = (lifetimeStats.eventsCompleted || 0) + 1;
-            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
+            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
             
             // Re-enable buttons if room is empty
             if (game.room.length === 0 && btnDrawRoom && btnAvoidRoom) {
