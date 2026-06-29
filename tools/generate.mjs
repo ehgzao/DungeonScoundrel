@@ -93,7 +93,12 @@ const gen = provider === 'gemini' ? genGemini : genOpenAI;
   }
 
   const skipExisting = !!args['skip-existing'];
+  const noAnchor = !!args['no-anchor'];
+  // --match a,b,c : only process card ids containing one of the substrings.
+  const matches = typeof args.match === 'string' ? args.match.split(',').map(s => s.trim()).filter(Boolean) : null;
+  if (noAnchor) anchor = null;
   for (const card of CARDS) {
+    if (matches && !matches.some(m => card.id.includes(m))) continue;
     const prompt = promptFor(card);
     if (dryRun) {
       await writeFile(join(outDir, `${card.id}.prompt.txt`), prompt);
@@ -103,15 +108,15 @@ const gen = provider === 'gemini' ? genGemini : genOpenAI;
     const target = join(outDir, `${card.id}.png`);
     if (skipExisting && await access(target).then(() => true, () => false)) {
       console.log(`· skip ${card.id} (exists)`);
-      if (!anchor && provider === 'gemini') anchor = await readFile(target);
+      if (!noAnchor && !anchor && provider === 'gemini') anchor = await readFile(target);
       continue;
     }
     try {
       const buf = await gen(prompt, anchor);
       await writeFile(join(outDir, `${card.id}.png`), buf);
-      console.log(`✓ ${card.id} (${(buf.length / 1024).toFixed(0)}KB)${anchor ? ' [anchored]' : ' [anchor]'}`);
-      // First successful Gemini card becomes the anchor for the rest.
-      if (!anchor && provider === 'gemini') anchor = buf;
+      console.log(`✓ ${card.id} (${(buf.length / 1024).toFixed(0)}KB)${anchor ? ' [anchored]' : ' [no-anchor]'}`);
+      // First successful Gemini card becomes the anchor for the rest (unless --no-anchor).
+      if (!noAnchor && !anchor && provider === 'gemini') anchor = buf;
     } catch (e) {
       console.error(`✗ ${card.id}: ${e.message}`);
     }

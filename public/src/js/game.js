@@ -3076,6 +3076,10 @@ function updateUI() {
     }
 }
 
+// Bump when adventure card/boss art is regenerated so browsers don't serve
+// stale cached images (the webp filenames are stable).
+const ADV_ART_VER = '1.4.30';
+
 function createCardElement(card) {
     const cardEl = document.createElement('div');
     cardEl.className = 'card';
@@ -3113,7 +3117,7 @@ function createCardElement(card) {
             cardEl.classList.add('adventure-art', 'boss-art');
             // .card.boss sets a red gradient `background` with !important, so the
             // art must be applied as an inline !important to win the cascade.
-            cardEl.style.setProperty('background-image', `url('assets/cards/adventure/${card.artKey}.webp')`, 'important');
+            cardEl.style.setProperty('background-image', `url('assets/cards/adventure/${card.artKey}.webp?v=${ADV_ART_VER}')`, 'important');
             cardEl.style.setProperty('background-size', 'cover', 'important');
             cardEl.style.setProperty('background-position', 'center top', 'important');
             cardEl.style.setProperty('background-repeat', 'no-repeat', 'important');
@@ -3143,7 +3147,7 @@ function createCardElement(card) {
             // across the two monster suits; value/suit as a corner badge since
             // the art carries no numbers.
             cardEl.classList.add('adventure-art');
-            cardEl.style.backgroundImage = `url('assets/cards/adventure/${type}_${card.numValue}.webp')`;
+            cardEl.style.backgroundImage = `url('assets/cards/adventure/${type}_${card.numValue}.webp?v=${ADV_ART_VER}')`;
             cardEl.style.backgroundSize = 'cover';
             cardEl.style.backgroundPosition = 'center top';
             cardEl.style.backgroundRepeat = 'no-repeat';
