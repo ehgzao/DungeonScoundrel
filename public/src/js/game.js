@@ -1594,6 +1594,7 @@ function drawRoom() {
         game.lastActionWasAvoid = false;
         
         playSound('special');
+        if (window.music) window.music.playBossStinger();
         addLog(`⚠️ MINIBOSS #${minibossNumber} BATTLE! ${boss.name} has ${bossHP} HP!`, 'danger');
         showMessage(`👹 MINIBOSS: ${boss.name}`, 'danger');
         
@@ -1929,7 +1930,8 @@ function endGame(reason, gaveUp = false) {
     
     game.gameOver = true;
     if (game.gameTimerInterval) clearInterval(game.gameTimerInterval); // Stop clock
-    
+    if (window.music) window.music.setLowHpTension(false); // stop low-HP heartbeat
+
     // CRITICAL: Clean up all game indicators/popups immediately
     cleanupGameIndicators();
     
@@ -2398,6 +2400,7 @@ function spawnFinalBoss() {
     game.room = [finalBoss];
     
     playSound('special');
+    if (window.music) window.music.playBossStinger();
     showMessage('', 'danger');
     setTimeout(() => showMessage(finalBoss.bossFlavor, 'warning'), 1500);
     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 100);
@@ -2614,6 +2617,7 @@ function updateUI() {
     // HP Critical Warning
     if (game.health > 0 && game.health <= HEALTH.CRITICAL_THRESHOLD) {
         document.body.classList.add('hp-critical');
+        if (window.music) window.music.setLowHpTension(true); // heartbeat
         // Show warning message first time
         if (!game.criticalWarningShown) {
             showMessage('⚠️ CRITICAL HP! Find healing soon!', 'danger');
@@ -2621,6 +2625,7 @@ function updateUI() {
         }
     } else {
         document.body.classList.remove('hp-critical');
+        if (window.music) window.music.setLowHpTension(false);
         game.criticalWarningShown = false;
     }
     

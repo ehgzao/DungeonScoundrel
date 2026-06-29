@@ -23,6 +23,7 @@ this.oscillators = [];
 this.intervals = [];
 this.timeouts = []; // Track timeouts too!
 this.gainNodes = [];
+this.heartbeatTimer = null; // Low-HP tension loop (Phase 6)
 
 // Create reverb buffer ONCE to save memory
 this.reverbBuffer = this.createReverbBuffer();
@@ -101,6 +102,7 @@ this.oscillators = [];
 this.intervals = [];
 this.timeouts = [];
 this.gainNodes = [];
+this.heartbeatTimer = null; // interval id was already cleared via this.intervals
 
     }
     
@@ -634,6 +636,78 @@ playDarkPercussion(interval) {
 
     this.intervals.push(percTimer);
 }
+
+    // ============================================
+    // PHASE 6: BOSS STINGER + LOW-HP HEARTBEAT
+    // ============================================
+
+    // One-shot dramatic sting when a boss / miniboss appears. Plays through the
+    // music bus (respects music volume); oscillators self-stop, no tracking.
+    playBossStinger() {
+        if (!this.context || !this.masterGain) return;
+        const now = this.context.currentTime;
+
+        // Deep impact hit
+        this.playPercussiveBass(55, 0.34, 0.6);
+
+        // Dissonant low cluster (minor-second dread): E2, F2, A2
+        [82.41, 87.31, 110].forEach(f => this.playNote(f, 0.15, 1.2, 'sawtooth'));
+
+        // Ominous bell toll, slightly delayed
+        const tollId = setTimeout(() => {
+            if (this.context) this.playBell(123.47, 0.14, 2.2); // B2
+        }, 120);
+        this.timeouts.push(tollId);
+
+        // Rising tension swell (110 -> 220 Hz) that blooms then fades
+        const swellOsc = this.context.createOscillator();
+        const swellGain = this.context.createGain();
+        swellOsc.type = 'sawtooth';
+        swellOsc.frequency.setValueAtTime(110, now);
+        swellOsc.frequency.exponentialRampToValueAtTime(220, now + 1.0);
+        swellOsc.connect(swellGain);
+        swellGain.connect(this.masterGain);
+        swellGain.gain.setValueAtTime(0.001, now);
+        swellGain.gain.exponentialRampToValueAtTime(0.12, now + 0.8);
+        swellGain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+        swellOsc.start(now);
+        swellOsc.stop(now + 1.4);
+    }
+
+    // Toggle a slow "lub-dub" heartbeat while HP is critical. Idempotent:
+    // calling with the same state repeatedly (e.g. every updateUI tick) is safe.
+    setLowHpTension(active) {
+        if (active) {
+            if (this.heartbeatTimer) return; // already pulsing
+            const beat = () => {
+                if (!this.isPlaying || !this.context) return;
+                const now = this.context.currentTime;
+                this._heartThump(now, 0.20);        // lub
+                this._heartThump(now + 0.22, 0.14); // dub
+            };
+            beat(); // immediate first beat
+            this.heartbeatTimer = setInterval(beat, 1300);
+            this.intervals.push(this.heartbeatTimer); // so stopAll() clears it too
+        } else if (this.heartbeatTimer) {
+            clearInterval(this.heartbeatTimer);
+            this.heartbeatTimer = null;
+        }
+    }
+
+    _heartThump(at, volume) {
+        const osc = this.context.createOscillator();
+        const gain = this.context.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(80, at);
+        osc.frequency.exponentialRampToValueAtTime(40, at + 0.12);
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+        gain.gain.setValueAtTime(0.001, at);
+        gain.gain.exponentialRampToValueAtTime(volume, at + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, at + 0.18);
+        osc.start(at);
+        osc.stop(at + 0.22);
+    }
 
     // MÃ©todos de compatibilidade com cÃ³digo existente
     nextTrack() {
