@@ -53,9 +53,10 @@ async function submitScoreToLeaderboard(score, gameTime) {
     const playerName = playerNameInput.value.trim() || 'Scoundrel';
     
     // Salvar em collection específica por dificuldade
-    const collectionName = `leaderboard_${game.difficulty}`;
+    // Adventure scores go to their own collections; Classic keeps the originals.
+    const collectionName = (game.mode === 'adventure' ? 'leaderboard_adventure_' : 'leaderboard_') + game.difficulty;
     const leaderboardCol = collection(db, `/artifacts/${appId}/public/data/${collectionName}`);
-    
+
     // Check current top 10 to determine ranking position
     let rankPosition = null;
     try {
@@ -99,6 +100,7 @@ async function submitScoreToLeaderboard(score, gameTime) {
 
 // Current selected difficulty for leaderboard
 let currentLeaderboardDifficulty = 'easy';
+let currentLeaderboardMode = 'classic'; // 'classic' | 'adventure'
 
 async function showLeaderboard(difficulty = 'easy') {
     const leaderboardModal = document.getElementById('leaderboardModal');
@@ -158,7 +160,7 @@ async function loadLeaderboardForDifficulty(difficulty) {
 
     try {
         // Carregar da collection especÃ­fica da dificuldade
-        const collectionName = `leaderboard_${difficulty}`;
+        const collectionName = (currentLeaderboardMode === 'adventure' ? 'leaderboard_adventure_' : 'leaderboard_') + difficulty;
         const leaderboardCol = collection(db, `/artifacts/${appId}/public/data/${collectionName}`);
         const q = query(leaderboardCol, limit(100)); // Get latest 100
         
@@ -249,6 +251,15 @@ window.switchLeaderboardDifficulty = async function(difficulty) {
     
     // Load new leaderboard
     await loadLeaderboardForDifficulty(difficulty);
+}
+
+// Switch leaderboard mode (Classic / Adventure)
+window.switchLeaderboardMode = async function(mode) {
+    currentLeaderboardMode = mode;
+    document.querySelectorAll('.mode-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.mode === mode);
+    });
+    await loadLeaderboardForDifficulty(currentLeaderboardDifficulty);
 }
 
 // Expose functions globally for HTML onclick handlers
