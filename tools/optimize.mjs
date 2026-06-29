@@ -24,7 +24,10 @@ const provider = args.provider || 'gemini';
 const SIZE = +(args.size || 640);
 const Q = +(args.q || 0.82);
 const srcDir = join(HERE, 'art', provider);
-const outDir = join(HERE, '..', 'public', 'assets', 'cards', 'adventure');
+// --outdir overrides the output dir (relative to public/assets), e.g. "relics".
+const outDir = args.outdir
+  ? join(HERE, '..', 'public', 'assets', String(args.outdir))
+  : join(HERE, '..', 'public', 'assets', 'cards', 'adventure');
 
 (async () => {
   await mkdir(outDir, { recursive: true });

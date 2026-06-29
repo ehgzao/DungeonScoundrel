@@ -3076,9 +3076,10 @@ function updateUI() {
     }
 }
 
-// Bump when adventure card/boss art is regenerated so browsers don't serve
-// stale cached images (the webp filenames are stable).
-const ADV_ART_VER = '1.4.30';
+// Bump when adventure card/boss/relic art is regenerated so browsers don't serve
+// stale cached images (the webp filenames are stable). Exposed for other modules.
+const ADV_ART_VER = '1.4.31';
+window.ADV_ART_VER = ADV_ART_VER;
 
 function createCardElement(card) {
     const cardEl = document.createElement('div');

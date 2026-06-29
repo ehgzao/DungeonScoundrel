@@ -161,14 +161,26 @@ export function updateRelicsDisplay() {
             }
         }
         
+        // Illustrated icon (CARD-4 relics) with graceful emoji fallback. The
+        // relic name is "<emoji> <Name>"; show the icon and drop the leading emoji.
+        const ver = window.ADV_ART_VER || '1';
+        const parts = String(r.name).split(' ');
+        const emoji = parts[0];
+        const label = parts.slice(1).join(' ') || r.name;
+        const icon = `<img class="relic-icon" src="assets/relics/relic_${r.id}.webp?v=${ver}" alt=""
+             onerror="this.outerHTML='<span class=&quot;relic-emoji&quot;>${emoji}</span>'">`;
+
         return `
             <div class="relic-item ${r.used ? 'used' : ''}"
                  title="${dynamicDesc}${r.used ? ' (Used)' : ''}"
                  onmouseenter="showTooltip(this, '${escapeForSingleQuotedJs(dynamicDesc)}', 'bottom')"
                  onmouseleave="hideTooltip()"
                  style="cursor: help;">
-                <div class="relic-name">${r.name}${dynamicInfo}</div>
-                <div class="relic-effect">${r.description}</div>
+                ${icon}
+                <div class="relic-text">
+                    <div class="relic-name">${label}${dynamicInfo}</div>
+                    <div class="relic-effect">${r.description}</div>
+                </div>
             </div>
         `;
     }).join('');
