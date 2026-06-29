@@ -46,29 +46,45 @@ function getTotalStat(stat) {
 }
 
 function updateLifetimeStats(reason = '', gaveUp = false) {
-    storage.update('scoundrel_lifetime_stats', stats => ({
-        ...stats,
-        // Track deaths only for real deaths (not victories, not gave up)
-        deaths: (reason === 'death' && !gaveUp) ? (stats.deaths || 0) + 1 : (stats.deaths || 0),
-        monstersSlain: (stats.monstersSlain || 0) + game.stats.monstersSlain,
-        roomsCleared: (stats.roomsCleared || 0) + game.stats.roomsCleared,
-        potionsUsed: (stats.potionsUsed || 0) + game.stats.potionsUsed,
-        totalGoldEarned: (stats.totalGoldEarned || 0) + game.totalGoldEarned,
-        maxCombo: Math.max((stats.maxCombo || 0), game.stats.maxCombo),
-        weaponsEquipped: (stats.weaponsEquipped || 0) + game.stats.weaponsEquipped,
-        specialsUsed: (stats.specialsUsed || 0) + game.stats.specialsUsed,
-        roomsAvoided: (stats.roomsAvoided || 0) + game.stats.roomsAvoided,
-        cardsHeld: (stats.cardsHeld || 0) + game.stats.cardsHeld,
-        gamesWon: (stats.gamesWon || 0) + game.stats.gamesWon,
-        // Difficulty-specific wins
-        easyWins: game.stats.gamesWon > 0 && game.difficulty === 'easy' ? (stats.easyWins || 0) + 1 : (stats.easyWins || 0),
-        normalWins: game.stats.gamesWon > 0 && game.difficulty === 'normal' ? (stats.normalWins || 0) + 1 : (stats.normalWins || 0),
-        hardWins: game.stats.gamesWon > 0 && game.difficulty === 'hard' ? (stats.hardWins || 0) + 1 : (stats.hardWins || 0),
-        // Class unlock tracking
-        bossesKilled: (stats.bossesKilled || 0) + game.stats.bossesKilled,
-        totalRelicsCollected: (stats.totalRelicsCollected || 0) + game.stats.relicsCollected,
-        eventsTriggered: (stats.eventsTriggered || 0) + game.stats.eventsTriggered
-    }));
+    const won = game.stats.gamesWon > 0;
+    const mode = game.mode || 'classic';
+    const diff = game.difficulty;
+    const cls = game.playerClass || 'scoundrel';
+    const runTime = game.gameStartTime ? Math.max(1, Math.floor((Date.now() - game.gameStartTime) / 1000)) : 0;
+
+    storage.update('scoundrel_lifetime_stats', stats => {
+        const next = {
+            ...stats,
+            // Track deaths only for real deaths (not victories, not gave up)
+            deaths: (reason === 'death' && !gaveUp) ? (stats.deaths || 0) + 1 : (stats.deaths || 0),
+            monstersSlain: (stats.monstersSlain || 0) + game.stats.monstersSlain,
+            roomsCleared: (stats.roomsCleared || 0) + game.stats.roomsCleared,
+            potionsUsed: (stats.potionsUsed || 0) + game.stats.potionsUsed,
+            totalGoldEarned: (stats.totalGoldEarned || 0) + game.totalGoldEarned,
+            maxCombo: Math.max((stats.maxCombo || 0), game.stats.maxCombo),
+            weaponsEquipped: (stats.weaponsEquipped || 0) + game.stats.weaponsEquipped,
+            specialsUsed: (stats.specialsUsed || 0) + game.stats.specialsUsed,
+            roomsAvoided: (stats.roomsAvoided || 0) + game.stats.roomsAvoided,
+            cardsHeld: (stats.cardsHeld || 0) + game.stats.cardsHeld,
+            gamesWon: (stats.gamesWon || 0) + game.stats.gamesWon,
+            // Difficulty-specific wins (both modes combined)
+            easyWins: won && diff === 'easy' ? (stats.easyWins || 0) + 1 : (stats.easyWins || 0),
+            normalWins: won && diff === 'normal' ? (stats.normalWins || 0) + 1 : (stats.normalWins || 0),
+            hardWins: won && diff === 'hard' ? (stats.hardWins || 0) + 1 : (stats.hardWins || 0),
+            // Class unlock tracking
+            bossesKilled: (stats.bossesKilled || 0) + game.stats.bossesKilled,
+            totalRelicsCollected: (stats.totalRelicsCollected || 0) + game.stats.relicsCollected,
+            eventsTriggered: (stats.eventsTriggered || 0) + game.stats.eventsTriggered
+        };
+        // Mode × difficulty × class wins + fastest clear (for mode-aware achievements)
+        if (won) {
+            next[`${mode}Wins`] = (stats[`${mode}Wins`] || 0) + 1;
+            next[`${mode}_${diff}Wins`] = (stats[`${mode}_${diff}Wins`] || 0) + 1;
+            if (mode === 'adventure') next[`adv_${cls}Wins`] = (stats[`adv_${cls}Wins`] || 0) + 1;
+            if (runTime > 0) next.fastestWin = stats.fastestWin ? Math.min(stats.fastestWin, runTime) : runTime;
+        }
+        return next;
+    });
     
     // Check achievements after updating stats
     checkAllAchievements();
