@@ -195,42 +195,42 @@ persistente + cull na fogueira, crop de margem das cartas.
 ### A. Onboarding & Modos
 | ID | Item | Size | Imp | Status |
 |----|------|------|-----|--------|
-| ON-1 | Redesign do menu inicial explicando Classic vs Adventure (+ entrada de cada modo) | M | 🔴 | Pendente |
-| ON-2 | Refazer tutorial: Classic (zerar masmorra c/ 1 baralho) + Adventure (mapa/nós/deckbuild) | L | 🟡 | Pendente |
+| ON-1 | Redesign do menu inicial explicando Classic vs Adventure (+ entrada de cada modo) | M | 🔴 | ✅ Feito |
+| ON-2 | Refazer tutorial: Classic (zerar masmorra c/ 1 baralho) + Adventure (mapa/nós/deckbuild) | L | 🟡 | ✅ Feito |
 | ON-3 | Mover seletor de modo do new-game pro menu principal | S | 🟡 | Pendente |
 
 ### B. Legibilidade & Arte da carta
 | ID | Item | Size | Imp | Status |
 |----|------|------|-----|--------|
-| CARD-1 | Cor/borda + glyph por tipo (ler o tipo na hora) | S | 🔴 | Pendente |
+| CARD-1 | Cor/borda + glyph por tipo (ler o tipo na hora) | S | 🔴 | ✅ Feito |
 | CARD-2 | Reduzir margens (crop retrato) | S | 🔴 | ✅ Feito |
-| CARD-3 | Variar ilustrações (menos uniformes; moldura por tipo) — regen | M | 🟡 | Pendente (key Gemini + custo) |
-| CARD-4 | Bosses + relics ilustrados | M | 🟡 | Pendente (key) |
+| CARD-3 | Variar ilustrações (menos uniformes; moldura por tipo) — regen | M | 🟡 | Pendente (cards aprovados; regen gated em custo/key) |
+| CARD-4 | Bosses + relics ilustrados | M | 🟡 | ✅ Feito (8 bosses ilustrados; relics seguem em emoji) |
 
 ### C. Polimento do mapa
 | ID | Item | Size | Imp | Status |
 |----|------|------|-----|--------|
-| MAP-1 | Tirar cara de grid: arestas curvas/orgânicas + jitter nos nós | S | 🟡 | Pendente |
-| MAP-2 | Marcador de posição atual + caminho percorrido | S | 🟡 | Pendente |
+| MAP-1 | Tirar cara de grid: arestas curvas/orgânicas + jitter nos nós | S | 🟡 | ⏭️ Descopado (usuário aprovou linhas retas + nós opacos) |
+| MAP-2 | Marcador de posição atual + caminho percorrido | S | 🟡 | ✅ Feito |
 | MAP-3 | Tooltip nos nós (o que tem dentro) | S | ⚪ | Pendente |
 
 ### D. Profundidade & balanço do Adventure (não-trivial)
 | ID | Item | Size | Imp | Status |
 |----|------|------|-----|--------|
-| ADV-1 | Dificuldade = nº de mãos por encontro (easy 1 / normal 2 / hard 3) | M | 🔴 | Pendente |
-| ADV-2 | Mercador no mapa: comprar/vender/upgrade de carta (deckbuild completo) | L | 🔴 | Pendente |
-| ADV-3 | Tirar mercador do canto da tela (só no mapa, em Adventure) | S | 🟡 | Pendente |
-| ADV-4 | Nós de evento: escolhas reais (não só boon) | M | 🟡 | Pendente |
-| ADV-5 | Relics como recompensa (elite/tesouro/boss) → variedade de build | M | 🔴 | Pendente |
-| ADV-6 | Sistemas anti-trivial (ver notas state-of-art) | L | 🔴 | Pendente |
+| ADV-1 | Dificuldade = nº de mãos por encontro (easy 1 / normal 2 / hard 3) | M | 🔴 | ✅ Feito |
+| ADV-2 | Mercador no mapa: comprar/vender/upgrade de carta (deckbuild completo) | L | 🔴 | ✅ Feito |
+| ADV-3 | Tirar mercador do canto da tela (só no mapa, em Adventure) | S | 🟡 | ✅ Feito |
+| ADV-4 | Nós de evento: escolhas reais (não só boon) | M | 🟡 | ✅ Feito (5 eventos com trade-off) |
+| ADV-5 | Relics como recompensa (elite/tesouro/boss) → variedade de build | M | 🔴 | ✅ Feito |
+| ADV-6 | Sistemas anti-trivial (ver notas state-of-art) | L | 🔴 | ✅ Feito (baú amaldiçoado + carta-maldição no deck + combates forçados + fogueiras limitadas) |
 
 ### E. Achievements & Leaderboard
 | ID | Item | Size | Imp | Status |
 |----|------|------|-----|--------|
-| ACH-1 | Achievements de zerar por modo (Classic & Adventure) × dificuldade | M | 🔴 | Pendente |
-| ACH-2 | Achievements de tempo (speedrun) | S | 🟡 | Pendente |
-| ACH-3 | Zerar Adventure com cada classe (6) | S | 🟡 | Pendente |
-| LB-1 | Seções no leaderboard por modo (Classic/Adventure) + manter tabs de dificuldade | M | 🔴 | Pendente |
+| ACH-1 | Achievements de zerar por modo (Classic & Adventure) × dificuldade | M | 🔴 | ✅ Feito |
+| ACH-2 | Achievements de tempo (speedrun) | S | 🟡 | ✅ Feito |
+| ACH-3 | Zerar Adventure com cada classe (6) | S | 🟡 | ✅ Feito |
+| LB-1 | Seções no leaderboard por modo (Classic/Adventure) + manter tabs de dificuldade | M | 🔴 | ✅ Feito |
 | LB-2 | Leaderboard por tempo (clear mais rápido) | M | 🟡 | Pendente |
 
 ### F. Dívida técnica (antiga)
@@ -253,6 +253,10 @@ persistente + cull na fogueira, crop de margem das cartas.
 3. **ON-1** menu → 4. **ADV-5** relics-recompensa + **ADV-2** mercador/deckbuild →
 5. **ACH-1 + LB-1** (meta dos modos) → 6. **ON-2** tutorial → 7. **CARD-3/4** arte (key) →
 8. **ADV-4/6** profundidade.
+
+**Status:** sequência 1–8 entregue. **Restante:** ON-3 (mover seletor de modo),
+MAP-3 (tooltips de nó), LB-2 (leaderboard por tempo), CARD-3 (regen de variação —
+cards já aprovados, gated em custo/key) + relics ilustrados, TD-1/3/4 (dívida técnica).
 
 ---
 

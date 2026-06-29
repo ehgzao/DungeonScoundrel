@@ -153,12 +153,54 @@
         },
 
         _treasure(node) {
+            // ADV-6: ~35% of treasures are CURSED chests — a real risk/reward
+            // decision instead of a free reward.
+            if (Math.random() < 0.35) return AR._cursedChest(node);
             const gold = 10 + node.tier * 2;
             if (window.earnGold) window.earnGold(gold); else game.gold += gold;
             AR._grantRelic(node.act);
             if (window.updateUI) window.updateUI();
             if (window.showMessage) window.showMessage(`🎁 Treasure! A relic and ${gold} gold.`, 'success');
             AR._toMapSoon();
+        },
+
+        // ADV-6: drop a "curse" — a strong extra monster — into the live run deck.
+        // Curses bloat the deck and surface as tough draws; cull/remove services
+        // target the highest-power card, so they're the natural answer.
+        _injectCurse(power) {
+            const v = Math.max(2, Math.min(14, Math.round(power)));
+            const suit = Math.random() < 0.5 ? '♠' : '♣';
+            const suitName = suit === '♠' ? 'spades' : 'clubs';
+            const curse = { value: String(v), suit, numValue: v, suitName, isCurse: true };
+            if (!Array.isArray(game.dungeon)) game.dungeon = [];
+            const idx = Math.floor(Math.random() * (game.dungeon.length + 1));
+            game.dungeon.splice(idx, 0, curse);
+        },
+
+        _cursedChest(node) {
+            const gold = 18 + node.tier * 3;
+            const cursePow = 8 + node.act * 2 + Math.floor(Math.random() * 4);
+            AR._choiceModal({
+                icon: '⚰️', title: 'A Cursed Chest',
+                flavor: 'Gold glints behind a sigil of binding. Greed always has a price.',
+                choices: [
+                    {
+                        label: '⚒️ Pry it open',
+                        sub: `+${gold} gold & a relic — but a curse joins your deck`,
+                        apply: () => {
+                            if (window.earnGold) window.earnGold(gold); else game.gold += gold;
+                            AR._grantRelic(node.act);
+                            AR._injectCurse(cursePow);
+                            return `You wrench it open — ${gold} gold and a relic are yours. But something foul now stalks your deck (a ${cursePow}-power curse).`;
+                        },
+                    },
+                    {
+                        label: '🚪 Leave it sealed',
+                        sub: 'Some doors are best left shut',
+                        apply: () => 'You leave the cursed chest bound. Safe — and empty-handed.',
+                    },
+                ],
+            });
         },
 
         // ADV-2: a dedicated merchant with deck-building services. Buys/edits hit
@@ -234,19 +276,122 @@
             return true;
         },
 
+        // ADV-4: event nodes are real decisions with trade-offs, not free boons.
+        _eventPool(node) {
+            const tier = node.tier || 0, act = node.act || 0;
+            const gold = (n) => { if (window.earnGold) window.earnGold(n); else game.gold += n; };
+            const spend = (n) => { game.gold = Math.max(0, (game.gold || 0) - n); };
+            const heal = (frac) => {
+                const h = Math.ceil(game.maxHealth * frac);
+                game.health = Math.min(game.maxHealth, game.health + h); return h;
+            };
+            const hurt = (n) => { game.health = Math.max(1, game.health - n); };
+            const addCard = (suit, suitName) => {
+                const v = 6 + Math.floor(Math.random() * 5);
+                game.dungeon.push({ value: String(v), suit, numValue: v, suitName });
+                return v;
+            };
+            return [
+                {
+                    icon: '🩸', title: 'The Blood Altar',
+                    flavor: 'An altar slick with old offerings. It thirsts, and it bargains.',
+                    choices: [
+                        { label: '🩸 Offer your blood', sub: 'Lose 5 HP → gain a relic', disabled: game.health <= 5,
+                          apply: () => { hurt(5); AR._grantRelic(act); return 'The altar drinks deep — and presses a relic into your hand.'; } },
+                        { label: '🪙 Pocket the tribute', sub: `Take ${12 + tier * 2} gold`,
+                          apply: () => { gold(12 + tier * 2); return 'You sweep the old coins off the altar and move on.'; } },
+                        { label: '🚪 Leave it be', sub: 'Tempt nothing',
+                          apply: () => 'You step around the altar. Some debts aren\'t worth owing.' },
+                    ],
+                },
+                {
+                    icon: '🎲', title: "Gambler's Wager",
+                    flavor: 'A grinning shade rattles a cup of bone dice. "Double or nothing, friend?"',
+                    choices: [
+                        { label: '🎲 Roll the bones', sub: 'Wager half your gold — win double or lose it', disabled: (game.gold || 0) < 10,
+                          apply: () => { const stake = Math.floor((game.gold || 0) / 2); spend(stake); if (Math.random() < 0.5) { gold(stake * 2); return `The dice land kind — you win ${stake * 2} gold!`; } return `The dice betray you. ${stake} gold gone.`; } },
+                        { label: '🍞 Decline politely', sub: 'A small meal, +10% HP',
+                          apply: () => { const h = heal(0.10); return `You decline and share his bread instead. +${h} HP.`; } },
+                    ],
+                },
+                {
+                    icon: '📦', title: 'A Forgotten Cache',
+                    flavor: 'A dead adventurer\'s pack, half-buried. Their loss, your gain.',
+                    choices: [
+                        { label: '🗡️ Take the weapon', sub: 'A weapon joins your deck',
+                          apply: () => { const v = addCard('♦', 'diamonds'); return `You salvage a ${v}♦ weapon — it joins your deck.`; } },
+                        { label: '🧪 Take the potion', sub: 'A potion joins your deck',
+                          apply: () => { const v = addCard('♥', 'hearts'); return `You salvage a ${v}♥ potion — it joins your deck.`; } },
+                    ],
+                },
+                {
+                    icon: '⛲', title: 'The Whispering Spring',
+                    flavor: 'Cold water murmurs in the dark. It offers comfort — for a price, if you push it.',
+                    choices: [
+                        { label: '💧 Drink deeply', sub: 'Heal 25% HP',
+                          apply: () => { const h = heal(0.25); return `The water mends you. +${h} HP.`; } },
+                        { label: '🪙 Toss a coin & wish', sub: `Pay ${10 + act * 4} gold → a relic`, disabled: (game.gold || 0) < 10 + act * 4,
+                          apply: () => { spend(10 + act * 4); AR._grantRelic(act); return 'Your coin sinks. The spring answers with a relic.'; } },
+                        { label: '🚪 Move on', sub: 'Leave the water still',
+                          apply: () => 'You leave the spring undisturbed.' },
+                    ],
+                },
+                {
+                    icon: '🗝️', title: 'A Bound Spirit',
+                    flavor: 'A figure chained in chains of light. "Free me, or feed on me — choose."',
+                    choices: [
+                        { label: '🕊️ Free it', sub: 'Lose 4 HP → it gifts a relic', disabled: game.health <= 4,
+                          apply: () => { hurt(4); AR._grantRelic(act + 1); return 'You break the chains. Grateful, the spirit blesses you with a relic.'; } },
+                        { label: '⛓️ Bind it for power', sub: `+${20 + tier * 3} gold — but a curse follows you`,
+                          apply: () => { gold(20 + tier * 3); AR._injectCurse(7 + act * 2); return 'You wring its power into gold — and earn its hatred. A curse joins your deck.'; } },
+                        { label: '🚪 Walk away', sub: 'Leave it bound',
+                          apply: () => 'You leave the spirit to its chains.' },
+                    ],
+                },
+            ];
+        },
+
         _event(node) {
-            // Lightweight boon for now — full event-system integration is a follow-up.
-            if (Math.random() < 0.5) {
-                const g = 15 + node.tier * 3;
-                if (window.earnGold) window.earnGold(g); else game.gold += g;
-                if (window.showMessage) window.showMessage(`❓ A hooded stranger presses ${g} gold into your hand.`, 'info');
-            } else {
-                const h = Math.ceil(game.maxHealth * 0.15);
-                game.health = Math.min(game.maxHealth, game.health + h);
-                if (window.showMessage) window.showMessage(`❓ A forgotten shrine restores ${h} HP.`, 'info');
-            }
-            if (window.updateUI) window.updateUI();
-            AR._toMapSoon();
+            const pool = AR._eventPool(node);
+            const ev = pool[Math.floor(Math.random() * pool.length)];
+            AR._choiceModal(ev);
+        },
+
+        // Generic risk/reward choice overlay. choices: [{label, sub, disabled,
+        // apply()->resultMessage}]. After a choice, shows the outcome then returns
+        // control to the map.
+        _choiceModal({ icon, title, flavor, choices }) {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.style.zIndex = '10001';
+            const btns = choices.map((c, i) =>
+                `<button class="btn ${i === 0 ? 'btn-primary' : 'btn-secondary'} adv-choice-btn" data-i="${i}" ${c.disabled ? 'disabled' : ''}>${c.label}${c.sub ? `<br><small>${c.sub}</small>` : ''}</button>`
+            ).join('');
+            overlay.innerHTML = `
+                <div class="modal-content" style="max-width:480px;text-align:center;border:2px solid #c9a961;">
+                    <div style="font-size:2.4em;">${icon}</div>
+                    <h2 style="font-family:'Cinzel',serif;color:#e8c878;">${title}</h2>
+                    <p style="color:#cbb892;line-height:1.5;padding:0 6px;">${flavor}</p>
+                    <div class="adv-choices">${btns}</div>
+                </div>`;
+            document.body.appendChild(overlay);
+            overlay.querySelectorAll('button[data-i]').forEach((b) => {
+                b.onclick = () => {
+                    const c = choices[+b.dataset.i];
+                    if (c.disabled) return;
+                    const res = c.apply ? c.apply() : null;
+                    if (window.updateUI) window.updateUI();
+                    overlay.querySelector('.modal-content').innerHTML = `
+                        <div style="font-size:2.2em;">${icon}</div>
+                        <p style="color:#ddd;line-height:1.7;padding:8px 10px;font-style:italic;">${res || '...'}</p>
+                        <button class="btn btn-primary" id="advChoiceCont">Continue</button>`;
+                    overlay.querySelector('#advChoiceCont').onclick = () => {
+                        overlay.remove();
+                        if (window.updateUI) window.updateUI();
+                        AR._toMapSoon();
+                    };
+                };
+            });
         },
 
         _observeClose(id) {
