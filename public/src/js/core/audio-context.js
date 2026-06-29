@@ -13,3 +13,13 @@ sfxMasterGain.connect(audioContext.destination);
 sfxMasterGain.gain.value = 0.3; // Default SFX volume
 window.sfxMasterGain = sfxMasterGain; // Expose globally for game-sounds.js
 
+// Browser autoplay policy creates the context in a "suspended" state until a
+// user gesture. Resume it once on the first interaction so music/SFX play.
+const _resumeAudioContext = () => {
+    if (audioContext.state === 'suspended') {
+        audioContext.resume().catch(() => {});
+    }
+};
+['pointerdown', 'keydown', 'touchstart'].forEach((evt) =>
+    document.addEventListener(evt, _resumeAudioContext, { once: true }));
+

@@ -1,0 +1,54 @@
+rules_version = '2';
+
+// Dungeon Scoundrel — Firestore Security Rules
+// Deploy with:  firebase deploy --only firestore:rules
+// (or paste into Firebase Console → Firestore → Rules → Publish)
+//
+// Rationale: the app uses anonymous auth, so "request.auth != null" alone is
+// effectively open. These rules cap the blast radius of leaderboard writes
+// (ownership + type + range) and isolate per-user cloud saves. Client-side
+// score forgery cannot be fully closed without server-authoritative scoring,
+// but spoofed-owner / malformed / absurd entries are rejected here.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============================================
+    // LEADERBOARD — public read, controlled write
+    // ============================================
+    match /artifacts/{appId}/public/data/{collection}/{document} {
+      // Anyone may read the leaderboard (including queries)
+      allow read: if true;
+
+      // Only an authenticated client may CREATE a score it owns
+      allow create: if request.auth != null
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.score is number
+                    && request.resource.data.score >= 0
+                    && request.resource.data.score <= 10000000
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() <= 20
+                    && request.resource.data.time is number
+                    && request.resource.data.gold is number
+                    && request.resource.data.combo is number;
+
+      // No edits or deletes from clients (anti-cheat)
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // CLOUD SAVE — owner only
+    // ============================================
+    match /users/{userId} {
+      allow read, write: if request.auth != null
+                         && request.auth.uid == userId;
+    }
+
+    // ============================================
+    // DEFAULT DENY
+    // ============================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

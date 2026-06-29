@@ -81,16 +81,25 @@ class StorageCache {
     }
     
     clearOldData() {
-        // Clear non-essential data if quota exceeded
+        // Clear non-essential data if quota exceeded.
+        // Preserve durable progression so it is never silently wiped.
         try {
-            const keysToPreserve = ['scoundrel_lifetime_stats', 'scoundrel_unlocks'];
+            const keysToPreserve = [
+                'scoundrel_lifetime_stats',
+                'scoundrel_permanent_stats',
+                'scoundrel_unlocks',
+                'dungeon_scoundrel_achievements'
+            ];
+            // Collect first, then remove — removing during index iteration skips keys.
+            const keysToRemove = [];
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                if (key && !keysToPreserve.includes(key)) {
-                    localStorage.removeItem(key);
-                    delete this.cache[key];
-                }
+                if (key && !keysToPreserve.includes(key)) keysToRemove.push(key);
             }
+            keysToRemove.forEach((key) => {
+                localStorage.removeItem(key);
+                delete this.cache[key];
+            });
         } catch(e) {
             console.error('Error clearing old data:', e);
         }
@@ -105,6 +114,14 @@ window.storage = storage;
 // ============================================
 // UTILITY FUNCTIONS
 // ============================================
+
+// Escape HTML — shared sanitizer for any user/remote data rendered via innerHTML
+// (leaderboard names, auth display names, etc.). Prevents stored/reflected XSS.
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (c) =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+window.escapeHtml = escapeHtml;
 
 // Debounce function - Prevents excessive function calls
 function debounce(func, wait) {
@@ -628,27 +645,27 @@ const tutorialSteps = [
                     </p>
                     
                     <div style="display: grid; gap: 12px; margin: 20px 0;">
-                        <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>Space</strong> or <strong>D</strong></span>
                             <span style="color: #ddd;">→ Draw Room</span>
                         </div>
                         
-                        <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>A</strong></span>
                             <span style="color: #ddd;">→ Avoid Room</span>
                         </div>
                         
-                        <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>Q</strong></span>
                             <span style="color: #ddd;">→ Use Class Ability</span>
                         </div>
                         
-                        <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>U</strong></span>
                             <span style="color: #ddd;">→ Undo Last Move</span>
                         </div>
                         
-                        <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>S</strong></span>
                             <span style="color: #ddd;">→ Open Shop</span>
                         </div>
@@ -770,7 +787,7 @@ function startInteractiveTutorial() {
             // Potion Card (7♥️)
             const potionCard = document.createElement('div');
             potionCard.className = 'card potion';
-            potionCard.style.cssText = 'background: linear-gradient(135deg, #6bcf7f 0%, #4ecdc4 100%); border: 3px solid #6bcf7f; box-shadow: 0 4px 12px rgba(107, 207, 127, 0.4); pointer-events: none; min-width: 100px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; position: relative;';
+            potionCard.style.cssText = 'background: linear-gradient(135deg, #6bcf7f 0%, #4a6b4a 100%); border: 3px solid #6bcf7f; box-shadow: 0 4px 12px rgba(107, 207, 127, 0.4); pointer-events: none; min-width: 100px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; position: relative;';
             potionCard.innerHTML = '<div style="font-size: 2.5em; color: #fff; font-weight: bold;">7</div><div style="font-size: 2em; color: #ff6b6b;">♥️</div>';
             cardsContainer.appendChild(potionCard);
             

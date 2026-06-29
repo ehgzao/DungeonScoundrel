@@ -33,7 +33,7 @@ export const specialCards = [
         effect: () => { 
             game.dodgeActive = true; 
             window.showMessage('🛡️ Dodge active!', 'success'); 
-            window.createParticles(window.innerWidth / 2, window.innerHeight / 2, '#4ecdc4', 20); 
+            window.createParticles(window.innerWidth / 2, window.innerHeight / 2, '#c9a961', 20); 
         } 
     },
     { 
@@ -146,6 +146,15 @@ export const specialCards = [
                 window.showMessage('🎰 Bad luck... -10 HP!', 'danger');
                 window.screenShake();
                 window.createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 30);
+            }
+            // Secret: High Roller — win 10 gamble cards in a row
+            if (win) {
+                game.stats.gambleWinStreak = (game.stats.gambleWinStreak || 0) + 1;
+                if (game.stats.gambleWinStreak >= 10 && typeof window.unlockAchievement === 'function') {
+                    window.unlockAchievement('secret_3');
+                }
+            } else {
+                game.stats.gambleWinStreak = 0;
             }
             window.playSound('special');
             window.updateUI();

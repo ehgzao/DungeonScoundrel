@@ -1,34 +1,62 @@
 /* ============================================
    CSS VARIABLES & DESIGN TOKENS
+   Single source of truth for the Dungeon Scoundrel look.
+   Direction: dark earth / stone / blood + candle gold (Inscryption/dungeon-synth).
    ============================================ */
 
 :root {
-    /* Colors */
-    --color-gold: #c9a961;
-    --color-gold-dark: #a68948;
-    --color-gold-light: #d4af37;
-    --color-danger: #ff6b6b;
-    --color-success: #6bcf7f;
-    --color-warning: #ffd93d;
-    --color-info: #4ecdc4;
-    --color-bg-dark: #2a2318;
-    --color-bg-darker: #1a1410;
-    --color-border: #5a4a38;
-    
-    /* Spacing */
+    /* ---- Locked palette (semantic) ---- */
+    --dungeon-void: #1a1410;     /* deepest background / page base */
+    --stone-warm: #2c2416;       /* primary panel / surface background */
+    --dungeon-stone: #2a2318;    /* alt surface background */
+    --dungeon-earth: #3d2817;    /* raised surface / gradient top */
+    --stone-light: #8b7355;      /* muted labels / secondary text */
+    --border: #5a4a38;           /* default border */
+
+    --gold-treasure: #c9a961;    /* brand gold (borders, primary accent) */
+    --gold-bright: #d4af37;      /* highlight gold */
+    --gold-hi: #ffd700;          /* hover / hero highlight */
+    --gold-dark: #a68948;        /* gold gradient bottom */
+
+    --parchment: #e8d5b5;        /* body text on dark */
+    --blood-warning: #ff6b6b;    /* danger / HP / monster */
+    --herb-heal: #6bcf7f;        /* success / potion / heal */
+    --warning: #ffd93d;          /* caution / warning accent */
+
+    /* ---- Typography ---- */
+    --font-display: 'Cinzel Decorative', 'Cinzel', serif;  /* titles, card values, score */
+    --font-body: 'Cinzel', serif;                          /* labels, buttons, paragraphs */
+    --fs-xl: clamp(2.5rem, 8vw, 4rem);   /* hero / score */
+    --fs-lg: clamp(1.5rem, 5vw, 2rem);   /* modal h2 / card value */
+    --fs-md: 1.1rem;                     /* labels, buttons */
+    --fs-sm: 0.85rem;                    /* tooltips, fine print */
+
+    /* ---- Spacing ---- */
     --space-xs: 4px;
     --space-sm: 8px;
     --space-md: 16px;
     --space-lg: 24px;
     --space-xl: 32px;
-    
-    /* Border Radius */
+
+    /* ---- Border Radius ---- */
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 12px;
-    
-    /* Footer Buttons */
+
+    /* ---- Footer Buttons ---- */
     --footer-btn-height: 32px;
     --footer-btn-font-size: 0.75em;
     --footer-btn-padding: 8px 12px;
+
+    /* ---- Back-compat aliases (older token names still referenced elsewhere) ---- */
+    --color-gold: var(--gold-treasure);
+    --color-gold-dark: var(--gold-dark);
+    --color-gold-light: var(--gold-bright);
+    --color-danger: var(--blood-warning);
+    --color-success: var(--herb-heal);
+    --color-warning: var(--warning);
+    --color-info: var(--gold-treasure);   /* teal retired into gold */
+    --color-bg-dark: var(--dungeon-stone);
+    --color-bg-darker: var(--dungeon-void);
+    --color-border: var(--border);
 }

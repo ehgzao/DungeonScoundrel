@@ -352,7 +352,7 @@ function sanitizePlayerName(input) {
 // Clear error on input
 playerNameInput.oninput = () => {
     nameError.style.display = 'none';
-    playerNameInput.style.borderColor = '#667eea';
+    playerNameInput.style.borderColor = '#c9a961';
 };
 
 btnStartGameModal.onclick = () => {
@@ -382,7 +382,7 @@ btnStartGameModal.onclick = () => {
 btnCancelStart.onclick = () => {
     newGameModal.classList.remove('active');
     nameError.style.display = 'none';
-    playerNameInput.style.borderColor = '#667eea';
+    playerNameInput.style.borderColor = '#c9a961';
 };
 
 // ============================================
@@ -1136,7 +1136,7 @@ const IN_GAME_TUTORIAL_STEPS = [
     {
         id: 'held_card',
         title: '✋ Held Cards (Unique Mechanic!)',
-        text: 'Right-click a card to HOLD it! This is a unique mechanic in Dungeon Scoundrel.\n\nHeld cards are saved for later and won\'t clutter your room. Perfect for saving strong weapons or potions for when you really need them!',
+        text: 'Right-click (or long-press on touch) a card to HOLD it! This is a unique mechanic in Dungeon Scoundrel.\n\nHeld cards are saved for later and won\'t clutter your room. Perfect for saving strong weapons or potions for when you really need them!',
         highlight: '#holdAreaContainer',
         position: 'left',
         buttonText: 'Great Tip!'
@@ -1628,7 +1628,10 @@ function drawRoom() {
         }
         
         game.lastActionWasAvoid = false;
-        
+
+        // Mark freshly drawn cards so they play the deal-in flip (once) on render
+        game.room.forEach(c => { c._justDealt = true; });
+
         playSound('cardDraw');
         addLog(`Entered dungeon with ${game.room.length} cards`, 'info');
         showMessage(`You entered a dungeon with ${game.room.length} cards!`, 'info');
@@ -1717,7 +1720,7 @@ function checkGameState() {
         // Victory particles!
         createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', UI.ROOM_CLEAR_PARTICLES);
         setTimeout(() => createParticles(window.innerWidth / 2 + 100, window.innerHeight / 2, '#6bcf7f', UI.SECONDARY_PARTICLES), TIMING.PARTICLE_DELAY_1);
-        setTimeout(() => createParticles(window.innerWidth / 2 - 100, window.innerHeight / 2, '#4ecdc4', UI.SECONDARY_PARTICLES), TIMING.PARTICLE_DELAY_2);
+        setTimeout(() => createParticles(window.innerWidth / 2 - 100, window.innerHeight / 2, '#c9a961', UI.SECONDARY_PARTICLES), TIMING.PARTICLE_DELAY_2);
         
         // Room Clear Relics (optimized single iteration)
         let goldPerRoom = 0;
@@ -2004,7 +2007,7 @@ function endGame(reason, gaveUp = false) {
             setTimeout(() => {
                 const x = window.innerWidth / 2 + (Math.random() - 0.5) * 400;
                 const y = window.innerHeight / 2 + (Math.random() - 0.5) * 300;
-                const colors = ['#ffd700', '#6bcf7f', '#4ecdc4', '#ff6b6b', '#ffd93d'];
+                const colors = ['#ffd700', '#6bcf7f', '#c9a961', '#ff6b6b', '#ffd93d'];
                 createParticles(x, y, colors[i % colors.length], 50);
             }, i * 200);
         }
@@ -2029,7 +2032,22 @@ function endGame(reason, gaveUp = false) {
         if (game.stats.roomsCleared >= 10 && game.stats.maxCombo >= 10) { // Perfect Run: 10 rooms with 10x combo
             unlockAchievement('perfect_run');
         }
-        
+        if (game.health < 5) { // Survivor: finish a run with less than 5 HP
+            unlockAchievement('survivor');
+        }
+        if (game.health === 7) { // Lucky 7 (secret): win with exactly 7 HP
+            unlockAchievement('secret_2');
+        }
+        if (window.music && window.music.isPlaying) { // Music Lover: win with music ON
+            unlockAchievement('music_lover');
+        }
+        if (game.relics && game.relics.length === 1) { // Minimalist (secret): win with only 1 relic
+            unlockAchievement('secret_4');
+        }
+        if (game.stats.totalDamage === 0) { // Untouchable (secret): win without taking damage
+            unlockAchievement('secret_5');
+        }
+
         setTimeout(() => showDamageNumber(score, 'score'), 500);
     }
     
@@ -2297,7 +2315,7 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                     createParticles(btn.offsetLeft + btn.offsetWidth/2, btn.offsetTop, '#ffd700', 30);
                 } else {
                     btn.textContent = '✅ Score Submitted!';
-                    btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
+                    btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #c9a961 100%)';
                 }
                 btn.disabled = true; // Prevent re-submission
                 hapticFeedback('success');
@@ -2330,7 +2348,7 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                             playSound('victory');
                         } else {
                             btn.textContent = '✅ Score Submitted!';
-                            btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
+                            btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #c9a961 100%)';
                         }
                         btn.disabled = true;
                         hapticFeedback('success');
@@ -2418,7 +2436,7 @@ function showEncouragingModal(isFullVersion = true, onCloseCallback = null) {
                     <p style="font-size: 1em; color: #6bcf7f; margin-top: 20px; text-align: center;">Each death makes you stronger! Keep trying!</p>
                 </div>
                 
-                <div style="text-align: center; padding: 20px 15px; margin: 15px 0; background: linear-gradient(135deg, rgba(78, 205, 196, 0.15) 0%, rgba(107, 207, 127, 0.15) 100%); border-radius: 12px; border: 2px solid rgba(212, 175, 55, 0.3); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);">
+                <div style="text-align: center; padding: 20px 15px; margin: 15px 0; background: linear-gradient(135deg, rgba(201, 169, 97, 0.15) 0%, rgba(107, 207, 127, 0.15) 100%); border-radius: 12px; border: 2px solid rgba(212, 175, 55, 0.3); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);">
                     <p style="font-family: 'Cinzel Decorative', 'Cinzel', serif; font-size: 1.3em; font-weight: 700; color: #ffd700; margin: 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.8); letter-spacing: 0.05em; line-height: 1.4;">
                         Dreams never get old
                     </p>
@@ -2452,7 +2470,7 @@ function showEncouragingModal(isFullVersion = true, onCloseCallback = null) {
                         DON'T GIVE UP
                     </h1>
                     
-                    <div style="padding: 35px 25px; margin: 30px 0; background: linear-gradient(135deg, rgba(78, 205, 196, 0.2) 0%, rgba(107, 207, 127, 0.2) 100%); border-radius: 16px; border: 3px solid rgba(212, 175, 55, 0.5); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 215, 0, 0.1);">
+                    <div style="padding: 35px 25px; margin: 30px 0; background: linear-gradient(135deg, rgba(201, 169, 97, 0.2) 0%, rgba(107, 207, 127, 0.2) 100%); border-radius: 16px; border: 3px solid rgba(212, 175, 55, 0.5); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 215, 0, 0.1);">
                         <p style="font-family: 'Cinzel Decorative', 'Cinzel', serif; font-size: 2em; font-weight: 700; color: #ffd700; margin: 0; text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 0 3px 6px rgba(0, 0, 0, 0.9); letter-spacing: 0.06em; line-height: 1.5;">
                             DREAMS NEVER GET OLD
                         </p>
@@ -2885,7 +2903,7 @@ function updateUI() {
             }
         }
     } else {
-        const emptyText = maxHold > 1 ? `Right-click to hold (0/${maxHold})` : 'Right-click to hold';
+        const emptyText = maxHold > 1 ? `Right-click / long-press to hold (0/${maxHold})` : 'Right-click / long-press to hold';
         holdAreaContainer.innerHTML = `<div class="empty-slot" style="font-size: 0.8em;">${emptyText}</div>`;
     }
     
@@ -2938,9 +2956,12 @@ function updateUI() {
                 cardEl.classList.add('preview-safe');
             }
             
-            // Click events
+            // Click / tap to play; right-click or touch long-press to HOLD
+            let holdTimer = null;
+            let didLongPress = false;
             cardEl.onclick = (e) => {
                 e.stopPropagation();
+                if (didLongPress) { didLongPress = false; return; } // long-press already held it
                 playSound('cardFlip');
                 handleCardClick(card, index);
             };
@@ -2949,7 +2970,23 @@ function updateUI() {
                 e.stopPropagation();
                 holdCard(card, index);
             };
-            
+            // Touch long-press = hold (Hold was previously unusable on touch devices)
+            const cancelHold = () => { if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; } };
+            cardEl.addEventListener('touchstart', () => {
+                didLongPress = false;
+                holdTimer = setTimeout(() => {
+                    didLongPress = true;
+                    if (navigator.vibrate) navigator.vibrate(30);
+                    holdCard(card, index);
+                }, 450);
+            }, { passive: true });
+            cardEl.addEventListener('touchend', (e) => {
+                cancelHold();
+                if (didLongPress) e.preventDefault(); // suppress the synthetic click after a hold
+            }, { passive: false });
+            cardEl.addEventListener('touchmove', cancelHold, { passive: true });
+            cardEl.addEventListener('touchcancel', cancelHold, { passive: true });
+
             bottomBar.appendChild(cardEl);
         });
     } else if (!game.gameOver) {
@@ -2967,7 +3004,13 @@ function createCardElement(card) {
     cardEl.className = 'card';
     const type = getCardType(card);
     cardEl.classList.add(type);
-    
+
+    // Play the deal-in flip once, only on freshly drawn cards
+    if (card._justDealt) {
+        cardEl.classList.add('card-deal');
+        delete card._justDealt;
+    }
+
     // Boss special styling
     if (card.isBoss) {
         cardEl.classList.add('boss');

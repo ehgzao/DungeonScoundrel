@@ -12,6 +12,14 @@ const getFirebaseGlobals = () => ({
     userId: window.userId
 });
 
+// Escape HTML to prevent stored XSS from shared Firebase leaderboard data.
+// Names (and any field) are written by anonymous clients and rendered via innerHTML.
+// Prefers the shared helper (helpers.js); keeps a local fallback for load-order safety.
+const escapeHtml = (value) => (typeof window.escapeHtml === 'function'
+    ? window.escapeHtml(value)
+    : String(value ?? '').replace(/[&<>"']/g, (c) =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])));
+
 // ============================================
 // LEADERBOARD (FIREBASE)
 // ============================================
@@ -164,12 +172,12 @@ async function loadLeaderboardForDifficulty(difficulty) {
             <div class="leaderboard-entry">
                 <span class="leaderboard-rank">#${index + 1}</span>
                 <div style="flex: 1;">
-                    <div class="leaderboard-name">${entry.name || 'Scoundrel'}</div>
+                    <div class="leaderboard-name">${escapeHtml(entry.name || 'Scoundrel')}</div>
                     <div class="leaderboard-details" style="font-size: 0.8em; color: #aaa;">
-                        ${entry.time}s | ${entry.combo}x Combo | ${entry.gold}🪙
+                        ${escapeHtml(entry.time)}s | ${escapeHtml(entry.combo)}x Combo | ${escapeHtml(entry.gold)}🪙
                     </div>
                 </div>
-                <span class="leaderboard-score">${entry.score}</span>
+                <span class="leaderboard-score">${escapeHtml(entry.score)}</span>
             </div>
         `).join('');
 

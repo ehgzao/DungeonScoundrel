@@ -13,10 +13,24 @@
         window.silentWarn = p ? function(){} : console.warn.bind(console);
         window.silentError = p ? function(){} : console.error.bind(console);
         window.isProduction = p;
-        // Override console methods in production to prevent any errors showing
+        // In production, suppress the default error UI but keep a capped
+        // in-memory log so regressions stay diagnosable (e.g. via bug reports).
         if (p) {
-            window.onerror = function() { return true; };
-            window.onunhandledrejection = function(e) { e.preventDefault(); };
+            window.__errorLog = [];
+            var _record = function(info) {
+                try {
+                    window.__errorLog.push({ t: Date.now(), info: String(info) });
+                    if (window.__errorLog.length > 50) window.__errorLog.shift();
+                } catch (e) {}
+            };
+            window.onerror = function(msg, src, line, col) {
+                _record(msg + ' @ ' + src + ':' + line + ':' + col);
+                return true; // suppress default error overlay in production
+            };
+            window.onunhandledrejection = function(e) {
+                _record('unhandledrejection: ' + (e && e.reason));
+                e.preventDefault();
+            };
         }
     })();
     </script>
@@ -930,7 +944,7 @@
                 </p>
                 <p>
                     <span class="tutorial-card-demo potion">♥️ Potions (Hearts)</span>
-                    <br>Click to heal. Limit of 1 potion per dungeon!
+                    <br>Click to heal. Limit of 1 potion per room!
                 </p>
             </div>
 

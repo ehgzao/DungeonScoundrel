@@ -12,12 +12,12 @@
                 linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
                 repeating-linear-gradient(
                     90deg,
-                    #2c2416 0px,
-                    #3d2817 2px,
-                    #2c2416 4px
+                    var(--stone-warm) 0px,
+                    var(--dungeon-earth) 2px,
+                    var(--stone-warm) 4px
                 );
             background-attachment: fixed;
-            color: #e8d5b5;
+            color: var(--parchment);
             overflow-x: hidden;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         }
@@ -133,15 +133,15 @@
             text-transform: uppercase;
             
             /* Efeito 3D de madeira gravada - estilo das imagens */
-            color: #d4af37;
+            color: var(--gold-bright);
             text-shadow: 
                 /* Profundidade 3D marrom escuro */
-                1px 1px 0 #3d2817,
-                2px 2px 0 #3d2817,
-                3px 3px 0 #2c2416,
-                4px 4px 0 #2c2416,
-                5px 5px 0 #1a1410,
-                6px 6px 0 #1a1410,
+                1px 1px 0 var(--dungeon-earth),
+                2px 2px 0 var(--dungeon-earth),
+                3px 3px 0 var(--stone-warm),
+                4px 4px 0 var(--stone-warm),
+                5px 5px 0 var(--dungeon-void),
+                6px 6px 0 var(--dungeon-void),
                 /* Sombra suave */
                 7px 7px 15px rgba(0, 0, 0, 0.8),
                 /* Brilho dourado sutil */
@@ -150,7 +150,7 @@
                 inset 0px 0px 5px rgba(0, 0, 0, 0.8);
             
             /* Gradiente dourado na cor base */
-            background: linear-gradient(180deg, #ffd700 0%, #d4af37 50%, #8b6914 100%);
+            background: linear-gradient(180deg, var(--gold-hi) 0%, var(--gold-bright) 50%, #8b6914 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -204,9 +204,9 @@
                 0 4px 0 #5a4a2a,
                 0 8px 15px rgba(0, 0, 0, 0.6),
                 inset 0 -2px 5px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(135deg, #8b7355 0%, #a89078 50%, #8b7355 100%);
+            background: linear-gradient(135deg, var(--stone-light) 0%, #a89078 50%, var(--stone-light) 100%);
             color: #f5e6d3;
-            border: 3px solid #d4af37;
+            border: 3px solid var(--gold-bright);
             position: relative;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
@@ -228,7 +228,7 @@
                 0 4px 0 #5a4a2a,
                 0 12px 25px rgba(212, 175, 55, 0.4),
                 inset 0 -2px 5px rgba(0, 0, 0, 0.3);
-            border-color: #ffd700;
+            border-color: var(--gold-hi);
         }
         
         .welcome-btn:active {
@@ -240,18 +240,18 @@
         
         /* Highlight Button (Unlocks) - GOLD THEME */
         .btn-highlight {
-            background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #d4af37 100%) !important;
-            color: #2c2416 !important;
-            border-color: #ffd700 !important;
+            background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-hi) 50%, var(--gold-bright) 100%) !important;
+            color: var(--stone-warm) !important;
+            border-color: var(--gold-hi) !important;
             box-shadow: 
-                0 4px 0 #8b7355,
+                0 4px 0 var(--stone-light),
                 0 8px 25px rgba(255, 215, 0, 0.6),
                 inset 0 -2px 5px rgba(0, 0, 0, 0.3) !important;
             font-weight: 900 !important;
         }
         .btn-highlight:hover {
             box-shadow: 
-                0 4px 0 #8b7355,
+                0 4px 0 var(--stone-light),
                 0 12px 35px rgba(255, 215, 0, 0.8),
                 inset 0 -2px 5px rgba(0, 0, 0, 0.3) !important;
         }
@@ -282,12 +282,12 @@
         .modal-content {
             background: 
                 linear-gradient(135deg, rgba(0,0,0,0.3), transparent),
-                linear-gradient(135deg, #3d2817 0%, #2c2416 50%, #3d2817 100%);
+                linear-gradient(135deg, var(--dungeon-earth) 0%, var(--stone-warm) 50%, var(--dungeon-earth) 100%);
             padding: 35px 45px;
             border-radius: 8px;
             max-width: none;
             width: auto;
-            border: 4px solid #d4af37;
+            border: 4px solid var(--gold-bright);
             box-shadow: 
                 0 0 30px rgba(212, 175, 55, 0.4),
                 0 20px 60px rgba(0, 0, 0, 0.9),
@@ -304,7 +304,7 @@
             content: '⚜';
             position: absolute;
             font-size: 2em;
-            color: #d4af37;
+            color: var(--gold-bright);
             opacity: 0.5;
         }
         .modal-content::before {
@@ -320,7 +320,7 @@
         .modal-content h3 {
             margin-top: 20px;
             margin-bottom: 12px;
-            color: #d4af37;
+            color: var(--gold-bright);
             font-family: 'Cinzel', serif;
             font-weight: 700;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
@@ -341,21 +341,21 @@
         /* Modal Headers - Medieval Gold */
         .modal-content h2 {
             font-family: 'Cinzel Decorative', serif;
-            color: #ffd700;
+            color: var(--gold-hi);
             text-shadow: 
                 0 0 10px rgba(255, 215, 0, 0.5),
                 2px 2px 4px rgba(0, 0, 0, 0.9);
             margin-bottom: 25px;
             text-align: center;
             letter-spacing: 0.1em;
-            border-bottom: 2px solid #d4af37;
+            border-bottom: 2px solid var(--gold-bright);
             padding-bottom: 15px;
         }
-        #unlocksModal h2 { color: #ffd700; }
+        #unlocksModal h2 { color: var(--gold-hi); }
         
         /* Give Up Modal */
-        #giveUpModal .modal-content { border-color: #ff6b6b; }
-        #giveUpModal h2 { color: #ff6b6b; }
+        #giveUpModal .modal-content { border-color: var(--blood-warning); }
+        #giveUpModal h2 { color: var(--blood-warning); }
         
         .modal-content h2 {
             font-size: clamp(1.5em, 5vw, 2em);
@@ -378,7 +378,7 @@
             width: 100%;
             padding: 12px;
             border-radius: 8px;
-            border: 2px solid #667eea;
+            border: 2px solid var(--gold-treasure);
             background: rgba(0,0,0,0.3);
             color: white;
             font-size: 1.1em;
@@ -398,36 +398,36 @@
             padding: 15px;
             border: 3px solid #5a4a2a;
             border-radius: 4px;
-            background: linear-gradient(135deg, #3d2817 0%, #2c2416 100%);
-            color: #e8d5b5;
+            background: linear-gradient(135deg, var(--dungeon-earth) 0%, var(--stone-warm) 100%);
+            color: var(--parchment);
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.95em;
             font-family: 'Cinzel', serif;
             font-weight: 600;
             text-align: center;
-            box-shadow: 0 3px 0 #2c2416, 0 5px 10px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 3px 0 var(--stone-warm), 0 5px 10px rgba(0, 0, 0, 0.6);
         }
 
         .difficulty-btn:hover {
             background: linear-gradient(135deg, #4a3820 0%, #362a18 100%);
             transform: translateY(-2px);
-            box-shadow: 0 3px 0 #2c2416, 0 8px 15px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 3px 0 var(--stone-warm), 0 8px 15px rgba(0, 0, 0, 0.7);
         }
 
         .difficulty-btn.selected {
-            border-color: #d4af37;
-            box-shadow: 0 3px 0 #2c2416, 0 5px 10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.5);
+            border-color: var(--gold-bright);
+            box-shadow: 0 3px 0 var(--stone-warm), 0 5px 10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.5);
         }
 
         .difficulty-btn.easy { border-color: #6b8e6b; }
         .difficulty-btn.easy.selected { border-color: #a0b48d; background: linear-gradient(135deg, #4a6b4a 0%, #3d5a3d 100%); }
-        .difficulty-btn.normal { border-color: #d4af37; }
-        .difficulty-btn.normal.selected { border-color: #ffd700; background: linear-gradient(135deg, #8b7355 0%, #6b5a3d 100%); }
+        .difficulty-btn.normal { border-color: var(--gold-bright); }
+        .difficulty-btn.normal.selected { border-color: var(--gold-hi); background: linear-gradient(135deg, var(--stone-light) 0%, #6b5a3d 100%); }
         .difficulty-btn.hard { border-color: #8b3a3a; }
         .difficulty-btn.hard.selected { border-color: #a0463d; background: linear-gradient(135deg, #6b2a2a 0%, #5a1f1f 100%); }
         .difficulty-btn.endless { border-color: #9b59b6; }
-        .difficulty-btn.endless.selected { border-color: #d4af37; background: linear-gradient(135deg, #6b3d8e 0%, #4a2a6b 100%); box-shadow: 0 3px 0 #2c2416, 0 5px 10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(155, 89, 182, 0.6); }
+        .difficulty-btn.endless.selected { border-color: var(--gold-bright); background: linear-gradient(135deg, #6b3d8e 0%, #4a2a6b 100%); box-shadow: 0 3px 0 var(--stone-warm), 0 5px 10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(155, 89, 182, 0.6); }
 
         .difficulty-tab {
             padding: 10px 20px;
@@ -446,9 +446,9 @@
         }
 
         .difficulty-tab.active {
-            background: rgba(102, 126, 234, 0.4);
-            border-color: #667eea;
-            box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+            background: rgba(201, 169, 97, 0.4);
+            border-color: var(--gold-treasure);
+            box-shadow: 0 0 15px rgba(201, 169, 97, 0.5);
         }
 
         .modal-controls {
@@ -469,25 +469,31 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 2px;
-            box-shadow: 0 3px 0 #2c2416, 0 5px 15px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 3px 0 var(--stone-warm), 0 5px 15px rgba(0, 0, 0, 0.7);
             flex: 1;
             position: relative;
         }
-        
+
+        /* Tactile press: button sinks down to meet its drop-shadow */
+        .btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 0 0 var(--stone-warm), 0 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
         /* Standard Buttons - Medieval Style */
         .btn-primary {
-            background: linear-gradient(135deg, #8b7355 0%, #a89078 50%, #8b7355 100%);
+            background: linear-gradient(135deg, var(--stone-light) 0%, #a89078 50%, var(--stone-light) 100%);
             color: #f5e6d3;
-            border-color: #d4af37;
+            border-color: var(--gold-bright);
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 3px 0 #2c2416, 0 8px 25px rgba(212, 175, 55, 0.5);
-            border-color: #ffd700;
+            box-shadow: 0 3px 0 var(--stone-warm), 0 8px 25px rgba(212, 175, 55, 0.5);
+            border-color: var(--gold-hi);
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, #3d2817 0%, #2c2416 100%);
+            background: linear-gradient(135deg, var(--dungeon-earth) 0%, var(--stone-warm) 100%);
             color: #a89078;
             border-color: #5a4a2a;
         }
@@ -506,9 +512,9 @@
             border-color: #5a2a2a;
         }
         .btn-warning {
-            background: linear-gradient(135deg, #d4af37 0%, #ffd700 50%, #d4af37 100%);
-            color: #2c2416;
-            border-color: #ffd700;
+            background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-hi) 50%, var(--gold-bright) 100%);
+            color: var(--stone-warm);
+            border-color: var(--gold-hi);
             font-weight: 900;
         }
         
@@ -517,8 +523,8 @@
             cursor: not-allowed;
             transform: none !important;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
-            background: linear-gradient(180deg, #5a4a38 0%, #3a2a18 100%) !important;
-            color: #8b7355 !important;
+            background: linear-gradient(180deg, var(--border) 0%, #3a2a18 100%) !important;
+            color: var(--stone-light) !important;
             filter: grayscale(60%) !important;
             border-color: #4a3a28 !important;
         }
@@ -536,7 +542,7 @@
             justify-content: space-between;
             padding: 12px 24px;
             background: linear-gradient(180deg, rgba(61, 40, 23, 0.95) 0%, rgba(44, 36, 22, 0.98) 100%);
-            border-bottom: 3px solid #d4af37;
+            border-bottom: 3px solid var(--gold-bright);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
             flex-shrink: 0;
             gap: 15px;
@@ -584,9 +590,9 @@
         .stat-display .stat-value {
             min-width: 30px;
         }
-        #top-bar-health .stat-value { color: #ff6b6b; }
-        #top-bar-gold .stat-value { color: #ffd700; }
-        #top-bar-dungeon .stat-value { color: #4ecdc4; }
+        #top-bar-health .stat-value { color: var(--blood-warning); }
+        #top-bar-gold .stat-value { color: var(--gold-hi); }
+        #top-bar-dungeon .stat-value { color: var(--gold-treasure); }
         #top-bar-rooms .stat-value { color: #a8edea; }
         /* Score display removed from here */
 
@@ -619,7 +625,7 @@
         }
         .achievement-icon.bronze { background: linear-gradient(135deg, #cd7f32 0%, #8b4513 100%); }
         .achievement-icon.silver { background: linear-gradient(135deg, #c0c0c0 0%, #808080 100%); }
-        .achievement-icon.gold { background: linear-gradient(135deg, #ffd700 0%, #daa520 100%); }
+        .achievement-icon.gold { background: linear-gradient(135deg, var(--gold-hi) 0%, #daa520 100%); }
         .achievement-icon.platinum { background: linear-gradient(135deg, #e5e4e2 0%, #a8a8a8 100%); box-shadow: 0 0 10px #fff; }
         .achievement-icon.locked {
             filter: grayscale(100%) brightness(0.5);
@@ -636,7 +642,7 @@
         .achievement-counter {
             font-size: 0.9em;
             font-weight: bold;
-            color: #ffd700;
+            color: var(--gold-hi);
         }
 
         .settings-group {
@@ -666,7 +672,7 @@
         }
         .settings-btn.active {
             background: rgba(107, 207, 127, 0.3);
-            border-color: #6bcf7f;
+            border-color: var(--herb-heal);
         }
         .settings-btn:disabled {
             opacity: 0.3;
@@ -676,7 +682,7 @@
         
         /* Highlight for Unlocks in top bar */
         .settings-btn.btn-highlight {
-            background: linear-gradient(135deg, #ffd700 0%, #f59f00 100%);
+            background: linear-gradient(135deg, var(--gold-hi) 0%, #f59f00 100%);
             color: #1a1a2e;
             border-color: #ffe066;
             font-weight: bold;
@@ -685,8 +691,8 @@
         /* Give up button style */
         .settings-btn.btn-danger-style {
             background: rgba(255, 107, 107, 0.3);
-            border-color: #ff6b6b;
-            color: #ff6b6b;
+            border-color: var(--blood-warning);
+            color: var(--blood-warning);
             font-weight: bold;
         }
         .settings-btn.btn-danger-style:hover {
@@ -739,7 +745,7 @@
             flex-direction: column;
         }
         .left-sidebar h3 {
-            color: #ffd700;
+            color: var(--gold-hi);
             margin-bottom: 15px;
             font-size: 1.2em;
             text-align: center;
@@ -759,10 +765,10 @@
             background: rgba(255, 255, 255, 0.05);
             padding: 10px;
             border-radius: 8px;
-            border-left: 3px solid #ffd700;
+            border-left: 3px solid var(--gold-hi);
         }
         .relic-name {
-            color: #ffd700;
+            color: var(--gold-hi);
             font-weight: bold;
             margin-bottom: 3px;
             font-size: 0.95em;
@@ -783,7 +789,7 @@
             padding-top: 15px;
         }
         .btn-shop {
-            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            background: linear-gradient(135deg, var(--gold-treasure) 0%, var(--gold-dark) 100%);
             color: white;
             border: none;
             padding: 12px;
@@ -796,7 +802,7 @@
         }
         .btn-shop:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+            box-shadow: 0 5px 15px rgba(201, 169, 97, 0.4);
         }
 
         /* CENTER STAGE (Weapon, Messages, Controls) */
@@ -831,10 +837,10 @@
             animation: slideDown 0.5s ease;
             box-shadow: 0 5px 20px rgba(0,0,0,0.4);
         }
-        .message.info { background: rgba(78, 205, 196, 0.3); border: 2px solid #4ecdc4; }
-        .message.warning { background: rgba(255, 217, 61, 0.3); border: 2px solid #ffd93d; }
-        .message.danger { background: rgba(255, 107, 107, 0.3); border: 2px solid #ff6b6b; }
-        .message.success { background: rgba(107, 207, 127, 0.3); border: 2px solid #6bcf7f; }
+        .message.info { background: rgba(201, 169, 97, 0.3); border: 2px solid var(--gold-treasure); }
+        .message.warning { background: rgba(255, 217, 61, 0.3); border: 2px solid var(--warning); }
+        .message.danger { background: rgba(255, 107, 107, 0.3); border: 2px solid var(--blood-warning); }
+        .message.success { background: rgba(107, 207, 127, 0.3); border: 2px solid var(--herb-heal); }
 
         .center-stage-label {
             font-size: 1.1em;
@@ -862,12 +868,12 @@
             opacity: 0.8;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: #ffd700;
+            color: var(--gold-hi);
         }
         .score-value {
             font-size: clamp(2.5em, 8vw, 4em);
             font-weight: bold;
-            color: #ffd700;
+            color: var(--gold-hi);
             text-shadow: 0 0 20px rgba(255, 217, 61, 0.5);
             line-height: 1;
         }
@@ -930,7 +936,7 @@
             text-align: center;
             flex-shrink: 0;
         }
-        .hold-label { color: #ffd93d; }
+        .hold-label { color: var(--warning); }
         .discard-label { color: #aaa; }
 
         #discardPilePreview {
@@ -985,7 +991,7 @@
             height: 170px;
             background: 
                 linear-gradient(135deg, rgba(0,0,0,0.2), transparent),
-                linear-gradient(135deg, #8b7355 0%, #a89078 50%, #8b7355 100%);
+                linear-gradient(135deg, var(--stone-light) 0%, #a89078 50%, var(--stone-light) 100%);
             border-radius: 4px;
             display: flex;
             flex-direction: column;
@@ -995,7 +1001,7 @@
             transition: all 0.3s ease;
             border: 3px solid #5a4a2a;
             box-shadow: 
-                0 3px 0 #3d2817,
+                0 3px 0 var(--dungeon-earth),
                 0 6px 15px rgba(0, 0, 0, 0.7),
                 inset 0 -2px 5px rgba(0, 0, 0, 0.4),
                 inset 0 2px 3px rgba(255, 255, 255, 0.1);
@@ -1026,23 +1032,32 @@
             pointer-events: none;
             border-radius: 4px;
         }
-        
+
+        /* Deal-in flip — applied only to freshly drawn room cards (matches the cardFlip SFX) */
+        .card.card-deal {
+            animation: cardDealFlip 0.45s ease;
+        }
+        @keyframes cardDealFlip {
+            0%   { transform: perspective(600px) rotateY(90deg); opacity: 0; }
+            100% { transform: perspective(600px) rotateY(0deg); opacity: 1; }
+        }
+
         /* Cards in bottom bar (hand) */
         .bottom-bar .card:hover {
             transform: translateY(-15px) scale(1.1);
             box-shadow: 
-                0 3px 0 #3d2817,
+                0 3px 0 var(--dungeon-earth),
                 0 18px 40px rgba(212, 175, 55, 0.6),
                 inset 0 -2px 5px rgba(0, 0, 0, 0.4),
                 inset 0 2px 3px rgba(255, 255, 255, 0.1);
-            border-color: #d4af37;
+            border-color: var(--gold-bright);
             z-index: 10;
         }
         
         /* Cards elsewhere (equip, hold) */
         .center-stage .card:hover, .right-sidebar .card:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 30px rgba(201, 169, 97, 0.4);
         }
 
         .card-value {
@@ -1060,9 +1075,9 @@
             color: #ffcccc;
         }
         .card.weapon { 
-            background: linear-gradient(135deg, rgba(0,0,0,0.2), transparent), linear-gradient(135deg, #8b7355 0%, #d4af37 50%, #8b7355 100%); 
-            border-color: #d4af37;
-            color: #2c2416;
+            background: linear-gradient(135deg, rgba(0,0,0,0.2), transparent), linear-gradient(135deg, var(--stone-light) 0%, var(--gold-bright) 50%, var(--stone-light) 100%); 
+            border-color: var(--gold-bright);
+            color: var(--stone-warm);
         }
         .card.potion { 
             background: linear-gradient(135deg, rgba(0,0,0,0.2), transparent), linear-gradient(135deg, #6b8e6b 0%, #a0b48d 100%); 
@@ -1071,10 +1086,10 @@
         }
         .card.special { 
             background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent), linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); 
-            border-color: #d4af37;
+            border-color: var(--gold-bright);
             color: #f5e6ff;
             box-shadow: 
-                0 3px 0 #3d2817,
+                0 3px 0 var(--dungeon-earth),
                 0 6px 15px rgba(0, 0, 0, 0.7),
                 0 0 20px rgba(212, 175, 55, 0.3),
                 inset 0 -2px 5px rgba(0, 0, 0, 0.4);
@@ -1082,7 +1097,7 @@
         
         .card.boss {
             background: linear-gradient(135deg, #ff416c 0%, #8b0000 100%) !important;
-            border: 3px solid #ff6b6b !important;
+            border: 3px solid var(--blood-warning) !important;
             transform: scale(1.1);
         }
         
@@ -1092,12 +1107,12 @@
         }
 
         .card.equipped {
-            border-color: #ffd93d;
+            border-color: var(--warning);
             box-shadow: 0 0 25px rgba(255, 217, 61, 0.7);
             animation: pulse 2s infinite;
         }
         .card.held {
-            border-color: #ffd93d;
+            border-color: var(--warning);
             box-shadow: 0 0 20px rgba(255, 217, 61, 0.6);
         }
         
@@ -1119,9 +1134,9 @@
         .mini-card .card-value { font-size: 1.2em; margin: 0; }
         .mini-card .card-suit { font-size: 1em; margin: 0; }
         
-        .mini-card.monster { background: linear-gradient(135deg, #ff6b6b 0%, #c92a2a 100%); }
-        .mini-card.weapon { background: linear-gradient(135deg, #ffd93d 0%, #f59f00 100%); }
-        .mini-card.potion { background: linear-gradient(135deg, #6bcf7f 0%, #37b24d 100%); }
+        .mini-card.monster { background: linear-gradient(135deg, var(--blood-warning) 0%, #c92a2a 100%); }
+        .mini-card.weapon { background: linear-gradient(135deg, var(--warning) 0%, #f59f00 100%); }
+        .mini-card.potion { background: linear-gradient(135deg, var(--herb-heal) 0%, #37b24d 100%); }
         .mini-card.special { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
 
         /* Tooltip */
@@ -1160,14 +1175,14 @@
             bottom: auto;
         }
 
-        .tooltip-positive { color: #6bcf7f; font-weight: bold; }
-        .tooltip-negative { color: #ff6b6b; font-weight: bold; }
-        .tooltip-neutral { color: #ffd93d; font-weight: bold; }
+        .tooltip-positive { color: var(--herb-heal); font-weight: bold; }
+        .tooltip-negative { color: var(--blood-warning); font-weight: bold; }
+        .tooltip-neutral { color: var(--warning); font-weight: bold; }
 
         /* Preview */
-        .card.preview-safe { border-color: #6bcf7f; box-shadow: 0 5px 20px rgba(107, 207, 127, 0.5); }
-        .card.preview-danger { border-color: #ff6b6b; box-shadow: 0 5px 20px rgba(255, 107, 107, 0.5); }
-        .card.preview-neutral { border-color: #ffd93d; box-shadow: 0 5px 20px rgba(255, 217, 61, 0.5); }
+        .card.preview-safe { border-color: var(--herb-heal); box-shadow: 0 5px 20px rgba(107, 207, 127, 0.5); }
+        .card.preview-danger { border-color: var(--blood-warning); box-shadow: 0 5px 20px rgba(255, 107, 107, 0.5); }
+        .card.preview-neutral { border-color: var(--warning); box-shadow: 0 5px 20px rgba(255, 217, 61, 0.5); }
 
         .empty-slot {
             width: 120px;
@@ -1222,8 +1237,8 @@
             top: 15px;
             right: 15px;
             background: rgba(0, 0, 0, 0.5);
-            border: 2px solid #8b7355;
-            color: #d4af37;
+            border: 2px solid var(--stone-light);
+            color: var(--gold-bright);
             width: 35px;
             height: 35px;
             border-radius: 50%;
@@ -1240,7 +1255,7 @@
         }
         .modal-close-btn:hover {
             background: rgba(255, 107, 107, 0.8);
-            border-color: #ff6b6b;
+            border-color: var(--blood-warning);
             color: #fff;
             transform: rotate(90deg);
         }
@@ -1254,34 +1269,34 @@
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
             margin-bottom: 10px;
-            border-left: 3px solid #4ecdc4;
+            border-left: 3px solid var(--gold-treasure);
         }
-        .leaderboard-rank { font-size: 1.2em; font-weight: bold; color: #4ecdc4; min-width: 40px; }
+        .leaderboard-rank { font-size: 1.2em; font-weight: bold; color: var(--gold-treasure); min-width: 40px; }
         .leaderboard-name { font-size: 1.1em; font-weight: bold; flex: 1; margin-left: 15px; }
-        .leaderboard-score { font-size: 1.2em; font-weight: bold; color: #ffd700; }
+        .leaderboard-score { font-size: 1.2em; font-weight: bold; color: var(--gold-hi); }
         .leaderboard-details { font-size: 0.8em; color: #aaa; margin-top: 3px; }
 
         /* Tutorial Modal */
         .tutorial-section { margin: 20px 0; padding: 20px; background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
-        .tutorial-section h3 { font-size: 1.5em; margin-bottom: 10px; color: #ffd93d; }
+        .tutorial-section h3 { font-size: 1.5em; margin-bottom: 10px; color: var(--warning); }
         .tutorial-card-demo { display: inline-block; padding: 5px 15px; border-radius: 8px; margin: 5px; font-weight: bold; }
-        .tutorial-card-demo.monster { background: #ff6b6b; }
-        .tutorial-card-demo.weapon { background: #ffd93d; color: #000; }
-        .tutorial-card-demo.potion { background: #6bcf7f; }
+        .tutorial-card-demo.monster { background: var(--blood-warning); }
+        .tutorial-card-demo.weapon { background: var(--warning); color: #000; }
+        .tutorial-card-demo.potion { background: var(--herb-heal); }
 
         /* Game Over Screen */
         .game-over-content {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             padding: 40px; border-radius: 20px; text-align: center;
             max-width: 600px; width: 90%;
-            border: 3px solid #ff6b6b;
+            border: 3px solid var(--blood-warning);
             max-height: 90vh;
             overflow-y: auto;
         }
-        .game-over-content h2 { font-size: clamp(2em, 6vw, 3em); margin-bottom: 20px; color: #ff6b6b;}
+        .game-over-content h2 { font-size: clamp(2em, 6vw, 3em); margin-bottom: 20px; color: var(--blood-warning);}
         /* Victory title color */
-        .game-over-content.victory h2 { color: #6bcf7f; }
-        .game-over-content.victory { border-color: #6bcf7f; }
+        .game-over-content.victory h2 { color: var(--herb-heal); }
+        .game-over-content.victory { border-color: var(--herb-heal); }
         
         /* Achievement Toast Animation */
         @keyframes slideInRight {
@@ -1296,26 +1311,26 @@
         }
         
         .game-over-content p { font-size: 1.2em; margin-bottom: 20px; }
-        .game-over-score { font-size: 2.5em; color: #ffd700; margin-bottom: 20px; font-weight: bold; }
+        .game-over-score { font-size: 2.5em; color: var(--gold-hi); margin-bottom: 20px; font-weight: bold; }
         .game-over-stats { text-align: left; margin: 20px 0; font-size: 0.9em; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;}
         .game-over-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
         
         /* Other Modals */
         .shop-item, .unlock-item { background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 2px solid rgba(255, 215, 0, 0.3); display: flex; justify-content: space-between; align-items: center; }
         .item-info { flex: 1; }
-        .item-name { font-weight: bold; color: #ffd700; margin-bottom: 5px; font-size: 1.1em; }
+        .item-name { font-weight: bold; color: var(--gold-hi); margin-bottom: 5px; font-size: 1.1em; }
         .item-description { color: #aaa; font-size: 0.9em; margin-bottom: 5px; }
-        .item-price { color: #4ecdc4; font-weight: bold; font-size: 1.1em; }
-        .buy-btn { background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
-        .buy-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4); }
+        .item-price { color: var(--gold-treasure); font-weight: bold; font-size: 1.1em; }
+        .buy-btn { background: linear-gradient(135deg, var(--gold-treasure) 0%, var(--gold-dark) 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        .buy-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(201, 169, 97, 0.4); }
         .buy-btn:disabled { background: #555; cursor: not-allowed; transform: none; }
         .event-choice { background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 10px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; }
-        .event-choice:hover { border-color: #ffd700; background: rgba(255, 215, 0, 0.2); transform: translateX(10px); }
+        .event-choice:hover { border-color: var(--gold-hi); background: rgba(255, 215, 0, 0.2); transform: translateX(10px); }
         .event-text { font-size: 1.1em; line-height: 1.6; color: #ddd; margin-bottom: 20px; }
         .unlock-item.locked { opacity: 0.5; }
-        .unlock-item.unlocked { border-color: #6bcf7f; background: rgba(107, 207, 127, 0.1); }
-        .unlock-requirement { color: #ff6b6b; font-size: 0.85em; margin-top: 5px; }
-        .unlock-item.unlocked .unlock-requirement { color: #6bcf7f; }
+        .unlock-item.unlocked { border-color: var(--herb-heal); background: rgba(107, 207, 127, 0.1); }
+        .unlock-requirement { color: var(--blood-warning); font-size: 0.85em; margin-top: 5px; }
+        .unlock-item.unlocked .unlock-requirement { color: var(--herb-heal); }
 
         /* * =========================================
          * ANIMATIONS
@@ -1492,7 +1507,7 @@
         }
         .achievement-card.bronze { border-left-color: #cd7f32; }
         .achievement-card.silver { border-left-color: #c0c0c0; }
-        .achievement-card.gold { border-left-color: #ffd700; }
+        .achievement-card.gold { border-left-color: var(--gold-hi); }
         .achievement-card.platinum { border-left-color: #e5e4e2; box-shadow: 0 0 15px rgba(255,255,255,0.3); }
         .achievement-card.locked {
             filter: grayscale(100%);
@@ -1543,7 +1558,7 @@
         }
         .achievement-progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #4ecdc4, #44a08d);
+            background: linear-gradient(90deg, var(--gold-treasure), var(--gold-dark));
             transition: width 0.5s ease;
         }
         
@@ -1558,7 +1573,7 @@
             pointer-events: none;
             z-index: 9998;
             background: transparent;
-            border: 8px solid #ff6b6b;
+            border: 8px solid var(--blood-warning);
             animation: hpCriticalPulse 1s infinite;
         }
         
@@ -1596,13 +1611,13 @@
         
         .orientation-warning h2 {
             font-family: 'Cinzel Decorative', serif;
-            color: #ffd700;
+            color: var(--gold-hi);
             font-size: 2em;
             margin-bottom: 15px;
         }
         
         .orientation-warning p {
-            color: #e8d5b5;
+            color: var(--parchment);
             font-size: 1.2em;
             max-width: 400px;
             line-height: 1.6;
@@ -1728,7 +1743,7 @@
                 min-height: 160px;
                 max-height: 160px;
                 background: linear-gradient(180deg, rgba(44, 36, 22, 0.95) 0%, rgba(61, 40, 23, 0.98) 100%);
-                border-top: 3px solid #d4af37;
+                border-top: 3px solid var(--gold-bright);
                 box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
             }
             
@@ -2017,7 +2032,7 @@
                 min-height: 175px;
                 max-height: 175px;
                 background: linear-gradient(180deg, rgba(44, 36, 22, 0.95) 0%, rgba(61, 40, 23, 0.98) 100%);
-                border-top: 3px solid #d4af37;
+                border-top: 3px solid var(--gold-bright);
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -2195,13 +2210,13 @@
             0%, 100% {
                 box-shadow: 0 0 25px rgba(255, 215, 0, 0.4),
                            0 0 50px rgba(212, 175, 55, 0.3),
-                           0 0 75px rgba(78, 205, 196, 0.2),
+                           0 0 75px rgba(201, 169, 97, 0.2),
                            inset 0 0 25px rgba(255, 215, 0, 0.1);
             }
             50% {
                 box-shadow: 0 0 40px rgba(255, 215, 0, 0.6),
                            0 0 80px rgba(212, 175, 55, 0.5),
-                           0 0 120px rgba(78, 205, 196, 0.3),
+                           0 0 120px rgba(201, 169, 97, 0.3),
                            inset 0 0 40px rgba(255, 215, 0, 0.2);
             }
         }
