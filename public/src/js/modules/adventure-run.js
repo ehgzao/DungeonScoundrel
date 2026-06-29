@@ -83,10 +83,40 @@
 
         _rest(node) {
             const heal = Math.ceil(game.maxHealth * 0.3);
-            game.health = Math.min(game.maxHealth, game.health + heal);
-            if (window.updateUI) window.updateUI();
-            if (window.showMessage) window.showMessage(`🔥 You rest by the fire — recovered ${heal} HP.`, 'success');
-            AR._toMapSoon();
+            // Count the worst threat still in the run deck (dungeon + discard).
+            const pool = [...(game.dungeon || []), ...(game.discardPile || [])];
+            const monsters = pool.filter(c => (c.suitName === 'clubs' || c.suitName === 'spades') && !c.isBoss);
+            const worst = monsters.reduce((m, c) => (!m || c.numValue > m.numValue ? c : m), null);
+
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.style.zIndex = '10001';
+            overlay.innerHTML = `
+                <div class="modal-content" style="max-width:460px;text-align:center;border:2px solid #c9a961;">
+                    <div style="font-size:2.4em;">🔥</div>
+                    <h2 style="font-family:'Cinzel',serif;color:#e8c878;">Campfire</h2>
+                    <p style="color:#cbb892;">Catch your breath, or thin the horde ahead.</p>
+                    <div style="display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
+                        <button class="btn btn-primary" id="advRestHeal" style="flex:1;min-width:150px;">🔥 Rest<br><small>Recover ${heal} HP</small></button>
+                        <button class="btn btn-secondary" id="advRestCull" style="flex:1;min-width:150px;" ${worst ? '' : 'disabled'}>⚒️ Cull a Threat<br><small>${worst ? `Remove a ${worst.numValue}-power monster` : 'No threats left'}</small></button>
+                    </div>
+                </div>`;
+            document.body.appendChild(overlay);
+            const done = () => { overlay.remove(); if (window.updateUI) window.updateUI(); AR._toMapSoon(); };
+            overlay.querySelector('#advRestHeal').onclick = () => {
+                game.health = Math.min(game.maxHealth, game.health + heal);
+                if (window.showMessage) window.showMessage(`🔥 You rest — recovered ${heal} HP.`, 'success');
+                done();
+            };
+            overlay.querySelector('#advRestCull').onclick = () => {
+                if (worst) {
+                    const di = game.dungeon.indexOf(worst);
+                    if (di >= 0) game.dungeon.splice(di, 1);
+                    else { const pi = game.discardPile.indexOf(worst); if (pi >= 0) game.discardPile.splice(pi, 1); }
+                    if (window.showMessage) window.showMessage(`⚒️ You cull a ${worst.numValue}-power monster from the dungeon.`, 'success');
+                }
+                done();
+            };
         },
 
         _treasure(node) {

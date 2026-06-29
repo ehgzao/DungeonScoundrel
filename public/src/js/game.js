@@ -1535,10 +1535,16 @@ document.head.appendChild(tutorialStyle);
 
 function drawRoom() {
     if (game.dungeon.length === 0) {
-        // Adventure mode: the map controls progression, so just refill the
-        // encounter deck instead of triggering the linear victory/boss.
+        // Adventure mode: persistent run deck — recycle the discard pile so deck
+        // edits (campfire culls, future shop buys) stick, instead of regenerating
+        // a fresh deck or triggering the linear victory/boss.
         if (game.adventureRun) {
-            game.dungeon = createDeck();
+            if (game.discardPile && game.discardPile.length > 3) {
+                const recycled = game.discardPile.splice(0);
+                game.dungeon = (window.shuffleDeck ? window.shuffleDeck(recycled) : recycled);
+            } else {
+                game.dungeon = createDeck();
+            }
         } else
         // Endless mode: reload deck instead of ending
         if (game.difficulty === 'endless') {
