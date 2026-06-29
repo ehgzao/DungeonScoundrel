@@ -49,6 +49,17 @@
             // Reuse the full linear room flow for the fight; drawRoom refills the
             // deck itself in adventure mode. Clear -> checkGameState -> afterEncounterCleared.
             if (typeof window.drawRoom === 'function') window.drawRoom();
+            // Depth scaling: deeper nodes hit harder. Elites get an extra bump.
+            // tier 0..20 across the run -> up to ~+60% monster HP at the deepest.
+            const mult = 1 + (node.tier || 0) * 0.03 + (node.type === 'elite' ? 0.25 : 0);
+            if (mult > 1.01 && Array.isArray(game.room)) {
+                game.room.forEach((c) => {
+                    if ((c.suitName === 'clubs' || c.suitName === 'spades') && !c.isBoss && c.numValue > 0) {
+                        c.numValue = Math.max(2, Math.round(c.numValue * mult));
+                    }
+                });
+                if (window.updateUI) window.updateUI();
+            }
         },
 
         _boss(node) {
