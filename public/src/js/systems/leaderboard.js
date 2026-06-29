@@ -38,6 +38,10 @@ async function waitForFirebase(maxWaitMs = 5000, checkIntervalMs = 200) {
 }
 
 async function submitScoreToLeaderboard(score, gameTime) {
+    // Lazy-load Firebase on demand (removes it from the critical path)
+    if (typeof window.loadFirebase === 'function') {
+        try { await window.loadFirebase(); } catch (e) { /* offline: handled below */ }
+    }
     // Wait for Firebase to be ready (handles async auth timing)
     const isReady = await waitForFirebase(5000);
     
@@ -129,7 +133,13 @@ async function loadLeaderboardForDifficulty(difficulty) {
     if (!difficulty || typeof difficulty !== 'string') {
         difficulty = 'easy'; // Default fallback
     }
-    
+
+    // Lazy-load Firebase on demand. If it fails (offline), the offline-mode
+    // branch below renders gracefully — no throw.
+    if (typeof window.loadFirebase === 'function') {
+        try { await window.loadFirebase(); } catch (e) { /* offline */ }
+    }
+
     const { db, appId } = getFirebaseGlobals();
     
     if (!db || !appId) {
