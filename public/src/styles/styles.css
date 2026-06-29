@@ -1060,11 +1060,15 @@
         .adv-act-head span { display: block; font-weight: 700; letter-spacing: 1px; }
         .adv-act-head small { color: #8b7355; }
         .adv-row { display: flex; justify-content: center; gap: 26px; margin: 14px 0; position: relative; z-index: 1; }
-        .adv-node { width: 52px; height: 52px; border-radius: 50%; border: 2px solid #5a4a38; background: rgba(20,15,10,0.92); color: #f1e2c9; font-size: 1.3em; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.2s; position: relative; }
+        /* Nodes are fully OPAQUE (solid fill) so the background never shows
+           through; dim states change colour, never the node's opacity. */
+        .adv-node { width: 52px; height: 52px; border-radius: 50%; border: 2px solid #5a4a38; background: linear-gradient(180deg, #2a2016 0%, #140f0a 100%); color: #f1e2c9; font-size: 1.3em; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.2s; position: relative; z-index: 1; }
         .adv-node .adv-ico { line-height: 1; }
         .adv-node.adv-reachable { border-color: var(--gold-treasure, #c9a961); animation: advPulse 1.4s infinite; }
-        .adv-node.adv-done { opacity: 0.55; border-color: #6bcf7f; }
-        .adv-node.adv-locked { opacity: 0.4; cursor: default; }
+        .adv-node.adv-done { border-color: #6bcf7f; background: linear-gradient(180deg, #1d2a1d 0%, #0c120c 100%); }
+        .adv-node.adv-done .adv-ico { opacity: 0.5; filter: grayscale(0.5); }
+        .adv-node.adv-locked { cursor: default; border-color: #3a2f22; }
+        .adv-node.adv-locked .adv-ico { opacity: 0.45; filter: grayscale(0.7); }
         .adv-node.adv-elite { border-color: #a84444; }
         .adv-node.adv-boss, .adv-node.adv-finalboss { width: auto; min-width: 64px; height: auto; padding: 8px 12px; border-radius: 10px; border-color: #a84444; }
         .adv-bosslabel { font-size: 0.5em; font-family: 'Cinzel', serif; margin-top: 3px; color: #e8c878; white-space: nowrap; }

@@ -1031,7 +1031,8 @@ function startGame() {
 
     // 3. Update UI
     addLog(`Game started on ${game.difficulty.toUpperCase()} difficulty!`, 'info');
-    showMessage(`Game started! Enter a dungeon to begin.`, 'info');
+    // Adventure shows the map next, so skip the linear "enter a dungeon" prompt.
+    if (game.mode !== 'adventure') showMessage(`Game started! Enter a dungeon to begin.`, 'info');
     
     btnStartGameModal.disabled = true; // Prevent double click
     btnDrawRoom.removeAttribute('disabled');
