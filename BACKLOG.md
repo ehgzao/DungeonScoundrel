@@ -181,6 +181,83 @@ Reportado pelo dono: *"o fácil está com muitos eventos seguidos"*. Confirmado.
 
 
 
+## 🎮 MODES & ADVENTURE — ROADMAP (shirt size + impacto)
+
+**Sizes:** S ≤2h · M ~meio dia · L 1–2 dias · XL multi-dia.
+**Impacto:** 🔴 alto · 🟡 médio · ⚪ baixo.
+
+### ✅ Já entregue (Adventure)
+Deck ilustrado (31 cartas, Gemini), mapa procedural StS (balance: fogueira pré-boss,
+loja/ato, elites limitados, 100% alcançável), endgame único por classe, wiring do
+run (combate/boss/rest/treasure/shop/event), escala por profundidade, deck
+persistente + cull na fogueira, crop de margem das cartas.
+
+### A. Onboarding & Modos
+| ID | Item | Size | Imp | Status |
+|----|------|------|-----|--------|
+| ON-1 | Redesign do menu inicial explicando Classic vs Adventure (+ entrada de cada modo) | M | 🔴 | Pendente |
+| ON-2 | Refazer tutorial: Classic (zerar masmorra c/ 1 baralho) + Adventure (mapa/nós/deckbuild) | L | 🟡 | Pendente |
+| ON-3 | Mover seletor de modo do new-game pro menu principal | S | 🟡 | Pendente |
+
+### B. Legibilidade & Arte da carta
+| ID | Item | Size | Imp | Status |
+|----|------|------|-----|--------|
+| CARD-1 | Cor/borda + glyph por tipo (ler o tipo na hora) | S | 🔴 | Pendente |
+| CARD-2 | Reduzir margens (crop retrato) | S | 🔴 | ✅ Feito |
+| CARD-3 | Variar ilustrações (menos uniformes; moldura por tipo) — regen | M | 🟡 | Pendente (key Gemini + custo) |
+| CARD-4 | Bosses + relics ilustrados | M | 🟡 | Pendente (key) |
+
+### C. Polimento do mapa
+| ID | Item | Size | Imp | Status |
+|----|------|------|-----|--------|
+| MAP-1 | Tirar cara de grid: arestas curvas/orgânicas + jitter nos nós | S | 🟡 | Pendente |
+| MAP-2 | Marcador de posição atual + caminho percorrido | S | 🟡 | Pendente |
+| MAP-3 | Tooltip nos nós (o que tem dentro) | S | ⚪ | Pendente |
+
+### D. Profundidade & balanço do Adventure (não-trivial)
+| ID | Item | Size | Imp | Status |
+|----|------|------|-----|--------|
+| ADV-1 | Dificuldade = nº de mãos por encontro (easy 1 / normal 2 / hard 3) | M | 🔴 | Pendente |
+| ADV-2 | Mercador no mapa: comprar/vender/upgrade de carta (deckbuild completo) | L | 🔴 | Pendente |
+| ADV-3 | Tirar mercador do canto da tela (só no mapa, em Adventure) | S | 🟡 | Pendente |
+| ADV-4 | Nós de evento: escolhas reais (não só boon) | M | 🟡 | Pendente |
+| ADV-5 | Relics como recompensa (elite/tesouro/boss) → variedade de build | M | 🔴 | Pendente |
+| ADV-6 | Sistemas anti-trivial (ver notas state-of-art) | L | 🔴 | Pendente |
+
+### E. Achievements & Leaderboard
+| ID | Item | Size | Imp | Status |
+|----|------|------|-----|--------|
+| ACH-1 | Achievements de zerar por modo (Classic & Adventure) × dificuldade | M | 🔴 | Pendente |
+| ACH-2 | Achievements de tempo (speedrun) | S | 🟡 | Pendente |
+| ACH-3 | Zerar Adventure com cada classe (6) | S | 🟡 | Pendente |
+| LB-1 | Seções no leaderboard por modo (Classic/Adventure) + manter tabs de dificuldade | M | 🔴 | Pendente |
+| LB-2 | Leaderboard por tempo (clear mais rápido) | M | 🟡 | Pendente |
+
+### F. Dívida técnica (antiga)
+| ID | Item | Size | Imp | Status |
+|----|------|------|-----|--------|
+| TD-1 | Extrair 233 estilos inline → classes | L | ⚪ | Pendente |
+| TD-2 | Mobile portrait dedicado | XL | 🟡 | Adiado (desktop-first) |
+| TD-3 | Modularizar game.js (tutorial/sfx) | L | ⚪ | Pendente |
+| TD-4 | Integrar event-system completo nos nós de evento | M | 🟡 | Pendente |
+
+### 🧠 Notas state-of-art (deixar o Adventure NÃO-trivial)
+- **Legibilidade primeiro (StS):** tipo = cor + glyph + silhueta, lido em 0.1s.
+- **Tensão:** curas escassas (poucas fogueiras), deck incha se não fizer cull, durabilidade de arma pesa mais com encontros de várias mãos, elite = risco/recompensa, boss telegrafado, ouro escasso.
+- **Variedade de build:** relics vindos de nós; peso de nós/eventos por classe ligado à motivação.
+- **Pacing:** escala por profundidade (feito) + mãos por dificuldade + HP de boss escalado.
+- **Anti-trivial:** não dá pra evitar tudo (alguns combates forçados); cartas de maldição/condições; fogueiras limitadas; baú amaldiçoado risco/recompensa.
+
+### 🗺️ Ordem recomendada
+1. **CARD-1 + MAP-1** (S, polimento visível) → 2. **ADV-1** mãos/dificuldade (feel central) →
+3. **ON-1** menu → 4. **ADV-5** relics-recompensa + **ADV-2** mercador/deckbuild →
+5. **ACH-1 + LB-1** (meta dos modos) → 6. **ON-2** tutorial → 7. **CARD-3/4** arte (key) →
+8. **ADV-4/6** profundidade.
+
+---
+
+## 📈 ÉPICOS FUTUROS
+
 ### Epic F1 - Mobile-First (Planejado)
 - [ ] Layout totalmente responsivo
 - [ ] Controles otimizados para toque
