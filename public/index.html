@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.4.20"></script>
+    <script src="src/js/core/silent-logging.js?v=1.4.21"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -892,7 +892,23 @@
             
             <div class="tutorial-section">
                 <h3>🎯 Objective</h3>
-                <p>Clear all cards from the Dungeon deck without your health reaching zero!</p>
+                <p><strong>⚔️ Classic:</strong> clear the whole Dungeon deck without your health reaching zero — the pure Scoundrel run.</p>
+                <p><strong>🗺️ Adventure:</strong> descend a branching map, encounter by encounter, to your hero's own final boss.</p>
+            </div>
+
+            <div class="tutorial-section">
+                <h3>🎴 Game Modes</h3>
+                <p><strong>⚔️ Classic</strong> — the original game: one full deck, clear the dungeon room by room.</p>
+                <p><strong>🗺️ Adventure</strong> — a Slay-the-Spire-style run: a procedural branching map, an illustrated deck, deck-building, and a different finale for each of the 6 heroes. Pick a mode on the main menu.</p>
+            </div>
+
+            <div class="tutorial-section">
+                <h3>🗺️ Adventure Mode</h3>
+                <p>• <strong>The Map:</strong> choose your path through nodes — ⚔️ Battle · 💀 Elite · ❓ Event · 🏛️ Merchant · 🔥 Campfire · 🎁 Treasure · 👹 Boss.</p>
+                <p>• <strong>Encounters scale by difficulty:</strong> a battle is <strong>1 wave</strong> on Easy, <strong>2</strong> on Normal, <strong>3</strong> on Hard. Deeper nodes hit harder.</p>
+                <p>• <strong>🔥 Campfire:</strong> rest to heal, <em>or</em> cull the strongest monster from your deck (deck-building!).</p>
+                <p>• <strong>Illustrated deck:</strong> each card shows unique art; the coloured border + glyph tell you the type at a glance (🔴 monster · 🟡 weapon · 🟢 potion).</p>
+                <p>• <strong>Per-class finale:</strong> every hero descends for their own reason and faces a unique final boss + ending.</p>
             </div>
 
             <div class="tutorial-section">
@@ -950,8 +966,9 @@
             
             <div class="tutorial-section">
                 <h3>👹 Boss Battles</h3>
-                <p><strong>Every 10th room is a BOSS ROOM!</strong></p>
-                <p>• Bosses have <strong>15 HP</strong> and require multiple hits</p>
+                <p><strong>⚔️ Classic:</strong> 2 Minibosses (rooms 15 & 25) + a Final Boss.</p>
+                <p><strong>🗺️ Adventure:</strong> an act boss ends each act, then a final boss unique to your hero.</p>
+                <p>• Bosses have lots of HP and require multiple hits</p>
                 <p>• <strong>HP bar</strong> shows boss health (🟢→🟡→🔴)</p>
                 <p>• <strong>⚔️ Critical:</strong> If you fight a boss <strong>WITHOUT a weapon</strong>:</p>
                 <p>&nbsp;&nbsp;&nbsp;• Boss attacks once and flees</p>
@@ -1483,43 +1500,43 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.4.20"></script>
+<script src="src/js/core/error-handler.js?v=1.4.21"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.4.20" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.4.21" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.4.20" defer></script>
-<script src="src/js/utils/helpers.js?v=1.4.20" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.4.20" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.4.20" defer></script>
-<script src="src/js/systems/achievements.js?v=1.4.20" defer></script>
-<script src="src/js/data/game-data.js?v=1.4.20" defer></script>
-<script src="src/js/systems/stats.js?v=1.4.20" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.4.20" defer></script>
-<script src="src/js/core/audio-context.js?v=1.4.20" defer></script>
-<script src="src/js/systems/music.js?v=1.4.20" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.4.21" defer></script>
+<script src="src/js/utils/helpers.js?v=1.4.21" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.4.21" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.4.21" defer></script>
+<script src="src/js/systems/achievements.js?v=1.4.21" defer></script>
+<script src="src/js/data/game-data.js?v=1.4.21" defer></script>
+<script src="src/js/systems/stats.js?v=1.4.21" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.4.21" defer></script>
+<script src="src/js/core/audio-context.js?v=1.4.21" defer></script>
+<script src="src/js/systems/music.js?v=1.4.21" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async></script>
-<script src="src/js/init-emailjs.js?v=1.4.20" defer></script>
-<script src="src/js/firebase-ready.js?v=1.4.20" defer></script>
+<script src="src/js/init-emailjs.js?v=1.4.21" defer></script>
+<script src="src/js/firebase-ready.js?v=1.4.21" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.4.20" defer></script>
+<script type="module" src="src/js/game.js?v=1.4.21" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.4.20" defer></script>
+<script src="src/js/systems/codex.js?v=1.4.21" defer></script>
 
 <!-- ADVENTURE MAP (module; exposes window.AdventureMap) -->
-<script type="module" src="src/js/modules/adventure-map.js?v=1.4.20" defer></script>
+<script type="module" src="src/js/modules/adventure-map.js?v=1.4.21" defer></script>
 <!-- ADVENTURE RUN orchestrator (classic; exposes window.AdventureRun) -->
-<script src="src/js/modules/adventure-run.js?v=1.4.20" defer></script>
+<script src="src/js/modules/adventure-run.js?v=1.4.21" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.4.20" defer></script>
+<script src="src/js/register-sw.js?v=1.4.21" defer></script>
 
 </body>
 </html>

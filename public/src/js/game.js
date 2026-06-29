@@ -1252,7 +1252,8 @@ function checkAndStartTutorial() {
         return;
     }
     
-    if (!tutorialCompleted && !tutorialSkipped && game.difficulty === 'easy') {
+    // Interactive tutorial only in Classic (Adventure is map-driven, not linear).
+    if (!tutorialCompleted && !tutorialSkipped && game.difficulty === 'easy' && game.mode !== 'adventure') {
         inGameTutorialActive = true;
         inGameTutorialStep = 0;
         
