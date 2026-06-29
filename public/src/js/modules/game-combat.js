@@ -222,10 +222,13 @@ export function handlePotion(potion, index) {
     const oldHealth = game.health;
     game.health = Math.min(game.health + heal, game.maxHealth);
     const actualHeal = game.health - oldHealth;
-    
+
+    // Count the potion against the per-room limit whenever it is consumed,
+    // even at full HP — otherwise potions drunk at full HP bypass the limit.
+    game.potionsUsed++;
+    game.stats.potionsUsed++;
+
     if (actualHeal > 0) {
-        game.potionsUsed++;
-        game.stats.potionsUsed++;
         game.stats.totalHealing += actualHeal;
         window.showDamageNumber(actualHeal, 'heal');
         window.playSound('heal');

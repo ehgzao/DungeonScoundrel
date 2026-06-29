@@ -436,3 +436,4 @@ try {
         window.getDocs = getDocs;
         window.query = query;
         window.limit = limit;
+        window.orderBy = orderBy; // Needed by leaderboard.js (classic script) for rank detection

@@ -132,7 +132,7 @@ function showUpgradeAvailableToast(unlock) {
     toast.onclick = () => {
         toast.remove();
         // Open CODEX upgrades tab
-        const codexBtn = document.getElementById('btnCodEx');
+        const codexBtn = document.getElementById('btnCodex');
         if (codexBtn) codexBtn.click();
     };
     

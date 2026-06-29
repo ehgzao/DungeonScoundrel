@@ -81,16 +81,25 @@ class StorageCache {
     }
     
     clearOldData() {
-        // Clear non-essential data if quota exceeded
+        // Clear non-essential data if quota exceeded.
+        // Preserve durable progression so it is never silently wiped.
         try {
-            const keysToPreserve = ['scoundrel_lifetime_stats', 'scoundrel_unlocks'];
+            const keysToPreserve = [
+                'scoundrel_lifetime_stats',
+                'scoundrel_permanent_stats',
+                'scoundrel_unlocks',
+                'dungeon_scoundrel_achievements'
+            ];
+            // Collect first, then remove — removing during index iteration skips keys.
+            const keysToRemove = [];
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                if (key && !keysToPreserve.includes(key)) {
-                    localStorage.removeItem(key);
-                    delete this.cache[key];
-                }
+                if (key && !keysToPreserve.includes(key)) keysToRemove.push(key);
             }
+            keysToRemove.forEach((key) => {
+                localStorage.removeItem(key);
+                delete this.cache[key];
+            });
         } catch(e) {
             console.error('Error clearing old data:', e);
         }
