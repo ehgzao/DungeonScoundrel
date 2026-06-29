@@ -1,8 +1,15 @@
 # 📋 DUNGEON SCOUNDREL - BACKLOG UNIFICADO
 
-**Última atualização:** 2025-11-26
-**Versão atual:** 1.4.3 (Lighthouse Optimized)
+**Última atualização:** 2026-06-29
+**Versão atual:** 1.4.6 (Audit remediation: segurança, PWA, perf)
 **Single Source of Truth para planejamento**
+
+> Remediação do audit já entregue (PRs #22–#27): XSS escaping, Firestore rules,
+> design tokens, achievements obteníveis, deal-flip/touch hold, CSS deferral,
+> **Firebase lazy-load**, **PWA icons PNG 192/512 + maskable (PWA 100)**,
+> **CSP: removido `script 'unsafe-inline'` (handlers isolados em `script-src-attr`)**
+> e CSP consolidada numa fonte (netlify.toml). Lighthouse: Perf 90 / A11y 100 /
+> BP 100 / SEO 100 / PWA 100.
 
 ---
 
@@ -62,7 +69,7 @@
 #### P0 - Bloqueadores (Fazer Imediatamente)
 | ID | Tarefa | Impacto | Esforço | Status |
 |----|--------|---------|---------|--------|
-| P0-1 | **Service Worker não registra** - PWA quebrado | Player | 2h | 🔴 Pendente |
+| P0-1 | **Service Worker não registra** - PWA quebrado | Player | 2h | 🟢 Concluído (registro externalizado em `register-sw.js`; PWA 100) |
 | P0-2 | **Configurar variáveis Netlify** - Deploy funcional | Deploy | 30min | 🟢 Concluído |
 | P0-3 | **Testar Leaderboard em produção** | Player | 1h | 🟢 Concluído |
 | P0-4 | **Testar Cloud Save em produção** | Player | 1h | 🟢 Concluído |
@@ -92,7 +99,7 @@
 | ID | Tarefa | Impacto | Esforço | Status |
 |----|--------|---------|---------|--------|
 | P3-1 | **Splash Screen** - Configurar no manifest | PWA | 1h | 🔴 Pendente |
-| P3-2 | **Maskable Icon** - Criar ícone com safe zone | PWA | 2h | 🔴 Pendente |
+| P3-2 | **Maskable Icon** - Criar ícone com safe zone | PWA | 2h | 🟢 Concluído (icon-maskable-512.png, safe zone 80%) |
 | P3-3 | **Offline mode** - Garantir funcionamento | PWA | 4h | 🔴 Pendente |
 
 ---
@@ -137,7 +144,42 @@
 
 ---
 
-## 📈 ÉPICOS FUTUROS (Do PRODUCT_BACKLOG_EPICS.md)
+### 🎲 GAME BALANCE - Rebalance de Dificuldades
+
+#### GB - Balanceamento (precisa decisão de design do dono)
+| ID | Tarefa | Impacto | Esforço | Status |
+|----|--------|---------|---------|--------|
+| GB-1 | **Rebalancear frequência de eventos por dificuldade** | Player (game feel) | 2-3h | 🔴 Pendente |
+| GB-2 | **Remover constantes mortas de evento** (`EVENT_CONFIG.BASE_CHANCE/EASY_REDUCTION/HARD_INCREASE`) | Limpeza | 15min | 🔴 Pendente |
+
+**GB-1 — diagnóstico (aterrado no código, não suposição):**
+
+Reportado pelo dono: *"o fácil está com muitos eventos seguidos"*. Confirmado.
+
+- A chance de evento por sala vem de `EVENT_CONFIG` (`config/game-constants.js`),
+  lida em `game.js:1784-1790`:
+  - `CHANCE_EASY: 0.40` ← **a MAIOR de todas**
+  - `CHANCE_NORMAL: 0.30`
+  - `CHANCE_HARD: 0.20`
+  - `CHANCE_ENDLESS: 0.25`
+  - A curva está **invertida**: Easy dispara mais eventos que Hard.
+- Bônus somam de forma aditiva **sem teto** (`game.js:1792-1805`):
+  Dancer `+0.15`, unlock `eventLuck` `+0.50`, relíquia Compass `+0.10`.
+  No Easy isso chega a `0.40 + 0.50 + 0.15 + 0.10 = 1.15` → evento garantido
+  em praticamente toda sala = "muitos eventos seguidos".
+- Há um cap de **1 evento por sala** (`game.eventTriggeredThisRoom`, `game.js:1808`),
+  então o problema é a frequência sala-a-sala, não múltiplos na mesma sala.
+- Constantes mortas: `BASE_CHANCE: 0.15`, `EASY_REDUCTION: 0.05`, `HARD_INCREASE: 0.05`
+  (`game-constants.js:99-103`) — modelo antigo, nunca referenciado (ver GB-2).
+
+**Propostas (a escolher com o dono — números são decisão de game feel):**
+1. **Inverter a curva** para casar com a expectativa: `easy 0.20 / normal 0.25 / hard 0.30 / endless 0.30`.
+2. **Manter "easy = mais ajuda"** mas separar eventos benéficos de prejudiciais
+   (easy enviesa pro bom), em vez de só ter mais eventos.
+3. **Clampar a soma de bônus** (ex: teto `0.60`) pra empilhamento de unlocks/relíquias
+   não saturar em 100%.
+
+
 
 ### Epic F1 - Mobile-First (Planejado)
 - [ ] Layout totalmente responsivo
