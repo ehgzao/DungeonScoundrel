@@ -1,0 +1,41 @@
+rules_version = '2';
+
+// Dungeon Scoundrel — Firestore Security Rules
+// Deploy with:  firebase deploy --only firestore:rules
+//
+// Rationale: the app uses anonymous auth, so "request.auth != null" alone is
+// effectively open. These rules cap the blast radius of leaderboard writes
+// (type + range + ownership) and isolate per-user cloud saves. Client-side
+// score forgery cannot be fully closed without server-authoritative scoring,
+// but malformed / absurd / spoofed entries are rejected here.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Public leaderboard: anyone may read; an authenticated client may CREATE
+    // a single validated entry it owns. No client updates or deletes.
+    match /artifacts/{appId}/public/data/{collection}/{document} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.score is number
+        && request.resource.data.score >= 0
+        && request.resource.data.score <= 100000
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 20
+        && request.resource.data.difficulty is string
+        && request.resource.data.difficulty.size() <= 16;
+      allow update, delete: if false;
+    }
+
+    // Per-user cloud save: only the owner can read/write their own document.
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Default deny for anything not explicitly matched above.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

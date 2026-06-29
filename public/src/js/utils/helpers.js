@@ -115,6 +115,14 @@ window.storage = storage;
 // UTILITY FUNCTIONS
 // ============================================
 
+// Escape HTML — shared sanitizer for any user/remote data rendered via innerHTML
+// (leaderboard names, auth display names, etc.). Prevents stored/reflected XSS.
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (c) =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+window.escapeHtml = escapeHtml;
+
 // Debounce function - Prevents excessive function calls
 function debounce(func, wait) {
     let timeout;

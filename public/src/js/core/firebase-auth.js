@@ -289,7 +289,7 @@ try {
                 loginBtn.innerHTML = `
                     <span style="font-size: 1.1em;">☁️</span> 
                     <span style="color: #6bcf7f;">✔</span> 
-                    ${user.displayName ? user.displayName.split(' ')[0] : 'Synced'}
+                    ${user.displayName ? window.escapeHtml(user.displayName.split(' ')[0]) : 'Synced'}
                 `;
                 loginBtn.style.borderColor = '#6bcf7f';
                 loginBtn.style.boxShadow = 'inset 0 1px 0 rgba(107, 207, 127, 0.1), 0 2px 8px rgba(107, 207, 127, 0.3)';
@@ -315,8 +315,8 @@ try {
                     <button class="modal-close-btn" onclick="this.closest('.modal-overlay').remove();">×</button>
                     <div style="text-align: center; padding: 20px;">
                         <div style="font-size: 3em; margin-bottom: 10px;">👤</div>
-                        <h2 style="margin: 0 0 5px 0;">${user.displayName || 'Player'}</h2>
-                        <p style="color: #aaa; font-size: 0.9em; margin: 0 0 20px 0;">${user.email}</p>
+                        <h2 style="margin: 0 0 5px 0;">${window.escapeHtml(user.displayName || 'Player')}</h2>
+                        <p style="color: #aaa; font-size: 0.9em; margin: 0 0 20px 0;">${window.escapeHtml(user.email)}</p>
                         
                         <button class="close-modal-btn" id="btnSaveToCloud" style="width: 100%; margin-bottom: 10px; background: linear-gradient(135deg, #4ecdc4, #2fb3b1); border: none; color: #102015;">
                             ☁️ Save to Cloud

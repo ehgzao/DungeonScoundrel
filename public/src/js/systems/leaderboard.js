@@ -14,8 +14,11 @@ const getFirebaseGlobals = () => ({
 
 // Escape HTML to prevent stored XSS from shared Firebase leaderboard data.
 // Names (and any field) are written by anonymous clients and rendered via innerHTML.
-const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// Prefers the shared helper (helpers.js); keeps a local fallback for load-order safety.
+const escapeHtml = (value) => (typeof window.escapeHtml === 'function'
+    ? window.escapeHtml(value)
+    : String(value ?? '').replace(/[&<>"']/g, (c) =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])));
 
 // ============================================
 // LEADERBOARD (FIREBASE)
