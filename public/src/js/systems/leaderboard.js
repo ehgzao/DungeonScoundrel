@@ -101,6 +101,7 @@ async function submitScoreToLeaderboard(score, gameTime) {
 // Current selected difficulty for leaderboard
 let currentLeaderboardDifficulty = 'easy';
 let currentLeaderboardMode = 'classic'; // 'classic' | 'adventure'
+let currentLeaderboardSort = 'score';   // 'score' | 'time' (LB-2: fastest clear)
 
 async function showLeaderboard(difficulty = 'easy') {
     const leaderboardModal = document.getElementById('leaderboardModal');
@@ -167,29 +168,41 @@ async function loadLeaderboardForDifficulty(difficulty) {
         const querySnapshot = await getDocs(q);
         let scores = [];
         querySnapshot.forEach(doc => scores.push(doc.data()));
-        
-        // Sort on client (mandatory)
-        scores.sort((a, b) => b.score - a.score);
-        
+
+        // Sort on client (mandatory). LB-2: 'time' ranks by fastest clear
+        // (ascending), keeping only entries with a real recorded time.
+        const byTime = currentLeaderboardSort === 'time';
+        if (byTime) {
+            scores = scores.filter(s => Number(s.time) > 0)
+                .sort((a, b) => Number(a.time) - Number(b.time));
+        } else {
+            scores.sort((a, b) => b.score - a.score);
+        }
+
         const top10 = scores.slice(0, 10);
-        
+
         if (top10.length === 0) {
             const diffIcons = { easy: '🟢', normal: '🟡', hard: '🔴', endless: '♾️' };
             const diffName = difficulty ? difficulty.toUpperCase() : 'UNKNOWN';
-            listDiv.innerHTML = `<p style="text-align: center; color: #aaa;">No scores yet for ${diffIcons[difficulty] || '❓'} ${diffName}.<br>Be the first!</p>`;
+            const emptyMsg = byTime
+                ? `No timed clears yet for ${diffIcons[difficulty] || '❓'} ${diffName}.<br>Be the first to finish!`
+                : `No scores yet for ${diffIcons[difficulty] || '❓'} ${diffName}.<br>Be the first!`;
+            listDiv.innerHTML = `<p style="text-align: center; color: #aaa;">${emptyMsg}</p>`;
             return;
         }
-        
+
         listDiv.innerHTML = top10.map((entry, index) => `
             <div class="leaderboard-entry">
                 <span class="leaderboard-rank">#${index + 1}</span>
                 <div style="flex: 1;">
                     <div class="leaderboard-name">${escLB(entry.name || 'Scoundrel')}</div>
                     <div class="leaderboard-details" style="font-size: 0.8em; color: #aaa;">
-                        ${escLB(entry.time)}s | ${escLB(entry.combo)}x Combo | ${escLB(entry.gold)}🪙
+                        ${byTime
+                            ? `${escLB(entry.score)} pts | ${escLB(entry.combo)}x Combo | ${escLB(entry.gold)}🪙`
+                            : `${escLB(entry.time)}s | ${escLB(entry.combo)}x Combo | ${escLB(entry.gold)}🪙`}
                     </div>
                 </div>
-                <span class="leaderboard-score">${escLB(entry.score)}</span>
+                <span class="leaderboard-score">${byTime ? `${escLB(entry.time)}s` : escLB(entry.score)}</span>
             </div>
         `).join('');
 
@@ -258,6 +271,15 @@ window.switchLeaderboardMode = async function(mode) {
     currentLeaderboardMode = mode;
     document.querySelectorAll('.mode-tab').forEach(tab => {
         tab.classList.toggle('active', tab.dataset.mode === mode);
+    });
+    await loadLeaderboardForDifficulty(currentLeaderboardDifficulty);
+}
+
+// Switch leaderboard sort (Top Score / Fastest clear) — LB-2
+window.switchLeaderboardSort = async function(sort) {
+    currentLeaderboardSort = sort;
+    document.querySelectorAll('.sort-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.sort === sort);
     });
     await loadLeaderboardForDifficulty(currentLeaderboardDifficulty);
 }

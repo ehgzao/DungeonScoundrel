@@ -14,14 +14,14 @@ import { ACTS, ADVENTURES, adventureFor } from '../data/adventures.js';
 
 // Node types and their map glyphs.
 export const NODE_TYPES = {
-    combat:    { icon: '⚔️', label: 'Battle' },
-    elite:     { icon: '💀', label: 'Elite' },
-    event:     { icon: '❓', label: 'Event' },
-    shop:      { icon: '🏛️', label: 'Merchant' },
-    rest:      { icon: '🔥', label: 'Campfire' },
-    treasure:  { icon: '🎁', label: 'Treasure' },
-    boss:      { icon: '👹', label: 'Boss' },
-    finalboss: { icon: '☠️', label: 'Final Boss' },
+    combat:    { icon: '⚔️', label: 'Battle', desc: 'A standard fight. Clear the room to advance.' },
+    elite:     { icon: '💀', label: 'Elite', desc: 'A tougher foe — hits harder, but drops a relic.' },
+    event:     { icon: '❓', label: 'Event', desc: 'A choice with consequences. Risk and reward.' },
+    shop:      { icon: '🏛️', label: 'Merchant', desc: 'Buy cards & relics, or edit your deck with gold.' },
+    rest:      { icon: '🔥', label: 'Campfire', desc: 'Heal, or cull a threat from your deck. Pick one.' },
+    treasure:  { icon: '🎁', label: 'Treasure', desc: 'Gold and a relic — but some chests are cursed…' },
+    boss:      { icon: '👹', label: 'Boss', desc: 'The act guardian. A powerful relic awaits the victor.' },
+    finalboss: { icon: '☠️', label: 'Final Boss', desc: 'Your nemesis. Defeat it to end your run in triumph.' },
 };
 
 const ENCOUNTER_ROWS = 7; // rows 0..6 of encounters, then a boss row
@@ -212,12 +212,20 @@ AdventureMap.renderInto = function (container) {
                     : (reach.has(n.id) ? 'reachable' : 'locked');
                 node.className = `adv-node adv-${n.type} adv-${state}`;
                 node.dataset.id = n.id;
-                node.title = t.label;
+                // MAP-3: tell the player what's inside a node before they commit.
+                const tipName = (n.type === 'finalboss' || n.type === 'boss') && n.boss ? n.boss.name : t.label;
+                node.title = `${tipName} — ${t.desc}`;
+                node.setAttribute('aria-label', `${tipName}: ${t.desc}${state === 'reachable' ? ' (selectable)' : ''}`);
                 node.innerHTML = `<span class="adv-ico">${t.icon}</span>`;
                 if (state === 'current') node.innerHTML += `<span class="adv-here">📍</span>`;
                 if (n.type === 'boss' || n.type === 'finalboss') {
                     node.innerHTML += `<span class="adv-bosslabel">${n.boss ? n.boss.name : t.label}</span>`;
                 }
+                // Styled hover/focus tooltip (desktop). `title` is the fallback.
+                const tip = document.createElement('span');
+                tip.className = 'adv-tip';
+                tip.innerHTML = `<strong>${t.icon} ${tipName}</strong><span>${t.desc}</span>`;
+                node.appendChild(tip);
                 if (state === 'reachable') {
                     node.onclick = () => { if (this.select(n.id)) this.renderInto(container); };
                 } else {
