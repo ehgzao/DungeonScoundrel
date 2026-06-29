@@ -236,10 +236,10 @@ persistente + cull na fogueira, crop de margem das cartas.
 ### F. Dívida técnica (antiga)
 | ID | Item | Size | Imp | Status |
 |----|------|------|-----|--------|
-| TD-1 | Extrair 233 estilos inline → classes | L | ⚪ | Pendente |
+| TD-1 | Extrair 233 estilos inline → classes | L | ⚪ | 🟡 Parcial (padrões mais repetidos → .panel-box/.class-card-frame/.img-cover/.class-card-title; 25 inline removidos) |
 | TD-2 | Mobile portrait dedicado | XL | 🟡 | Adiado (desktop-first) |
-| TD-3 | Modularizar game.js (tutorial/sfx) | L | ⚪ | 🟡 Parcial (tutorial in-game → modules/in-game-tutorial.js; -440 linhas) |
-| TD-4 | Integrar event-system completo nos nós de evento | M | 🟡 | Pendente |
+| TD-3 | Modularizar game.js (tutorial/sfx) | L | ⚪ | ✅ Feito (sfx→game-sounds.js; tutorial→in-game-tutorial.js; game.js -438 linhas) |
+| TD-4 | Integrar event-system completo nos nós de evento | M | 🟡 | ⏭️ Superado por ADV-4 (eventos próprios do Adventure com escolhas/curse) |
 
 ### 🧠 Notas state-of-art (deixar o Adventure NÃO-trivial)
 - **Legibilidade primeiro (StS):** tipo = cor + glyph + silhueta, lido em 0.1s.

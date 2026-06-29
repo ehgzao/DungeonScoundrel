@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.4.32"></script>
+    <script src="src/js/core/silent-logging.js?v=1.4.33"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -660,13 +660,13 @@
                     width: 240px;
                     box-sizing: border-box;
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
-                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                    <div class="class-card-frame">
                         <picture>
                             <source srcset="assets/images/avatar-scoundrel.webp" type="image/webp">
-                            <img src="assets/images/avatar-scoundrel.webp" alt="Scoundrel" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;"  width="832" height="1099">
+                            <img src="assets/images/avatar-scoundrel.webp" alt="Scoundrel" loading="lazy" class="img-cover"  width="832" height="1099">
                         </picture>
                     </div>
-                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">SCOUNDREL</h3>
+                    <h3 class="class-card-title">SCOUNDREL</h3>
                 </div>
                 
                 <!-- Knight -->
@@ -682,13 +682,13 @@
                     width: 240px;
                     box-sizing: border-box;
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
-                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                    <div class="class-card-frame">
                         <picture>
                             <source srcset="assets/images/avatar-knight.webp" type="image/webp">
-                            <img src="assets/images/avatar-knight.webp" alt="Knight" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;"  width="1024" height="1536">
+                            <img src="assets/images/avatar-knight.webp" alt="Knight" loading="lazy" class="img-cover"  width="1024" height="1536">
                         </picture>
                     </div>
-                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">KNIGHT</h3>
+                    <h3 class="class-card-title">KNIGHT</h3>
                 </div>
                 
                 <!-- Rogue -->
@@ -704,13 +704,13 @@
                     width: 240px;
                     box-sizing: border-box;
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
-                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                    <div class="class-card-frame">
                         <picture>
                             <source srcset="assets/images/avatar-rogue.webp" type="image/webp">
-                            <img src="assets/images/avatar-rogue.webp" alt="Rogue" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;"  width="1024" height="1536">
+                            <img src="assets/images/avatar-rogue.webp" alt="Rogue" loading="lazy" class="img-cover"  width="1024" height="1536">
                         </picture>
                     </div>
-                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">ROGUE</h3>
+                    <h3 class="class-card-title">ROGUE</h3>
                 </div>
                 
                 <!-- Dancer -->
@@ -726,13 +726,13 @@
                     width: 240px;
                     box-sizing: border-box;
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
-                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                    <div class="class-card-frame">
                         <picture>
                             <source srcset="assets/images/avatar-dancer.webp" type="image/webp">
-                            <img src="assets/images/avatar-dancer.webp" alt="Dancer" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;"  width="1024" height="1536">
+                            <img src="assets/images/avatar-dancer.webp" alt="Dancer" loading="lazy" class="img-cover"  width="1024" height="1536">
                         </picture>
                     </div>
-                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">DANCER</h3>
+                    <h3 class="class-card-title">DANCER</h3>
                 </div>
                 
                 <!-- Berserker -->
@@ -748,13 +748,13 @@
                     width: 240px;
                     box-sizing: border-box;
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
-                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                    <div class="class-card-frame">
                         <picture>
                             <source srcset="assets/images/avatar-berserker.webp" type="image/webp">
-                            <img src="assets/images/avatar-berserker.webp" alt="Berserker" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;"  width="712" height="982">
+                            <img src="assets/images/avatar-berserker.webp" alt="Berserker" loading="lazy" class="img-cover"  width="712" height="982">
                         </picture>
                     </div>
-                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">BERSERKER</h3>
+                    <h3 class="class-card-title">BERSERKER</h3>
                 </div>
                 
                 <!-- Priest -->
@@ -770,13 +770,13 @@
                     width: 240px;
                     box-sizing: border-box;
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
-                    <div style="width: 216px; height: 324px; overflow: hidden; border-radius: 4px; border: 2px solid #5a4a38; margin: 0 auto 8px auto;">
+                    <div class="class-card-frame">
                         <picture>
                             <source srcset="assets/images/avatar-priest.webp" type="image/webp">
-                            <img src="assets/images/avatar-priest.webp" alt="Priest" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;"  width="832" height="1099">
+                            <img src="assets/images/avatar-priest.webp" alt="Priest" loading="lazy" class="img-cover"  width="832" height="1099">
                         </picture>
                     </div>
-                    <h3 style="color: #c9a961; font-family: 'Cinzel', serif; margin: 0; font-size: 1em;">PRIEST</h3>
+                    <h3 class="class-card-title">PRIEST</h3>
                 </div>
             </div>
             
@@ -1129,43 +1129,43 @@
             <p style="color: #aaa; margin-bottom: 20px;">Preview all atmospheric tracks from the game!</p>
             
             <div style="display: grid; gap: 15px;">
-                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
+                <div class="panel-box">
                     <h3 style="color: #d4af37; margin-bottom: 10px;">🏰 Dark Awakening</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Menu Theme - Mysterious, inviting, dark</p>
                     <button class="btn btn-primary" id="btnPlayMenu" style="width: 100%;">▶️ Play</button>
                 </div>
                 
-                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
+                <div class="panel-box">
                     <h3 style="color: #d4af37; margin-bottom: 10px;">⚔️ Into the Depths</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Gameplay Theme - Tense, adventurous</p>
                     <button class="btn btn-primary" id="btnPlayGameplay" style="width: 100%;">▶️ Play</button>
                 </div>
                 
-                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
+                <div class="panel-box">
                     <h3 style="color: #d4af37; margin-bottom: 10px;">🏛️ Merchant's Shadow</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Shop Theme - Calm, mysterious</p>
                     <button class="btn btn-primary" id="btnPlayShop" style="width: 100%;">▶️ Play</button>
                 </div>
                 
-                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
+                <div class="panel-box">
                     <h3 style="color: #d4af37; margin-bottom: 10px;">👑 Champion's Glory</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Victory Theme - Triumphant, celebratory</p>
                     <button class="btn btn-primary" id="btnPlayVictory" style="width: 100%;">▶️ Play</button>
                 </div>
                 
-                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
+                <div class="panel-box">
                     <h3 style="color: #d4af37; margin-bottom: 10px;">💀 The Final Darkness</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Defeat Theme - Dark, respectful</p>
                     <button class="btn btn-primary" id="btnPlayDefeat" style="width: 100%;">▶️ Play</button>
                 </div>
 
-                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
+                <div class="panel-box">
                     <h3 style="color: #d4af37; margin-bottom: 10px;">👹 Dread Awakens</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Boss Stinger - Plays when a boss appears</p>
                     <button class="btn btn-primary" id="btnPlayBossStinger" style="width: 100%;">▶️ Play</button>
                 </div>
 
-                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 2px solid #8b7355;">
+                <div class="panel-box">
                     <h3 style="color: #d4af37; margin-bottom: 10px;">❤️ Last Breaths</h3>
                     <p style="color: #bbb; font-size: 0.9em; margin-bottom: 10px;">Critical-HP Heartbeat - Pulses when health is low</p>
                     <button class="btn btn-primary" id="btnPlayHeartbeat" style="width: 100%;">▶️ Play</button>
@@ -1512,46 +1512,46 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.4.32"></script>
+<script src="src/js/core/error-handler.js?v=1.4.33"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.4.32" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.4.33" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.4.32" defer></script>
-<script src="src/js/utils/helpers.js?v=1.4.32" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.4.32" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.4.32" defer></script>
-<script src="src/js/systems/achievements.js?v=1.4.32" defer></script>
-<script src="src/js/data/game-data.js?v=1.4.32" defer></script>
-<script src="src/js/systems/stats.js?v=1.4.32" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.4.32" defer></script>
-<script src="src/js/core/audio-context.js?v=1.4.32" defer></script>
-<script src="src/js/systems/music.js?v=1.4.32" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.4.33" defer></script>
+<script src="src/js/utils/helpers.js?v=1.4.33" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.4.33" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.4.33" defer></script>
+<script src="src/js/systems/achievements.js?v=1.4.33" defer></script>
+<script src="src/js/data/game-data.js?v=1.4.33" defer></script>
+<script src="src/js/systems/stats.js?v=1.4.33" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.4.33" defer></script>
+<script src="src/js/core/audio-context.js?v=1.4.33" defer></script>
+<script src="src/js/systems/music.js?v=1.4.33" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async></script>
-<script src="src/js/init-emailjs.js?v=1.4.32" defer></script>
-<script src="src/js/firebase-ready.js?v=1.4.32" defer></script>
+<script src="src/js/init-emailjs.js?v=1.4.33" defer></script>
+<script src="src/js/firebase-ready.js?v=1.4.33" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.4.32" defer></script>
+<script type="module" src="src/js/game.js?v=1.4.33" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.4.32" defer></script>
+<script src="src/js/systems/codex.js?v=1.4.33" defer></script>
 
 <!-- ADVENTURE MAP (module; exposes window.AdventureMap) -->
-<script type="module" src="src/js/modules/adventure-map.js?v=1.4.32" defer></script>
+<script type="module" src="src/js/modules/adventure-map.js?v=1.4.33" defer></script>
 <!-- ADVENTURE RUN orchestrator (classic; exposes window.AdventureRun) -->
-<script src="src/js/modules/adventure-run.js?v=1.4.32" defer></script>
+<script src="src/js/modules/adventure-run.js?v=1.4.33" defer></script>
 
 <!-- IN-GAME TUTORIAL (classic; exposes window.InGameTutorial) — loads after game.js -->
-<script src="src/js/modules/in-game-tutorial.js?v=1.4.32" defer></script>
+<script src="src/js/modules/in-game-tutorial.js?v=1.4.33" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.4.32" defer></script>
+<script src="src/js/register-sw.js?v=1.4.33" defer></script>
 
 </body>
 </html>
