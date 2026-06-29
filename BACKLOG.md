@@ -212,7 +212,7 @@ persistente + cull na fogueira, crop de margem das cartas.
 |----|------|------|-----|--------|
 | MAP-1 | Tirar cara de grid: arestas curvas/orgânicas + jitter nos nós | S | 🟡 | ⏭️ Descopado (usuário aprovou linhas retas + nós opacos) |
 | MAP-2 | Marcador de posição atual + caminho percorrido | S | 🟡 | ✅ Feito |
-| MAP-3 | Tooltip nos nós (o que tem dentro) | S | ⚪ | Pendente |
+| MAP-3 | Tooltip nos nós (o que tem dentro) | S | ⚪ | ✅ Feito (hover/focus + aria-label) |
 
 ### D. Profundidade & balanço do Adventure (não-trivial)
 | ID | Item | Size | Imp | Status |
@@ -231,7 +231,7 @@ persistente + cull na fogueira, crop de margem das cartas.
 | ACH-2 | Achievements de tempo (speedrun) | S | 🟡 | ✅ Feito |
 | ACH-3 | Zerar Adventure com cada classe (6) | S | 🟡 | ✅ Feito |
 | LB-1 | Seções no leaderboard por modo (Classic/Adventure) + manter tabs de dificuldade | M | 🔴 | ✅ Feito |
-| LB-2 | Leaderboard por tempo (clear mais rápido) | M | 🟡 | Pendente |
+| LB-2 | Leaderboard por tempo (clear mais rápido) | M | 🟡 | ✅ Feito (toggle Top Score / Fastest) |
 
 ### F. Dívida técnica (antiga)
 | ID | Item | Size | Imp | Status |
@@ -254,9 +254,10 @@ persistente + cull na fogueira, crop de margem das cartas.
 5. **ACH-1 + LB-1** (meta dos modos) → 6. **ON-2** tutorial → 7. **CARD-3/4** arte (key) →
 8. **ADV-4/6** profundidade.
 
-**Status:** sequência 1–8 entregue. **Restante:** ON-3 (mover seletor de modo),
-MAP-3 (tooltips de nó), LB-2 (leaderboard por tempo), CARD-3 (regen de variação —
-cards já aprovados, gated em custo/key) + relics ilustrados, TD-1/3/4 (dívida técnica).
+**Status:** sequência 1–8 entregue + polimento (MAP-3 tooltips, LB-2 fastest).
+**Restante:** ON-3 (mover seletor de modo — já escolhido no menu, baixa prioridade),
+CARD-3 (regen de variação — cards já aprovados, gated em custo/key) + relics
+ilustrados, TD-1/3/4 (dívida técnica).
 
 ---
 

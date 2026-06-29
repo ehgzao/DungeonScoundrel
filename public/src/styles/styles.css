@@ -1104,6 +1104,27 @@
         .adv-bosslabel { font-size: 0.5em; font-family: 'Cinzel', serif; margin-top: 3px; color: #e8c878; white-space: nowrap; }
         @keyframes advPulse { 0%,100% { box-shadow: 0 0 8px rgba(201,169,97,0.4); } 50% { box-shadow: 0 0 16px rgba(201,169,97,0.9); } }
 
+        /* MAP-3: node tooltip — what's inside a node, shown on hover/focus. */
+        .adv-node .adv-tip {
+            position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(4px);
+            width: 184px; padding: 8px 10px; border-radius: 8px;
+            background: rgba(14,10,6,0.97); border: 1px solid #c9a961;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.7);
+            display: flex; flex-direction: column; gap: 3px; text-align: center;
+            opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s, transform 0.15s; z-index: 50;
+        }
+        .adv-node .adv-tip strong { color: #e8c878; font-family: 'Cinzel', serif; font-size: 0.5em; letter-spacing: 0.3px; }
+        .adv-node .adv-tip span { color: #cbb892; font-size: 0.44em; line-height: 1.35; }
+        .adv-node .adv-tip::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border: 6px solid transparent; border-top-color: #c9a961;
+        }
+        .adv-node:hover .adv-tip, .adv-node:focus-visible .adv-tip {
+            opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+        }
+        /* Keep the hovered/focused node above its neighbours so the tip isn't clipped. */
+        .adv-node:hover, .adv-node:focus-visible { z-index: 60; }
+
 
         /* Parchment texture overlay on cards */
         .card::after {
