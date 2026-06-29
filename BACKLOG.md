@@ -204,7 +204,7 @@ persistente + cull na fogueira, crop de margem das cartas.
 |----|------|------|-----|--------|
 | CARD-1 | Cor/borda + glyph por tipo (ler o tipo na hora) | S | 🔴 | ✅ Feito |
 | CARD-2 | Reduzir margens (crop retrato) | S | 🔴 | ✅ Feito |
-| CARD-3 | Variar ilustrações (menos uniformes; moldura por tipo) — regen | M | 🟡 | Pendente (cards aprovados; regen gated em custo/key) |
+| CARD-3 | Variar ilustrações (menos uniformes; moldura por tipo) — regen | M | 🟡 | ✅ Feito (regen 31 cartas: moldura por tipo + composição por carta) |
 | CARD-4 | Bosses + relics ilustrados | M | 🟡 | ✅ Feito (8 bosses ilustrados; relics seguem em emoji) |
 
 ### C. Polimento do mapa
@@ -254,10 +254,10 @@ persistente + cull na fogueira, crop de margem das cartas.
 5. **ACH-1 + LB-1** (meta dos modos) → 6. **ON-2** tutorial → 7. **CARD-3/4** arte (key) →
 8. **ADV-4/6** profundidade.
 
-**Status:** sequência 1–8 entregue + polimento (MAP-3 tooltips, LB-2 fastest).
+**Status:** sequência 1–8 entregue + polimento (MAP-3 tooltips, LB-2 fastest) + CARD-3 regen.
 **Restante:** ON-3 (mover seletor de modo — já escolhido no menu, baixa prioridade),
-CARD-3 (regen de variação — cards já aprovados, gated em custo/key) + relics
-ilustrados, TD-1/3/4 (dívida técnica).
+relics ilustrados (53 ícones — baixo ROI em linha de lista; emoji por ora),
+TD-1/3/4 (dívida técnica).
 
 ---
 

@@ -8,12 +8,32 @@
 // id scheme: monster_<v> | weapon_<v> | potion_<v>  (v = numValue)
 // The 3 approved samples map to monster_10, weapon_7, potion_5.
 
+// Shared look (palette + medium) WITHOUT a fixed frame/composition — the rigid
+// single arch + dead-centre subject made the original deck look too uniform
+// (CARD-3). Frame now varies by TYPE and composition varies per CARD.
 export const STYLE =
   'dark medieval dungeon-synth tarot illustration, hand-inked woodcut style, ' +
   'candlelit, muted earth/stone tones with deep blood-red accents, aged ' +
-  'parchment background, ornate gothic arch frame with twin candles and ' +
-  'gargoyle-root motifs at the base, a single centered subject, symmetrical, ' +
-  'painterly yet graphic, no text, no lettering, no numbers';
+  'parchment background, painterly yet graphic, no text, no lettering, no numbers';
+
+// CARD-3: per-type frame so a glance reads the type and the deck feels less same-y.
+const FRAMES = {
+  monster: 'inside a blood-red gothic arch with gargoyle-root motifs and twin guttering candles at the base',
+  weapon:  'inside a gilded filigree arch with a crossed-blade crest and riveted iron corners',
+  potion:  'inside a verdant apothecary arch wreathed in dried vines, herbs and hanging bottles',
+};
+
+// CARD-3: rotate the shot so subjects aren\'t all the same dead-centre portrait.
+const COMPOSITIONS = [
+  'dramatic low angle looking up at the subject',
+  'tight menacing close-up filling the frame',
+  'symmetrical centered portrait',
+  'three-quarter view, subject turned slightly',
+  'wide establishing shot, subject deeper in the scene',
+  'dutch tilted angle, uneasy and off-kilter',
+  'high angle looking down on the subject',
+  'subject emerging from heavy shadow at the edge',
+];
 
 const ACCENT = { monster: '#8b3a3a', weapon: '#c9a961', potion: '#7a9b5a', boss: '#a32020' };
 
@@ -86,9 +106,18 @@ function build() {
 }
 
 export const CARDS = build();
-// Bosses get an imposing, full-frame treatment (still same palette/frame so the
-// boss card sits in the same deck as the rest).
+
+// Stable composition pick per card (deterministic so re-runs match): hash the id.
+const compFor = (card) => {
+  const s = String(card.id);
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return COMPOSITIONS[h % COMPOSITIONS.length];
+};
+
+// Bosses keep an imposing full-frame treatment; deck cards get a per-type frame
+// and a per-card composition (CARD-3 variety).
 export const promptFor = (card) =>
   card.type === 'boss'
-    ? `${STYLE}, imposing full-frame menacing boss filling the arch, dramatic scale, looming. Subject: ${card.subject}.`
-    : `${STYLE}. Subject: ${card.subject}.`;
+    ? `${STYLE}, ornate gothic arch frame with twin candles, imposing full-frame menacing boss filling the arch, dramatic scale, looming. Subject: ${card.subject}.`
+    : `${STYLE}, ${FRAMES[card.type] || ''}, ${compFor(card)}. Subject: ${card.subject}.`;
