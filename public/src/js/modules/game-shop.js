@@ -198,11 +198,14 @@ export function buyItem(item, finalPrice) {
  * Open shop modal
  */
 export function openShop() {
+    // Adventure has its own map merchant node — the linear corner shop is hidden
+    // there, but the 'S' shortcut could still reach this. Block it in Adventure.
+    if (game.adventureRun) return;
     if (!shopModal) {
         console.error('[SHOP] Shop modal not initialized!');
         return;
     }
-    
+
     updateShopDisplay();
     
     // Disable game buttons

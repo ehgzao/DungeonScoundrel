@@ -1052,6 +1052,18 @@ function startGame() {
     if (game.mode !== 'adventure') showMessage(`Game started! Enter a dungeon to begin.`, 'info');
     
     btnStartGameModal.disabled = true; // Prevent double click
+
+    // QA cross-mode reset: a prior Adventure run sets game.adventureRun=true and
+    // hides the linear controls (adventure-run.js). Clear that here so a Classic
+    // game started in the same session isn't broken (stale adventure code paths)
+    // or left with the corner merchant / draw / evade buttons hidden. Adventure
+    // re-applies its own state immediately after via AdventureRun.start().
+    game.adventureRun = false;
+    ['btnOpenShop', 'btnDrawRoom', 'btnAvoidRoom'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = '';
+    });
+
     btnDrawRoom.removeAttribute('disabled');
     btnDrawRoom.disabled = false;
     // First action must be Draw, not Avoid

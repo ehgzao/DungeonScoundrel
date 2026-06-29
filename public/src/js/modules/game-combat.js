@@ -331,7 +331,22 @@ export function handleMonster(monster, index) {
             const bossDamage = monster.numValue;
             game.health -= bossDamage;
             game.stats.totalDamage += bossDamage;
-            
+            window.resetCombo();
+
+            // ADVENTURE: the boss is a one-off map encounter. Removing it would
+            // empty the room and make checkGameState -> afterEncounterCleared count
+            // the node as CLEARED, handing out the relic/victory for free. Keep the
+            // boss in the room; the player must equip a weapon to actually beat it
+            // (clicking with no weapon just keeps taking damage -> death, no free clear).
+            if (game.adventureRun) {
+                window.showMessage(`👹 ${monster.bossName || 'Boss'} struck you! Equip a weapon to fight it. -${bossDamage} HP`, 'danger');
+                window.playSound('damage');
+                window.screenShake();
+                if (game.health <= 0) { window.updateUI(); window.checkGameState(); return; }
+                window.updateUI();
+                return;
+            }
+
             // Remove boss from room
             game.room.splice(index, 1);
             game.discardPile.push(monster);
