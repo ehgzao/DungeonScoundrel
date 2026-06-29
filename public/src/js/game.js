@@ -162,9 +162,21 @@ function showWelcomeScreen() {
     cleanupGameIndicators();
 }
 
-function showNewGameModal() {
+function showNewGameModal(mode) {
     newGameModal.classList.add('active');
-    
+
+    // Mode comes from the main-menu button; reflect it (default Classic) and
+    // show it in the title (the in-modal toggle is hidden to avoid duplication).
+    const chosen = (mode === 'adventure' || mode === 'classic') ? mode : 'classic';
+    const ms = document.getElementById('modeSelector');
+    if (ms) ms.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('selected', b.dataset.mode === chosen));
+    const title = document.getElementById('newGameTitle');
+    if (title) title.textContent = chosen === 'adventure' ? '🗺️ New Game · Adventure' : '⚔️ New Game · Classic';
+    const bossInfo = document.getElementById('bossBattlesInfo');
+    if (bossInfo) bossInfo.textContent = chosen === 'adventure'
+        ? 'An act boss at the end of each act, then a final boss unique to your hero.'
+        : '2 Minibosses (room 15 & 25) + Final Boss!';
+
     // CRITICAL: ALWAYS remove old suggestions first (prevents duplicate suggestions)
     const oldSuggestion = document.querySelector('.difficulty-suggestion');
     if (oldSuggestion) {
@@ -207,7 +219,12 @@ function showGameUI() {
 }
 
 // Welcome Screen Hooks
-btnWelcomeStart.onclick = showNewGameModal;
+// Menu mode entries: open New Game preselected to Classic or Adventure.
+const btnStartClassic = document.getElementById('btnStartClassic');
+const btnStartAdventure = document.getElementById('btnStartAdventure');
+if (btnStartClassic) btnStartClassic.onclick = () => showNewGameModal('classic');
+if (btnStartAdventure) btnStartAdventure.onclick = () => showNewGameModal('adventure');
+if (btnWelcomeStart) btnWelcomeStart.onclick = () => showNewGameModal();
 btnLearnToPlay.onclick = () => {
     learnToPlayModal.classList.add('active');
 };

@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.4.17"></script>
+    <script src="src/js/core/silent-logging.js?v=1.4.19"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -190,26 +190,16 @@
         ">A Roguelike Card Game</p>
         <!-- Menu Buttons Container -->
         <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 400px; margin-bottom: 20px;">
-            <button id="btnWelcomeStart" aria-label="Start a new quest" role="button" style="
-                font-family: 'Cinzel', serif;
-                font-size: clamp(0.9em, 2.3vw, 1.05em);
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.1em;
-                padding: 14px 22px;
-                background: linear-gradient(180deg, #ffd700 0%, #c9a961 100%);
-                border: 2px solid #d4af37;
-                box-shadow: 
-                    0 0 0 1px #8b7355,
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                    inset 0 -1px 0 rgba(0, 0, 0, 0.5),
-                    0 4px 12px rgba(0, 0, 0, 0.6);
-                color: #1a1410;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
-            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.3), 0 6px 16px rgba(0,0,0,0.8)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 0 0 1px #8b7355, inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -1px 0 rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.6)'"><span style="font-size: 1.2em;">⚔️</span> Start Quest</button>
-            
+            <!-- Two game modes, each explained -->
+            <button id="btnStartClassic" class="mode-entry mode-entry-classic" aria-label="Play Classic mode" role="button">
+                <span class="mode-entry-title">⚔️ Classic</span>
+                <span class="mode-entry-desc">Clear the whole dungeon with a single deck — pure Scoundrel.</span>
+            </button>
+            <button id="btnStartAdventure" class="mode-entry mode-entry-adventure" aria-label="Play Adventure mode" role="button">
+                <span class="mode-entry-title">🗺️ Adventure</span>
+                <span class="mode-entry-desc">A branching map, an illustrated deck, and your hero's own tale.</span>
+            </button>
+
             <button id="btnLearnToPlay" class="menu-btn-secondary" aria-label="Learn how to play the game" role="button"><span style="font-size: 1.1em;">📚</span> Learn to Play</button>
             
             <button id="btnWelcomeLeaderboard" class="menu-btn-secondary" aria-label="View hall of fame leaderboard" role="button"><span style="font-size: 1.1em;">🏆</span> Hall of Fame</button>
@@ -606,7 +596,7 @@
     <div class="modal-overlay" id="newGameModal">
         <div class="modal-content" style="max-width: 600px !important; max-height: 90vh; overflow-y: auto;">
             <button class="modal-close-btn" onclick="document.getElementById('newGameModal').classList.remove('active');">✕</button>
-            <h2>✨ New Game</h2>
+            <h2 id="newGameTitle">✨ New Game</h2>
             <div class="form-group">
                 <label for="playerNameInput">👤 Player Name (3-10 characters) *</label>
                 <input type="text" id="playerNameInput" placeholder="Enter your name" minlength="3" maxlength="10" required>
@@ -636,19 +626,16 @@
                     <br>• <strong>🟡 Normal:</strong> Balanced (30%)
                     <br>• <strong>🔴 Hard:</strong> Less gold & events (20%)
                     <br><br><strong>↩️ Undo:</strong> Available on Easy & Normal only
-                    <br><br><strong>👹 Boss Battles:</strong> 2 Minibosses (room 15 & 25) + Final Boss!
+                    <br><br><strong>👹 Boss Battles:</strong> <span id="bossBattlesInfo">2 Minibosses (room 15 & 25) + Final Boss!</span>
                     <br><br><strong>Higher difficulty = Bigger score multiplier!</strong>
                 </div>
             </div>
-            <div class="form-group">
-                <label>🎴 Card Mode</label>
+            <!-- Mode is chosen on the main menu; this stays as the source of truth
+                 for startGame but is hidden in the modal to avoid duplication. -->
+            <div class="form-group" id="cardModeGroup" style="display: none;">
                 <div class="difficulty-selector" id="modeSelector">
-                    <button class="difficulty-btn mode-btn selected" data-mode="classic">
-                        🃏 Classic<br><small>Original card faces</small>
-                    </button>
-                    <button class="difficulty-btn mode-btn" data-mode="adventure">
-                        🖼️ Adventure<br><small>Illustrated deck</small>
-                    </button>
+                    <button class="difficulty-btn mode-btn selected" data-mode="classic">Classic</button>
+                    <button class="difficulty-btn mode-btn" data-mode="adventure">Adventure</button>
                 </div>
             </div>
             <div class="modal-controls">
@@ -1502,43 +1489,43 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.4.17"></script>
+<script src="src/js/core/error-handler.js?v=1.4.19"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.4.17" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.4.19" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.4.17" defer></script>
-<script src="src/js/utils/helpers.js?v=1.4.17" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.4.17" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.4.17" defer></script>
-<script src="src/js/systems/achievements.js?v=1.4.17" defer></script>
-<script src="src/js/data/game-data.js?v=1.4.17" defer></script>
-<script src="src/js/systems/stats.js?v=1.4.17" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.4.17" defer></script>
-<script src="src/js/core/audio-context.js?v=1.4.17" defer></script>
-<script src="src/js/systems/music.js?v=1.4.17" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.4.19" defer></script>
+<script src="src/js/utils/helpers.js?v=1.4.19" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.4.19" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.4.19" defer></script>
+<script src="src/js/systems/achievements.js?v=1.4.19" defer></script>
+<script src="src/js/data/game-data.js?v=1.4.19" defer></script>
+<script src="src/js/systems/stats.js?v=1.4.19" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.4.19" defer></script>
+<script src="src/js/core/audio-context.js?v=1.4.19" defer></script>
+<script src="src/js/systems/music.js?v=1.4.19" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async></script>
-<script src="src/js/init-emailjs.js?v=1.4.17" defer></script>
-<script src="src/js/firebase-ready.js?v=1.4.17" defer></script>
+<script src="src/js/init-emailjs.js?v=1.4.19" defer></script>
+<script src="src/js/firebase-ready.js?v=1.4.19" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.4.17" defer></script>
+<script type="module" src="src/js/game.js?v=1.4.19" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.4.17" defer></script>
+<script src="src/js/systems/codex.js?v=1.4.19" defer></script>
 
 <!-- ADVENTURE MAP (module; exposes window.AdventureMap) -->
-<script type="module" src="src/js/modules/adventure-map.js?v=1.4.17" defer></script>
+<script type="module" src="src/js/modules/adventure-map.js?v=1.4.19" defer></script>
 <!-- ADVENTURE RUN orchestrator (classic; exposes window.AdventureRun) -->
-<script src="src/js/modules/adventure-run.js?v=1.4.17" defer></script>
+<script src="src/js/modules/adventure-run.js?v=1.4.19" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.4.17" defer></script>
+<script src="src/js/register-sw.js?v=1.4.19" defer></script>
 
 </body>
 </html>
