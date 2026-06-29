@@ -95,21 +95,23 @@ export const DIFFICULTY = {
 // EVENTS & RANDOM
 // ============================================
 export const EVENT_CONFIG = {
-    /** Base event chance (percentage) */
-    BASE_CHANCE: 0.15,
-    /** Easy mode event chance reduction */
-    EASY_REDUCTION: 0.05,
-    /** Hard mode event chance increase */
-    HARD_INCREASE: 0.05,
     /** Compass relic event chance bonus */
     COMPASS_BONUS: 0.10,
     /** Event trigger delay (ms) */
     TRIGGER_DELAY: 800,
-    /** Event chance by difficulty */
-    CHANCE_EASY: 0.40,
-    CHANCE_NORMAL: 0.30,
-    CHANCE_HARD: 0.20,
-    CHANCE_ENDLESS: 0.25,
+    /**
+     * Event chance per room, by difficulty. Rebalanced 2026-06: the curve was
+     * inverted (Easy 0.40 was the highest of all), so Easy fired the most
+     * events — "muitos eventos seguidos". Now harder = more events.
+     */
+    CHANCE_EASY: 0.20,
+    CHANCE_NORMAL: 0.25,
+    CHANCE_HARD: 0.30,
+    CHANCE_ENDLESS: 0.30,
+    /** Hard ceiling on event chance after additive bonuses stack
+     *  (Dancer +0.15, eventLuck +0.50, Compass +0.10), so unlocks/relics
+     *  can't saturate a difficulty to a near-guaranteed event every room. */
+    CHANCE_CAP: 0.60,
     /** Dancer event chance bonus */
     DANCER_BONUS: 0.15
 };

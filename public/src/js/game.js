@@ -1803,7 +1803,11 @@ function checkGameState() {
         if (game.relics.some(r => r.id === 'compass')) {
             eventChance += 0.10;
         }
-        
+
+        // Cap so stacked bonuses (Dancer/eventLuck/Compass) can't saturate a
+        // room to a near-guaranteed event (was reaching ~1.15 on Easy).
+        eventChance = Math.min(eventChance, EVENT_CONFIG.CHANCE_CAP);
+
         setTimeout(() => {
             if (!game.gameOver && !game.eventTriggeredThisRoom && Math.random() < eventChance) {
                 triggerRandomEvent();
