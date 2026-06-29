@@ -1136,7 +1136,7 @@ const IN_GAME_TUTORIAL_STEPS = [
     {
         id: 'held_card',
         title: '✋ Held Cards (Unique Mechanic!)',
-        text: 'Right-click a card to HOLD it! This is a unique mechanic in Dungeon Scoundrel.\n\nHeld cards are saved for later and won\'t clutter your room. Perfect for saving strong weapons or potions for when you really need them!',
+        text: 'Right-click (or long-press on touch) a card to HOLD it! This is a unique mechanic in Dungeon Scoundrel.\n\nHeld cards are saved for later and won\'t clutter your room. Perfect for saving strong weapons or potions for when you really need them!',
         highlight: '#holdAreaContainer',
         position: 'left',
         buttonText: 'Great Tip!'
@@ -2903,7 +2903,7 @@ function updateUI() {
             }
         }
     } else {
-        const emptyText = maxHold > 1 ? `Right-click to hold (0/${maxHold})` : 'Right-click to hold';
+        const emptyText = maxHold > 1 ? `Right-click / long-press to hold (0/${maxHold})` : 'Right-click / long-press to hold';
         holdAreaContainer.innerHTML = `<div class="empty-slot" style="font-size: 0.8em;">${emptyText}</div>`;
     }
     
@@ -2956,9 +2956,12 @@ function updateUI() {
                 cardEl.classList.add('preview-safe');
             }
             
-            // Click events
+            // Click / tap to play; right-click or touch long-press to HOLD
+            let holdTimer = null;
+            let didLongPress = false;
             cardEl.onclick = (e) => {
                 e.stopPropagation();
+                if (didLongPress) { didLongPress = false; return; } // long-press already held it
                 playSound('cardFlip');
                 handleCardClick(card, index);
             };
@@ -2967,7 +2970,23 @@ function updateUI() {
                 e.stopPropagation();
                 holdCard(card, index);
             };
-            
+            // Touch long-press = hold (Hold was previously unusable on touch devices)
+            const cancelHold = () => { if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; } };
+            cardEl.addEventListener('touchstart', () => {
+                didLongPress = false;
+                holdTimer = setTimeout(() => {
+                    didLongPress = true;
+                    if (navigator.vibrate) navigator.vibrate(30);
+                    holdCard(card, index);
+                }, 450);
+            }, { passive: true });
+            cardEl.addEventListener('touchend', (e) => {
+                cancelHold();
+                if (didLongPress) e.preventDefault(); // suppress the synthetic click after a hold
+            }, { passive: false });
+            cardEl.addEventListener('touchmove', cancelHold, { passive: true });
+            cardEl.addEventListener('touchcancel', cancelHold, { passive: true });
+
             bottomBar.appendChild(cardEl);
         });
     } else if (!game.gameOver) {
