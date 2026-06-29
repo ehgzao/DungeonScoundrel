@@ -645,27 +645,27 @@ const tutorialSteps = [
                     </p>
                     
                     <div style="display: grid; gap: 12px; margin: 20px 0;">
-                        <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>Space</strong> or <strong>D</strong></span>
                             <span style="color: #ddd;">→ Draw Room</span>
                         </div>
                         
-                        <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>A</strong></span>
                             <span style="color: #ddd;">→ Avoid Room</span>
                         </div>
                         
-                        <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>Q</strong></span>
                             <span style="color: #ddd;">→ Use Class Ability</span>
                         </div>
                         
-                        <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>U</strong></span>
                             <span style="color: #ddd;">→ Undo Last Move</span>
                         </div>
                         
-                        <div style="padding: 12px 20px; background: rgba(102, 126, 234, 0.15); border-left: 4px solid #667eea; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>S</strong></span>
                             <span style="color: #ddd;">→ Open Shop</span>
                         </div>
@@ -787,7 +787,7 @@ function startInteractiveTutorial() {
             // Potion Card (7♥️)
             const potionCard = document.createElement('div');
             potionCard.className = 'card potion';
-            potionCard.style.cssText = 'background: linear-gradient(135deg, #6bcf7f 0%, #4ecdc4 100%); border: 3px solid #6bcf7f; box-shadow: 0 4px 12px rgba(107, 207, 127, 0.4); pointer-events: none; min-width: 100px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; position: relative;';
+            potionCard.style.cssText = 'background: linear-gradient(135deg, #6bcf7f 0%, #4a6b4a 100%); border: 3px solid #6bcf7f; box-shadow: 0 4px 12px rgba(107, 207, 127, 0.4); pointer-events: none; min-width: 100px; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; position: relative;';
             potionCard.innerHTML = '<div style="font-size: 2.5em; color: #fff; font-weight: bold;">7</div><div style="font-size: 2em; color: #ff6b6b;">♥️</div>';
             cardsContainer.appendChild(potionCard);
             

@@ -352,7 +352,7 @@ function sanitizePlayerName(input) {
 // Clear error on input
 playerNameInput.oninput = () => {
     nameError.style.display = 'none';
-    playerNameInput.style.borderColor = '#667eea';
+    playerNameInput.style.borderColor = '#c9a961';
 };
 
 btnStartGameModal.onclick = () => {
@@ -382,7 +382,7 @@ btnStartGameModal.onclick = () => {
 btnCancelStart.onclick = () => {
     newGameModal.classList.remove('active');
     nameError.style.display = 'none';
-    playerNameInput.style.borderColor = '#667eea';
+    playerNameInput.style.borderColor = '#c9a961';
 };
 
 // ============================================
@@ -1717,7 +1717,7 @@ function checkGameState() {
         // Victory particles!
         createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffd700', UI.ROOM_CLEAR_PARTICLES);
         setTimeout(() => createParticles(window.innerWidth / 2 + 100, window.innerHeight / 2, '#6bcf7f', UI.SECONDARY_PARTICLES), TIMING.PARTICLE_DELAY_1);
-        setTimeout(() => createParticles(window.innerWidth / 2 - 100, window.innerHeight / 2, '#4ecdc4', UI.SECONDARY_PARTICLES), TIMING.PARTICLE_DELAY_2);
+        setTimeout(() => createParticles(window.innerWidth / 2 - 100, window.innerHeight / 2, '#c9a961', UI.SECONDARY_PARTICLES), TIMING.PARTICLE_DELAY_2);
         
         // Room Clear Relics (optimized single iteration)
         let goldPerRoom = 0;
@@ -2004,7 +2004,7 @@ function endGame(reason, gaveUp = false) {
             setTimeout(() => {
                 const x = window.innerWidth / 2 + (Math.random() - 0.5) * 400;
                 const y = window.innerHeight / 2 + (Math.random() - 0.5) * 300;
-                const colors = ['#ffd700', '#6bcf7f', '#4ecdc4', '#ff6b6b', '#ffd93d'];
+                const colors = ['#ffd700', '#6bcf7f', '#c9a961', '#ff6b6b', '#ffd93d'];
                 createParticles(x, y, colors[i % colors.length], 50);
             }, i * 200);
         }
@@ -2312,7 +2312,7 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                     createParticles(btn.offsetLeft + btn.offsetWidth/2, btn.offsetTop, '#ffd700', 30);
                 } else {
                     btn.textContent = '✅ Score Submitted!';
-                    btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
+                    btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #c9a961 100%)';
                 }
                 btn.disabled = true; // Prevent re-submission
                 hapticFeedback('success');
@@ -2345,7 +2345,7 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                             playSound('victory');
                         } else {
                             btn.textContent = '✅ Score Submitted!';
-                            btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #4ecdc4 100%)';
+                            btn.style.background = 'linear-gradient(180deg, #6bcf7f 0%, #c9a961 100%)';
                         }
                         btn.disabled = true;
                         hapticFeedback('success');

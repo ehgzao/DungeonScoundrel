@@ -10,14 +10,14 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: linear-gradient(180deg, #1a1410 0%, #0d0a08 100%);
+    background: linear-gradient(180deg, var(--dungeon-void) 0%, #0d0a08 100%);
     border: 1px solid rgba(90, 74, 56, 0.5);
     border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #c9a961 0%, #a68948 100%);
-    border: 2px solid #5a4a38;
+    background: linear-gradient(180deg, var(--gold-treasure) 0%, var(--gold-dark) 100%);
+    border: 2px solid var(--border);
     border-radius: 6px;
     box-shadow: 
         inset 0 1px 0 rgba(255, 255, 255, 0.2),
@@ -25,7 +25,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #d4af37 0%, #c9a961 100%);
+    background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold-treasure) 100%);
     box-shadow: 
         inset 0 1px 0 rgba(255, 255, 255, 0.3),
         0 0 12px rgba(212, 175, 55, 0.5),
@@ -33,13 +33,13 @@
 }
 
 ::-webkit-scrollbar-thumb:active {
-    background: linear-gradient(180deg, #a68948 0%, #8b7239 100%);
+    background: linear-gradient(180deg, var(--gold-dark) 0%, #8b7239 100%);
 }
 
 /* === FIREFOX === */
 * {
     scrollbar-width: thin;
-    scrollbar-color: #c9a961 #1a1410;
+    scrollbar-color: var(--gold-treasure) var(--dungeon-void);
 }
 
 /* === MODAL SCROLLBARS (More visible) === */
@@ -49,11 +49,11 @@
 
 .modal-content::-webkit-scrollbar-track {
     background: #0d0a08;
-    border: 2px solid #5a4a38;
+    border: 2px solid var(--border);
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #ffd700 0%, #c9a961 100%);
+    background: linear-gradient(180deg, var(--gold-hi) 0%, var(--gold-treasure) 100%);
     border: 2px solid #8b7239;
     box-shadow: 
         inset 0 1px 0 rgba(255, 255, 255, 0.3),
@@ -61,7 +61,7 @@
 }
 
 .modal-content::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #ffed4e 0%, #ffd700 100%);
+    background: linear-gradient(180deg, #ffed4e 0%, var(--gold-hi) 100%);
     box-shadow: 
         inset 0 1px 0 rgba(255, 255, 255, 0.4),
         0 0 20px rgba(255, 215, 0, 0.6);
@@ -75,7 +75,7 @@
 
 .game-wrapper::-webkit-scrollbar-thumb,
 #gameWrapper::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #c9a961 0%, #a68948 100%);
+    background: linear-gradient(180deg, var(--gold-treasure) 0%, var(--gold-dark) 100%);
     border-radius: 5px;
 }
 
@@ -87,13 +87,13 @@
 
 #relicsGrid::-webkit-scrollbar-thumb,
 #upgradesGrid::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #6bcf7f 0%, #4ea65e 100%);
+    background: linear-gradient(180deg, var(--herb-heal) 0%, #4ea65e 100%);
     border: 2px solid #3d8049;
 }
 
 #relicsGrid::-webkit-scrollbar-thumb:hover,
 #upgradesGrid::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #7fdf8f 0%, #6bcf7f 100%);
+    background: linear-gradient(180deg, #7fdf8f 0%, var(--herb-heal) 100%);
     box-shadow: 0 0 10px rgba(107, 207, 127, 0.5);
 }
 
@@ -103,12 +103,12 @@
 }
 
 #leaderboardList::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #ffd700 0%, #c9a961 100%);
+    background: linear-gradient(180deg, var(--gold-hi) 0%, var(--gold-treasure) 100%);
     border-radius: 5px;
 }
 
 #leaderboardList::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #ffed4e 0%, #ffd700 100%);
+    background: linear-gradient(180deg, #ffed4e 0%, var(--gold-hi) 100%);
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
@@ -118,12 +118,12 @@
 }
 
 #shopContent::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #4ecdc4 0%, #3da89f 100%);
+    background: linear-gradient(180deg, var(--gold-treasure) 0%, var(--gold-dark) 100%);
     border: 2px solid #2d7a73;
 }
 
 #shopContent::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #5eddd4 0%, #4ecdc4 100%);
+    background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold-treasure) 100%);
     box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
 }
 

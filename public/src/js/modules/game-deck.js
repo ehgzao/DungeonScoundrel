@@ -33,7 +33,7 @@ export const specialCards = [
         effect: () => { 
             game.dodgeActive = true; 
             window.showMessage('🛡️ Dodge active!', 'success'); 
-            window.createParticles(window.innerWidth / 2, window.innerHeight / 2, '#4ecdc4', 20); 
+            window.createParticles(window.innerWidth / 2, window.innerHeight / 2, '#c9a961', 20); 
         } 
     },
     { 

@@ -327,7 +327,7 @@ function useRogueAbility() {
     
     showMessage('🔪 Shadow Strike activated! Next kill: 2x damage, combo safe!', 'success');
     playSound('special');
-    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#667eea', 40);
+    createParticles(window.innerWidth / 2, window.innerHeight / 2, '#c9a961', 40);
     updateUI();
 }
 
@@ -473,7 +473,7 @@ function showPurificationModal(monster, location, callback) {
                 <button class="btn btn-primary" id="btnPurifyRemove" style="background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
                     🔥 Remove Forever
                 </button>
-                <button class="btn btn-primary" id="btnPurifyTransform" style="background: linear-gradient(135deg, #6bcf7f, #4ecdc4);">
+                <button class="btn btn-primary" id="btnPurifyTransform" style="background: linear-gradient(135deg, #6bcf7f, #c9a961);">
                     💚 Transform to Potion
                 </button>
             </div>

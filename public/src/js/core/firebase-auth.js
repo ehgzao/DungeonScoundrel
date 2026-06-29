@@ -247,8 +247,8 @@ try {
                 overlay.className = 'modal-overlay active';
                 overlay.style.zIndex = '10000';
                 overlay.innerHTML = `
-                    <div class="modal-content" style="max-width: 500px; border: 3px solid #4ecdc4;">
-                        <h2 style="color: #4ecdc4; margin-top: 0;">☁️ Cloud Save Found</h2>
+                    <div class="modal-content" style="max-width: 500px; border: 3px solid #c9a961;">
+                        <h2 style="color: #c9a961; margin-top: 0;">☁️ Cloud Save Found</h2>
                         <p style="color: #ddd; line-height: 1.6;">
                             A saved game was found in the cloud.<br>
                             <strong>Last saved:</strong> ${new Date(lastSaved).toLocaleString()}
@@ -257,7 +257,7 @@ try {
                             Loading this will replace your current local progress.
                         </p>
                         <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
-                            <button class="close-modal-btn" id="btnLoadCloud" style="background: linear-gradient(135deg, #4ecdc4, #2fb3b1); border: none; color: #102015;">
+                            <button class="close-modal-btn" id="btnLoadCloud" style="background: linear-gradient(135deg, #c9a961, #a68948); border: none; color: #102015;">
                                 Load Cloud Save
                             </button>
                             <button class="close-modal-btn" id="btnKeepLocal">
@@ -318,7 +318,7 @@ try {
                         <h2 style="margin: 0 0 5px 0;">${window.escapeHtml(user.displayName || 'Player')}</h2>
                         <p style="color: #aaa; font-size: 0.9em; margin: 0 0 20px 0;">${window.escapeHtml(user.email)}</p>
                         
-                        <button class="close-modal-btn" id="btnSaveToCloud" style="width: 100%; margin-bottom: 10px; background: linear-gradient(135deg, #4ecdc4, #2fb3b1); border: none; color: #102015;">
+                        <button class="close-modal-btn" id="btnSaveToCloud" style="width: 100%; margin-bottom: 10px; background: linear-gradient(135deg, #c9a961, #a68948); border: none; color: #102015;">
                             ☁️ Save to Cloud
                         </button>
                         <button class="close-modal-btn" id="btnSignOut" style="width: 100%; background: linear-gradient(135deg, #ff6b6b, #ee5a52); border: none; color: #fff;">
