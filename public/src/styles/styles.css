@@ -1078,6 +1078,11 @@
             text-shadow: 0 1px 3px #000;
         }
 
+        /* Adventure event / cursed-chest choice modal */
+        .adv-choices { display: flex; flex-direction: column; gap: 10px; margin: 16px 0 4px; }
+        .adv-choices .adv-choice-btn { width: 100%; line-height: 1.25; }
+        .adv-choices .adv-choice-btn small { opacity: 0.8; font-weight: 400; }
+
         /* Adventure map screen */
         .adv-act-head { text-align: center; margin: 18px 0 8px; color: var(--gold-bright, #d4af37); font-family: 'Cinzel', serif; }
         .adv-act-head span { display: block; font-weight: 700; letter-spacing: 1px; }
