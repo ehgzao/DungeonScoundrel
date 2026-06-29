@@ -124,7 +124,7 @@
 
 #shopContent::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold-treasure) 100%);
-    box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+    box-shadow: 0 0 10px rgba(201, 169, 97, 0.5);
 }
 
 /* === ALWAYS SHOW SCROLLBAR (Important for MacBook) === */

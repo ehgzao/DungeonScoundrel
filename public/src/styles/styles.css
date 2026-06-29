@@ -446,9 +446,9 @@
         }
 
         .difficulty-tab.active {
-            background: rgba(102, 126, 234, 0.4);
+            background: rgba(201, 169, 97, 0.4);
             border-color: var(--gold-treasure);
-            box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+            box-shadow: 0 0 15px rgba(201, 169, 97, 0.5);
         }
 
         .modal-controls {
@@ -473,7 +473,13 @@
             flex: 1;
             position: relative;
         }
-        
+
+        /* Tactile press: button sinks down to meet its drop-shadow */
+        .btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 0 0 var(--stone-warm), 0 2px 6px rgba(0, 0, 0, 0.6);
+        }
+
         /* Standard Buttons - Medieval Style */
         .btn-primary {
             background: linear-gradient(135deg, var(--stone-light) 0%, #a89078 50%, var(--stone-light) 100%);
@@ -796,7 +802,7 @@
         }
         .btn-shop:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
+            box-shadow: 0 5px 15px rgba(201, 169, 97, 0.4);
         }
 
         /* CENTER STAGE (Weapon, Messages, Controls) */
@@ -831,7 +837,7 @@
             animation: slideDown 0.5s ease;
             box-shadow: 0 5px 20px rgba(0,0,0,0.4);
         }
-        .message.info { background: rgba(78, 205, 196, 0.3); border: 2px solid var(--gold-treasure); }
+        .message.info { background: rgba(201, 169, 97, 0.3); border: 2px solid var(--gold-treasure); }
         .message.warning { background: rgba(255, 217, 61, 0.3); border: 2px solid var(--warning); }
         .message.danger { background: rgba(255, 107, 107, 0.3); border: 2px solid var(--blood-warning); }
         .message.success { background: rgba(107, 207, 127, 0.3); border: 2px solid var(--herb-heal); }
@@ -1026,7 +1032,16 @@
             pointer-events: none;
             border-radius: 4px;
         }
-        
+
+        /* Deal-in flip — applied only to freshly drawn room cards (matches the cardFlip SFX) */
+        .card.card-deal {
+            animation: cardDealFlip 0.45s ease;
+        }
+        @keyframes cardDealFlip {
+            0%   { transform: perspective(600px) rotateY(90deg); opacity: 0; }
+            100% { transform: perspective(600px) rotateY(0deg); opacity: 1; }
+        }
+
         /* Cards in bottom bar (hand) */
         .bottom-bar .card:hover {
             transform: translateY(-15px) scale(1.1);
@@ -1042,7 +1057,7 @@
         /* Cards elsewhere (equip, hold) */
         .center-stage .card:hover, .right-sidebar .card:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 30px rgba(201, 169, 97, 0.4);
         }
 
         .card-value {
@@ -1307,7 +1322,7 @@
         .item-description { color: #aaa; font-size: 0.9em; margin-bottom: 5px; }
         .item-price { color: var(--gold-treasure); font-weight: bold; font-size: 1.1em; }
         .buy-btn { background: linear-gradient(135deg, var(--gold-treasure) 0%, var(--gold-dark) 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
-        .buy-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4); }
+        .buy-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(201, 169, 97, 0.4); }
         .buy-btn:disabled { background: #555; cursor: not-allowed; transform: none; }
         .event-choice { background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 10px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; }
         .event-choice:hover { border-color: var(--gold-hi); background: rgba(255, 215, 0, 0.2); transform: translateX(10px); }
@@ -2195,13 +2210,13 @@
             0%, 100% {
                 box-shadow: 0 0 25px rgba(255, 215, 0, 0.4),
                            0 0 50px rgba(212, 175, 55, 0.3),
-                           0 0 75px rgba(78, 205, 196, 0.2),
+                           0 0 75px rgba(201, 169, 97, 0.2),
                            inset 0 0 25px rgba(255, 215, 0, 0.1);
             }
             50% {
                 box-shadow: 0 0 40px rgba(255, 215, 0, 0.6),
                            0 0 80px rgba(212, 175, 55, 0.5),
-                           0 0 120px rgba(78, 205, 196, 0.3),
+                           0 0 120px rgba(201, 169, 97, 0.3),
                            inset 0 0 40px rgba(255, 215, 0, 0.2);
             }
         }

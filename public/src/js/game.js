@@ -1628,7 +1628,10 @@ function drawRoom() {
         }
         
         game.lastActionWasAvoid = false;
-        
+
+        // Mark freshly drawn cards so they play the deal-in flip (once) on render
+        game.room.forEach(c => { c._justDealt = true; });
+
         playSound('cardDraw');
         addLog(`Entered dungeon with ${game.room.length} cards`, 'info');
         showMessage(`You entered a dungeon with ${game.room.length} cards!`, 'info');
@@ -2433,7 +2436,7 @@ function showEncouragingModal(isFullVersion = true, onCloseCallback = null) {
                     <p style="font-size: 1em; color: #6bcf7f; margin-top: 20px; text-align: center;">Each death makes you stronger! Keep trying!</p>
                 </div>
                 
-                <div style="text-align: center; padding: 20px 15px; margin: 15px 0; background: linear-gradient(135deg, rgba(78, 205, 196, 0.15) 0%, rgba(107, 207, 127, 0.15) 100%); border-radius: 12px; border: 2px solid rgba(212, 175, 55, 0.3); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);">
+                <div style="text-align: center; padding: 20px 15px; margin: 15px 0; background: linear-gradient(135deg, rgba(201, 169, 97, 0.15) 0%, rgba(107, 207, 127, 0.15) 100%); border-radius: 12px; border: 2px solid rgba(212, 175, 55, 0.3); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);">
                     <p style="font-family: 'Cinzel Decorative', 'Cinzel', serif; font-size: 1.3em; font-weight: 700; color: #ffd700; margin: 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.8); letter-spacing: 0.05em; line-height: 1.4;">
                         Dreams never get old
                     </p>
@@ -2467,7 +2470,7 @@ function showEncouragingModal(isFullVersion = true, onCloseCallback = null) {
                         DON'T GIVE UP
                     </h1>
                     
-                    <div style="padding: 35px 25px; margin: 30px 0; background: linear-gradient(135deg, rgba(78, 205, 196, 0.2) 0%, rgba(107, 207, 127, 0.2) 100%); border-radius: 16px; border: 3px solid rgba(212, 175, 55, 0.5); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 215, 0, 0.1);">
+                    <div style="padding: 35px 25px; margin: 30px 0; background: linear-gradient(135deg, rgba(201, 169, 97, 0.2) 0%, rgba(107, 207, 127, 0.2) 100%); border-radius: 16px; border: 3px solid rgba(212, 175, 55, 0.5); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 215, 0, 0.1);">
                         <p style="font-family: 'Cinzel Decorative', 'Cinzel', serif; font-size: 2em; font-weight: 700; color: #ffd700; margin: 0; text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 0 3px 6px rgba(0, 0, 0, 0.9); letter-spacing: 0.06em; line-height: 1.5;">
                             DREAMS NEVER GET OLD
                         </p>
@@ -2982,7 +2985,13 @@ function createCardElement(card) {
     cardEl.className = 'card';
     const type = getCardType(card);
     cardEl.classList.add(type);
-    
+
+    // Play the deal-in flip once, only on freshly drawn cards
+    if (card._justDealt) {
+        cardEl.classList.add('card-deal');
+        delete card._justDealt;
+    }
+
     // Boss special styling
     if (card.isBoss) {
         cardEl.classList.add('boss');
