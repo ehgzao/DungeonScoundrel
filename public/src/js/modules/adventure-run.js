@@ -133,11 +133,24 @@
             };
         },
 
-        _treasure(node) {
-            const gold = 20 + node.tier * 4;
-            if (window.earnGold) window.earnGold(gold); else game.gold += gold;
+        // Relic rarity scales with depth (act 0..2; bosses pass act+1 for rarer).
+        _relicRarity(act) {
+            const r = Math.random();
+            if (act <= 0) return r < 0.7 ? 'common' : 'uncommon';
+            if (act === 1) return r < 0.6 ? 'uncommon' : 'rare';
+            return r < 0.6 ? 'rare' : 'legendary';
+        },
+        _grantRelic(act) {
+            if (window.giveRelicByRarity) window.giveRelicByRarity(AR._relicRarity(act));
             if (window.updateUI) window.updateUI();
-            if (window.showMessage) window.showMessage(`🎁 Treasure! You pocket ${gold} gold.`, 'success');
+        },
+
+        _treasure(node) {
+            const gold = 10 + node.tier * 2;
+            if (window.earnGold) window.earnGold(gold); else game.gold += gold;
+            AR._grantRelic(node.act);
+            if (window.updateUI) window.updateUI();
+            if (window.showMessage) window.showMessage(`🎁 Treasure! A relic and ${gold} gold.`, 'success');
             AR._toMapSoon();
         },
 
@@ -195,6 +208,14 @@
                 game.finalBossDefeated = true;
                 AR._ending();
                 return;
+            }
+            // ADV-5: relic rewards for tougher nodes.
+            if (node && node.type === 'elite') {
+                AR._grantRelic(node.act);
+                if (window.showMessage) window.showMessage('💀 Elite slain — a relic is yours!', 'success');
+            } else if (node && node.type === 'boss') {
+                AR._grantRelic((node.act || 0) + 1);
+                if (window.showMessage) window.showMessage('👹 Boss felled — a powerful relic!', 'success');
             }
             AR._toMapSoon();
         },
