@@ -13,9 +13,9 @@ const getFirebaseGlobals = () => ({
 });
 
 // Escape HTML to prevent stored XSS from shared Firebase leaderboard data.
-// Names (and any field) are written by anonymous clients and rendered via innerHTML.
-// Prefers the shared helper (helpers.js); keeps a local fallback for load-order safety.
-const escapeHtml = (value) => (typeof window.escapeHtml === 'function'
+// Uses the shared window.escapeHtml (helpers.js). Locally named escLB to avoid
+// redeclaring the global `escapeHtml` (both are classic scripts → same scope).
+const escLB = (value) => (typeof window.escapeHtml === 'function'
     ? window.escapeHtml(value)
     : String(value ?? '').replace(/[&<>"']/g, (c) =>
         ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])));
@@ -172,12 +172,12 @@ async function loadLeaderboardForDifficulty(difficulty) {
             <div class="leaderboard-entry">
                 <span class="leaderboard-rank">#${index + 1}</span>
                 <div style="flex: 1;">
-                    <div class="leaderboard-name">${escapeHtml(entry.name || 'Scoundrel')}</div>
+                    <div class="leaderboard-name">${escLB(entry.name || 'Scoundrel')}</div>
                     <div class="leaderboard-details" style="font-size: 0.8em; color: #aaa;">
-                        ${escapeHtml(entry.time)}s | ${escapeHtml(entry.combo)}x Combo | ${escapeHtml(entry.gold)}🪙
+                        ${escLB(entry.time)}s | ${escLB(entry.combo)}x Combo | ${escLB(entry.gold)}🪙
                     </div>
                 </div>
-                <span class="leaderboard-score">${escapeHtml(entry.score)}</span>
+                <span class="leaderboard-score">${escLB(entry.score)}</span>
             </div>
         `).join('');
 
