@@ -1075,6 +1075,7 @@
         .adv-bosslabel { font-size: 0.5em; font-family: 'Cinzel', serif; margin-top: 3px; color: #e8c878; white-space: nowrap; }
         @keyframes advPulse { 0%,100% { box-shadow: 0 0 8px rgba(201,169,97,0.4); } 50% { box-shadow: 0 0 16px rgba(201,169,97,0.9); } }
 
+
         /* Parchment texture overlay on cards */
         .card::after {
             content: '';
