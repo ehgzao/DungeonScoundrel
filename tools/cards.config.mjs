@@ -92,6 +92,69 @@ const POTIONS = {
   10: 'a grand sealed decanter of radiant crimson elixir, gold filigree',
 };
 
+// ============================================
+// RELIC ICONS — small inventory-style art keyed by relic id (see
+// public/src/js/data/game-data.js RELICS). Square, single object, woodcut.
+// ============================================
+const RELIC_ACCENT = { common: '#9a9a9a', uncommon: '#6bbf6b', rare: '#5aa0e0', legendary: '#e0913a' };
+const RELIC_ART = {
+  // common
+  small_shield: ['a small round iron buckler shield', 'common'],
+  bronze_ring: ['a plain bronze ring', 'common'],
+  heal_charm: ['a green heart-shaped charm on a leather cord', 'common'],
+  coin_pouch: ['a small leather coin pouch spilling gold coins', 'common'],
+  lucky_penny: ['a single shining old copper penny', 'common'],
+  leather_boots: ['a pair of worn leather boots', 'common'],
+  bandage: ['a roll of cloth bandage with a single blood spot', 'common'],
+  weak_thorns: ['a coiled length of thorny green bramble', 'common'],
+  compass: ['an old brass compass, lid open', 'common'],
+  dice: ['a pair of carved bone dice', 'common'],
+  feather: ['a single pale grey feather', 'common'],
+  candle: ['a lit wax candle in an iron holder', 'common'],
+  rope: ['a neatly coiled hemp rope', 'common'],
+  stone: ['a smooth grey river stone', 'common'],
+  herb: ['a fresh sprig of green healing herb', 'common'],
+  map: ['a partly unrolled parchment map', 'common'],
+  gloves: ['a pair of worn leather gloves', 'common'],
+  book: ['a thick leather-bound spellbook', 'common'],
+  bell: ['a small brass hand bell', 'common'],
+  key: ['an old iron skeleton key', 'common'],
+  mirror_shard: ['a jagged shard of silvered mirror glass', 'common'],
+  charm: ['a softly glowing golden amulet', 'common'],
+  tooth: ['a large curved monster fang', 'common'],
+  clover: ['a four-leaf clover', 'common'],
+  lantern: ['a glowing iron storm lantern', 'common'],
+  // uncommon
+  silver_shield: ['a polished round silver shield', 'uncommon'],
+  silver_ring: ['a silver ring set with a small gem', 'uncommon'],
+  healer: ['a green healing amulet glowing softly', 'uncommon'],
+  greedy: ['a small golden idol statue', 'uncommon'],
+  vampire: ['a long curved vampire fang dripping blood', 'uncommon'],
+  meditation: ['a balanced cairn of smooth meditation stones', 'uncommon'],
+  armor: ['a riveted iron breastplate', 'uncommon'],
+  boots: ['a pair of winged speed boots', 'uncommon'],
+  gauntlet: ['a heavy iron power gauntlet, fist clenched', 'uncommon'],
+  necklace: ['a holy beaded prayer necklace with a cross', 'uncommon'],
+  crystal: ['a faceted glowing crystal', 'uncommon'],
+  hourglass: ['an ornate hourglass running red sand', 'uncommon'],
+  magnet: ['a horseshoe magnet drawing in coins', 'uncommon'],
+  ring_fire: ['a ring wreathed in small flames', 'uncommon'],
+  cloak: ['a hooded traveler\'s cloak', 'uncommon'],
+  berserker_ring: ['a dark iron ring set with a blood-red rage gem', 'uncommon'],
+  // rare
+  gold_shield: ['an ornate golden tower shield', 'rare'],
+  blade: ['an elegant slender sword caught mid-spin', 'rare'],
+  lucky: ['a radiant four-leaf clover charm', 'rare'],
+  warrior: ['a thunder gauntlet crackling with lightning', 'rare'],
+  tank: ['a fortress-shaped suit of heavy plate armor', 'rare'],
+  master_smith: ['a blacksmith\'s hammer resting on an anvil', 'rare'],
+  crown: ['a jeweled golden crown', 'rare'],
+  orb: ['a glowing magic crystal orb on a small stand', 'rare'],
+  // legendary
+  phoenix: ['a burning phoenix feather trailing embers', 'legendary'],
+  durable_weapons: ['an eternal forge anvil glowing with molten runes', 'legendary'],
+};
+
 function build() {
   const out = [];
   for (const [v, subject] of Object.entries(MONSTERS))
@@ -102,6 +165,8 @@ function build() {
     out.push({ id: `potion_${v}`, type: 'potion', value: +v, accent: ACCENT.potion, subject });
   for (const [key, subject] of Object.entries(BOSSES))
     out.push({ id: `boss_${key}`, type: 'boss', accent: ACCENT.boss, subject });
+  for (const [id, [subject, rarity]] of Object.entries(RELIC_ART))
+    out.push({ id: `relic_${id}`, type: 'relic', rarity, accent: RELIC_ACCENT[rarity], subject });
   return out;
 }
 
@@ -115,9 +180,20 @@ const compFor = (card) => {
   return COMPOSITIONS[h % COMPOSITIONS.length];
 };
 
+// Relic icons: a single object centred in a square, simple dark niche — reads
+// at small inventory size, same palette/ink as the deck.
+const RELIC_STYLE =
+  'hand-inked woodcut game inventory icon, a single centered object, ' +
+  'set in a shallow dark stone niche with soft candlelight from below, ' +
+  'muted earth/stone tones, painterly yet graphic, plain dark background, ' +
+  'no text, no lettering, no numbers, no border';
+
 // Bosses keep an imposing full-frame treatment; deck cards get a per-type frame
-// and a per-card composition (CARD-3 variety).
-export const promptFor = (card) =>
-  card.type === 'boss'
-    ? `${STYLE}, ornate gothic arch frame with twin candles, imposing full-frame menacing boss filling the arch, dramatic scale, looming. Subject: ${card.subject}.`
-    : `${STYLE}, ${FRAMES[card.type] || ''}, ${compFor(card)}. Subject: ${card.subject}.`;
+// and a per-card composition (CARD-3 variety); relics are square icons.
+export const promptFor = (card) => {
+  if (card.type === 'boss')
+    return `${STYLE}, ornate gothic arch frame with twin candles, imposing full-frame menacing boss filling the arch, dramatic scale, looming. Subject: ${card.subject}.`;
+  if (card.type === 'relic')
+    return `${RELIC_STYLE}. Subject: ${card.subject}.`;
+  return `${STYLE}, ${FRAMES[card.type] || ''}, ${compFor(card)}. Subject: ${card.subject}.`;
+};

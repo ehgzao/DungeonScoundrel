@@ -766,7 +766,18 @@
             padding: 10px;
             border-radius: 8px;
             border-left: 3px solid var(--gold-hi);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+        .relic-icon {
+            width: 42px; height: 42px; flex: 0 0 42px;
+            border-radius: 6px; object-fit: cover;
+            border: 1px solid var(--gold-dark, #5a4a38);
+            background: #140f0a;
+        }
+        .relic-emoji { font-size: 1.7em; flex: 0 0 42px; text-align: center; line-height: 42px; }
+        .relic-text { flex: 1; min-width: 0; }
         .relic-name {
             color: var(--gold-hi);
             font-weight: bold;

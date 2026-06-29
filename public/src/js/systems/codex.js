@@ -69,6 +69,7 @@ function populateCodexRelics(rarityFilter = 'all') {
     if (!glossary) return;
     
     let filteredRelics = rarityFilter === 'all' ? RELICS : RELICS.filter(r => r.rarity === rarityFilter);
+    const ver = window.ADV_ART_VER || '1'; // illustrated relic icon cache-bust
     const rarityOrder = ['common', 'uncommon', 'rare', 'legendary'];
     const rarityColors = {common: {bg: 'rgba(170, 170, 170, 0.1)', border: '#aaa', emoji: '⚫', name: 'Common'}, uncommon: {bg: 'rgba(107, 207, 127, 0.1)', border: '#6bcf7f', emoji: '💚', name: 'Uncommon'}, rare: {bg: 'rgba(74, 158, 255, 0.1)', border: '#4a9eff', emoji: '💎', name: 'Rare'}, legendary: {bg: 'rgba(255, 152, 0, 0.1)', border: '#ff9800', emoji: '🔥', name: 'Legendary'}};
     let html = '';
@@ -82,7 +83,7 @@ function populateCodexRelics(rarityFilter = 'all') {
                 const nameParts = relic.name.split(' ');
                 const icon = nameParts[0];
                 const name = nameParts.slice(1).join(' ');
-                html += `<div style="background: ${colors.bg}; border: 2px solid ${colors.border}; border-radius: 8px; padding: 12px 15px; transition: all 0.2s ease;" onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateX(5px)'" onmouseout="this.style.borderColor='${colors.border}'; this.style.transform='translateX(0)'"><div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;"><span style="font-size: 1.3em;">${icon}</span><span style="color: #d4af37; font-weight: bold; font-size: 1.05em; font-family: 'Cinzel', serif;">${name}</span></div><p style="color: #ddd; font-size: 0.9em; margin: 0; line-height: 1.5;">${relic.description}</p></div>`;
+                html += `<div style="background: ${colors.bg}; border: 2px solid ${colors.border}; border-radius: 8px; padding: 12px 15px; transition: all 0.2s ease;" onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateX(5px)'" onmouseout="this.style.borderColor='${colors.border}'; this.style.transform='translateX(0)'"><div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;"><img src="assets/relics/relic_${relic.id}.webp?v=${ver}" alt="" style="width:36px;height:36px;flex:0 0 36px;border-radius:6px;object-fit:cover;border:1px solid #5a4a38;background:#140f0a;" onerror="this.outerHTML='<span style=&quot;font-size:1.3em;&quot;>${icon}</span>'"><span style="color: #d4af37; font-weight: bold; font-size: 1.05em; font-family: 'Cinzel', serif;">${name}</span></div><p style="color: #ddd; font-size: 0.9em; margin: 0; line-height: 1.5;">${relic.description}</p></div>`;
             });
             html += `</div></div>`;
         });
@@ -93,7 +94,7 @@ function populateCodexRelics(rarityFilter = 'all') {
             const nameParts = relic.name.split(' ');
             const icon = nameParts[0];
             const name = nameParts.slice(1).join(' ');
-            html += `<div style="background: ${colors.bg}; border: 2px solid ${colors.border}; border-radius: 8px; padding: 12px 15px; transition: all 0.2s ease;" onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateX(5px)'" onmouseout="this.style.borderColor='${colors.border}'; this.style.transform='translateX(0)'"><div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;"><span style="font-size: 1.3em;">${icon}</span><span style="color: #d4af37; font-weight: bold; font-size: 1.05em; font-family: 'Cinzel', serif;">${name}</span></div><p style="color: #ddd; font-size: 0.9em; margin: 0; line-height: 1.5;">${relic.description}</p></div>`;
+            html += `<div style="background: ${colors.bg}; border: 2px solid ${colors.border}; border-radius: 8px; padding: 12px 15px; transition: all 0.2s ease;" onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateX(5px)'" onmouseout="this.style.borderColor='${colors.border}'; this.style.transform='translateX(0)'"><div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;"><img src="assets/relics/relic_${relic.id}.webp?v=${ver}" alt="" style="width:36px;height:36px;flex:0 0 36px;border-radius:6px;object-fit:cover;border:1px solid #5a4a38;background:#140f0a;" onerror="this.outerHTML='<span style=&quot;font-size:1.3em;&quot;>${icon}</span>'"><span style="color: #d4af37; font-weight: bold; font-size: 1.05em; font-family: 'Cinzel', serif;">${name}</span></div><p style="color: #ddd; font-size: 0.9em; margin: 0; line-height: 1.5;">${relic.description}</p></div>`;
         });
         html += '</div>';
     }
