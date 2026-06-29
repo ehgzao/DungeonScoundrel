@@ -1,0 +1,6 @@
+# Generated art + composed output (regenerable; can be large). Keys must never
+# be committed — they come from env vars, not files.
+art/
+out/
+*.png
+.env

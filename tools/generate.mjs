@@ -1,0 +1,92 @@
+// ============================================
+// CARD ART GENERATOR  (offline / build-time)
+// ============================================
+// Generates the central illustration for each card via OpenAI or Gemini, saving
+// raw PNGs to tools/art/<id>.png. Keys come from env — NEVER commit them and
+// NEVER ship this in the static site.
+//
+//   OPENAI_API_KEY=sk-...     node tools/generate.mjs --provider openai
+//   GEMINI_API_KEY=...        node tools/generate.mjs --provider gemini
+//   node tools/generate.mjs --provider openai --dry-run   # writes prompts only
+//
+// Model ids are overridable (APIs change): OPENAI_IMAGE_MODEL, GEMINI_IMAGE_MODEL.
+// Node 18+ (global fetch). No npm deps.
+
+import { mkdir, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { CARDS, promptFor } from './cards.config.mjs';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const args = Object.fromEntries(
+  process.argv.slice(2).flatMap((a, i, arr) =>
+    a.startsWith('--') ? [[a.slice(2), arr[i + 1]?.startsWith('--') || arr[i + 1] === undefined ? true : arr[i + 1]]] : [])
+);
+const provider = args.provider || 'openai';
+const dryRun = !!args['dry-run'];
+const outDir = join(HERE, args.out || 'art', provider);
+
+const OPENAI_MODEL = process.env.OPENAI_IMAGE_MODEL || 'gpt-image-1';
+const GEMINI_MODEL = process.env.GEMINI_IMAGE_MODEL || 'gemini-2.5-flash-image';
+
+async function genOpenAI(prompt) {
+  const key = process.env.OPENAI_API_KEY;
+  if (!key) throw new Error('OPENAI_API_KEY not set');
+  const res = await fetch('https://api.openai.com/v1/images/generations', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
+    body: JSON.stringify({
+      model: OPENAI_MODEL,
+      prompt,
+      size: '1024x1024',
+      quality: 'medium',
+      background: 'transparent',
+      n: 1,
+    }),
+  });
+  if (!res.ok) throw new Error(`OpenAI ${res.status}: ${await res.text()}`);
+  const json = await res.json();
+  const b64 = json.data?.[0]?.b64_json;
+  if (!b64) throw new Error('OpenAI: no image in response');
+  return Buffer.from(b64, 'base64');
+}
+
+async function genGemini(prompt) {
+  const key = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+  if (!key) throw new Error('GEMINI_API_KEY not set');
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+  });
+  if (!res.ok) throw new Error(`Gemini ${res.status}: ${await res.text()}`);
+  const json = await res.json();
+  const parts = json.candidates?.[0]?.content?.parts || [];
+  const img = parts.find((p) => p.inlineData?.data);
+  if (!img) throw new Error('Gemini: no inlineData image in response (model may not be an image model)');
+  return Buffer.from(img.inlineData.data, 'base64');
+}
+
+const gen = provider === 'gemini' ? genGemini : genOpenAI;
+
+(async () => {
+  await mkdir(outDir, { recursive: true });
+  console.log(`provider=${provider} model=${provider === 'gemini' ? GEMINI_MODEL : OPENAI_MODEL} dryRun=${dryRun}`);
+  for (const card of CARDS) {
+    const prompt = promptFor(card);
+    if (dryRun) {
+      await writeFile(join(outDir, `${card.id}.prompt.txt`), prompt);
+      console.log(`· [dry] ${card.id} -> prompt written`);
+      continue;
+    }
+    try {
+      const buf = await gen(prompt);
+      await writeFile(join(outDir, `${card.id}.png`), buf);
+      console.log(`✓ ${card.id} (${(buf.length / 1024).toFixed(0)}KB)`);
+    } catch (e) {
+      console.error(`✗ ${card.id}: ${e.message}`);
+    }
+  }
+  console.log(`done -> ${outDir}`);
+})().catch((e) => { console.error('FATAL', e); process.exit(1); });
