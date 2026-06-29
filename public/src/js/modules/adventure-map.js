@@ -242,6 +242,33 @@ AdventureMap.renderInto = function (container) {
     });
 };
 
+// Open the map screen for the CURRENT run (does not regenerate).
+AdventureMap.openScreen = function () {
+    if (!this.map) return;
+    let overlay = document.getElementById('adventureMapModal');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'adventureMapModal';
+        overlay.className = 'modal-overlay';
+        overlay.innerHTML = `
+            <div class="modal-content" style="max-width:760px;width:92vw;max-height:90vh;overflow-y:auto;">
+                <h2 style="text-align:center;">🗺️ The Descent</h2>
+                <p id="adventureMapOpening" style="text-align:center;color:#cbb892;font-style:italic;margin-top:-6px;"></p>
+                <div id="adventureMapBody"></div>
+            </div>`;
+        document.body.appendChild(overlay);
+    }
+    const op = overlay.querySelector('#adventureMapOpening');
+    if (op) op.textContent = this.map.adventure.opening;
+    overlay.classList.add('active');
+    this.renderInto(overlay.querySelector('#adventureMapBody'));
+};
+
+AdventureMap.closeScreen = function () {
+    const overlay = document.getElementById('adventureMapModal');
+    if (overlay) overlay.classList.remove('active');
+};
+
 // Self-contained preview overlay (also the basis of the in-game map screen).
 AdventureMap.preview = function (playerClass = 'scoundrel', seed = null) {
     this.start(playerClass, seed);

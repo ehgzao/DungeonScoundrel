@@ -566,6 +566,10 @@ export function startGameWithClass(className) {
     if (typeof window.startGame === 'function') {
         window.startGame();
     }
+    // Adventure mode: hand the run over to the procedural map orchestrator.
+    if (game.mode === 'adventure' && window.AdventureRun) {
+        window.AdventureRun.start();
+    }
 }
 
 // ============================================

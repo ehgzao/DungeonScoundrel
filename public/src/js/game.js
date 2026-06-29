@@ -1535,6 +1535,11 @@ document.head.appendChild(tutorialStyle);
 
 function drawRoom() {
     if (game.dungeon.length === 0) {
+        // Adventure mode: the map controls progression, so just refill the
+        // encounter deck instead of triggering the linear victory/boss.
+        if (game.adventureRun) {
+            game.dungeon = createDeck();
+        } else
         // Endless mode: reload deck instead of ending
         if (game.difficulty === 'endless') {
             // Progressive difficulty scaling
@@ -1566,13 +1571,14 @@ function drawRoom() {
 
     // NEW BOSS SYSTEM: 2 Minibosses (room 15 and 25) + Final Boss mandatory
     const nextRoomNumber = game.stats.roomsCleared + 1;
-    const isMiniboss1 = nextRoomNumber === BOSS.MINIBOSS_1_ROOM;
-    const isMiniboss2 = nextRoomNumber === BOSS.MINIBOSS_2_ROOM;
+    // Adventure mode spawns bosses via map nodes, not at fixed room numbers.
+    const isMiniboss1 = !game.adventureRun && nextRoomNumber === BOSS.MINIBOSS_1_ROOM;
+    const isMiniboss2 = !game.adventureRun && nextRoomNumber === BOSS.MINIBOSS_2_ROOM;
     
-    // Warn player about upcoming miniboss
-    if (nextRoomNumber === 14) {
+    // Warn player about upcoming miniboss (linear mode only)
+    if (!game.adventureRun && nextRoomNumber === 14) {
         showMessage('⚠️ MINIBOSS APPROACHING! Prepare for a tough fight!', 'warning');
-    } else if (nextRoomNumber === 24) {
+    } else if (!game.adventureRun && nextRoomNumber === 24) {
         showMessage('⚠️ FINAL MINIBOSS APPROACHING! Get ready!', 'warning');
     }
     
@@ -1720,7 +1726,15 @@ function checkGameState() {
     const notGameOver = !game.gameOver;
 
     if (roomEmpty && notGameOver) {
-        
+
+        // Adventure mode: a map encounter just cleared — hand control back to the
+        // map orchestrator and skip all linear next-room/victory logic.
+        if (game.adventureRun && window.AdventureRun) {
+            game.potionsUsed = 0;
+            window.AdventureRun.afterEncounterCleared();
+            return;
+        }
+
         game.potionsUsed = 0;
         game.stats.roomsCleared++;
         
@@ -3400,6 +3414,7 @@ if (typeof earnGold !== 'undefined') window.earnGold = earnGold;
 if (typeof giveRandomRelic !== 'undefined') window.giveRandomRelic = giveRandomRelic;
 if (typeof giveRelicByRarity !== 'undefined') window.giveRelicByRarity = giveRelicByRarity;
 if (typeof updateUI !== 'undefined') window.updateUI = updateUI;
+if (typeof drawRoom !== 'undefined') window.drawRoom = drawRoom; // Adventure map encounters
 if (typeof updateRelicsDisplay !== 'undefined') window.updateRelicsDisplay = updateRelicsDisplay;
 if (typeof takeDamage !== 'undefined') window.takeDamage = takeDamage;
 if (typeof resetCombo !== 'undefined') window.resetCombo = resetCombo;
