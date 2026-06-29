@@ -154,13 +154,77 @@
             AR._toMapSoon();
         },
 
+        // ADV-2: a dedicated merchant with deck-building services. Buys/edits hit
+        // the persistent run deck (game.dungeon + discard), so they stick.
         _shop(node) {
-            if (typeof window.openShop === 'function') {
-                window.openShop();
-                AR._observeClose('shopModal');
-            } else {
-                AR._toMapSoon();
+            const act = node.act || 0;
+            AR._merchantAct = act;
+            const prices = { weapon: 12 + act * 4, potion: 12 + act * 4, remove: 18 + act * 4, upgrade: 20 + act * 5, relic: 35 + act * 10 };
+            let overlay = document.getElementById('advMerchant');
+            if (!overlay) { overlay = document.createElement('div'); overlay.id = 'advMerchant'; overlay.className = 'modal-overlay'; overlay.style.zIndex = '10001'; document.body.appendChild(overlay); }
+            overlay.classList.add('active');
+            const render = () => {
+                const g = game.gold || 0;
+                const dis = (c) => (g >= c ? '' : 'disabled');
+                overlay.innerHTML = `
+                    <div class="modal-content" style="max-width:520px;text-align:center;border:2px solid #c9a961;">
+                        <h2 style="font-family:'Cinzel',serif;color:#e8c878;">🏛️ Merchant</h2>
+                        <p style="color:#cbb892;">Gold: <strong style="color:#e8c878;">${g} 🪙</strong></p>
+                        <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0;">
+                            <button class="btn btn-secondary" data-buy="weapon" ${dis(prices.weapon)}>🗡️ Buy a Weapon — ${prices.weapon} 🪙</button>
+                            <button class="btn btn-secondary" data-buy="potion" ${dis(prices.potion)}>🧪 Buy a Potion — ${prices.potion} 🪙</button>
+                            <button class="btn btn-secondary" data-buy="remove" ${dis(prices.remove)}>✂️ Remove a Threat — ${prices.remove} 🪙</button>
+                            <button class="btn btn-secondary" data-buy="upgrade" ${dis(prices.upgrade)}>⬆️ Sharpen a Weapon (+2) — ${prices.upgrade} 🪙</button>
+                            <button class="btn btn-secondary" data-buy="relic" ${dis(prices.relic)}>🔮 Mystery Relic — ${prices.relic} 🪙</button>
+                        </div>
+                        <button class="btn btn-primary" data-buy="leave">Leave</button>
+                    </div>`;
+                overlay.querySelectorAll('button[data-buy]').forEach(btn => {
+                    btn.onclick = () => {
+                        const a = btn.dataset.buy;
+                        if (a === 'leave') { overlay.classList.remove('active'); AR._toMapSoon(); return; }
+                        if (AR._merchantBuy(a, prices[a])) render();
+                    };
+                });
+            };
+            render();
+        },
+
+        // Returns true if a purchase happened (so the merchant re-renders).
+        _merchantBuy(action, cost) {
+            if ((game.gold || 0) < cost) return false;
+            let msg = '';
+            if (action === 'weapon') {
+                const v = 6 + Math.floor(Math.random() * 5);
+                game.dungeon.push({ value: String(v), suit: '♦', numValue: v, suitName: 'diamonds' });
+                msg = `Bought a ${v}♦ weapon — it joins your deck.`;
+            } else if (action === 'potion') {
+                const v = 6 + Math.floor(Math.random() * 5);
+                game.dungeon.push({ value: String(v), suit: '♥', numValue: v, suitName: 'hearts' });
+                msg = `Bought a ${v}♥ potion — it joins your deck.`;
+            } else if (action === 'remove') {
+                const pool = [...(game.dungeon || []), ...(game.discardPile || [])];
+                const worst = pool.filter(c => (c.suitName === 'clubs' || c.suitName === 'spades') && !c.isBoss)
+                    .reduce((m, c) => (!m || c.numValue > m.numValue ? c : m), null);
+                if (!worst) { if (window.showMessage) window.showMessage('No threats left to remove.', 'warning'); return false; }
+                const di = game.dungeon.indexOf(worst);
+                if (di >= 0) game.dungeon.splice(di, 1); else { const pi = game.discardPile.indexOf(worst); if (pi >= 0) game.discardPile.splice(pi, 1); }
+                msg = `Removed a ${worst.numValue}-power monster from your deck.`;
+            } else if (action === 'upgrade') {
+                const pool = [...(game.dungeon || []), ...(game.discardPile || [])];
+                const weapons = pool.filter(c => c.suitName === 'diamonds' && c.numValue < 13);
+                if (!weapons.length) { if (window.showMessage) window.showMessage('No weapon to sharpen.', 'warning'); return false; }
+                const w = weapons[Math.floor(Math.random() * weapons.length)];
+                w.numValue = Math.min(13, w.numValue + 2); w.value = String(w.numValue);
+                msg = `Sharpened a weapon to ${w.numValue}♦.`;
+            } else if (action === 'relic') {
+                AR._grantRelic(AR._merchantAct || 0);
+                msg = 'Acquired a relic.';
             }
+            game.gold -= cost;
+            if (window.updateUI) window.updateUI();
+            if (window.showMessage && msg) window.showMessage('🏛️ ' + msg, 'success');
+            return true;
         },
 
         _event(node) {
