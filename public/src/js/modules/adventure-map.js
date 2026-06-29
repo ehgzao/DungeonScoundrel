@@ -171,6 +171,13 @@ const AdventureMap = {
     },
 };
 
+// Deterministic per-node horizontal jitter (px) to break the grid look.
+AdventureMap._jitter = (id) => {
+    let h = 0;
+    for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    return (h % 33) - 16; // -16..+16
+};
+
 // ============================================
 // RENDER (map screen)
 // ============================================
@@ -235,7 +242,7 @@ AdventureMap.renderInto = function (container) {
             const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
             line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
             line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
-            line.setAttribute('stroke', this.completed.has(n.id) ? '#c9a961' : 'rgba(201,169,97,0.3)');
+            line.setAttribute('stroke', this.completed.has(n.id) ? '#c9a961' : 'rgba(201,169,97,0.35)');
             line.setAttribute('stroke-width', '2');
             svg.appendChild(line);
         });
