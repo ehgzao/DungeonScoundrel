@@ -1012,7 +1012,34 @@
             flex-shrink: 0;
             font-family: 'MedievalSharp', serif;
         }
-        
+
+        /* Adventure mode: illustrated card faces (background art + corner value) */
+        .card.adventure-art {
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            border-color: var(--gold-dark, #5a4a38);
+        }
+        .card.adventure-art::after { display: none; }
+        .card.adventure-art .adv-value {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            display: flex;
+            align-items: baseline;
+            gap: 2px;
+            padding: 2px 7px;
+            background: rgba(20, 15, 10, 0.85);
+            border: 1.5px solid var(--gold-treasure, #c9a961);
+            border-radius: 6px;
+            color: var(--parchment, #f1e2c9);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+        .card.adventure-art .adv-suit { font-size: 0.75em; color: var(--gold-treasure, #c9a961); }
+
         /* Parchment texture overlay on cards */
         .card::after {
             content: '';

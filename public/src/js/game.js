@@ -562,6 +562,17 @@ difficultySelector.addEventListener('click', (e) => {
     target.classList.add('selected');
 });
 
+// Card Mode selector (Classic = original faces, Adventure = illustrated deck)
+const modeSelector = document.getElementById('modeSelector');
+if (modeSelector) {
+    modeSelector.addEventListener('click', (e) => {
+        const target = e.target.closest('.mode-btn');
+        if (!target) return;
+        modeSelector.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('selected'));
+        target.classList.add('selected');
+    });
+}
+
 // Top Bar Hooks
 // btnTopTutorial removed - only in main menu
 // btnTopLeaderboard removed - only in main menu
@@ -904,7 +915,8 @@ function startGame() {
     loadUnlocks();
     
     // 2. Configure Game State
-    game.difficulty = document.querySelector('.difficulty-btn.selected').dataset.difficulty;
+    game.difficulty = document.querySelector('#difficultySelector .difficulty-btn.selected').dataset.difficulty;
+    game.mode = document.querySelector('#modeSelector .mode-btn.selected')?.dataset.mode || 'classic';
     const healthMap = { easy: 20, normal: 15, hard: 10, endless: 15 };
     let startHealthBonus = permanentUnlocks.startHealth ? 5 : 0;
 
@@ -3065,11 +3077,23 @@ function createCardElement(card) {
             </div>
         `;
     } else {
-        cardEl.innerHTML = `
+        if (game.mode === 'adventure') {
+            // Adventure mode: illustrated deck. Art keyed by type+value, shared
+            // across the two monster suits; value/suit as a corner badge since
+            // the art carries no numbers.
+            cardEl.classList.add('adventure-art');
+            cardEl.style.backgroundImage = `url('assets/cards/adventure/${type}_${card.numValue}.webp')`;
+            cardEl.style.backgroundSize = 'cover';
+            cardEl.style.backgroundPosition = 'center top';
+            cardEl.style.backgroundRepeat = 'no-repeat';
+            cardEl.innerHTML = `<div class="adv-value">${card.value}<span class="adv-suit">${card.suit}</span></div>`;
+        } else {
+            cardEl.innerHTML = `
             <div class="card-value">${card.value}</div>
             <div class="card-suit">${card.suit}</div>
         `;
-        
+        }
+
         // DAMAGE PREVIEW for monster cards
         if (type === 'monster' && card.numValue > 0) {
             const baseWeapon = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
