@@ -238,7 +238,7 @@ persistente + cull na fogueira, crop de margem das cartas.
 |----|------|------|-----|--------|
 | TD-1 | Extrair 233 estilos inline → classes | L | ⚪ | Pendente |
 | TD-2 | Mobile portrait dedicado | XL | 🟡 | Adiado (desktop-first) |
-| TD-3 | Modularizar game.js (tutorial/sfx) | L | ⚪ | Pendente |
+| TD-3 | Modularizar game.js (tutorial/sfx) | L | ⚪ | 🟡 Parcial (tutorial in-game → modules/in-game-tutorial.js; -440 linhas) |
 | TD-4 | Integrar event-system completo nos nós de evento | M | 🟡 | Pendente |
 
 ### 🧠 Notas state-of-art (deixar o Adventure NÃO-trivial)
