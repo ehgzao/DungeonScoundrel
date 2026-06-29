@@ -207,11 +207,14 @@ AdventureMap.renderInto = function (container) {
             row.forEach((n) => {
                 const t = NODE_TYPES[n.type];
                 const node = document.createElement('button');
-                const state = this.completed.has(n.id) ? 'done' : (reach.has(n.id) ? 'reachable' : 'locked');
+                const state = (n.id === this.currentId) ? 'current'
+                    : this.completed.has(n.id) ? 'done'
+                    : (reach.has(n.id) ? 'reachable' : 'locked');
                 node.className = `adv-node adv-${n.type} adv-${state}`;
                 node.dataset.id = n.id;
                 node.title = t.label;
                 node.innerHTML = `<span class="adv-ico">${t.icon}</span>`;
+                if (state === 'current') node.innerHTML += `<span class="adv-here">📍</span>`;
                 if (n.type === 'boss' || n.type === 'finalboss') {
                     node.innerHTML += `<span class="adv-bosslabel">${n.boss ? n.boss.name : t.label}</span>`;
                 }

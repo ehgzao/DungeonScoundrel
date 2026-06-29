@@ -15,8 +15,9 @@
             if (!window.AdventureMap) return;
             game.adventureRun = true;
             game.finalBossDefeated = false;
-            // Hide the linear room controls — the map drives progression.
-            ['btnDrawRoom', 'btnAvoidRoom'].forEach(id => {
+            // Hide the linear room + corner-merchant controls — the map drives
+            // progression and the merchant is a map node in Adventure.
+            ['btnDrawRoom', 'btnAvoidRoom', 'btnOpenShop'].forEach(id => {
                 const b = document.getElementById(id);
                 if (b) b.style.display = 'none';
             });
