@@ -12,7 +12,7 @@
 // Model ids are overridable (APIs change): OPENAI_IMAGE_MODEL, GEMINI_IMAGE_MODEL.
 // Node 18+ (global fetch). No npm deps.
 
-import { mkdir, writeFile, readFile } from 'node:fs/promises';
+import { mkdir, writeFile, readFile, access } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CARDS, promptFor } from './cards.config.mjs';
@@ -92,11 +92,18 @@ const gen = provider === 'gemini' ? genGemini : genOpenAI;
     console.log(`style anchor: ${args.ref}`);
   }
 
+  const skipExisting = !!args['skip-existing'];
   for (const card of CARDS) {
     const prompt = promptFor(card);
     if (dryRun) {
       await writeFile(join(outDir, `${card.id}.prompt.txt`), prompt);
       console.log(`· [dry] ${card.id} -> prompt written`);
+      continue;
+    }
+    const target = join(outDir, `${card.id}.png`);
+    if (skipExisting && await access(target).then(() => true, () => false)) {
+      console.log(`· skip ${card.id} (exists)`);
+      if (!anchor && provider === 'gemini') anchor = await readFile(target);
       continue;
     }
     try {
