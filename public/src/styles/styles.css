@@ -1021,6 +1021,21 @@
             border-color: var(--gold-dark, #5a4a38);
         }
         .card.adventure-art::after { display: none; }
+        /* Type is read instantly by border colour + glyph (independent of the
+           damage preview, which stays on the ⚔️ badge). */
+        .card.adventure-art { border-width: 3px; }
+        .card.adventure-art.monster { border-color: #b34a4a; box-shadow: inset 0 0 0 2px rgba(179,74,74,0.45), 0 6px 15px rgba(0,0,0,0.7); }
+        .card.adventure-art.weapon  { border-color: #c9a35a; box-shadow: inset 0 0 0 2px rgba(201,163,90,0.45), 0 6px 15px rgba(0,0,0,0.7); }
+        .card.adventure-art.potion  { border-color: #7a9b5a; box-shadow: inset 0 0 0 2px rgba(122,155,90,0.45), 0 6px 15px rgba(0,0,0,0.7); }
+        .card.adventure-art .adv-type {
+            position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
+            width: 26px; height: 26px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-size: 0.85em;
+            background: rgba(20,15,10,0.9); border: 1.5px solid currentColor; z-index: 2;
+        }
+        .card.adventure-art .adv-type-monster { color: #e06b6b; }
+        .card.adventure-art .adv-type-weapon  { color: #e8c878; }
+        .card.adventure-art .adv-type-potion  { color: #8fc46b; }
         .card.adventure-art .adv-value {
             position: absolute;
             bottom: 5px;

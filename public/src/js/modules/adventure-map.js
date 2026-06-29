@@ -171,6 +171,13 @@ const AdventureMap = {
     },
 };
 
+// Deterministic per-node horizontal jitter (px) to break the grid look.
+AdventureMap._jitter = (id) => {
+    let h = 0;
+    for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    return (h % 33) - 16; // -16..+16
+};
+
 // ============================================
 // RENDER (map screen)
 // ============================================
@@ -208,6 +215,8 @@ AdventureMap.renderInto = function (container) {
                 if (n.type === 'boss' || n.type === 'finalboss') {
                     node.innerHTML += `<span class="adv-bosslabel">${n.boss ? n.boss.name : t.label}</span>`;
                 }
+                // Deterministic horizontal jitter so rows don't read as a rigid grid.
+                node.style.transform = `translateX(${AdventureMap._jitter(n.id)}px)`;
                 if (state === 'reachable') {
                     node.onclick = () => { if (this.select(n.id)) this.renderInto(container); };
                 } else {
@@ -232,12 +241,14 @@ AdventureMap.renderInto = function (container) {
         (n.next || []).forEach((tid) => {
             const to = elById[tid]; if (!to) return;
             const b = center(to);
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
-            line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
-            line.setAttribute('stroke', this.completed.has(n.id) ? '#c9a961' : 'rgba(201,169,97,0.3)');
-            line.setAttribute('stroke-width', '2');
-            svg.appendChild(line);
+            // Smooth vertical curve instead of a straight lattice line.
+            const dy = (b.y - a.y) * 0.45;
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', `M ${a.x} ${a.y} C ${a.x} ${a.y + dy}, ${b.x} ${b.y - dy}, ${b.x} ${b.y}`);
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', this.completed.has(n.id) ? '#c9a961' : 'rgba(201,169,97,0.28)');
+            path.setAttribute('stroke-width', this.completed.has(n.id) ? '2.5' : '2');
+            svg.appendChild(path);
         });
     });
 };

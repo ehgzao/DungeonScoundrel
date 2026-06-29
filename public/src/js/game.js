@@ -3106,7 +3106,8 @@ function createCardElement(card) {
             cardEl.style.backgroundSize = 'cover';
             cardEl.style.backgroundPosition = 'center top';
             cardEl.style.backgroundRepeat = 'no-repeat';
-            cardEl.innerHTML = `<div class="adv-value">${card.value}<span class="adv-suit">${card.suit}</span></div>`;
+            const typeGlyph = type === 'monster' ? '👹' : (type === 'weapon' ? '⚔️' : '🧪');
+            cardEl.innerHTML = `<div class="adv-type adv-type-${type}">${typeGlyph}</div><div class="adv-value">${card.value}<span class="adv-suit">${card.suit}</span></div>`;
         } else {
             cardEl.innerHTML = `
             <div class="card-value">${card.value}</div>
