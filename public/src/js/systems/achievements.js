@@ -57,6 +57,15 @@ const ACHIEVEMENTS = [
     { id: 'genocide', tier: 'gold', icon: '☠️', title: 'Genocide', description: 'Defeat 200 monsters', check: () => getLifetimeStat('monstersSlain') >= 200 },
     { id: 'conqueror', tier: 'gold', icon: '🏆', title: 'Conqueror', description: 'Clear 100 rooms', check: () => getLifetimeStat('roomsCleared') >= 100 },
     
+    // 🎴 MODES & MASTERY
+    { id: 'classic_win', tier: 'silver', icon: '🃏', title: 'Purist', description: 'Win a Classic run', check: () => getLifetimeStat('classicWins') >= 1 },
+    { id: 'adventure_win', tier: 'silver', icon: '🗺️', title: 'Trailblazer', description: 'Win an Adventure run', check: () => getLifetimeStat('adventureWins') >= 1 },
+    { id: 'adventure_normal', tier: 'silver', icon: '🟡', title: 'Seasoned Delver', description: 'Win Adventure on Normal', check: () => getLifetimeStat('adventure_normalWins') >= 1 },
+    { id: 'adventure_hard', tier: 'gold', icon: '🔴', title: 'Deep Descent', description: 'Win Adventure on Hard', check: () => getLifetimeStat('adventure_hardWins') >= 1 },
+    { id: 'classic_hard', tier: 'gold', icon: '⚔️', title: 'Old-School Hardcore', description: 'Win Classic on Hard', check: () => getLifetimeStat('classic_hardWins') >= 1 },
+    { id: 'speedrunner', tier: 'gold', icon: '⏱️', title: 'Speedrunner', description: 'Win a run in under 5 minutes', check: () => { const t = getLifetimeStat('fastestWin'); return t > 0 && t <= 300; } },
+    { id: 'all_heroes', tier: 'gold', icon: '🎭', title: 'Many Faces', description: 'Win an Adventure run with all 6 heroes', check: () => ['scoundrel', 'knight', 'rogue', 'dancer', 'berserker', 'priest'].every(c => getLifetimeStat('adv_' + c + 'Wins') >= 1) },
+
     // 🔒 SECRET GOLDS (5)
     { id: 'secret_1', tier: 'gold', icon: '🎯', title: 'One Shot Wonder', description: 'Defeat a 10-value monster with a 2-value weapon', check: () => false, secret: true },
     { id: 'secret_2', tier: 'gold', icon: '🍀', title: 'Lucky 7', description: 'Win a run with exactly 7 HP remaining', check: () => false, secret: true }, // Checked during game
