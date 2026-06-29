@@ -3106,7 +3106,28 @@ function createCardElement(card) {
         // Calculate HP percentage for bar
         const hpPercent = card.maxHP ? (card.numValue / card.maxHP) * 100 : 100;
         const hpColor = hpPercent > 66 ? '#6bcf7f' : (hpPercent > 33 ? '#ffd93d' : '#ff6b6b');
-        
+
+        // Adventure bosses carry an illustrated portrait (artKey). Lay the name +
+        // HP bar over the art instead of the bare 👹 emoji.
+        if (card.artKey && game.mode === 'adventure') {
+            cardEl.classList.add('adventure-art', 'boss-art');
+            // .card.boss sets a red gradient `background` with !important, so the
+            // art must be applied as an inline !important to win the cascade.
+            cardEl.style.setProperty('background-image', `url('assets/cards/adventure/${card.artKey}.webp')`, 'important');
+            cardEl.style.setProperty('background-size', 'cover', 'important');
+            cardEl.style.setProperty('background-position', 'center top', 'important');
+            cardEl.style.setProperty('background-repeat', 'no-repeat', 'important');
+            cardEl.style.setProperty('background-color', '#140f0a', 'important');
+            cardEl.innerHTML = `
+                <div class="boss-art-label">${(window.escapeHtml ? window.escapeHtml(card.bossName) : (card.bossName || 'Boss'))}</div>
+                <div class="boss-art-foot">
+                    <div class="boss-art-hp">${card.numValue} HP</div>
+                    <div style="width: 100%; height: 7px; background: rgba(0,0,0,0.55); border-radius: 4px; overflow: hidden;">
+                        <div style="width: ${hpPercent}%; height: 100%; background: ${hpColor}; transition: all 0.3s ease; border-radius: 4px;"></div>
+                    </div>
+                </div>
+            `;
+        } else {
         cardEl.innerHTML = `
             <div class="card-value" style="font-size: 2em;">👹</div>
             <div style="font-size: 0.9em; color: #ff6b6b; font-weight: bold;">BOSS</div>
@@ -3115,6 +3136,7 @@ function createCardElement(card) {
                 <div style="width: ${hpPercent}%; height: 100%; background: ${hpColor}; transition: all 0.3s ease; border-radius: 4px;"></div>
             </div>
         `;
+        }
     } else {
         if (game.mode === 'adventure') {
             // Adventure mode: illustrated deck. Art keyed by type+value, shared
