@@ -44,13 +44,24 @@
             }
         },
 
+        // Number of hands (rooms) a combat encounter lasts, by difficulty.
+        _handsFor() {
+            return { easy: 1, normal: 2, hard: 3, endless: 2 }[game.difficulty] || 1;
+        },
+
         _combat(node) {
             AR._pending = node;
-            // Reuse the full linear room flow for the fight; drawRoom refills the
-            // deck itself in adventure mode. Clear -> checkGameState -> afterEncounterCleared.
+            AR._handsTotal = AR._handsFor();
+            AR._handsDone = 0;
+            AR._drawHand();
+        },
+
+        // Draw one hand of a multi-hand encounter (reuses the linear room flow;
+        // drawRoom refills the deck itself in adventure mode).
+        _drawHand() {
+            const node = AR._pending;
             if (typeof window.drawRoom === 'function') window.drawRoom();
             // Depth scaling: deeper nodes hit harder. Elites get an extra bump.
-            // tier 0..20 across the run -> up to ~+60% monster HP at the deepest.
             const mult = 1 + (node.tier || 0) * 0.03 + (node.type === 'elite' ? 0.25 : 0);
             if (mult > 1.01 && Array.isArray(game.room)) {
                 game.room.forEach((c) => {
@@ -59,6 +70,9 @@
                     }
                 });
                 if (window.updateUI) window.updateUI();
+            }
+            if (AR._handsTotal > 1 && window.showMessage) {
+                window.showMessage(`⚔️ Wave ${AR._handsDone + 1} of ${AR._handsTotal}`, 'info');
             }
         },
 
@@ -168,6 +182,14 @@
             if (game.classAbilityCooldown > 0) game.classAbilityCooldown--;
             if (window.updateUI) window.updateUI();
             const node = AR._pending;
+            // Multi-wave encounters (difficulty = hands): draw the next wave before
+            // returning to the map.
+            if (node && (node.type === 'combat' || node.type === 'elite') &&
+                (AR._handsDone + 1) < (AR._handsTotal || 1)) {
+                AR._handsDone++;
+                setTimeout(() => AR._drawHand(), 250);
+                return;
+            }
             AR._pending = null;
             if (node && node.type === 'finalboss') {
                 game.finalBossDefeated = true;

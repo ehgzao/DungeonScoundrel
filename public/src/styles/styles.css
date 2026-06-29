@@ -1023,7 +1023,8 @@
         .card.adventure-art::after { display: none; }
         /* Type is read instantly by border colour + glyph (independent of the
            damage preview, which stays on the ⚔️ badge). */
-        .card.adventure-art { border-width: 3px; }
+        /* Larger than classic cards so the detailed illustration reads well. */
+        .card.adventure-art { width: 150px; height: 212px; border-width: 3px; }
         .card.adventure-art.monster { border-color: #b34a4a; box-shadow: inset 0 0 0 2px rgba(179,74,74,0.45), 0 6px 15px rgba(0,0,0,0.7); }
         .card.adventure-art.weapon  { border-color: #c9a35a; box-shadow: inset 0 0 0 2px rgba(201,163,90,0.45), 0 6px 15px rgba(0,0,0,0.7); }
         .card.adventure-art.potion  { border-color: #7a9b5a; box-shadow: inset 0 0 0 2px rgba(122,155,90,0.45), 0 6px 15px rgba(0,0,0,0.7); }
