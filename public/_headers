@@ -1,10 +1,8 @@
-﻿/*
-  Content-Security-Policy: default-src 'self'; \
-    script-src 'self' 'unsafe-inline' https://accounts.google.com https://apis.google.com https://www.gstatic.com https://www.googleapis.com https://cdn.jsdelivr.net https://cdn.emailjs.com https://emailjs.com https://identitytoolkit.googleapis.com; \
-    script-src-elem 'self' https://accounts.google.com https://apis.google.com https://www.gstatic.com https://www.googleapis.com https://cdn.jsdelivr.net https://cdn.emailjs.com https://emailjs.com https://identitytoolkit.googleapis.com; \
-    connect-src 'self' https://*.firebaseio.com https://firebasestorage.googleapis.com https://emailjs.com https://cdn.emailjs.com https://apis.google.com https://identitytoolkit.googleapis.com; \
-    img-src 'self' data: https:; \
-    frame-src https://accounts.google.com https://*.firebaseapp.com;
-  Cross-Origin-Opener-Policy: same-origin-allow-popups
-  Cross-Origin-Embedder-Policy: unsafe-none
-
+# Security headers (CSP, COOP, COEP, X-*, Permissions-Policy, cache-control)
+# live in ONE place: netlify.toml ([[headers]] for = "/*").
+#
+# This file previously duplicated the Content-Security-Policy / COOP / COEP,
+# but netlify.toml takes precedence over _headers for conflicting paths, so the
+# copy here was dead AND divergent (looser img-src, missing connect-src origins
+# Firebase needs). Removed to avoid two sources of truth. Add Netlify header
+# rules here ONLY if they are not already covered by netlify.toml.
