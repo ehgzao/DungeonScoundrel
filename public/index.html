@@ -5,35 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
-    <!-- CRITICAL: Production-aware silent logging (must be first) -->
-    <script>
-    (function(){
-        var p = location.hostname.includes('netlify.app') || location.hostname === 'dungeonscoundrel.com';
-        window.silentLog = p ? function(){} : console.log.bind(console);
-        window.silentWarn = p ? function(){} : console.warn.bind(console);
-        window.silentError = p ? function(){} : console.error.bind(console);
-        window.isProduction = p;
-        // In production, suppress the default error UI but keep a capped
-        // in-memory log so regressions stay diagnosable (e.g. via bug reports).
-        if (p) {
-            window.__errorLog = [];
-            var _record = function(info) {
-                try {
-                    window.__errorLog.push({ t: Date.now(), info: String(info) });
-                    if (window.__errorLog.length > 50) window.__errorLog.shift();
-                } catch (e) {}
-            };
-            window.onerror = function(msg, src, line, col) {
-                _record(msg + ' @ ' + src + ':' + line + ':' + col);
-                return true; // suppress default error overlay in production
-            };
-            window.onunhandledrejection = function(e) {
-                _record('unhandledrejection: ' + (e && e.reason));
-                e.preventDefault();
-            };
-        }
-    })();
-    </script>
+    <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
+    <script src="src/js/core/silent-logging.js?v=1.4.6"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1537,13 +1510,7 @@
 <script src="src/js/systems/codex.js?v=1.4.5" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script>
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-    });
-}
-</script>
+<script src="src/js/register-sw.js?v=1.4.6" defer></script>
 
 </body>
 </html>
