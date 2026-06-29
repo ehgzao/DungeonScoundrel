@@ -2029,7 +2029,22 @@ function endGame(reason, gaveUp = false) {
         if (game.stats.roomsCleared >= 10 && game.stats.maxCombo >= 10) { // Perfect Run: 10 rooms with 10x combo
             unlockAchievement('perfect_run');
         }
-        
+        if (game.health < 5) { // Survivor: finish a run with less than 5 HP
+            unlockAchievement('survivor');
+        }
+        if (game.health === 7) { // Lucky 7 (secret): win with exactly 7 HP
+            unlockAchievement('secret_2');
+        }
+        if (window.music && window.music.isPlaying) { // Music Lover: win with music ON
+            unlockAchievement('music_lover');
+        }
+        if (game.relics && game.relics.length === 1) { // Minimalist (secret): win with only 1 relic
+            unlockAchievement('secret_4');
+        }
+        if (game.stats.totalDamage === 0) { // Untouchable (secret): win without taking damage
+            unlockAchievement('secret_5');
+        }
+
         setTimeout(() => showDamageNumber(score, 'score'), 500);
     }
     

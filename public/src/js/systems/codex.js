@@ -126,19 +126,23 @@ function populateCodexAchievements() {
     // Update stats
     const unlockedCount = unlockedIds.length;
     const statsElement = document.getElementById('achievementStatsCodex');
-    if (statsElement) statsElement.textContent = `${unlockedCount}/50 Unlocked`;
-    const bronzeCount = ACHIEVEMENTS.filter(a => a.tier === 'bronze' && unlockedIds.includes(a.id)).length;
-    const silverCount = ACHIEVEMENTS.filter(a => a.tier === 'silver' && unlockedIds.includes(a.id)).length;
-    const goldCount = ACHIEVEMENTS.filter(a => a.tier === 'gold' && unlockedIds.includes(a.id)).length;
-    const platinumCount = ACHIEVEMENTS.filter(a => a.tier === 'platinum' && unlockedIds.includes(a.id)).length;
+    if (statsElement) statsElement.textContent = `${unlockedCount}/${ACHIEVEMENTS.length} Unlocked`;
+    const bronzeTotal = ACHIEVEMENTS.filter(a => a.tier === 'bronze');
+    const silverTotal = ACHIEVEMENTS.filter(a => a.tier === 'silver');
+    const goldTotal = ACHIEVEMENTS.filter(a => a.tier === 'gold');
+    const platinumTotal = ACHIEVEMENTS.filter(a => a.tier === 'platinum');
+    const bronzeCount = bronzeTotal.filter(a => unlockedIds.includes(a.id)).length;
+    const silverCount = silverTotal.filter(a => unlockedIds.includes(a.id)).length;
+    const goldCount = goldTotal.filter(a => unlockedIds.includes(a.id)).length;
+    const platinumCount = platinumTotal.filter(a => unlockedIds.includes(a.id)).length;
     const bronzeEl = document.getElementById('bronzeCountCodex');
     const silverEl = document.getElementById('silverCountCodex');
     const goldEl = document.getElementById('goldCountCodex');
     const platinumEl = document.getElementById('platinumCountCodex');
-    if (bronzeEl) bronzeEl.textContent = `${bronzeCount}/25`;
-    if (silverEl) silverEl.textContent = `${silverCount}/15`;
-    if (goldEl) goldEl.textContent = `${goldCount}/9`;
-    if (platinumEl) platinumEl.textContent = `${platinumCount}/1`;
+    if (bronzeEl) bronzeEl.textContent = `${bronzeCount}/${bronzeTotal.length}`;
+    if (silverEl) silverEl.textContent = `${silverCount}/${silverTotal.length}`;
+    if (goldEl) goldEl.textContent = `${goldCount}/${goldTotal.length}`;
+    if (platinumEl) platinumEl.textContent = `${platinumCount}/${platinumTotal.length}`;
 }
 
 function filterCodexRelicsByRarity(rarity) {

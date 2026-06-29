@@ -253,6 +253,8 @@ export function handlePotion(potion, index) {
 export function handleMonster(monster, index) {
     const powerBonus = window.getRelicBonus('power') + window.getRelicBonus('bigPower');
     const baseWeapon = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
+    // Capture original values for the "One Shot Wonder" secret (10-value monster, 2-value weapon)
+    const origMonsterValue = monster.numValue;
     
     // Calculate all bonuses using helpers (DRY principle)
     const berserkBonus = getBerserkBonus();
@@ -761,9 +763,13 @@ export function handleMonster(monster, index) {
     }
     
     game.stats.monstersSlain++;
+    // Secret: One Shot Wonder — defeat a 10-value monster with a 2-value weapon
+    if (!monster.isBoss && baseWeapon === 2 && origMonsterValue === 10 && typeof window.unlockAchievement === 'function') {
+        window.unlockAchievement('secret_1');
+    }
     game.room.splice(index, 1);
     game.discardPile.push(monster);
-    
+
     // Monster gold (difficulty-based, with boss bonus)
     if (monster.isBoss) {
         // Boss gold rewards (much more generous!)

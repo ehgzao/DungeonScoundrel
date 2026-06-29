@@ -6,7 +6,7 @@
 
 // ===== 50 ACHIEVEMENTS SYSTEM =====
 const ACHIEVEMENTS = [
-    // 🥉 BRONZE (25) - Fáceis
+    // 🥉 BRONZE (26) - Fáceis
     { id: 'tutorial_master', tier: 'bronze', icon: '🎓', title: 'Tutorial Master', description: 'Complete the in-game tutorial', check: () => localStorage.getItem('dungeon_scoundrel_tutorial_completed') === 'true' },
     { id: 'first_blood', tier: 'bronze', icon: '⚔️', title: 'First Blood', description: 'Defeat your first monster', check: () => getLifetimeStat('monstersSlain') >= 1 },
     { id: 'baby_steps', tier: 'bronze', icon: '👶', title: 'Baby Steps', description: 'Clear your first room', check: () => getLifetimeStat('roomsCleared') >= 1 },
@@ -59,7 +59,7 @@ const ACHIEVEMENTS = [
     
     // 🔒 SECRET GOLDS (5)
     { id: 'secret_1', tier: 'gold', icon: '🎯', title: 'One Shot Wonder', description: 'Defeat a 10-value monster with a 2-value weapon', check: () => false, secret: true },
-    { id: 'secret_2', tier: 'gold', icon: '🍀', title: 'Lucky 7', description: 'Win with exactly 7 HP, 7 cards left, and 777 score', check: () => false, secret: true },
+    { id: 'secret_2', tier: 'gold', icon: '🍀', title: 'Lucky 7', description: 'Win a run with exactly 7 HP remaining', check: () => false, secret: true }, // Checked during game
     { id: 'secret_3', tier: 'gold', icon: '🎰', title: 'High Roller', description: 'Win 10 Gamble cards in a row', check: () => false, secret: true },
     { id: 'secret_4', tier: 'gold', icon: '💎', title: 'Minimalist', description: 'Win with only 1 relic', check: () => false, secret: true },
     { id: 'secret_5', tier: 'gold', icon: '🌟', title: 'Untouchable', description: 'Win without taking any damage', check: () => false, secret: true },
@@ -67,7 +67,9 @@ const ACHIEVEMENTS = [
     // 💎 PLATINUM (1) - Todas as outras
     { id: 'platinum', tier: 'platinum', icon: '💎', title: 'Master Scoundrel', description: 'Unlock ALL other achievements', check: () => {
         const unlockedAchs = JSON.parse(localStorage.getItem('dungeon_scoundrel_achievements') || '[]');
-        return unlockedAchs.length >= 50;
+        // Require every non-platinum achievement, derived from the data (no magic number).
+        const nonPlatinum = ACHIEVEMENTS.filter(a => a.tier !== 'platinum').map(a => a.id);
+        return nonPlatinum.every(id => unlockedAchs.includes(id));
     }}
 ];
 
@@ -168,7 +170,7 @@ function checkAllAchievements() {
 
 function updateAchievementCounter() {
     const unlocked = loadAchievements();
-    achievementCounter.textContent = `${unlocked.length}/50`;
+    achievementCounter.textContent = `${unlocked.length}/${ACHIEVEMENTS.length}`;
 }
 
 function updateAchievementsDisplay() {
@@ -185,11 +187,11 @@ function updateAchievementsDisplay() {
     const goldUnlocked = gold.filter(a => unlocked.includes(a.id)).length;
     const platinumUnlocked = platinum.filter(a => unlocked.includes(a.id)).length;
     
-    document.getElementById('achievementStats').textContent = `${unlocked.length}/50 Unlocked`;
-    document.getElementById('bronzeCount').textContent = `${bronzeUnlocked}/25`;
-    document.getElementById('silverCount').textContent = `${silverUnlocked}/15`;
-    document.getElementById('goldCount').textContent = `${goldUnlocked}/9`;
-    document.getElementById('platinumCount').textContent = `${platinumUnlocked}/1`;
+    document.getElementById('achievementStats').textContent = `${unlocked.length}/${ACHIEVEMENTS.length} Unlocked`;
+    document.getElementById('bronzeCount').textContent = `${bronzeUnlocked}/${bronze.length}`;
+    document.getElementById('silverCount').textContent = `${silverUnlocked}/${silver.length}`;
+    document.getElementById('goldCount').textContent = `${goldUnlocked}/${gold.length}`;
+    document.getElementById('platinumCount').textContent = `${platinumUnlocked}/${platinum.length}`;
     
     // Render achievement cards
     achievementsList.innerHTML = ACHIEVEMENTS.map(ach => {

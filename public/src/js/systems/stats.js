@@ -14,6 +14,10 @@ function loadPermanentStats() {
             Object.assign(permanentStats, parsed);
             return parsed; // Return for Cloud Save
         } catch(e) {
+            // Back up the corrupt value instead of silently discarding it,
+            // so progress can be recovered rather than lost forever.
+            try { localStorage.setItem('scoundrel_permanent_stats_corrupt', saved); } catch (_) {}
+            if (window.silentError) window.silentError('Corrupt permanent stats backed up:', e);
             permanentStats = { gamesWon: 0, hardWins: 0, fastestWin: 0 };
             return permanentStats;
         }
