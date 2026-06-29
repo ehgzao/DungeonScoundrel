@@ -15,7 +15,21 @@ export const STYLE =
   'gargoyle-root motifs at the base, a single centered subject, symmetrical, ' +
   'painterly yet graphic, no text, no lettering, no numbers';
 
-const ACCENT = { monster: '#8b3a3a', weapon: '#c9a961', potion: '#7a9b5a' };
+const ACCENT = { monster: '#8b3a3a', weapon: '#c9a961', potion: '#7a9b5a', boss: '#a32020' };
+
+// Boss centerpieces. Two generic act guardians (act 1/2) reused for the
+// procedural act bosses, plus one unique final boss per class (see
+// data/adventures.js). id scheme: boss_act1 | boss_act2 | boss_<class>.
+const BOSSES = {
+  act1: 'a colossal crowned bone guardian assembled from a thousand fused skulls, cold blue grave-light pouring from its ribcage, barring a crypt gate',
+  act2: 'a bloated drowned leviathan-knight draped in seaweed and barnacles, dark water streaming from rents in its rusted armor, looming in a flooded vault',
+  scoundrel: 'a towering spectral warden bound in chains of golden coins and iron ledgers, hollow lantern-eyes, one hand pressed flat against a sealed vault door — the keeper that lets nothing leave with what it owes',
+  knight: 'a fallen lord in cracked black plate fused with rusted shame, gripping a shattered oathblade, a broken crown sinking into his brow, head bowed under the weight of his betrayal',
+  rogue: 'a pallid faceless figure cloaked in whispering pages of stolen secrets, countless iron keys hanging from its robes, a single pale finger raised to where its lips would be',
+  dancer: 'a skeletal conductor in tattered opera finery raising a baton of bone, marionette strings of the restless dead fanning from its hands, mid-flourish in a danse macabre',
+  berserker: 'a colossal muscled beast of scar tissue and living fire, fists like boulders, screaming mouths opening across its hide, an avatar of pure unfillable fury',
+  priest: 'a cold monolithic dark-god idol of black stone with too many folded arms and a single weeping eye, ringed by guttering black candles, rot oozing from its seams',
+};
 
 // monster bestiary by power (numValue). A=14 strongest ... 2 weakest.
 const MONSTERS = {
@@ -66,8 +80,15 @@ function build() {
     out.push({ id: `weapon_${v}`, type: 'weapon', value: +v, accent: ACCENT.weapon, subject });
   for (const [v, subject] of Object.entries(POTIONS))
     out.push({ id: `potion_${v}`, type: 'potion', value: +v, accent: ACCENT.potion, subject });
+  for (const [key, subject] of Object.entries(BOSSES))
+    out.push({ id: `boss_${key}`, type: 'boss', accent: ACCENT.boss, subject });
   return out;
 }
 
 export const CARDS = build();
-export const promptFor = (card) => `${STYLE}. Subject: ${card.subject}.`;
+// Bosses get an imposing, full-frame treatment (still same palette/frame so the
+// boss card sits in the same deck as the rest).
+export const promptFor = (card) =>
+  card.type === 'boss'
+    ? `${STYLE}, imposing full-frame menacing boss filling the arch, dramatic scale, looming. Subject: ${card.subject}.`
+    : `${STYLE}. Subject: ${card.subject}.`;

@@ -28,7 +28,12 @@ const outDir = join(HERE, '..', 'public', 'assets', 'cards', 'adventure');
 
 (async () => {
   await mkdir(outDir, { recursive: true });
-  const files = (await readdir(srcDir)).filter((f) => f.endsWith('.png'));
+  // --match <substr> limits optimization to matching files (e.g. only new boss
+  // art) so existing webp tiles aren't needlessly re-encoded.
+  const match = typeof args.match === 'string' ? args.match : null;
+  const files = (await readdir(srcDir))
+    .filter((f) => f.endsWith('.png'))
+    .filter((f) => !match || f.includes(match));
   const b = await chromium.launch();
   const p = await b.newPage();
   let totalIn = 0, totalOut = 0;

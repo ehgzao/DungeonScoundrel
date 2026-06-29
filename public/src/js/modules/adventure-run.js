@@ -81,6 +81,11 @@
             AR._pending = node;
             const baseHp = { easy: 18, normal: 26, hard: 34, endless: 26 }[game.difficulty] || 26;
             const hp = node.type === 'finalboss' ? baseHp + 12 : baseHp + node.act * 4;
+            // Illustrated boss art: per-class for the finale, generic guardian per
+            // act otherwise (see tools/cards.config.mjs BOSSES + assets/cards/adventure).
+            const artKey = node.type === 'finalboss'
+                ? `boss_${game.playerClass || 'scoundrel'}`
+                : `boss_act${Math.min((node.act || 0) + 1, 2)}`;
             const boss = {
                 suit: '👹', value: '👹', numValue: hp, maxHP: hp,
                 isBoss: true,
@@ -88,6 +93,7 @@
                 bossName: node.boss ? node.boss.name : 'Dungeon Guardian',
                 bossFlavor: node.boss ? node.boss.flavor : 'A warden of the deep.',
                 suitName: 'spades',
+                artKey,
             };
             game.room = [boss];
             game.lastActionWasAvoid = false;
