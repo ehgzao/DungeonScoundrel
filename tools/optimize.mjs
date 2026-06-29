@@ -37,17 +37,24 @@ const outDir = join(HERE, '..', 'public', 'assets', 'cards', 'adventure');
     const buf = await readFile(join(srcDir, f));
     totalIn += buf.length;
     const dataUrl = `data:image/png;base64,${buf.toString('base64')}`;
-    const webpB64 = await p.evaluate(async ({ dataUrl, SIZE, Q }) => {
+    const webpB64 = await p.evaluate(async ({ dataUrl, H, Q, RATIO, SIDEKEEP }) => {
       const img = new Image();
       img.src = dataUrl;
       await img.decode();
+      // Output a PORTRAIT tile at the card aspect ratio; crop a centered portrait
+      // region from the square source so the side parchment margins are removed.
+      const outH = H, outW = Math.round(H * RATIO);
       const c = document.createElement('canvas');
-      c.width = SIZE; c.height = SIZE;
+      c.width = outW; c.height = outH;
       const ctx = c.getContext('2d');
       ctx.imageSmoothingQuality = 'high';
-      ctx.drawImage(img, 0, 0, SIZE, SIZE);
+      let sw = img.width * SIDEKEEP;
+      let sh = sw / RATIO;
+      if (sh > img.height) { sh = img.height; sw = sh * RATIO; }
+      const sx = (img.width - sw) / 2, sy = (img.height - sh) / 2;
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, outW, outH);
       return c.toDataURL('image/webp', Q).split(',')[1];
-    }, { dataUrl, SIZE, Q });
+    }, { dataUrl, H: SIZE, Q, RATIO: +(args.ratio || 0.706), SIDEKEEP: +(args.sidekeep || 0.66) });
     const out = Buffer.from(webpB64, 'base64');
     totalOut += out.length;
     await writeFile(join(outDir, `${id}.webp`), out);
