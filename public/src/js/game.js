@@ -562,6 +562,17 @@ difficultySelector.addEventListener('click', (e) => {
     target.classList.add('selected');
 });
 
+// Card Mode selector (Classic = original faces, Adventure = illustrated deck)
+const modeSelector = document.getElementById('modeSelector');
+if (modeSelector) {
+    modeSelector.addEventListener('click', (e) => {
+        const target = e.target.closest('.mode-btn');
+        if (!target) return;
+        modeSelector.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('selected'));
+        target.classList.add('selected');
+    });
+}
+
 // Top Bar Hooks
 // btnTopTutorial removed - only in main menu
 // btnTopLeaderboard removed - only in main menu
@@ -904,7 +915,8 @@ function startGame() {
     loadUnlocks();
     
     // 2. Configure Game State
-    game.difficulty = document.querySelector('.difficulty-btn.selected').dataset.difficulty;
+    game.difficulty = document.querySelector('#difficultySelector .difficulty-btn.selected').dataset.difficulty;
+    game.mode = document.querySelector('#modeSelector .mode-btn.selected')?.dataset.mode || 'classic';
     const healthMap = { easy: 20, normal: 15, hard: 10, endless: 15 };
     let startHealthBonus = permanentUnlocks.startHealth ? 5 : 0;
 
@@ -1523,6 +1535,11 @@ document.head.appendChild(tutorialStyle);
 
 function drawRoom() {
     if (game.dungeon.length === 0) {
+        // Adventure mode: the map controls progression, so just refill the
+        // encounter deck instead of triggering the linear victory/boss.
+        if (game.adventureRun) {
+            game.dungeon = createDeck();
+        } else
         // Endless mode: reload deck instead of ending
         if (game.difficulty === 'endless') {
             // Progressive difficulty scaling
@@ -1554,13 +1571,14 @@ function drawRoom() {
 
     // NEW BOSS SYSTEM: 2 Minibosses (room 15 and 25) + Final Boss mandatory
     const nextRoomNumber = game.stats.roomsCleared + 1;
-    const isMiniboss1 = nextRoomNumber === BOSS.MINIBOSS_1_ROOM;
-    const isMiniboss2 = nextRoomNumber === BOSS.MINIBOSS_2_ROOM;
+    // Adventure mode spawns bosses via map nodes, not at fixed room numbers.
+    const isMiniboss1 = !game.adventureRun && nextRoomNumber === BOSS.MINIBOSS_1_ROOM;
+    const isMiniboss2 = !game.adventureRun && nextRoomNumber === BOSS.MINIBOSS_2_ROOM;
     
-    // Warn player about upcoming miniboss
-    if (nextRoomNumber === 14) {
+    // Warn player about upcoming miniboss (linear mode only)
+    if (!game.adventureRun && nextRoomNumber === 14) {
         showMessage('⚠️ MINIBOSS APPROACHING! Prepare for a tough fight!', 'warning');
-    } else if (nextRoomNumber === 24) {
+    } else if (!game.adventureRun && nextRoomNumber === 24) {
         showMessage('⚠️ FINAL MINIBOSS APPROACHING! Get ready!', 'warning');
     }
     
@@ -1708,7 +1726,15 @@ function checkGameState() {
     const notGameOver = !game.gameOver;
 
     if (roomEmpty && notGameOver) {
-        
+
+        // Adventure mode: a map encounter just cleared — hand control back to the
+        // map orchestrator and skip all linear next-room/victory logic.
+        if (game.adventureRun && window.AdventureRun) {
+            game.potionsUsed = 0;
+            window.AdventureRun.afterEncounterCleared();
+            return;
+        }
+
         game.potionsUsed = 0;
         game.stats.roomsCleared++;
         
@@ -3065,11 +3091,23 @@ function createCardElement(card) {
             </div>
         `;
     } else {
-        cardEl.innerHTML = `
+        if (game.mode === 'adventure') {
+            // Adventure mode: illustrated deck. Art keyed by type+value, shared
+            // across the two monster suits; value/suit as a corner badge since
+            // the art carries no numbers.
+            cardEl.classList.add('adventure-art');
+            cardEl.style.backgroundImage = `url('assets/cards/adventure/${type}_${card.numValue}.webp')`;
+            cardEl.style.backgroundSize = 'cover';
+            cardEl.style.backgroundPosition = 'center top';
+            cardEl.style.backgroundRepeat = 'no-repeat';
+            cardEl.innerHTML = `<div class="adv-value">${card.value}<span class="adv-suit">${card.suit}</span></div>`;
+        } else {
+            cardEl.innerHTML = `
             <div class="card-value">${card.value}</div>
             <div class="card-suit">${card.suit}</div>
         `;
-        
+        }
+
         // DAMAGE PREVIEW for monster cards
         if (type === 'monster' && card.numValue > 0) {
             const baseWeapon = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
@@ -3376,6 +3414,7 @@ if (typeof earnGold !== 'undefined') window.earnGold = earnGold;
 if (typeof giveRandomRelic !== 'undefined') window.giveRandomRelic = giveRandomRelic;
 if (typeof giveRelicByRarity !== 'undefined') window.giveRelicByRarity = giveRelicByRarity;
 if (typeof updateUI !== 'undefined') window.updateUI = updateUI;
+if (typeof drawRoom !== 'undefined') window.drawRoom = drawRoom; // Adventure map encounters
 if (typeof updateRelicsDisplay !== 'undefined') window.updateRelicsDisplay = updateRelicsDisplay;
 if (typeof takeDamage !== 'undefined') window.takeDamage = takeDamage;
 if (typeof resetCombo !== 'undefined') window.resetCombo = resetCombo;
