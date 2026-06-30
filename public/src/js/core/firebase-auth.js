@@ -136,7 +136,10 @@ async function signInWithGoogle() {
         await loadFirebase();
         const result = await _fb.signInWithPopup(auth, googleProvider);
         const user = result.user;
-        showAuthFeedback('success', `Welcome, ${user.displayName}!`);
+        // displayName is attacker-controllable (Google profile) and showAuthFeedback
+        // injects the message via innerHTML — escape it (the other sinks already do).
+        const safeName = window.escapeHtml ? window.escapeHtml(user.displayName || 'Adventurer') : (user.displayName || 'Adventurer');
+        showAuthFeedback('success', `Welcome, ${safeName}!`);
         return user;
     } catch (error) {
         (window.silentError || console.error)('Google sign-in error:', error);

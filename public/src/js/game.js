@@ -376,12 +376,13 @@ const nameError = document.getElementById('nameError');
 
 // Sanitize player name input (XSS prevention)
 function sanitizePlayerName(input) {
-    return input
+    return String(input || '')
         .trim()
         .replace(/[<>'"&]/g, '') // Remove dangerous chars
         .replace(/\s+/g, ' ')     // Collapse multiple spaces
         .substring(0, 10);         // Max 10 chars
 }
+window.sanitizePlayerName = sanitizePlayerName; // QA: shared with leaderboard write path
 
 // Clear error on input
 playerNameInput.oninput = () => {

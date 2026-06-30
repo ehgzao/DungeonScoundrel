@@ -65,13 +65,15 @@ function dismissMobileWarning() {
 }
 
 // Join waitlist function
-window.joinWaitlist = function() {
+window.joinWaitlist = function(evt) {
     const emailInput = document.getElementById('waitlistEmail');
     const privacyCheckbox = document.getElementById('waitlistPrivacy');
     const marketingCheckbox = document.getElementById('waitlistMarketing');
     const validationDiv = document.getElementById('waitlistValidation');
     const successDiv = document.getElementById('waitlistSuccess');
-    const submitBtn = event.target;
+    // Firefox has no global `event`; accept it as a param (passed from onclick) and
+    // fall back to the waitlist button by id so the handler never throws.
+    const submitBtn = (evt && evt.target) || (typeof event !== 'undefined' && event.target) || document.querySelector('.waitlist-btn');
     
     // Clear previous validation
     validationDiv.style.display = 'none';
@@ -171,7 +173,7 @@ window.addEventListener('DOMContentLoaded', function() {
 // ============================================
 
 // Anti-bot protection storage
-let bugReportAttempts = JSON.parse(localStorage.getItem('bugReportAttempts') || '[]');
+let bugReportAttempts = (() => { try { return JSON.parse(localStorage.getItem('bugReportAttempts') || '[]'); } catch (_) { return []; } })();
 let lastBugReportTime = parseInt(localStorage.getItem('lastBugReportTime') || '0');
 let currentMathAnswer = 0;
 
@@ -603,7 +605,7 @@ function showBugReportError(errorMsg) {
 
 // Contact form rate limiting
 let lastContactTime = parseInt(localStorage.getItem('lastContactTime') || '0');
-let contactAttempts = JSON.parse(localStorage.getItem('contactAttempts') || '[]');
+let contactAttempts = (() => { try { return JSON.parse(localStorage.getItem('contactAttempts') || '[]'); } catch (_) { return []; } })();
 
 // Contact form anti-bot
 let contactMathAnswer = 0;

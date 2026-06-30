@@ -385,10 +385,15 @@ function trapFocus(element) {
     );
     const firstFocusable = focusableElements[0];
     const lastFocusable = focusableElements[focusableElements.length - 1];
-    
-    element.addEventListener('keydown', function(e) {
+
+    // Idempotent: remove any handler bound by a previous trapFocus on this element
+    // so reopening the same modal doesn't stack listeners (memory/perf leak).
+    if (element.__trapFocusHandler) {
+        element.removeEventListener('keydown', element.__trapFocusHandler);
+    }
+    const handler = function(e) {
         if (e.key !== 'Tab') return;
-        
+
         if (e.shiftKey) {
             if (document.activeElement === firstFocusable) {
                 lastFocusable.focus();
@@ -400,8 +405,10 @@ function trapFocus(element) {
                 e.preventDefault();
             }
         }
-    });
-    
+    };
+    element.__trapFocusHandler = handler;
+    element.addEventListener('keydown', handler);
+
     // Focus first element when modal opens
     if (firstFocusable) {
         setTimeout(() => firstFocusable.focus(), 100);
