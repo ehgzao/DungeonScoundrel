@@ -1,8 +1,16 @@
 # 🗺️ DUNGEON SCOUNDREL - SYSTEM MAP
 
-**Gerado em:** 2025-11-26
-**Versão do jogo:** 1.4.3
+**Gerado em:** 2025-11-26 · **Atualizado:** 2026-06-30
+**Versão do jogo:** 1.5.0
 **Propósito:** Documento de referência para modularização segura
+
+> **Nota (1.5.0 — Adventure Update):** o inventário abaixo é um snapshot da
+> fase de modularização (v1.4.3). Desde então foram adicionados os módulos
+> `modules/adventure-map.js`, `modules/adventure-run.js`,
+> `modules/in-game-tutorial.js` e `modules/game-sounds.js`, mais
+> `data/adventures.js` e os assets `assets/cards/adventure/` + `assets/relics/`.
+> A referência **canônica e atual** da arquitetura está em
+> [`docs/architecture/`](docs/architecture/) e [`README.md`](README.md).
 
 ---
 

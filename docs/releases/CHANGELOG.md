@@ -5,6 +5,33 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-06-30 - 🗺️ Adventure Update
+
+### ✨ Added — Adventure Mode
+- **Procedural map** (3 acts, branching, always completable): node types Battle / Elite / Event / Merchant / Campfire / Treasure / Boss / Final Boss, with hover tooltips and a current‑position marker.
+- **Illustrated deck** — 31 hand‑inked card illustrations; type read instantly via coloured border + glyph.
+- **Difficulty = waves** per encounter (Easy 1 · Normal 2 · Hard 3) plus depth scaling.
+- **Deck‑building** — persistent run deck; campfire heal **or** cull; map merchant to buy/remove/sharpen cards and relics.
+- **Risk/reward depth** — choice‑driven events, cursed chests (curse cards injected into the deck), relic rewards from elites/treasure/bosses.
+- **Per‑class endgame** — unique motivation, final boss and ending for each of the 6 heroes (`data/adventures.js`).
+- **8 boss portraits** (6 per‑class finales + 2 act guardians) and **51 illustrated relic icons**, all generated offline by the new `tools/` AI art pipeline (keys env‑only, never shipped).
+
+### ✨ Added — Meta
+- Mode‑aware **achievements** (per mode × difficulty, speedrun, clear‑every‑hero) — 58 total.
+- **Dual leaderboards** (Classic / Adventure), sortable by **Top Score** or **Fastest** clear.
+- **Adventure first‑run tutorial** (distinct from Classic's interactive tutorial); updated Rules Reference for both modes.
+
+### 🐛 Fixed — Full QA pass
+- **Mode‑state leak (critical):** `adventureRun` and the corner merchant / Enter‑Chamber / Evade buttons weren't reset, breaking Classic after any Adventure run. Now reset on `startGame`.
+- **Adventure boss exploit (critical):** a boss could be "cleared" with no weapon (free relic + run victory). Boss now stays and deals damage until you fight it properly.
+- **Cross‑mode parity:** fixed a stale `StorageCache` desync that broke 7 generic achievements in both modes; Adventure now tracks events/shops/buys (Priest + shopper/event_master reachable in Adventure).
+- **Security/robustness:** escaped Google `displayName` in the sign‑in toast; fixed `joinWaitlist` Firefox crash; normalized the leaderboard name write; made `trapFocus` idempotent; guarded module‑load `JSON.parse`.
+- **UI:** clamped Adventure card‑art filenames to the range that exists (no 404s on sharpened weapons / depth‑scaled monsters).
+
+### 🛠️ Tech debt
+- Extracted the in‑game tutorial to `modules/in-game-tutorial.js` (game.js −438 lines; SFX already in `game-sounds.js`).
+- Extracted the most‑repeated inline styles into utility classes.
+
 ## [1.4.3] - 2025-11-26 - ⚡ Lighthouse Performance Update
 
 ### 🎯 Major Improvements

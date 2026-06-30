@@ -1,17 +1,17 @@
 <div align="center">
-  
+
 <img width="1310" height="165" alt="Image" src="https://github.com/user-attachments/assets/de61f7a0-3c7a-4ae4-b621-2b8e532061c3" />
 
 
-**A Dark Medieval Roguelike Card Game**
+**A Dark Medieval Roguelike Card Game — now with two modes**
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/6f6196d2-a8fd-451b-bb55-d57f2a5ad668/deploy-status)](https://app.netlify.com/projects/dungeonscoundrel/deploys)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-1.4.3-blue.svg)](https://github.com/ehgzao/DungeonScoundrel/releases)
+[![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](https://github.com/ehgzao/DungeonScoundrel/releases)
 [![PWA](https://img.shields.io/badge/PWA-100-brightgreen.svg)](https://web.dev/progressive-web-apps/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[🎮 Play Now](https://dungeonscoundrel.com/) | [📱 Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues)
+[🎮 Play Now](https://dungeonscoundrel.com/) | [🛡️ Security](SECURITY.md) | [🤝 Contributing](CONTRIBUTING.md) | [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues)
 
 </div>
 
@@ -20,14 +20,15 @@
 ## 📋 Table of Contents
 
 - [About](#-about)
+- [Two Game Modes](#-two-game-modes)
 - [Features](#-features)
-- [NEW: Mobile & PWA](#-new-mobile--pwa)
 - [How to Play](#-how-to-play)
 - [Classes](#-classes)
+- [Card Art Pipeline](#-card-art-pipeline)
 - [Technologies](#-technologies)
 - [Getting Started](#-getting-started)
 - [Development](#-development)
-- [Performance](#-performance)
+- [Performance & PWA](#-performance--pwa)
 - [Security](#-security)
 - [Contributing](#-contributing)
 - [Documentation](#-documentation)
@@ -38,220 +39,153 @@
 
 ## 🎯 About
 
-**Dungeon Scoundrel** is a **progressive web app (PWA)** roguelike deck-building card game where you navigate through treacherous dungeons using a standard deck of cards. Fight monsters, collect weapons, use potions, and unlock powerful relics to survive the depths!
+**Dungeon Scoundrel** is a **progressive web app (PWA)** roguelike deck‑building card game. Fight monsters, equip weapons, drink potions and collect relics to survive the dark. It ships with **two distinct modes** that share one engine: the pure **Classic** run and the procedural, illustrated **Adventure** mode.
 
-### 🎲 Game Concept
+- **🃏 Card‑based combat** — damage = monster value − weapon value; perfect kills build combos
+- **🔮 Progressive unlocks** — permanent upgrades and 6 unlockable heroes across runs
+- **🏆 Deep meta** — 58 achievements and a per‑mode global leaderboard (rank by score *or* fastest clear)
+- **🎵 Dynamic audio** — procedural Web Audio music with contextual themes
+- **📱 Play anywhere** — desktop, mobile, tablet, and fully offline after first load
 
-- **🃏 Card-Based Combat**: Use a deck of 50 cards (Monsters, Weapons, Potions, Specials)
-- **⚔️ Strategic Gameplay**: Manage resources, build combos, and choose when to fight or flee
-- **🔮 Progressive Unlocks**: Earn permanent upgrades across multiple runs
-- **👥 6 Unique Classes**: Each with distinct playstyles and abilities
-- **🏆 Achievement System**: 50 achievements to unlock
-- **🎵 Dynamic Music**: Procedural soundtrack with multiple themes
-- **📱 Play Anywhere**: Desktop, mobile, tablet - even offline!
+---
+
+## 🎴 Two Game Modes
+
+### ⚔️ Classic
+The original Scoundrel run. One full deck — clear the whole dungeon, chamber by chamber, without your health hitting zero. Minibosses appear deep in the run, then a final boss. The corner **Merchant** lets you spend gold mid‑run. This is the pure‑skill baseline and is intentionally kept faithful to the original.
+
+### 🗺️ Adventure
+A Slay‑the‑Spire‑style descent layered on the same engine:
+
+- **Procedural branching map** across 3 acts — choose your path node by node (hover any node for a tooltip).
+- **Node types:** ⚔️ Battle · 💀 Elite (drops a relic) · ❓ Event (real choices) · 🏛️ Merchant · 🔥 Campfire · 🎁 Treasure · 👹 Boss · ☠️ Final Boss.
+- **Illustrated deck** — every card is hand‑inked art; a coloured border + glyph tell you the type at a glance.
+- **Difficulty = waves** per encounter: Easy 1 · Normal 2 · Hard 3 (deeper nodes also hit harder).
+- **Deck‑building** — your run deck persists. Cull threats at campfires, buy/sharpen cards at the map merchant.
+- **Risk/reward depth** — cursed chests (extra loot but a curse joins your deck), choice‑driven events, limited campfires.
+- **Per‑class endgame** — each hero descends for their own reason and faces a **unique final boss + ending** tied to that motivation.
+
+Pick a mode from the main menu. Class unlocks, achievements (except the mode‑exclusive ones) and the leaderboard all work across **both** modes.
 
 ---
 
 ## ✨ Features
 
-### 🎮 Core Gameplay
-- ✅ **4 Difficulty Levels**: Easy, Normal, Hard, Endless
-- ✅ **50-Card Deck System**: Monsters (♠♣), Weapons (♦), Potions (♥), Specials (✨)
-- ✅ **Boss Battles**: Epic fights every 10 rooms
-- ✅ **Combo System**: Chain perfect kills for damage bonuses
-- ✅ **Hold Mechanic**: Strategic card management
-- ✅ **Events & Shops**: Random encounters with meaningful choices
+### 🎮 Core
+- ✅ **4 difficulties:** Easy, Normal, Hard, Endless
+- ✅ **Full card deck:** Monsters (♠♣), Weapons (♦), Potions (♥), Specials (✨)
+- ✅ **Combo system** — chain perfect kills for damage bonuses
+- ✅ **Hold mechanic** — right‑click / long‑press to stash a card
+- ✅ **Boss battles** — Classic minibosses + final boss; Adventure act bosses + per‑class finale
 
-### 🎭 Classes (6 Total)
-- **Scoundrel** 🎭 - Pure skill, no abilities (always unlocked)
-- **Knight** 🛡️ - Tank with Shield Bash and +5 HP
-- **Rogue** 🗡️ - Double hold slots, Shadow Strike
-- **Dancer** 💃 - Healing specialist with extra luck
-- **Berserker** 💢 - High risk/reward with Bloodlust
-- **Priest** 📿 - Divine protection and Purification
+### 🗺️ Adventure depth
+- ✅ Procedural map (fully connected, never impossible — a campfire before every boss, ≥1 shop per act, capped elites)
+- ✅ Persistent run deck + deck‑building (cull / buy / sharpen)
+- ✅ Choice events, cursed chests, curse cards
+- ✅ Relic rewards from elites/treasure/bosses → build variety
+- ✅ Six unique per‑class final bosses & endings
 
-### 🔓 Progression
-- **22 Permanent Unlocks**: Start with bonuses each run
-- **53 Relics**: Passive and active effects across 4 rarity tiers
-- **50 Achievements**: Bronze, Silver, Gold, Platinum
-- **Global Leaderboard**: Firebase-powered rankings
+### 🎨 Art
+- ✅ **31 illustrated deck cards** + **8 boss portraits** + **51 relic icons** — one cohesive dark dungeon‑synth woodcut style
+- ✅ Generated **offline at build time** (the site never embeds an API key) — see [Card Art Pipeline](#-card-art-pipeline)
 
-### 🎨 Polish & UX
-- 🌙 **Dark Medieval Theme** - Pixel-art inspired UI
-- 🎵 **Dynamic Music System** - 5 contextual tracks (menu, gameplay, boss, victory, defeat)
-- 🎨 **Visual Effects** - Particles, screen shake, animations
-- ♿ **Accessibility** - ARIA labels, keyboard navigation
-- 📱 **Mobile-Optimized** - Touch controls, haptic feedback
-- 🌐 **PWA Complete** - Install as app, offline capable
+### 🔓 Progression & meta
+- ✅ **6 classes** — one shared unlock system, satisfiable in either mode
+- ✅ **53 relics** (51 illustrated) across 4 rarity tiers
+- ✅ **58 achievements** — including per‑mode, per‑difficulty, speedrun and clear‑every‑hero
+- ✅ **Global leaderboard** — separate Classic / Adventure boards, sortable by **Top Score** or **Fastest** clear (Firebase)
 
----
-
-## 🆕 NEW: Mobile & PWA
-
-### **Version 1.4.3 - Lighthouse Performance Update!**
-
-#### ✅ Progressive Web App (PWA)
-- **Install as App**: Add to home screen on any device
-- **Offline Mode**: Play without internet after first load
-- **Service Worker**: Smart caching of all assets (11.5MB)
-- **Auto-Updates**: Notifies when new version available
-- **PWA Score**: 100/100 on Lighthouse
-
-#### 📱 Mobile Optimizations
-- **Lazy Loading**: Images load on-demand (-94% initial load)
-- **Adaptive Performance**: Detects device capabilities automatically
-- **Reduced Animations**: Optimized for low-end devices
-- **Touch-Friendly**: Long-press to hold, tap to play
-- **Responsive Layout**: Perfect on phones, tablets, desktops
-
-#### 💾 Enhanced Storage
-- **IndexedDB**: Robust save system with backup/restore
-- **LocalStorage Fallback**: Works everywhere
-- **Cloud Sync**: Optional Firebase integration
-- **Multiple Saves**: Store progress safely
-
-#### 📊 Performance Improvements
-
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| **Assets Size** | 9.5MB | 550KB | **-94%** 🎉 |
-| **Load Time** | ~5s | ~2s | **-60%** 🚀 |
-| **FPS (Mobile)** | 30 | 60 | **+100%** ⚡ |
-| **PWA Score** | 60 | 100 | **+40** ✨ |
-| **Offline** | ❌ | ✅ | **Working!** 💯 |
-
-See [Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md) for complete details.
+### 📱 Polish & platform
+- 🌙 Dark medieval theme · 🎵 dynamic music · 🎨 particles/screen‑shake · ♿ ARIA + keyboard nav
+- 🌐 **PWA** — installable, offline‑capable, auto‑update
 
 ---
 
 ## 🎮 How to Play
 
-### Basic Rules
+### Classic
+1. **Objective:** clear the whole dungeon deck without your HP reaching 0.
+2. **Each turn:** **⚔️ Enter Chamber** (draw 4 cards) or **🛡️ Evade** (send 3 cards to the bottom). You cannot Evade twice in a row.
+3. **Clear the chamber:** use or discard all 4 cards to advance.
 
-1. **🎯 Objective**: Clear all 50 cards without dying (HP ≤ 0)
+### Adventure
+1. **Objective:** descend the map to your hero's own final boss and defeat it.
+2. **Pick a node** each step (only connected nodes ahead are selectable). Combat plays out inside the node — across multiple waves on higher difficulty.
+3. **Build between fights:** heal or cull at campfires, deck‑build at merchants, weigh cursed chests and event choices.
 
-2. **🏃 Actions Each Turn**:
-   - **Enter Dungeon** (Draw 4 cards) OR
-   - **Avoid Dungeon** (Discard 3 cards from top)
-   - ⚠️ Cannot avoid twice in a row (unless you have Four Leaf Clover)
-
-3. **🃏 Card Types**:
-   - **Monsters** (♠ Spades, ♣ Clubs) - Enemies to fight
-   - **Weapons** (♦ Diamonds) - Equip to deal damage
-   - **Potions** (♥ Hearts) - Heal HP (1 per room limit)
-   - **Specials** (✨) - Powerful one-time effects
-
-4. **⚔️ Combat**:
-   ```
-   Damage Taken = Monster Value - Your Weapon Value
-   ```
-   - Perfect kill (no damage) = Build combo!
-   - Taking damage = Reset combo to 0
-   - No weapon = Take full monster damage
-
-5. **🔥 Combo System**:
-   - Chain perfect kills for bonus damage
-   - 2x combo = +1 damage, 3x = +2 damage, etc.
-   - Breaks when taking damage or equipping new weapon
-   - Higher combos = Better score multiplier
-
-### Advanced Mechanics
-
-- **Hold System**: Save cards for later (Right-click or long-press on mobile)
-- **Weapon Durability**: Weapons break after X uses (varies by difficulty)
-- **Boss Rooms**: Every 10th room, face powerful multi-HP bosses
-- **Events**: Random encounters with risk/reward choices
-- **Shop**: Buy upgrades with gold (costs score penalty!)
-- **Relics**: Passive and active effects that stack
+### Card types & combat (both modes)
+- **Monsters** (♠♣) — click to fight. `Damage Taken = Monster Value − Weapon Value` (0 if your weapon is stronger).
+- **Weapons** (♦) — click to equip (replaces current; weapons have durability).
+- **Potions** (♥) — heal (limited uses per room).
+- **Specials** (✨) — one‑time powerful effects.
+- **Combo:** perfect kills (no damage taken) chain for bonus damage; breaks on damage or re‑equip.
 
 ---
 
 ## 👥 Classes
 
-| Class | Unlock Requirement | Passive Ability | Active Ability | Playstyle |
-|-------|-------------------|-----------------|----------------|-----------|
-| 🎭 **Scoundrel** | Always unlocked | None | None | Pure skill baseline |
-| 🛡️ **Knight** | Win on Easy | +5 HP, +1 Durability | Shield Bash (3 CD) | Tanky and consistent |
-| 🗡️ **Rogue** | Win on Normal | 2 Hold slots, +1 Gold/room | Shadow Strike (4 CD) | Flexible combos |
-| 💃 **Dancer** | Win on Hard | Potions +3 HP, 2 uses/room, +15% events | Healing Dance (5 CD) | Sustain specialist |
-| 💢 **Berserker** | Hard + 5 bosses | Bloodlust: +dmg at low HP | Rage Strike (4 CD) | High risk/reward |
-| 📿 **Priest** | 20 relics + 10 events + 5 wins | 15% dodge, Potions +2 HP | Purification (6 CD) | Safe and strategic |
+One unlock system, shared by both modes. Scoundrel is always available; the rest unlock from your lifetime stats.
+
+| Class | Unlock Requirement | Passive | Active | Playstyle |
+|-------|-------------------|---------|--------|-----------|
+| 🎭 **Scoundrel** | Always unlocked | None | None | Pure‑skill baseline |
+| 🛡️ **Knight** | Win on Easy | +5 HP, +1 durability | Shield Bash | Tanky, consistent |
+| 🗡️ **Rogue** | Win on Normal | 2 hold slots, +1 gold/room | Shadow Strike | Flexible combos |
+| 💃 **Dancer** | Win on Hard | Potions +HP, 2/room, +events | Healing Dance | Sustain |
+| 💢 **Berserker** | Hard win + 5 bosses | Bloodlust at low HP | Rage Strike | High risk/reward |
+| 📿 **Priest** | 20 relics + 10 events + 5 wins | Dodge chance, +potion HP | Purification | Safe, strategic |
+
+Each hero also has a unique **Adventure** motivation, final boss and ending (see `public/src/js/data/adventures.js`).
+
+---
+
+## 🖌 Card Art Pipeline
+
+The illustrated Adventure deck, boss portraits and relic icons are generated **offline, at build time** — the shipped static site **never contains an API key**.
+
+```bash
+# 1) generate raw PNGs (provider key from env only)
+GEMINI_API_KEY=... node tools/generate.mjs --provider gemini
+# (OpenAI also supported: OPENAI_API_KEY=... node tools/generate.mjs --provider openai)
+
+# 2) optimize -> web-ready WebP under public/assets/
+node tools/optimize.mjs --provider gemini --size 760 --ratio 0.706
+```
+
+- `tools/cards.config.mjs` — the manifest: deck cards, bosses and relic icons + the shared style preamble.
+- `tools/generate.mjs` — OpenAI/Gemini image generation (`--dry-run`, `--skip-existing`, `--no-anchor`, `--match`).
+- `tools/optimize.mjs` — headless‑canvas resize/crop → WebP (`--match`, `--outdir`).
+- Keys are read from environment variables only; `tools/.gitignore` excludes raw art and `.env`.
 
 ---
 
 ## 🛠 Technologies
 
-### Frontend
-- **HTML5** - Semantic markup
-- **CSS3** - Custom properties, animations, responsive design
-- **Vanilla JavaScript ES6+** - Modular architecture, no frameworks
-- **Web Audio API** - Procedural sound effects and music
-
-### PWA & Performance
-- **Service Workers** - Workbox 7.0 for smart caching
-- **IndexedDB** - Robust client-side database
-- **Lazy Loading** - Progressive image loading
-- **Adaptive Performance** - Device-specific optimizations
-
-### Backend & Services
-- **Firebase Firestore** - Leaderboard and cloud saves
-- **Firebase Auth** - Anonymous authentication
-- **EmailJS** - Bug reporting system
-- **Netlify** - Hosting, CI/CD, CDN
-
-### Tools & Build
-- **npm** - Package management
-- **Workbox CLI** - Service Worker generation
-- **Git** - Version control
-- **ESLint** (recommended) - Code quality
+- **Frontend:** HTML5, CSS3 (custom properties, animations), **vanilla ES6+ JavaScript** (modular, no frameworks), Web Audio API.
+- **PWA & performance:** Service Worker (Workbox), IndexedDB + localStorage, lazy loading, adaptive performance.
+- **Backend & services:** Firebase Firestore (leaderboard + cloud saves), Firebase Auth (anonymous), EmailJS (bug reports), Netlify (hosting/CI/CD/CDN).
+- **Build‑time art:** Node 18+ image‑gen pipeline (OpenAI / Gemini) — offline, never shipped.
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- Node.js 14+ (for development)
-- Internet connection (initial load only, then works offline!)
+- A modern browser; Node.js 18+ for development.
 
-### Quick Start
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/ehgzao/DungeonScoundrel.git
-   cd DungeonScoundrel
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Generate Service Worker**
-   ```bash
-   npm run build:sw
-   ```
-
-4. **Run locally**
-   ```bash
-   npm run dev
-   # Opens at http://localhost:8080
-   ```
-
-5. **Play!**
-   - Desktop: Open in browser
-   - Mobile: Add to home screen for app-like experience
-
-### Alternative: Static Server
-
+### Quick start
 ```bash
-# Python
-python -m http.server 8080
+git clone https://github.com/ehgzao/DungeonScoundrel.git
+cd DungeonScoundrel
+npm install
+npm run build:sw      # generate the Service Worker
+npm run dev           # serves public/ at http://localhost:8080
+```
 
-# Node.js
+### Alternative static servers
+```bash
+python -m http.server 8080 --directory public
 npx serve public
-
-# PHP
 php -S localhost:8080 -t public
 ```
 
@@ -259,346 +193,138 @@ php -S localhost:8080 -t public
 
 ## 💻 Development
 
-### Project Structure
-
+### Project structure
 ```
 DungeonScoundrel/
-├── public/                    # Production files (served)
-│   ├── index.html            # Main game file
-│   ├── assets/               # Images, icons
-│   │   ├── images/           # Avatars, backgrounds (WebP optimized)
-│   │   └── icons/            # Favicons
-│   ├── src/
-│   │   ├── js/
-│   │   │   ├── modules/      # Game modules (state, shop, relics, events)
-│   │   │   ├── systems/      # Game systems (achievements, stats, music)
-│   │   │   ├── utils/        # Utilities (helpers, mobile-optimization, offline-storage)
-│   │   │   ├── data/         # Game data (relics, shop items)
-│   │   │   └── core/         # Core systems (Firebase, audio, errors)
-│   │   ├── css/              # Stylesheets
-│   │   └── config/           # Firebase configuration
-│   ├── sw.js                 # Service Worker (generated)
-│   └── site.webmanifest      # PWA manifest
-├── docs/                      # Project documentation
-│   ├── guides/               # Roadmaps and planning
-│   ├── architecture/         # Technical structure
-│   ├── releases/             # Changelog and releases
-│   ├── security/             # Security audits
-│   ├── development/          # Dev process
-│   ├── mobile/               # Mobile implementation
-│   └── merge-history/        # Archived merge docs
-├── scripts/                   # Build and deploy scripts
-├── package.json              # npm configuration
-├── workbox-config.js         # Service Worker config
-├── SECURITY.md               # Security policy (245 lines)
-├── README.md                 # This file
-└── LICENSE                   # MIT License
+├── public/                       # Production site (served)
+│   ├── index.html
+│   ├── assets/
+│   │   ├── images/               # Class avatars, backgrounds (WebP)
+│   │   ├── icons/                # Favicons / PWA icons
+│   │   ├── cards/adventure/      # 31 illustrated deck cards + 8 boss portraits
+│   │   └── relics/               # 51 illustrated relic icons
+│   └── src/
+│       ├── js/
+│       │   ├── game.js           # Main loop (type=module)
+│       │   ├── modules/          # adventure-map, adventure-run, in-game-tutorial,
+│       │   │                     #   game-combat/deck/shop/relics/events/classes/state, game-sounds
+│       │   ├── systems/          # achievements, stats, leaderboard, music, codex
+│       │   ├── data/             # game-data (relics/shop), adventures (per-class endgame)
+│       │   ├── utils/            # helpers, mobile-optimization, offline-storage
+│       │   ├── core/             # firebase-auth, audio-context, error-handler
+│       │   └── config/           # game-constants, firebase config
+│       └── styles/               # CSS
+├── tools/                        # Build-time AI card-art pipeline (keys env-only)
+├── docs/                         # Architecture, releases, security, performance docs
+├── scripts/                      # Build / dev helper scripts
+├── firestore.rules · firebase.json · netlify.toml · workbox-config.js
+└── README · SECURITY · CONTRIBUTING · BACKLOG · SYSTEM_MAP · LICENSE
 ```
 
-### npm Scripts
+> **Architecture note:** `game.js` is an ES module and exposes shared functions on `window.*`. Classic scripts loaded **after** it (`adventure-run.js`, `in-game-tutorial.js`, `codex.js`, …) consume those globals. Keep this load order in mind when moving code across the module/classic boundary.
 
+### npm scripts
 ```bash
-npm run dev          # Start local development server
-npm run build:sw     # Generate Service Worker
-npm run deploy       # Deploy to Netlify (production)
+npm run dev        # local dev server (public/)
+npm run build:sw   # generate the Service Worker
+npm run deploy     # deploy to Netlify (production)
 ```
 
-### Development Workflow
-
-1. **Create a feature branch**
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Make changes**
-   - Code in `public/` directory
-   - Test in multiple browsers
-   - Check mobile responsiveness
-
-3. **Test thoroughly**
-   - All difficulty levels
-   - All classes and abilities
-   - Mobile/desktop compatibility
-   - Offline functionality
-   - Achievement unlocking
-
-4. **Commit with meaningful messages**
-   ```bash
-   git commit -m "feat: Add Lucky Horseshoe relic"
-   ```
-
-5. **Push and create PR**
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-### Code Style Guide
-
-- **JavaScript**: ES6+, `const` over `let`, descriptive names
-- **HTML**: Semantic markup, ARIA labels
-- **CSS**: BEM naming, CSS custom properties
-- **Comments**: JSDoc for functions, explain complex logic
-- **Modules**: One responsibility per file, clear exports
+### Conventions
+- ES6+, `const` over `let`, descriptive names, JSDoc on functions.
+- One responsibility per module; clear exports / `window.*` surface.
+- Bump the `?v=` cache‑bust in `index.html` when you change shipped JS/CSS.
+- Branch → PR → CI (Netlify deploy preview) → squash‑merge.
 
 ---
 
-## 📊 Performance
+## 📊 Performance & PWA
 
-### Current Metrics (v1.4.3)
-
-#### Desktop
-- **Load Time**: < 2s (4G connection)
-- **FPS**: 60fps constant
-- **Lighthouse Score**: 95/100
-  - Performance: 92
-  - Accessibility: 98
-  - Best Practices: 95
-  - SEO: 97
-  - **PWA: 100** ⭐
-
-#### Mobile
-- **Load Time**: ~2s (4G), instant after cache
-- **FPS**: 60fps on mid-range devices
-- **Battery**: Optimized (reduced animations on low-end)
-- **Data Usage**: 550KB initial, 0KB after cache
-
-#### Offline
-- ✅ **100% functional** after first load
-- ✅ Service Worker caches 49 files (11.5MB)
-- ✅ All game features work offline
-- ✅ Leaderboard syncs when online
-
-### Optimization Techniques
-
-- **Lazy Loading**: Images load on-demand
-- **WebP Format**: 94% smaller than JPEG
-- **Code Splitting**: Modular architecture
-- **Adaptive Performance**: Device detection
-- **Smart Caching**: Workbox strategies
-- **Reduced Animations**: Mobile/low-end optimization
-
-See [Mobile Progress Report](docs/mobile/MOBILE_PROGRESS.md) for detailed metrics.
+- **Installable PWA** (100/100 PWA score) — add to home screen on any device.
+- **Offline**: fully playable after first load (Service Worker caches assets).
+- **Fast**: lazy‑loaded images, WebP everywhere, adaptive performance for low‑end devices.
+- See [docs/PERFORMANCE_MAP.md](docs/PERFORMANCE_MAP.md) and [docs/LIGHTHOUSE_BACKLOG.md](docs/LIGHTHOUSE_BACKLOG.md).
 
 ---
 
 ## 🔒 Security
 
-We take security seriously. Please review our [Security Policy](SECURITY.md) for:
+Review the [Security Policy](SECURITY.md) for reporting and supported versions. Highlights:
 
-- **Supported Versions**: Which versions receive security updates
-- **Reporting Vulnerabilities**: How to report security issues privately
-- **Response Timeline**: What to expect when reporting
-- **Security Features**: Built-in protections
-- **Hall of Fame**: Contributors who helped secure the game
+- ✅ HTTPS‑only (Netlify), CSP headers
+- ✅ Firestore security rules; anonymous auth only
+- ✅ Input sanitization + output escaping on all shared/user data (leaderboard, names, profile)
+- ✅ No secrets in the shipped site — image‑gen keys are build‑time/env only
 
-### Quick Security Tips
-
-- ✅ HTTPS-only (enforced by Netlify)
-- ✅ Content Security Policy headers
-- ✅ Firebase security rules
-- ✅ Input sanitization
-- ✅ No sensitive data in localStorage
-- ✅ Anonymous authentication only
-
-**Found a vulnerability?** Please report it privately via [GitHub Security Advisories](https://github.com/ehgzao/DungeonScoundrel/security/advisories/new).
+**Found a vulnerability?** Report it privately via [GitHub Security Advisories](https://github.com/ehgzao/DungeonScoundrel/security/advisories/new).
 
 ---
 
 ## 🤝 Contributing
 
-We love contributions! Whether it's code, art, music, or documentation - all help is welcome.
+Contributions of code, art, music and docs are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-### Quick Start for Contributors
-
-1. **Fork** the repository
-2. **Clone** your fork
-3. **Create** a feature branch
-4. **Make** your changes
-5. **Test** thoroughly
-6. **Commit** with clear messages
-7. **Push** to your fork
-8. **Open** a Pull Request
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
-
-### Areas We Need Help
-
-- 🎨 **UI/UX Design**: Visual improvements, animations
-- 🎵 **Music & Sound**: Additional tracks, SFX variations
-- 🌍 **Localization**: Translate to other languages
-- 🐛 **Bug Fixes**: Check [open issues](https://github.com/ehgzao/DungeonScoundrel/issues)
-- ⚡ **Performance**: Optimize code and assets
-- 📚 **Documentation**: Tutorials, guides, API docs
-- 🎮 **Game Design**: New relics, classes, mechanics
-- 🧪 **Testing**: QA on different devices
+**Good first areas:** new relics/events, Adventure balance, UI/UX polish, localization, accessibility, additional card/boss art.
 
 ---
 
 ## 📚 Documentation
 
-### Main Docs
-- **[README.md](README.md)** - This file (overview and setup)
-- **[SECURITY.md](SECURITY.md)** - Security policy and reporting
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
-- **[LICENSE](LICENSE)** - MIT License
-
-### Mobile & PWA
-- **[Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md)** - Complete mobile implementation guide (1308 lines)
-- **[Mobile Progress](docs/mobile/MOBILE_PROGRESS.md)** - Phase 1 tracking (Weeks 1-2 complete)
-- **[Merge Analysis](docs/merge-history/MERGE_ANALYSIS.md)** - Code review and compatibility analysis
-- **[Merge Guide](docs/merge-history/MERGE_GUIDE.md)** - Git workflow for mobile branch
-
-### Development
-- **[CHANGELOG.md](docs/releases/CHANGELOG.md)** - Version history and changes
-- **[BACKLOG_PRIORIZADO.md](docs/guides/BACKLOG_PRIORIZADO.md)** - Prioritized feature backlog
-- **[MODULES.md](docs/architecture/MODULES.md)** - Module architecture documentation
-
-**Total Documentation**: 4100+ lines across 11 files
+- [SECURITY.md](SECURITY.md) — security policy & reporting
+- [CONTRIBUTING.md](CONTRIBUTING.md) — contribution guide
+- [BACKLOG.md](BACKLOG.md) — roadmap & shirt‑sized backlog (Adventure, art, QA)
+- [SYSTEM_MAP.md](SYSTEM_MAP.md) — high‑level system map
+- [docs/architecture/](docs/architecture/) — modules, structure, dependency maps
+- [docs/releases/CHANGELOG.md](docs/releases/CHANGELOG.md) — version history
+- [docs/security/SECURITY_AUDIT.md](docs/security/SECURITY_AUDIT.md) — security audit
+- [docs/guides/MOBILE_ROADMAP.md](docs/guides/MOBILE_ROADMAP.md) — mobile plan
 
 ---
 
 ## 🗺️ Roadmap
 
-### ✅ Version 1.4.3 (Current - COMPLETE)
-- ✅ Mobile PWA implementation (Phase 1)
-- ✅ Service Worker and offline mode
-- ✅ IndexedDB for robust saves
-- ✅ Performance optimizations (60 FPS mobile, -60% load time)
-- ✅ Cloud saves working
-- ✅ Security audit and improvements
+### ✅ 1.5.0 — Adventure Update (current)
+- ✅ Adventure mode: procedural map, illustrated deck, deck‑building, waves‑by‑difficulty
+- ✅ Per‑class final bosses & endings; relic rewards; choice events; cursed chests
+- ✅ Full illustrated art set (deck + bosses + relics), built offline
+- ✅ Mode‑aware achievements & dual leaderboards (score / fastest)
+- ✅ Classic and Adventure tutorials + updated Rules Reference
+- ✅ Full cross‑system QA pass (state, logic, security, UI)
 
-### 🔄 Version 1.5.0 (Next - Planned)
-- ⏳ Additional language support
-- ⏳ Advanced tutorial for experienced players
-- ⏳ Tutorial replay option in menu
-- ⏳ Touch-friendly UI improvements
-- ⏳ Mobile tooltips (tap instead of hover)
+### 🔄 Next
+- ⏳ Interactive (step‑by‑step) Adventure walkthrough
+- ⏳ More events & relics; per‑class node weighting
+- ⏳ Mobile‑portrait dedicated layout; tap tooltips
+- ⏳ Additional languages
 
-### 📱 Version 2.0 (Future - Q1 2026)
-- [ ] Native mobile apps (Capacitor)
-- [ ] iOS App Store release
-- [ ] Google Play Store release
-- [ ] In-App Purchases (remove ads, starter packs)
-- [ ] Push notifications (daily rewards)
-- [ ] Native features (Game Center, Google Play Games)
-
-### 🎮 Version 2.5 (Future - Q2 2026)
-- [ ] Multiplayer mode (async PvP)
-- [ ] Daily challenges with leaderboard
-- [ ] Seasonal events
-- [ ] New class: Mage 🧙
-- [ ] More relics (70 total)
-- [ ] Card crafting system
-
-### 🔧 Version 3.0 (Long-term Vision)
-- [ ] Mod support (custom cards, relics)
-- [ ] Level editor (community dungeons)
-- [ ] Steam release (desktop app)
-- [ ] Achievements via Steam/Epic
-- [ ] Cloud save sync across platforms
-- [ ] Localization (10+ languages)
-
-See [Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md) for detailed Phase 2 planning.
+### 🔮 Longer term
+- Native apps (Capacitor), daily challenges, more heroes, mod/level‑editor support.
 
 ---
 
 ## 📜 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License - Copyright (c) 2025 ehgzao
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-[Full license text in LICENSE file]
-```
+MIT — see [LICENSE](LICENSE). Copyright (c) 2025 ehgzao.
 
 ---
 
 ## 🙏 Acknowledgments
 
-### Inspiration
-- **Balatro** - UI/UX design and visual polish
-- **Slay the Spire** - Roguelike deck-building mechanics
-- **Inscryption** - Card game innovation and atmosphere
-
-### Assets
-- **Google Fonts** - Cinzel, Cinzel Decorative, MedievalSharp
-- **AI-Generated Art** - Class avatars and background (via Midjourney)
-- **Custom Pixel Art** - UI elements and icons
-
-### Technologies
-- **Firebase** - Backend as a Service
-- **Netlify** - Hosting and CI/CD
-- **EmailJS** - Email integration
-- **Workbox** - PWA toolkit by Google
-- **Web Audio API** - Procedural audio synthesis
-
-### Community
-- All contributors and playtesters
-- The roguelike community on Reddit
-- Open source maintainers
-- Early access players who provided feedback
-
----
-
-## 📞 Contact & Support
-
-### Play & Connect
-- **🌐 Play Now**: [dungeonscoundrel.com](https://dungeonscoundrel.com/)
-- **🐛 Bug Reports**: [GitHub Issues](https://github.com/ehgzao/DungeonScoundrel/issues)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/ehgzao/DungeonScoundrel/discussions)
-- **📧 Email**: hello@dungeonscoundrel.com (or use in-game bug report)
-
-### Developer
-- **👨‍💻 GitHub**: [@ehgzao](https://github.com/ehgzao)
-- **🔗 Repository**: [DungeonScoundrel](https://github.com/ehgzao/DungeonScoundrel)
-
-### Resources
-- **📚 Full Documentation**: [docs/](docs/)
-- **🛡️ Security Policy**: [SECURITY.md](SECURITY.md)
-- **🛡️ Security Audit**: [SECURITY_AUDIT.md](docs/security/SECURITY_AUDIT.md)
-- **🗺️ Mobile Roadmap**: [MOBILE_ROADMAP.md](docs/guides/MOBILE_ROADMAP.md)
-- **📝 Changelog**: [CHANGELOG.md](docs/releases/CHANGELOG.md)
-
----
-
-## 🎯 Quick Links
-
-| Resource | Description |
-|----------|-------------|
-| [🎮 Play Game](https://dungeonscoundrel.com/) | Start playing now (PWA, works offline!) |
-| [📱 Mobile Guide](docs/guides/MOBILE_ROADMAP.md) | Complete mobile implementation roadmap |
-| [🛡️ Security](SECURITY.md) | Report vulnerabilities, security policy |
-| [🐛 Report Bug](https://github.com/ehgzao/DungeonScoundrel/issues/new) | Found a bug? Let us know |
-| [✨ Request Feature](https://github.com/ehgzao/DungeonScoundrel/issues/new) | Have an idea? Share it |
-| [📖 Documentation](docs/) | Read all docs (organized by category) |
-| [🤝 Contributing](CONTRIBUTING.md) | Join the development |
-| [📜 License](LICENSE) | MIT License details |
+- **Inspiration:** Balatro (polish), Slay the Spire (run structure), Inscryption (atmosphere).
+- **Fonts:** Cinzel, Cinzel Decorative, MedievalSharp (Google Fonts).
+- **Art:** class avatars & backgrounds via Midjourney; the illustrated Adventure deck, boss portraits and relic icons generated with Google **Gemini** (`gemini-2.5-flash-image`), composed offline by the `tools/` pipeline.
+- **Tech:** Firebase, Netlify, EmailJS, Workbox, Web Audio API.
 
 ---
 
 <div align="center">
 
-**Made with ❤️ by [ehgzao](https://github.com/ehgzao)**
+**Made with ❤️ by [ehgzao](https://github.com/ehgzao)** · ⭐ Star the repo if you enjoy it!
 
-⭐ **Star this repo if you enjoy the game!** ⭐
+[🎮 Play Now](https://dungeonscoundrel.com/) | [🛡️ Security](SECURITY.md) | [🐛 Report Issue](https://github.com/ehgzao/DungeonScoundrel/issues)
 
-[![Star on GitHub](https://img.shields.io/github/stars/ehgzao/DungeonScoundrel?style=social)](https://github.com/ehgzao/DungeonScoundrel)
-[![Fork on GitHub](https://img.shields.io/github/forks/ehgzao/DungeonScoundrel?style=social)](https://github.com/ehgzao/DungeonScoundrel/fork)
+**Version 1.5.0 — Adventure Update** · PWA 100/100 · Offline Ready
 
-[🎮 Play Now](https://dungeonscoundrel.com/) | [📱 Mobile Roadmap](docs/guides/MOBILE_ROADMAP.md) | [🛡️ Security](SECURITY.md) | [🐛 Report Issue](https://github.com/ehgzao/DungeonScoundrel/issues)
-
-**Version 1.4.3** | **PWA Score: 100/100** | **Offline Ready** | **Lighthouse Optimized**
-
----
-
-*Dungeon Scoundrel is a free, open-source game. No ads, no tracking, no microtransactions.*
+*Free and open source. No ads, no tracking, no microtransactions.*
 
 </div>

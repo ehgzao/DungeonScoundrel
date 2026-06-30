@@ -690,7 +690,7 @@ document.addEventListener('keydown', (e) => {
     if (!gameWrapper.classList.contains('active') || game.gameOver) return;
     
     switch(e.key.toLowerCase()) {
-        case ' ': // Space - Draw Room
+        case ' ': // Space - Enter Chamber
         case KEYS.DRAW:
             e.preventDefault();
             if (!btnDrawRoom.disabled) {
@@ -698,7 +698,7 @@ document.addEventListener('keydown', (e) => {
             }
             break;
             
-        case KEYS.AVOID: // A - Avoid Room
+        case KEYS.AVOID: // A - Evade
             e.preventDefault();
             if (!btnAvoidRoom.disabled) {
                 btnAvoidRoom.click();

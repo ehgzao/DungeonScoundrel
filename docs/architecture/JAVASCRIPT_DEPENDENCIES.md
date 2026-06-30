@@ -2,20 +2,36 @@
 
 ## Load Order (CRITICAL - Do not change!)
 
+Current `index.html` order (defer; modules are deferred by spec and run in document order with the classic `defer` scripts):
+
 ```
-1. error-handler.js          (Must load first - catches all errors)
-2. inline-scripts.js          (Waitlist, email, bug reports)
-3. firebase-auth.js           (Authentication)
-4. helpers.js                 (Utilities - exposes trapFocus, hapticFeedback)
-5. achievements.js            (Exposes ACHIEVEMENTS, loadAchievements)
-6. game-data.js               (Exposes RELICS, SHOP_ITEMS, EVENTS)
-7. stats.js                   (Stats tracking)
-8. leaderboard.js             (Leaderboard system)
-9. audio-context.js           (Audio initialization)
-10. music.js                  (Music system - exposes music)
-11. game.js                   (Main game - exposes UNLOCKS, permanentUnlocks, game, etc.)
-12. codex.js                  (MUST load AFTER game.js - depends on UNLOCKS, permanentUnlocks)
+1.  silent-logging.js          (logging shims - first)
+2.  error-handler.js           (global error capture)
+3.  inline-scripts.js          (waitlist, email, bug reports)
+4.  firebase-config.js         (Firebase web config)
+5.  firebase-auth.js           [MODULE] (authentication)
+6.  helpers.js                 (utilities - storage, trapFocus, hapticFeedback, startInteractiveTutorial)
+7.  mobile-optimization.js
+8.  offline-storage.js
+9.  achievements.js            (ACHIEVEMENTS, unlockAchievement, checkAchievements)
+10. game-data.js               (RELICS, SHOP_ITEMS, EVENTS)
+11. stats.js                   (lifetime stats; updateLifetimeStats)
+12. leaderboard.js             (leaderboard; switchLeaderboardMode/Sort)
+13. audio-context.js
+14. music.js                   (window.music)
+15. init-emailjs.js
+16. firebase-ready.js
+17. game.js                    [MODULE] (main loop; exposes game, drawRoom, checkGameState, STORAGE_KEYS, createCardElement, …)
+18. codex.js                   (AFTER game.js - needs UNLOCKS/permanentUnlocks/RELICS)
+19. adventure-map.js           [MODULE] (window.AdventureMap - procedural map)
+20. adventure-run.js           (AFTER game.js - window.AdventureRun; reuses window.drawRoom/checkGameState)
+21. in-game-tutorial.js        (AFTER game.js - window.InGameTutorial; Classic first-play)
+22. register-sw.js             (service worker)
 ```
+
+> game.js + game-sounds.js are ES modules; the Adventure/tutorial/codex classic
+> scripts load **after** game.js and consume its `window.*` API (engine reuse via
+> the `game.adventureRun` flag, not monkey-patching).
 
 ---
 
@@ -92,6 +108,8 @@ window.music
 window.showLeaderboard
 window.loadLeaderboardForDifficulty
 window.switchLeaderboardDifficulty
+window.switchLeaderboardMode    // Classic / Adventure board
+window.switchLeaderboardSort    // Top Score / Fastest
 ```
 
 ### From **game.js**:
@@ -119,6 +137,18 @@ window.tryGiveUp
 window.closeShopWrapper
 window.closeEventWrapper
 window.confirmGiveUp
+window.drawRoom          // engine entry reused by Adventure
+window.checkGameState    // Adventure intercepts here via game.adventureRun
+window.STORAGE_KEYS      // for in-game-tutorial.js
+window.sanitizePlayerName
+window.ADV_ART_VER
+```
+
+### From **adventure-map.js** / **adventure-run.js** / **in-game-tutorial.js**:
+```javascript
+window.AdventureMap        // generateAdventureMap, start, renderInto, openScreen…
+window.AdventureRun        // start, enter, afterEncounterCleared… (reuses window.drawRoom/checkGameState)
+window.InGameTutorial      // check, isActive, skip, complete (+ legacy checkAndStartTutorial/skipTutorial/completeTutorial)
 ```
 
 ### From **codex.js**:
