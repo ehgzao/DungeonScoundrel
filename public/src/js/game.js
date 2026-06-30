@@ -2723,7 +2723,12 @@ function createCardElement(card) {
             // across the two monster suits; value/suit as a corner badge since
             // the art carries no numbers.
             cardEl.classList.add('adventure-art');
-            cardEl.style.backgroundImage = `url('assets/cards/adventure/${type}_${card.numValue}.webp?v=${ADV_ART_VER}')`;
+            // Clamp to the art that actually exists (monster 2-14, weapon/potion
+            // 2-10). Sharpened weapons (up to 13) and depth-scaled monsters (can
+            // exceed 14) would otherwise 404; the gameplay value is unchanged.
+            const artMax = type === 'monster' ? 14 : 10;
+            const artVal = Math.min(Math.max(card.numValue, 2), artMax);
+            cardEl.style.backgroundImage = `url('assets/cards/adventure/${type}_${artVal}.webp?v=${ADV_ART_VER}')`;
             cardEl.style.backgroundSize = 'cover';
             cardEl.style.backgroundPosition = 'center top';
             cardEl.style.backgroundRepeat = 'no-repeat';
