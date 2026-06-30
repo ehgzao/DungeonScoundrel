@@ -182,7 +182,7 @@ export function buyItem(item, finalPrice) {
         const saved = localStorage.getItem('scoundrel_lifetime_stats');
         let lifetimeStats = saved ? JSON.parse(saved) : {};
         lifetimeStats.itemsBought = (lifetimeStats.itemsBought || 0) + 1;
-        localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
+        localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
         
         if (typeof window.updateUI === 'function') window.updateUI();
         updateShopDisplay(); // Re-render shop
@@ -198,11 +198,14 @@ export function buyItem(item, finalPrice) {
  * Open shop modal
  */
 export function openShop() {
+    // Adventure has its own map merchant node — the linear corner shop is hidden
+    // there, but the 'S' shortcut could still reach this. Block it in Adventure.
+    if (game.adventureRun) return;
     if (!shopModal) {
         console.error('[SHOP] Shop modal not initialized!');
         return;
     }
-    
+
     updateShopDisplay();
     
     // Disable game buttons
@@ -222,7 +225,7 @@ export function openShop() {
     const saved = localStorage.getItem('scoundrel_lifetime_stats');
     let lifetimeStats = saved ? JSON.parse(saved) : {};
     lifetimeStats.shopsVisited = (lifetimeStats.shopsVisited || 0) + 1;
-    localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats));
+    localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
     
     if (typeof window.checkAchievements === 'function') {
         window.checkAchievements();

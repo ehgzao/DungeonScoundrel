@@ -376,12 +376,13 @@ const nameError = document.getElementById('nameError');
 
 // Sanitize player name input (XSS prevention)
 function sanitizePlayerName(input) {
-    return input
+    return String(input || '')
         .trim()
         .replace(/[<>'"&]/g, '') // Remove dangerous chars
         .replace(/\s+/g, ' ')     // Collapse multiple spaces
         .substring(0, 10);         // Max 10 chars
 }
+window.sanitizePlayerName = sanitizePlayerName; // QA: shared with leaderboard write path
 
 // Clear error on input
 playerNameInput.oninput = () => {
@@ -1052,6 +1053,18 @@ function startGame() {
     if (game.mode !== 'adventure') showMessage(`Game started! Enter a dungeon to begin.`, 'info');
     
     btnStartGameModal.disabled = true; // Prevent double click
+
+    // QA cross-mode reset: a prior Adventure run sets game.adventureRun=true and
+    // hides the linear controls (adventure-run.js). Clear that here so a Classic
+    // game started in the same session isn't broken (stale adventure code paths)
+    // or left with the corner merchant / draw / evade buttons hidden. Adventure
+    // re-applies its own state immediately after via AdventureRun.start().
+    game.adventureRun = false;
+    ['btnOpenShop', 'btnDrawRoom', 'btnAvoidRoom'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = '';
+    });
+
     btnDrawRoom.removeAttribute('disabled');
     btnDrawRoom.disabled = false;
     // First action must be Draw, not Avoid
@@ -1689,6 +1702,7 @@ function endGame(reason, gaveUp = false) {
     // Update permanent stats
     updateLifetimeStats(reason, gaveUp); // Save stats
     checkAchievements(); // Check one last time
+    checkClassUnlocks(); // QA: re-derive class unlocks at end-of-run (both modes)
     savePermanentStats(); // Save progress
     saveUnlocks(); // Save unlocks
 
@@ -2709,7 +2723,12 @@ function createCardElement(card) {
             // across the two monster suits; value/suit as a corner badge since
             // the art carries no numbers.
             cardEl.classList.add('adventure-art');
-            cardEl.style.backgroundImage = `url('assets/cards/adventure/${type}_${card.numValue}.webp?v=${ADV_ART_VER}')`;
+            // Clamp to the art that actually exists (monster 2-14, weapon/potion
+            // 2-10). Sharpened weapons (up to 13) and depth-scaled monsters (can
+            // exceed 14) would otherwise 404; the gameplay value is unchanged.
+            const artMax = type === 'monster' ? 14 : 10;
+            const artVal = Math.min(Math.max(card.numValue, 2), artMax);
+            cardEl.style.backgroundImage = `url('assets/cards/adventure/${type}_${artVal}.webp?v=${ADV_ART_VER}')`;
             cardEl.style.backgroundSize = 'cover';
             cardEl.style.backgroundPosition = 'center top';
             cardEl.style.backgroundRepeat = 'no-repeat';

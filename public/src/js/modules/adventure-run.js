@@ -24,6 +24,42 @@
             window.AdventureMap.start(game.playerClass);
             window.AdventureMap.onNodeSelected = (node) => AR.enter(node);
             AR.showMap();
+            AR._showIntroIfFirstTime();
+        },
+
+        // Adventure's OWN tutorial — a concise first-run explainer of the map,
+        // node types, waves and deck-building (distinct from Classic's interactive
+        // step tutorial, which is suppressed in Adventure). Shown once.
+        _showIntroIfFirstTime() {
+            const KEY = 'dungeon_scoundrel_adventure_intro_seen';
+            let seen = false;
+            try { seen = !!localStorage.getItem(KEY); } catch (_) {}
+            if (seen) return;
+            const adv = (window.AdventureMap && window.AdventureMap.map) ? window.AdventureMap.map.adventure : null;
+            const bossName = adv && adv.finalBoss ? adv.finalBoss.name : 'your nemesis';
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.id = 'advIntro';
+            overlay.style.zIndex = '10002';
+            overlay.innerHTML = `
+                <div class="modal-content" style="max-width:560px;text-align:left;border:2px solid #c9a961;">
+                    <h2 style="font-family:'Cinzel',serif;color:#e8c878;text-align:center;">🗺️ Adventure — How It Works</h2>
+                    <p style="color:#cbb892;text-align:center;margin-top:-4px;">A branching descent. You choose the path; every run is different.</p>
+                    <ul style="color:#ddd;line-height:1.7;font-size:0.95em;padding-left:18px;margin:14px 0;">
+                        <li><strong>Pick a node</strong> each step — only connected nodes ahead are selectable (hover for a tooltip).</li>
+                        <li>⚔️ Battle &nbsp; 💀 Elite (drops a relic) &nbsp; ❓ Event (real choices) &nbsp; 🏛️ Merchant</li>
+                        <li>🔥 Campfire — <strong>heal OR cull</strong> a threat from your deck (pick one). &nbsp; 🎁 Treasure — some chests are <strong>cursed</strong>: big reward, but a curse joins your deck.</li>
+                        <li><strong>Difficulty = waves</strong> per encounter: Easy 1 · Normal 2 · Hard 3.</li>
+                        <li>Your <strong>deck persists</strong> all run — cull threats, buy cards, sharpen weapons to build it.</li>
+                        <li>Reach the bottom and defeat <strong>${bossName}</strong> to win.</li>
+                    </ul>
+                    <div style="text-align:center;">
+                        <button class="btn btn-primary" id="advIntroBtn">Begin the Descent</button>
+                    </div>
+                </div>`;
+            document.body.appendChild(overlay);
+            const close = () => { try { localStorage.setItem(KEY, '1'); } catch (_) {} overlay.remove(); };
+            overlay.querySelector('#advIntroBtn').onclick = close;
         },
 
         showMap() {
@@ -208,6 +244,7 @@
         _shop(node) {
             const act = node.act || 0;
             AR._merchantAct = act;
+            AR._bumpLifetime('shopsVisited'); // parity with Classic shop (shopper achievement)
             const prices = { weapon: 12 + act * 4, potion: 12 + act * 4, remove: 18 + act * 4, upgrade: 20 + act * 5, relic: 35 + act * 10 };
             let overlay = document.getElementById('advMerchant');
             if (!overlay) { overlay = document.createElement('div'); overlay.id = 'advMerchant'; overlay.className = 'modal-overlay'; overlay.style.zIndex = '10001'; document.body.appendChild(overlay); }
@@ -271,6 +308,7 @@
                 msg = 'Acquired a relic.';
             }
             game.gold -= cost;
+            AR._bumpLifetime('itemsBought'); // parity with Classic buyItem (shopaholic achievement)
             if (window.updateUI) window.updateUI();
             if (window.showMessage && msg) window.showMessage('🏛️ ' + msg, 'success');
             return true;
@@ -351,7 +389,18 @@
             ];
         },
 
+        // QA cross-mode parity: bump a lifetime counter through the storage cache
+        // (write-through) so achievement/unlock checks see it, same as Classic.
+        _bumpLifetime(key) {
+            if (window.storage) window.storage.update('scoundrel_lifetime_stats', s => { s[key] = (s[key] || 0) + 1; return s; });
+            if (typeof window.checkAchievements === 'function') window.checkAchievements();
+        },
+
         _event(node) {
+            // Parity with Classic events: eventsTriggered (Priest unlock, persisted
+            // via updateLifetimeStats from game.stats) + eventsCompleted (achievement).
+            if (game.stats) game.stats.eventsTriggered = (game.stats.eventsTriggered || 0) + 1;
+            AR._bumpLifetime('eventsCompleted');
             const pool = AR._eventPool(node);
             const ev = pool[Math.floor(Math.random() * pool.length)];
             AR._choiceModal(ev);

@@ -50,7 +50,12 @@ async function submitScoreToLeaderboard(score, gameTime) {
         throw new Error("Firebase is not ready. Please try again in a few seconds.");
     }
     
-    const playerName = playerNameInput.value.trim() || 'Scoundrel';
+    // Normalize the same way the start-game flow does (strip <>'"& etc.) before
+    // writing to Firebase. The read path also escapes, so this is defense-in-depth.
+    const rawName = playerNameInput.value;
+    const playerName = (typeof window.sanitizePlayerName === 'function'
+        ? window.sanitizePlayerName(rawName)
+        : String(rawName || '').trim().replace(/[<>'"&]/g, '').substring(0, 20)) || 'Scoundrel';
     
     // Salvar em collection específica por dificuldade
     // Adventure scores go to their own collections; Classic keeps the originals.

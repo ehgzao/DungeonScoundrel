@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.4.33"></script>
+    <script src="src/js/core/silent-logging.js?v=1.4.34"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -121,7 +121,7 @@
                 
                 <div id="waitlistValidation" class="waitlist-validation"></div>
                 
-                <button class="waitlist-btn" onclick="joinWaitlist()">
+                <button class="waitlist-btn" onclick="joinWaitlist(event)">
                     ✨ Join Waitlist
                 </button>
                 
@@ -577,7 +577,7 @@
         <!-- BOTTOM BAR (ROOM / "HAND") -->
         <div class="bottom-bar" id="room">
             <!-- The 4 room cards appear here -->
-            <div class="empty-slot">Click "Enter Dungeon" to start</div>
+            <div class="empty-slot">Click "Enter Chamber" to start</div>
         </div>
     </div>
 
@@ -907,16 +907,19 @@
                 <p>• <strong>The Map:</strong> choose your path through nodes — ⚔️ Battle · 💀 Elite · ❓ Event · 🏛️ Merchant · 🔥 Campfire · 🎁 Treasure · 👹 Boss.</p>
                 <p>• <strong>Encounters scale by difficulty:</strong> a battle is <strong>1 wave</strong> on Easy, <strong>2</strong> on Normal, <strong>3</strong> on Hard. Deeper nodes hit harder.</p>
                 <p>• <strong>🔥 Campfire:</strong> rest to heal, <em>or</em> cull the strongest monster from your deck (deck-building!).</p>
+                <p>• <strong>🏛️ Merchant:</strong> buy weapons/potions, remove a threat, sharpen a weapon, or a mystery relic — all edit your persistent run deck.</p>
+                <p>• <strong>❓ Events:</strong> real choices with trade-offs (sacrifice HP for a relic, gamble gold, free a bound spirit…), not just free boons.</p>
+                <p>• <strong>🎁 Treasure — cursed chests:</strong> some chests are cursed. Pry one open for extra gold + a relic, but a curse monster joins your deck; or leave it sealed.</p>
                 <p>• <strong>Illustrated deck:</strong> each card shows unique art; the coloured border + glyph tell you the type at a glance (🔴 monster · 🟡 weapon · 🟢 potion).</p>
                 <p>• <strong>Per-class finale:</strong> every hero descends for their own reason and faces a unique final boss + ending.</p>
             </div>
 
             <div class="tutorial-section">
-                <h3>🎮 Gameplay</h3>
+                <h3>🎮 Gameplay (Classic)</h3>
                 <p><strong>1. Start the Action:</strong></p>
-                <p>• Choose <strong>"Enter Dungeon"</strong> (draws 4 cards) or <strong>"Avoid Dungeon"</strong> (discards 3 cards from the top). You cannot avoid two dungeons in a row.</p>
-                <p><strong>2. Clear the Dungeon:</strong></p>
-                <p>• You must use or discard all 4 cards from the dungeon (in the bottom bar) to advance.</p>
+                <p>• Choose <strong>"⚔️ Enter Chamber"</strong> (draws 4 cards) or <strong>"🛡️ Evade"</strong> (sends 3 cards to the bottom). You cannot Evade twice in a row.</p>
+                <p><strong>2. Clear the Chamber:</strong></p>
+                <p>• You must use or discard all 4 cards from the chamber (in the bottom bar) to advance. In <strong>Adventure</strong> the same combat happens inside map nodes instead — see above.</p>
             </div>
 
             <div class="tutorial-section">
@@ -1512,46 +1515,46 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.4.33"></script>
+<script src="src/js/core/error-handler.js?v=1.4.34"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.4.33" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.4.34" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.4.33" defer></script>
-<script src="src/js/utils/helpers.js?v=1.4.33" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.4.33" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.4.33" defer></script>
-<script src="src/js/systems/achievements.js?v=1.4.33" defer></script>
-<script src="src/js/data/game-data.js?v=1.4.33" defer></script>
-<script src="src/js/systems/stats.js?v=1.4.33" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.4.33" defer></script>
-<script src="src/js/core/audio-context.js?v=1.4.33" defer></script>
-<script src="src/js/systems/music.js?v=1.4.33" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.4.34" defer></script>
+<script src="src/js/utils/helpers.js?v=1.4.34" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.4.34" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.4.34" defer></script>
+<script src="src/js/systems/achievements.js?v=1.4.34" defer></script>
+<script src="src/js/data/game-data.js?v=1.4.34" defer></script>
+<script src="src/js/systems/stats.js?v=1.4.34" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.4.34" defer></script>
+<script src="src/js/core/audio-context.js?v=1.4.34" defer></script>
+<script src="src/js/systems/music.js?v=1.4.34" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async></script>
-<script src="src/js/init-emailjs.js?v=1.4.33" defer></script>
-<script src="src/js/firebase-ready.js?v=1.4.33" defer></script>
+<script src="src/js/init-emailjs.js?v=1.4.34" defer></script>
+<script src="src/js/firebase-ready.js?v=1.4.34" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.4.33" defer></script>
+<script type="module" src="src/js/game.js?v=1.4.34" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.4.33" defer></script>
+<script src="src/js/systems/codex.js?v=1.4.34" defer></script>
 
 <!-- ADVENTURE MAP (module; exposes window.AdventureMap) -->
-<script type="module" src="src/js/modules/adventure-map.js?v=1.4.33" defer></script>
+<script type="module" src="src/js/modules/adventure-map.js?v=1.4.34" defer></script>
 <!-- ADVENTURE RUN orchestrator (classic; exposes window.AdventureRun) -->
-<script src="src/js/modules/adventure-run.js?v=1.4.33" defer></script>
+<script src="src/js/modules/adventure-run.js?v=1.4.34" defer></script>
 
 <!-- IN-GAME TUTORIAL (classic; exposes window.InGameTutorial) — loads after game.js -->
-<script src="src/js/modules/in-game-tutorial.js?v=1.4.33" defer></script>
+<script src="src/js/modules/in-game-tutorial.js?v=1.4.34" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.4.33" defer></script>
+<script src="src/js/register-sw.js?v=1.4.34" defer></script>
 
 </body>
 </html>
