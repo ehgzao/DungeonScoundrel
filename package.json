@@ -1,7 +1,7 @@
 {
   "name": "dungeon-scoundrel",
-  "version": "1.4.3",
-  "description": "A roguelike deck-building card game where you navigate through treacherous dungeons using a standard deck of cards",
+  "version": "1.5.0",
+  "description": "A dark-medieval roguelike deck-building card game with two modes: Classic (clear one deck) and Adventure (a Slay-the-Spire-style procedural map with an illustrated deck, deck-building and per-class final bosses)",
   "main": "public/index.html",
   "scripts": {
     "dev": "python -m http.server 8080 --directory public",

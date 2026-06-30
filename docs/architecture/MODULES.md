@@ -1,20 +1,21 @@
 # 📦 MÓDULOS DO DUNGEON SCOUNDREL
 
-**Data:** 2025-11-11  
-**Fase:** 1.2 - Modularização do game.js  
-**Progresso:** 4/7 módulos (57%)
+**Data:** 2026-06-30  
+**Fase:** 1.2 - Modularização do game.js (+ modo Adventure)
 
 ---
 
 ## 📊 VISÃO GERAL
 
 ### **Objetivo:**
-Dividir o monolítico `game.js` (5,096 linhas) em módulos menores e mais gerenciáveis.
+Dividir o monolítico `game.js` em módulos menores e mais gerenciáveis, e adicionar o modo Adventure (mapa procedural) reusando o engine existente.
 
 ### **Progresso Atual:**
-- ✅ **Completo:** 4 módulos (840 linhas extraídas)
-- ⏳ **Pendente:** 3 módulos
-- ⏸️ **Pausado:** 2 módulos (combat, ui)
+- ✅ **Completo:** game-state, game-events, game-shop, game-relics, game-sounds, in-game-tutorial, adventure-map, adventure-run
+- ⏳ **Pendente:** game-cards
+- ⏸️ **Pausado:** game-combat, game-ui
+
+> **Tipos:** módulos ES6 importados por `game.js` (game-state, game-events, game-shop, game-relics, game-sounds) vs. scripts clássicos carregados depois e que usam `window.*` (in-game-tutorial, adventure-run; também codex). `adventure-map.js` é ES module (`type=module`).
 
 ---
 
@@ -166,28 +167,107 @@ window.getRelicBonus = getRelicBonus;
 
 ---
 
-## ⏳ MÓDULOS PENDENTES
+### **5. modules/game-sounds.js** ✅
+**Status:** Completo  
+**Tipo:** ES6 module (importado por game.js)
 
-### **5. modules/game-tutorial.js** ⏳
-**Status:** Pendente  
-**Linhas Estimadas:** ~400  
-**Prioridade:** Alta
-
-#### **Conteúdo Planejado:**
-- `startInGameTutorial()` - Inicia tutorial in-game
-- `showTutorialStep()` - Exibe passo do tutorial
-- `completeTutorial()` - Completa tutorial
-- `skipTutorial()` - Pula tutorial
+#### **Conteúdo:**
+- `soundEffects` object - Definições de efeitos via Web Audio API (cardDraw, attack, damage, heal, equip, victory, defeat, etc.)
+- `playSound(soundName)` - Toca um efeito sonoro pelo nome
 
 #### **Dependências:**
-- `modules/game-state.js` (game)
-- `utils/helpers.js` (disableGameButtons, enableGameButtons)
+- ✅ `modules/game-state.js` (game.settings.soundEnabled)
+- ✅ `core/audio-context.js` (window.audioContext, window.sfxMasterGain — globais)
 
-#### **Risco:** BAIXO (funções bem definidas)
+#### **Exposição Global:**
+```javascript
+window.playSound = playSound;
+```
+
+#### **Importado Por:**
+- `game.js`
+
+#### **Nota:** Extraído de game.js (`soundEffects` + `playSound`).
 
 ---
 
-### **6. modules/game-cards.js** ⏳
+### **6. modules/in-game-tutorial.js** ✅
+**Status:** Completo  
+**Tipo:** Classic script (carrega APÓS game.js)
+
+#### **Conteúdo:**
+- Tutorial interativo do modo Classic (primeira partida no Easy), com 13 passos (`STEPS`)
+- `check()` - Inicia o tutorial se ainda não visto, no Easy e fora do Adventure
+- `showStep()` / `skip()` / `complete()` - Fluxo de passos, spotlight e modais
+
+#### **Dependências (via window.*):**
+- `window.game`, `window.drawRoom`, `window.showMessage`, `window.unlockAchievement`
+- `window.pauseGameTimer` / `window.resumeGameTimer`
+- `window.disableGameButtons` / `window.enableGameButtons`
+- `window.STORAGE_KEYS`
+
+#### **Exposição Global:**
+```javascript
+window.InGameTutorial = { check, isActive, skip, complete, showStep };
+window.checkAndStartTutorial = check; // nomes legados
+window.skipTutorial = skip;
+window.completeTutorial = complete;
+```
+
+#### **Nota:** Extraído de game.js (TD-3) — comportamento inalterado, é um *pure move*. Suprimido no modo Adventure (que é map-driven).
+
+---
+
+### **7. modules/adventure-map.js** ✅
+**Status:** Completo  
+**Tipo:** ES6 module (`type=module`)
+
+#### **Conteúdo:**
+- `generateAdventureMap(playerClass, seed)` - Gera mapa procedural ramificado estilo Slay-the-Spire (3 atos), com garantias de balanceamento (campfire antes de cada boss, ≥1 loja por ato, elites limitados, caminho sempre conectado)
+- `NODE_TYPES` - Tipos de nó: combat, elite, event, shop, rest, treasure, boss, finalboss
+- `AdventureMap` - Estado de navegação (`start`, `reachable`, `select`, `node`) + renderização (`renderInto`, `openScreen`, `closeScreen`, `preview`)
+
+#### **Dependências:**
+- ✅ `data/adventures.js` (ACTS, ADVENTURES, adventureFor)
+
+#### **Exposição Global:**
+```javascript
+window.AdventureMap = AdventureMap;
+window.generateAdventureMap = generateAdventureMap;
+```
+
+---
+
+### **8. modules/adventure-run.js** ✅
+**Status:** Completo  
+**Tipo:** Classic script (carrega APÓS game.js + adventure-map.js)
+
+#### **Conteúdo (`window.AdventureRun`):**
+- Orquestrador de uma run do Adventure pelo mapa procedural — cada nó dispara um encontro reusando o engine existente
+- Combate em ondas (waves por dificuldade: Easy 1 · Normal 2 · Hard 3), escalando dano por profundidade
+- Boss / final boss (arte ilustrada por classe / por ato)
+- Rest/campfire (curar OU remover ameaça), treasure / cursed chest, shop/merchant (deck-building), eventos de escolha
+- Injeção de curse no deck, finais por classe (`_ending`)
+
+#### **Dependências (via window.*):**
+- `window.AdventureMap`, `window.game`
+- `window.drawRoom`, `window.checkGameState` (intercepção via flag `game.adventureRun`; sala limpa chama `AdventureRun.afterEncounterCleared()`)
+- `window.giveRelicByRarity`, `window.earnGold`, `window.updateUI`, `window.showMessage`, `window.endGame`, `window.storage`, `window.checkAchievements`
+
+#### **Exposição Global:**
+```javascript
+window.AdventureRun = AR;
+```
+
+#### **Nota:** O modo Classic permanece intocado — Adventure reusa o engine sem monkey-patching.
+
+---
+
+## ⏳ MÓDULOS PENDENTES
+
+---
+
+### **9. modules/game-cards.js** ⏳
 **Status:** Pendente  
 **Linhas Estimadas:** ~600  
 **Prioridade:** Alta
@@ -210,7 +290,7 @@ window.getRelicBonus = getRelicBonus;
 
 ---
 
-### **7. modules/game-combat.js** ⏸️
+### **10. modules/game-combat.js** ⏸️
 **Status:** Pausado  
 **Linhas Estimadas:** ~1,200  
 **Prioridade:** Média
@@ -234,7 +314,7 @@ window.getRelicBonus = getRelicBonus;
 
 ---
 
-### **8. modules/game-ui.js** ⏸️
+### **11. modules/game-ui.js** ⏸️
 **Status:** Pausado  
 **Linhas Estimadas:** ~800  
 **Prioridade:** Média
@@ -259,20 +339,21 @@ window.getRelicBonus = getRelicBonus;
 
 ## 📈 ESTATÍSTICAS
 
-### **Linhas Extraídas:**
+### **Módulos ES6 extraídos de game.js:**
 - game-state.js: 165 linhas
 - game-events.js: 185 linhas
 - game-shop.js: 290 linhas
 - game-relics.js: 200 linhas
-- **Total:** 840 linhas (~16.5% do game.js original)
+- game-sounds.js: ~330 linhas (soundEffects + playSound)
+- in-game-tutorial.js: ~400 linhas (classic script; tutorial extraído de game.js)
 
-### **Linhas Restantes:**
-- game.js atual: ~4,200 linhas
-- Pendentes: ~2,800 linhas (tutorial + cards + combat + ui)
+### **Modo Adventure (novo):**
+- adventure-map.js: ~320 linhas (mapa procedural)
+- adventure-run.js: ~510 linhas (orquestrador de run)
+- data/adventures.js: ~60 linhas (ACTS + ADVENTURES por classe)
 
-### **Progresso:**
-- ✅ Completo: 4/7 módulos (57%)
-- ⏳ Pendente: 3/7 módulos (43%)
+### **Pendentes:**
+- game-cards, game-combat, game-ui (ainda em game.js)
 
 ---
 
@@ -340,16 +421,23 @@ window.functionName = functionName;
 ## 🔍 DEPENDÊNCIAS ENTRE MÓDULOS
 
 ```
-game-state.js (base)
+game-state.js (base, ES6)
     ↓
-    ├── game-events.js
-    ├── game-shop.js
-    ├── game-relics.js
-    ├── game-tutorial.js (pendente)
+    ├── game-events.js (ES6)
+    ├── game-shop.js (ES6)
+    ├── game-relics.js (ES6)
+    ├── game-sounds.js (ES6)
     ├── game-cards.js (pendente)
     │       ↓
     │   game-combat.js (pendente)
     └── game-ui.js (pendente)
+
+data/adventures.js
+    ↓
+adventure-map.js (ES6) ──► adventure-run.js (classic, via window.*)
+                                 ↑ reusa o engine de game.js (window.drawRoom, etc.)
+
+in-game-tutorial.js (classic, via window.* — extraído de game.js)
 ```
 
 ---
@@ -370,10 +458,9 @@ game-state.js (base)
 4. Não fazer múltiplos módulos sem testar
 
 ### **💡 Próximos Passos:**
-1. Criar game-tutorial.js (baixo risco)
-2. Criar game-cards.js (médio risco)
-3. Dividir updateUI() antes de criar game-ui.js
-4. Dividir combate antes de criar game-combat.js
+1. Criar game-cards.js (médio risco)
+2. Dividir updateUI() antes de criar game-ui.js
+3. Dividir combate antes de criar game-combat.js
 
 ---
 
@@ -386,4 +473,4 @@ game-state.js (base)
 
 ---
 
-**Última Atualização:** 2025-11-11 19:35
+**Última Atualização:** 2026-06-30
