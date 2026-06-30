@@ -82,11 +82,11 @@
         },
         {
             id: 'draw',
-            title: '🎲 Drawing Rooms',
-            text: 'Click "Draw Room" to draw 4 cards. Each room is a new challenge!',
+            title: '🎲 Entering Chambers',
+            text: 'Click "⚔️ Enter Chamber" to draw 4 cards. Each chamber is a new challenge!',
             highlight: '#btnDrawRoom',
             position: 'top',
-            buttonText: 'Draw My First Room!',
+            buttonText: 'Enter My First Chamber!',
             action: () => {
                 // Directly call drawRoom to draw the first hand of cards
                 if (window.drawRoom) window.drawRoom();

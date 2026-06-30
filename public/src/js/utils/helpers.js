@@ -654,12 +654,12 @@ const tutorialSteps = [
                     <div style="display: grid; gap: 12px; margin: 20px 0;">
                         <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>Space</strong> or <strong>D</strong></span>
-                            <span style="color: #ddd;">→ Draw Room</span>
+                            <span style="color: #ddd;">→ Enter Chamber</span>
                         </div>
                         
                         <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                             <span style="color: #ffd93d;"><strong>A</strong></span>
-                            <span style="color: #ddd;">→ Avoid Room</span>
+                            <span style="color: #ddd;">→ Evade</span>
                         </div>
                         
                         <div style="padding: 12px 20px; background: rgba(201, 169, 97, 0.15); border-left: 4px solid #c9a961; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
