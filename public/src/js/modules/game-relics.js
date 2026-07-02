@@ -171,7 +171,7 @@ export function updateRelicsDisplay() {
              onerror="this.outerHTML='<span class=&quot;relic-emoji&quot;>${emoji}</span>'">`;
 
         return `
-            <div class="relic-item ${r.used ? 'used' : ''}"
+            <div class="relic-item rarity-${r.rarity || 'common'} ${r.used ? 'used' : ''}"
                  title="${dynamicDesc}${r.used ? ' (Used)' : ''}"
                  onmouseenter="showTooltip(this, '${escapeForSingleQuotedJs(dynamicDesc)}', 'bottom')"
                  onmouseleave="hideTooltip()"
@@ -197,6 +197,8 @@ export function getRelicBonus(type) {
             if (type === 'smallPower' && game.equippedWeapon) bonus += 1;
             if (type === 'power' && game.equippedWeapon) bonus += 2;
             if (type === 'bigPower' && game.equippedWeapon) bonus += 3;
+            // Berserker Ring: desperation pays — big bonus at half HP or less
+            if (type === 'lowHpPower' && game.equippedWeapon && game.health * 2 <= game.maxHealth) bonus += 4;
             
             // Heal bonuses
             if (type === 'smallHealBonus') bonus += 1;
@@ -213,11 +215,14 @@ export function getRelicBonus(type) {
         bonus *= 2;
     }
     
-    // Sum all power types for total weapon bonus
+    // Sum all power types for total weapon bonus — THE single source every
+    // damage path uses (game.js, game-combat.js, game-classes.js). Adding a
+    // new power-family effect? Add it here and it applies everywhere.
     if (type === 'totalPower') {
         bonus += getRelicBonus('smallPower');
         bonus += getRelicBonus('power');
         bonus += getRelicBonus('bigPower');
+        bonus += getRelicBonus('lowHpPower');
     }
     
     return bonus;

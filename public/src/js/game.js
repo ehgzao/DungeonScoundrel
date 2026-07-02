@@ -164,6 +164,7 @@ function showWelcomeScreen() {
 
 function showNewGameModal(mode) {
     newGameModal.classList.add('active');
+    trapFocus(newGameModal);
 
     // Mode comes from the main-menu button; reflect it (default Classic) and
     // show it in the title (the in-modal toggle is hidden to avoid duplication).
@@ -441,6 +442,7 @@ let selectedClass = null;
 function showClassSelection() {
     newGameModal.classList.remove('active');
     classSelectionModal.classList.add('active');
+    trapFocus(classSelectionModal);
     selectedClass = null;
     btnConfirmClass.disabled = true;
     classDescription.style.display = 'none';
@@ -462,6 +464,7 @@ function showClassSelection() {
         
         // Apply locked visual state
         if (isLocked) {
+            card.setAttribute('aria-disabled', 'true');
             card.style.opacity = '0.4';
             card.style.filter = 'grayscale(80%)';
             card.style.cursor = 'not-allowed';
@@ -484,6 +487,7 @@ function showClassSelection() {
                 card.appendChild(lockOverlay);
             }
         } else {
+            card.removeAttribute('aria-disabled');
             card.style.opacity = '1';
             card.style.filter = 'none';
             card.style.cursor = 'pointer';
@@ -499,6 +503,16 @@ function showClassSelection() {
 
 // Class card click handlers
 classCards.forEach(card => {
+    // Keyboard operability: class selection is a mandatory step for every new
+    // game, but the cards are divs — give them button semantics + key handling.
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            card.click();
+        }
+    });
     card.onclick = () => {
         const className = card.dataset.class;
         const classData = CLASSES[className];
@@ -825,7 +839,7 @@ function generateTooltip(card) {
         return `<span class="tooltip-negative">👹 <strong>${bossName}</strong> - ${card.numValue}/${card.maxHP || card.numValue} HP<br>${card.bossFlavor || 'Defeat this boss to continue!'}</span>`;
     }
     
-    const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+    const powerBonus = getRelicBonus('totalPower');
     
     if (type === 'monster') {
         const baseWeapon = game.equippedWeapon?.numValue || 0;
@@ -2321,6 +2335,25 @@ function updateUI() {
     
     statRoomsEl.textContent = game.stats.roomsCleared;
     mainScoreValue.textContent = game.score; // Update main score
+
+    // Combo drives real damage math (getComboBonus) but was only surfaced via
+    // transient toasts — keep it on the HUD while it's live.
+    const comboChip = document.getElementById('top-bar-combo');
+    if (comboChip) {
+        comboChip.style.display = game.combo > 0 ? '' : 'none';
+        if (game.combo > 0) document.getElementById('comboCount').textContent = `${game.combo}x`;
+    }
+    // Same for Adventure multi-wave encounters (the "Wave 2 of 3" toast fades).
+    const waveChip = document.getElementById('top-bar-wave');
+    if (waveChip) {
+        const ar = window.AdventureRun;
+        const inWaves = game.adventureRun && ar && ar._pending && (ar._handsTotal || 1) > 1;
+        waveChip.style.display = inWaves ? '' : 'none';
+        if (inWaves) {
+            document.getElementById('waveCount').textContent =
+                `${Math.min((ar._handsDone || 0) + 1, ar._handsTotal)}/${ar._handsTotal}`;
+        }
+    }
     
     // Show active class buff indicator (OPTIMIZED: reuse element)
     let buffIndicator = document.getElementById('classBuffIndicator');
@@ -2373,7 +2406,7 @@ function updateUI() {
         const cardEl = createCardElement(game.equippedWeapon);
         cardEl.classList.add('equipped');
         
-        const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+        const powerBonus = getRelicBonus('totalPower');
         const berserkBonus = game.berserkStacks > 0 ? 5 : 0;
         const bloodlustBonus = getBloodlustBonus(); // Berserker passive
         const comboBonus = getComboBonus(); // Combo damage
@@ -2615,7 +2648,7 @@ function updateUI() {
             
             // Add preview
             const type = getCardType(card);
-            const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+            const powerBonus = getRelicBonus('totalPower');
             const baseWeaponVal = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
             const effectiveWeapon = game.doubleDamage ? (baseWeaponVal + powerBonus) * 2 : (baseWeaponVal + powerBonus);
 
@@ -2773,7 +2806,7 @@ function createCardElement(card) {
         // DAMAGE PREVIEW for monster cards
         if (type === 'monster' && card.numValue > 0) {
             const baseWeapon = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
-            const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+            const powerBonus = getRelicBonus('totalPower');
             const berserkBonus = game.berserkStacks > 0 ? 5 : 0;
             const totalDamage = baseWeapon + powerBonus + berserkBonus;
             const netDamage = card.numValue - totalDamage;
@@ -2801,6 +2834,18 @@ function createCardElement(card) {
             goldBadge.textContent = `💰${card.numValue}`;
             cardEl.appendChild(goldBadge);
         }
+    }
+
+    // Curse cards (injected by Adventure cursed chests / bound spirits) would
+    // otherwise render as ordinary monsters — mark them so the threat the
+    // pickup toast warned about is identifiable when it finally surfaces.
+    if (card.isCurse) {
+        cardEl.classList.add('curse');
+        const curseBadge = document.createElement('div');
+        curseBadge.className = 'curse-badge';
+        curseBadge.textContent = '☠️ CURSE';
+        cardEl.appendChild(curseBadge);
+        cardEl.title = 'A curse — fights like a monster, but it was never part of your deck.';
     }
     return cardEl;
 }

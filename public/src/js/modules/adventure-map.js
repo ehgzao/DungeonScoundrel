@@ -227,7 +227,20 @@ AdventureMap.renderInto = function (container) {
                 tip.innerHTML = `<strong>${t.icon} ${tipName}</strong><span>${t.desc}</span>`;
                 node.appendChild(tip);
                 if (state === 'reachable') {
-                    node.onclick = () => { if (this.select(n.id)) this.renderInto(container); };
+                    node.onclick = () => {
+                        // Touch has no hover, so entering a node on the first tap
+                        // commits blind. First tap previews the tooltip, second
+                        // tap (same node) enters. Pointer/hover devices commit
+                        // immediately as before.
+                        if (window.matchMedia && window.matchMedia('(hover: none)').matches &&
+                            !node.classList.contains('adv-preview')) {
+                            container.querySelectorAll('.adv-node.adv-preview')
+                                .forEach(p => p.classList.remove('adv-preview'));
+                            node.classList.add('adv-preview');
+                            return;
+                        }
+                        if (this.select(n.id)) this.renderInto(container);
+                    };
                 } else {
                     node.disabled = true;
                 }
@@ -283,6 +296,8 @@ AdventureMap.openScreen = function () {
     overlay.dataset.esc = 'block';
     overlay.classList.add('active');
     this.renderInto(overlay.querySelector('#adventureMapBody'));
+    // Keyboard: keep focus cycling inside the map (nodes are real <button>s).
+    if (typeof window.trapFocus === 'function') window.trapFocus(overlay);
 };
 
 AdventureMap.closeScreen = function () {

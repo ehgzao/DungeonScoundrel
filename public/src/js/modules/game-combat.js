@@ -169,7 +169,7 @@ export function handleWeapon(weapon, index) {
     }
     
     window.playSound('equip');
-    const powerBonus = window.getRelicBonus('power') + window.getRelicBonus('bigPower');
+    const powerBonus = window.getRelicBonus('totalPower');
     addLog(`Equipped ${weapon.value}${weapon.suit}!`, 'equip');
     window.showMessage(`⚔️ Equipped weapon with value ${weapon.numValue + powerBonus}! (${game.equippedWeapon.durability}/${game.equippedWeapon.maxDurability} uses)`, 'success');
     
@@ -251,7 +251,7 @@ export function handlePotion(potion, index) {
  * @param {number} index - Card index in room
  */
 export function handleMonster(monster, index) {
-    const powerBonus = window.getRelicBonus('power') + window.getRelicBonus('bigPower');
+    const powerBonus = window.getRelicBonus('totalPower');
     const baseWeapon = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
     // Capture original values for the "One Shot Wonder" secret (10-value monster, 2-value weapon)
     const origMonsterValue = monster.numValue;

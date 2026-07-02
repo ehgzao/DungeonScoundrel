@@ -285,7 +285,7 @@ function useKnightAbility() {
         return;
     }
     
-    const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+    const powerBonus = getRelicBonus('totalPower');
     const damage = game.equippedWeapon.numValue + powerBonus;
     firstMonster.numValue -= damage;
     

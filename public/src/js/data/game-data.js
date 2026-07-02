@@ -51,7 +51,7 @@ const RELICS = [
     { id: 'magnet', name: '🧲 Magnet', description: '+40% gold from all sources', rarity: 'uncommon', effect: 'goldBonus' },
     { id: 'ring_fire', name: '🔥 Fire Ring', description: 'Combo damage +1 per stack', rarity: 'uncommon', effect: 'comboBoost' },
     { id: 'cloak', name: '🧥 Cloak', description: 'First damage each room is 0', rarity: 'uncommon', effect: 'firstDodge' },
-    { id: 'berserker_ring', name: '💢 Berserker Ring', description: '+2 damage to all weapons', rarity: 'uncommon', effect: 'power' },
+    { id: 'berserker_ring', name: '💢 Berserker Ring', description: '+4 weapon damage while at half HP or less', rarity: 'uncommon', effect: 'lowHpPower' },
     
     // === RARA (8) - Efeitos poderosos ===
     { id: 'gold_shield', name: '🛡️ Golden Shield', description: '+10 maximum health', rarity: 'rare', effect: 'bigHealth' },
@@ -71,7 +71,7 @@ const RELICS = [
 const EVENTS = [
     { id: 'shrine', title: '🔮 Mysterious Shrine', text: 'You find a glowing shrine. An ancient voice offers you a choice...',
         choices: [
-            { text: '❤️ Sacrifice 5 HP for +2 weapon damage permanently (Gain Berserker Ring)',
+            { text: '❤️ Sacrifice 5 HP for the Berserker Ring (+4 weapon damage while at half HP or less)',
                 effect: () => {
                     if (game.health > 5) { 
                         takeDamage(5); 

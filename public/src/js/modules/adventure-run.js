@@ -8,6 +8,10 @@
    Loaded as a classic script after game.js + adventure-map.js; uses window.* .
    ============================================ */
 (function () {
+    // Adventure reward/decision moments get the same audio cues as Classic
+    // (shop purchases play 'special', blocks play 'error' — see game-shop.js).
+    const sfx = (name) => { if (typeof window.playSound === 'function') window.playSound(name); };
+
     const AR = {
         _pending: null,
 
@@ -180,6 +184,7 @@
             const done = () => { overlay.remove(); if (window.updateUI) window.updateUI(); AR._toMapSoon(); };
             overlay.querySelector('#advRestHeal').onclick = () => {
                 game.health = Math.min(game.maxHealth, game.health + heal);
+                sfx('heal');
                 if (window.showMessage) window.showMessage(`🔥 You rest — recovered ${heal} HP.`, 'success');
                 done();
             };
@@ -188,6 +193,7 @@
                     const di = game.dungeon.indexOf(worst);
                     if (di >= 0) game.dungeon.splice(di, 1);
                     else { const pi = game.discardPile.indexOf(worst); if (pi >= 0) game.discardPile.splice(pi, 1); }
+                    sfx('avoid');
                     if (window.showMessage) window.showMessage(`⚒️ You cull a ${worst.numValue}-power monster from the dungeon.`, 'success');
                 }
                 done();
@@ -203,6 +209,7 @@
         },
         _grantRelic(act) {
             if (window.giveRelicByRarity) window.giveRelicByRarity(AR._relicRarity(act));
+            sfx('special');
             if (window.updateUI) window.updateUI();
         },
 
@@ -229,6 +236,7 @@
             if (!Array.isArray(game.dungeon)) game.dungeon = [];
             const idx = Math.floor(Math.random() * (game.dungeon.length + 1));
             game.dungeon.splice(idx, 0, curse);
+            sfx('damage'); // ominous thud — something foul just joined the deck
         },
 
         _cursedChest(node) {
@@ -297,7 +305,7 @@
 
         // Returns true if a purchase happened (so the merchant re-renders).
         _merchantBuy(action, cost) {
-            if ((game.gold || 0) < cost) return false;
+            if ((game.gold || 0) < cost) { sfx('error'); return false; }
             let msg = '';
             if (action === 'weapon') {
                 const v = 6 + Math.floor(Math.random() * 5);
@@ -311,14 +319,14 @@
                 const pool = [...(game.dungeon || []), ...(game.discardPile || [])];
                 const worst = pool.filter(c => (c.suitName === 'clubs' || c.suitName === 'spades') && !c.isBoss)
                     .reduce((m, c) => (!m || c.numValue > m.numValue ? c : m), null);
-                if (!worst) { if (window.showMessage) window.showMessage('No threats left to remove.', 'warning'); return false; }
+                if (!worst) { sfx('error'); if (window.showMessage) window.showMessage('No threats left to remove.', 'warning'); return false; }
                 const di = game.dungeon.indexOf(worst);
                 if (di >= 0) game.dungeon.splice(di, 1); else { const pi = game.discardPile.indexOf(worst); if (pi >= 0) game.discardPile.splice(pi, 1); }
                 msg = `Removed a ${worst.numValue}-power monster from your deck.`;
             } else if (action === 'upgrade') {
                 const pool = [...(game.dungeon || []), ...(game.discardPile || [])];
                 const weapons = pool.filter(c => c.suitName === 'diamonds' && c.numValue < 13);
-                if (!weapons.length) { if (window.showMessage) window.showMessage('No weapon to sharpen.', 'warning'); return false; }
+                if (!weapons.length) { sfx('error'); if (window.showMessage) window.showMessage('No weapon to sharpen.', 'warning'); return false; }
                 const w = weapons[Math.floor(Math.random() * weapons.length)];
                 w.numValue = Math.min(13, w.numValue + 2); w.value = String(w.numValue);
                 msg = `Sharpened a weapon to ${w.numValue}♦.`;
@@ -328,6 +336,7 @@
             }
             game.gold -= cost;
             AR._bumpLifetime('itemsBought'); // parity with Classic buyItem (shopaholic achievement)
+            if (action !== 'relic') sfx('special'); // relic purchases already chime via _grantRelic
             if (window.updateUI) window.updateUI();
             if (window.showMessage && msg) window.showMessage('🏛️ ' + msg, 'success');
             return true;
@@ -448,6 +457,7 @@
                 b.onclick = () => {
                     const c = choices[+b.dataset.i];
                     if (c.disabled) return;
+                    sfx('cardFlip'); // outcome reveal
                     const res = c.apply ? c.apply() : null;
                     if (window.updateUI) window.updateUI();
                     overlay.dataset.esc = '#advChoiceCont'; // outcome shown — Escape = Continue (back to map)
