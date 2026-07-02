@@ -1171,6 +1171,30 @@
             z-index: 2;
         }
 
+        /* Top bar: below 1280px the absolutely-centered cluster (Relics/timer/
+           achievements) collides with the stat chips — combo/wave widen the
+           left group in Adventure. Flow it between the two flex groups instead. */
+        @media (max-width: 1280px) {
+            #topBarCenter {
+                position: static !important;
+                transform: none !important;
+                gap: 8px !important;
+            }
+        }
+
+        /* Scene banners on the Adventure overlays (campfire/event/merchant/
+           chest — generated offline via the tools/ pipeline, style-anchored to
+           the map backdrop). */
+        .adv-scene {
+            width: 100%;
+            height: 120px;
+            border-radius: 6px;
+            background-size: cover;
+            background-position: center;
+            border: 1px solid #5a4a38;
+            margin-bottom: 12px;
+        }
+
         /* Adventure event / cursed-chest choice modal */
         .adv-choices { display: flex; flex-direction: column; gap: 10px; margin: 16px 0 4px; }
         .adv-choices .adv-choice-btn { width: 100%; line-height: 1.25; }
