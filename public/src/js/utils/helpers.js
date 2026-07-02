@@ -866,6 +866,15 @@ if (btnSkip) {
 
 // Expose functions globally for other modules
 window.startInteractiveTutorial = startInteractiveTutorial;
+// Dialog semantics for every static modal (only learnToPlayModal declared
+// them) so the background drops out of the accessibility tree while open.
+document.querySelectorAll('.modal-overlay').forEach((m) => {
+    if (!m.getAttribute('role')) {
+        m.setAttribute('role', 'dialog');
+        m.setAttribute('aria-modal', 'true');
+    }
+});
+
 window.trapFocus = trapFocus; // For codex.js
 window.hapticFeedback = hapticFeedback; // For codex.js and game.js
 window.setButtonLoading = setButtonLoading; // For game.js leaderboard submission

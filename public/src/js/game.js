@@ -677,7 +677,7 @@ document.addEventListener('keydown', (e) => {
     
     // TUTORIAL MODE - Block all shortcuts except Space, Arrows, ESC
     if (window.InGameTutorial && window.InGameTutorial.isActive()) {
-        const allowedKeys = [' ', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Escape'];
+        const allowedKeys = [' ', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Escape', 'Enter', 'Tab'];
         
         // ESC during tutorial - Show skip confirmation
         if (e.key === KEYS.ESCAPE) {
@@ -1835,6 +1835,8 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay active game-over'; // Use modal class
     overlay.dataset.esc = 'block'; // Escape must not dismiss it — Play Again is the only path back
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
     
     const submitButtonHTML = isVictory ? 
         `<button class="btn btn-success" id="btnSubmitScore">🚀 Submit Score</button>` : '';

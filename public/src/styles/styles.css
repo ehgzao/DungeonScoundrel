@@ -1165,8 +1165,8 @@
             display: flex; flex-direction: column; gap: 3px; text-align: center;
             opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s, transform 0.15s; z-index: 50;
         }
-        .adv-node .adv-tip strong { color: #e8c878; font-family: 'Cinzel', serif; font-size: 0.5em; letter-spacing: 0.3px; }
-        .adv-node .adv-tip span { color: #cbb892; font-size: 0.44em; line-height: 1.35; }
+        .adv-node .adv-tip strong { color: #e8c878; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.3px; }
+        .adv-node .adv-tip span { color: #cbb892; font-size: 12px; line-height: 1.35; }
         .adv-node .adv-tip::after {
             content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
             border: 6px solid transparent; border-top-color: #c9a961;
@@ -1402,13 +1402,13 @@
         /* X button in top right corner of modals */
         .modal-close-btn {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 10px;
+            right: 10px;
             background: rgba(0, 0, 0, 0.5);
             border: 2px solid var(--stone-light);
             color: var(--gold-bright);
-            width: 35px;
-            height: 35px;
+            width: 44px;  /* WCAG touch-target minimum */
+            height: 44px;
             border-radius: 50%;
             font-size: 1.5em;
             line-height: 1;
@@ -1691,7 +1691,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 1.5em;
-            color: #666;
+            color: #a89a85; /* was #666 — ~2.4:1 on the dark bg, below AA */
         }
         .achievement-header {
             display: flex;
@@ -1713,7 +1713,7 @@
         }
         .achievement-requirement {
             margin-top: 8px;
-            color: #666;
+            color: #a89a85; /* was #666 — ~2.4:1 on the dark bg, below AA */
             font-size: 0.8em;
             font-style: italic;
         }
@@ -2388,3 +2388,17 @@
                            inset 0 0 40px rgba(255, 215, 0, 0.2);
             }
         }
+
+/* ============================================
+ * REDUCED MOTION — no gameplay logic depends on animation events, so
+ * collapsing all animation/transition time is safe and honors the OS setting
+ * (perpetual torch/pulse/shake effects are vestibular-trigger territory).
+ * ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.4.39"></script>
+    <script src="src/js/core/silent-logging.js?v=1.4.40"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -321,7 +321,7 @@
             </button>
 
             <!-- Version Badge -->
-            <div onclick="document.getElementById('versionModal').classList.add('active');" style="
+            <div role="button" tabindex="0" aria-label="Version info and changelog" onclick="document.getElementById('versionModal').classList.add('active');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}" style="
                 display: flex;
                 align-items: center;
                 gap: 6px;
@@ -388,13 +388,13 @@
             
             <!-- CENTER GROUP: Relics + Timer + Achievements - ABSOLUTE CENTER -->
             <div style="position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; align-items: center;">
-                <div class="achievements-compact" id="btnTopRelics" title="📖 Quick access to Relics encyclopedia - View all relics, their effects, and rarities" style="cursor: pointer; transition: all 0.2s ease;">
+                <div class="achievements-compact" id="btnTopRelics" role="button" tabindex="0" aria-label="Open relics encyclopedia" title="📖 Quick access to Relics encyclopedia - View all relics, their effects, and rarities" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}" style="cursor: pointer; transition: all 0.2s ease;">
                     📖 <span class="achievement-counter">Relics</span>
                 </div>
                 <div class="stat-display" id="gameTimer" title="Elapsed Time" style="font-size: 1.1em; font-weight: bold; color: #ffd700;">
                     ⏱️ <span class="stat-value">00:00</span>
                 </div>
-                <div class="achievements-compact" id="achievementsCompact" title="Click to view all achievements" style="cursor: pointer;">
+                <div class="achievements-compact" id="achievementsCompact" role="button" tabindex="0" aria-label="View all achievements" title="Click to view all achievements" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}" style="cursor: pointer;">
                     🏆 <span class="achievement-counter" id="achievementCounter">0/50</span>
                 </div>
             </div>
@@ -482,7 +482,7 @@
             <!-- CENTER STAGE (WEAPON, MESSAGES, CONTROLS) -->
             <div class="center-stage">
                 
-                <div id="messageArea">
+                <div id="messageArea" role="status" aria-live="polite">
                     <!-- Messages appear here -->
                 </div>
 
@@ -811,7 +811,7 @@
     <!-- Modal: Interactive Tutorial -->
     <div class="modal-overlay" id="interactiveTutorialModal">
         <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
-            <button class="modal-close-btn" onclick="document.getElementById('interactiveTutorialModal').classList.remove('active');">✕</button>
+            <button class="modal-close-btn" onclick="document.getElementById('btnTutorialSkip').click();">✕</button>
             <h2 id="tutorialStepTitle">🎮 Interactive Tutorial</h2>
             <div id="tutorialStepContent" style="min-height: 300px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 8px; margin: 20px 0;">
                 <!-- Dynamic content here -->
@@ -1516,46 +1516,46 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.4.39"></script>
+<script src="src/js/core/error-handler.js?v=1.4.40"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.4.39" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.4.40" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.4.39" defer></script>
-<script src="src/js/utils/helpers.js?v=1.4.39" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.4.39" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.4.39" defer></script>
-<script src="src/js/systems/achievements.js?v=1.4.39" defer></script>
-<script src="src/js/data/game-data.js?v=1.4.39" defer></script>
-<script src="src/js/systems/stats.js?v=1.4.39" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.4.39" defer></script>
-<script src="src/js/core/audio-context.js?v=1.4.39" defer></script>
-<script src="src/js/systems/music.js?v=1.4.39" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.4.40" defer></script>
+<script src="src/js/utils/helpers.js?v=1.4.40" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.4.40" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.4.40" defer></script>
+<script src="src/js/systems/achievements.js?v=1.4.40" defer></script>
+<script src="src/js/data/game-data.js?v=1.4.40" defer></script>
+<script src="src/js/systems/stats.js?v=1.4.40" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.4.40" defer></script>
+<script src="src/js/core/audio-context.js?v=1.4.40" defer></script>
+<script src="src/js/systems/music.js?v=1.4.40" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async></script>
-<script src="src/js/init-emailjs.js?v=1.4.39" defer></script>
-<script src="src/js/firebase-ready.js?v=1.4.39" defer></script>
+<script src="src/js/init-emailjs.js?v=1.4.40" defer></script>
+<script src="src/js/firebase-ready.js?v=1.4.40" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.4.39" defer></script>
+<script type="module" src="src/js/game.js?v=1.4.40" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.4.39" defer></script>
+<script src="src/js/systems/codex.js?v=1.4.40" defer></script>
 
 <!-- ADVENTURE MAP (module; exposes window.AdventureMap) -->
-<script type="module" src="src/js/modules/adventure-map.js?v=1.4.39" defer></script>
+<script type="module" src="src/js/modules/adventure-map.js?v=1.4.40" defer></script>
 <!-- ADVENTURE RUN orchestrator (classic; exposes window.AdventureRun) -->
-<script src="src/js/modules/adventure-run.js?v=1.4.39" defer></script>
+<script src="src/js/modules/adventure-run.js?v=1.4.40" defer></script>
 
 <!-- IN-GAME TUTORIAL (classic; exposes window.InGameTutorial) — loads after game.js -->
-<script src="src/js/modules/in-game-tutorial.js?v=1.4.39" defer></script>
+<script src="src/js/modules/in-game-tutorial.js?v=1.4.40" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.4.39" defer></script>
+<script src="src/js/register-sw.js?v=1.4.40" defer></script>
 
 </body>
 </html>

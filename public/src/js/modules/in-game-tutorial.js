@@ -272,6 +272,9 @@
         // Button handlers
         const nextBtn = document.getElementById('tutorialNext');
         const skipBtn = document.getElementById('tutorialSkip');
+        // Keyboard path: global shortcuts are blocked during the tutorial, so
+        // focus the advance button — Space/Enter must be able to progress.
+        if (nextBtn) setTimeout(() => nextBtn.focus(), 50);
 
         nextBtn.onclick = () => {
             if (step.action) step.action();
