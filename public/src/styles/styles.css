@@ -1134,6 +1134,16 @@
         }
         #classSelectionModal .class-card-title { font-size: 0.8em; }
         #classSelectionModal .class-card .lock-overlay { font-size: 2.2em !important; }
+        /* Compact mode for short viewports (zoomed browsers, small laptops) —
+           CI runs fallback fonts that render taller than the webfonts, so keep
+           a generous margin under the no-scroll layout guard. */
+        @media (max-height: 700px) {
+            #classSelectionModal .modal-content { padding: 18px 24px !important; }
+            #classSelectionModal h2 { font-size: 1.35em; margin-bottom: 4px; }
+            #classSelectionModal .class-card { width: clamp(88px, 8.5vw, 112px) !important; }
+            #classSelectionModal .class-card-req { display: none; } /* requirement still shown in the panel on click */
+            #classSelectionModal .modal-controls .btn { padding: 8px 16px; font-size: 0.9em; }
+        }
 
         /* Curse cards — injected into the run deck by Adventure cursed chests /
            bound spirits. Sickly violet glow + badge so they read as "curse"
