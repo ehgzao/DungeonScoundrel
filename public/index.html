@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.4.45"></script>
+    <script src="src/js/core/silent-logging.js?v=1.4.46"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -389,7 +389,7 @@
             </div>
             
             <!-- CENTER GROUP: Relics + Timer + Achievements - ABSOLUTE CENTER -->
-            <div style="position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; align-items: center;">
+            <div id="topBarCenter" style="position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; align-items: center;">
                 <div class="achievements-compact" id="btnTopRelics" role="button" tabindex="0" aria-label="Open relics encyclopedia" title="📖 Quick access to Relics encyclopedia - View all relics, their effects, and rarities" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}" style="cursor: pointer; transition: all 0.2s ease;">
                     📖 <span class="achievement-counter">Relics</span>
                 </div>
@@ -1543,46 +1543,46 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.4.45"></script>
+<script src="src/js/core/error-handler.js?v=1.4.46"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.4.45" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.4.46" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.4.45" defer></script>
-<script src="src/js/utils/helpers.js?v=1.4.45" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.4.45" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.4.45" defer></script>
-<script src="src/js/systems/achievements.js?v=1.4.45" defer></script>
-<script src="src/js/data/game-data.js?v=1.4.45" defer></script>
-<script src="src/js/systems/stats.js?v=1.4.45" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.4.45" defer></script>
-<script src="src/js/core/audio-context.js?v=1.4.45" defer></script>
-<script src="src/js/systems/music.js?v=1.4.45" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.4.46" defer></script>
+<script src="src/js/utils/helpers.js?v=1.4.46" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.4.46" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.4.46" defer></script>
+<script src="src/js/systems/achievements.js?v=1.4.46" defer></script>
+<script src="src/js/data/game-data.js?v=1.4.46" defer></script>
+<script src="src/js/systems/stats.js?v=1.4.46" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.4.46" defer></script>
+<script src="src/js/core/audio-context.js?v=1.4.46" defer></script>
+<script src="src/js/systems/music.js?v=1.4.46" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async></script>
-<script src="src/js/init-emailjs.js?v=1.4.45" defer></script>
-<script src="src/js/firebase-ready.js?v=1.4.45" defer></script>
+<script src="src/js/init-emailjs.js?v=1.4.46" defer></script>
+<script src="src/js/firebase-ready.js?v=1.4.46" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.4.45" defer></script>
+<script type="module" src="src/js/game.js?v=1.4.46" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.4.45" defer></script>
+<script src="src/js/systems/codex.js?v=1.4.46" defer></script>
 
 <!-- ADVENTURE MAP (module; exposes window.AdventureMap) -->
-<script type="module" src="src/js/modules/adventure-map.js?v=1.4.45" defer></script>
+<script type="module" src="src/js/modules/adventure-map.js?v=1.4.46" defer></script>
 <!-- ADVENTURE RUN orchestrator (classic; exposes window.AdventureRun) -->
-<script src="src/js/modules/adventure-run.js?v=1.4.45" defer></script>
+<script src="src/js/modules/adventure-run.js?v=1.4.46" defer></script>
 
 <!-- IN-GAME TUTORIAL (classic; exposes window.InGameTutorial) — loads after game.js -->
-<script src="src/js/modules/in-game-tutorial.js?v=1.4.45" defer></script>
+<script src="src/js/modules/in-game-tutorial.js?v=1.4.46" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.4.45" defer></script>
+<script src="src/js/register-sw.js?v=1.4.46" defer></script>
 
 </body>
 </html>

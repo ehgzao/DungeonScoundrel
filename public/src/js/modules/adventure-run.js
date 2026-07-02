@@ -185,7 +185,7 @@
             overlay.dataset.esc = 'block'; // one-shot decision — must resolve via a button
             overlay.innerHTML = `
                 <div class="modal-content" style="max-width:460px;text-align:center;border:2px solid #c9a961;">
-                    <div style="font-size:2.4em;">🔥</div>
+                    <div class="adv-scene" style="background-image:url('assets/images/scene-campfire.webp')"></div>
                     <h2 style="font-family:'Cinzel',serif;color:#e8c878;">Campfire</h2>
                     <p style="color:#cbb892;">Catch your breath, or thin the horde ahead.</p>
                     <div style="display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
@@ -280,7 +280,7 @@
             const gold = 18 + node.tier * 3;
             const cursePow = 8 + node.act * 2 + Math.floor(Math.random() * 4);
             AR._choiceModal({
-                icon: '⚰️', title: 'A Cursed Chest',
+                icon: '⚰️', scene: 'scene-chest', title: 'A Cursed Chest',
                 flavor: 'Gold glints behind a sigil of binding. Greed always has a price.',
                 choices: [
                     {
@@ -322,6 +322,7 @@
                 const dis = (c) => (g >= c ? '' : 'disabled');
                 overlay.innerHTML = `
                     <div class="modal-content" style="max-width:520px;text-align:center;border:2px solid #c9a961;">
+                        <div class="adv-scene" style="background-image:url('assets/images/scene-merchant.webp')"></div>
                         <h2 style="font-family:'Cinzel',serif;color:#e8c878;">🏛️ Merchant</h2>
                         <p style="color:#cbb892;">Gold: <strong style="color:#e8c878;">${g} 🪙</strong></p>
                         <div style="display:flex;flex-direction:column;gap:8px;margin:14px 0;">
@@ -474,13 +475,13 @@
             AR._bumpLifetime('eventsCompleted');
             const pool = AR._eventPool(node);
             const ev = pool[Math.floor(Math.random() * pool.length)];
-            AR._choiceModal(ev);
+            AR._choiceModal({ ...ev, scene: 'scene-event' });
         },
 
         // Generic risk/reward choice overlay. choices: [{label, sub, disabled,
         // apply()->resultMessage}]. After a choice, shows the outcome then returns
         // control to the map.
-        _choiceModal({ icon, title, flavor, choices }) {
+        _choiceModal({ icon, title, flavor, choices, scene }) {
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay active';
             overlay.style.zIndex = '10001';
@@ -488,9 +489,12 @@
             const btns = choices.map((c, i) =>
                 `<button class="btn ${i === 0 ? 'btn-primary' : 'btn-secondary'} adv-choice-btn" data-i="${i}" ${c.disabled ? 'disabled' : ''}>${c.label}${c.sub ? `<br><small>${c.sub}</small>` : ''}</button>`
             ).join('');
+            const header = scene
+                ? `<div class="adv-scene" style="background-image:url('assets/images/${scene}.webp')"></div>`
+                : `<div style="font-size:2.4em;">${icon}</div>`;
             overlay.innerHTML = `
                 <div class="modal-content" style="max-width:480px;text-align:center;border:2px solid #c9a961;">
-                    <div style="font-size:2.4em;">${icon}</div>
+                    ${header}
                     <h2 style="font-family:'Cinzel',serif;color:#e8c878;">${title}</h2>
                     <p style="color:#cbb892;line-height:1.5;padding:0 6px;">${flavor}</p>
                     <div class="adv-choices">${btns}</div>
@@ -505,7 +509,7 @@
                     if (window.updateUI) window.updateUI();
                     overlay.dataset.esc = '#advChoiceCont'; // outcome shown — Escape = Continue (back to map)
                     overlay.querySelector('.modal-content').innerHTML = `
-                        <div style="font-size:2.2em;">${icon}</div>
+                        ${scene ? `<div class="adv-scene" style="background-image:url('assets/images/${scene}.webp')"></div>` : `<div style="font-size:2.2em;">${icon}</div>`}
                         <p style="color:#ddd;line-height:1.7;padding:8px 10px;font-style:italic;">${res || '...'}</p>
                         <button class="btn btn-primary" id="advChoiceCont">Continue</button>`;
                     overlay.querySelector('#advChoiceCont').onclick = () => {
