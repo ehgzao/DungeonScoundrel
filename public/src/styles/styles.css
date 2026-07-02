@@ -1104,6 +1104,23 @@
             text-shadow: 0 1px 3px #000;
         }
 
+        /* HERO SELECT — responsive cards. The fixed 240px cards (216×324 frame)
+           overflowed the 90vh modal at laptop/zoomed viewports: the second hero
+           row, the description and the Confirm button sat below a scroll nobody
+           could see. Cards now scale so all six heroes fit one view; !important
+           beats the legacy inline width on the cards. */
+        #classSelectionModal .class-card {
+            width: clamp(104px, 10.2vw, 132px) !important; /* 6×132+gaps < 940 container: guarantees ONE row */
+            padding: 8px !important;
+        }
+        #classSelectionModal .class-card-frame {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2 / 3;
+        }
+        #classSelectionModal .class-card-title { font-size: 0.8em; }
+        #classSelectionModal .class-card .lock-overlay { font-size: 2.2em !important; }
+
         /* Curse cards — injected into the run deck by Adventure cursed chests /
            bound spirits. Sickly violet glow + badge so they read as "curse"
            the instant they surface, distinct from the red monster border. */
