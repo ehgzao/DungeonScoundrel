@@ -99,8 +99,39 @@ async function run(mode) {
   await ctx.close();
 }
 
+// Layout invariant: the hero-select grid (a mandatory step) must show all six
+// heroes without scrolling — it silently overflowed at laptop/zoomed viewports
+// for two releases because functional clicks pass even on a clipped screen.
+async function heroSelectFits(viewport) {
+  const ctx = await browser.newContext({ viewport });
+  const page = await ctx.newPage();
+  await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'load' });
+  await page.waitForTimeout(2000);
+  await page.evaluate(() => localStorage.setItem('dungeon_scoundrel_tutorial_completed', 'true'));
+  await page.click('#btnStartClassic');
+  await page.waitForTimeout(300);
+  await page.fill('#playerNameInput', 'Smoke');
+  await page.click('#btnStartGameModal');
+  await page.waitForTimeout(400);
+  const r = await page.evaluate(() => {
+    const mc = document.querySelector('#classSelectionModal .modal-content');
+    const mb = mc.getBoundingClientRect();
+    const cards = [...document.querySelectorAll('.class-card')];
+    return {
+      noScroll: mc.scrollHeight <= mc.clientHeight + 4,
+      allInside: cards.every(c => { const b = c.getBoundingClientRect(); return b.bottom <= mb.bottom + 2 && b.top >= mb.top - 2; }),
+      count: cards.length,
+    };
+  });
+  check(`hero select fits ${viewport.width}x${viewport.height}`, r.noScroll && r.allInside && r.count === 6, JSON.stringify(r));
+  await ctx.close();
+}
+
 await run('classic');
 await run('adventure');
+console.log('\n[smoke] layout');
+await heroSelectFits({ width: 1280, height: 800 });
+await heroSelectFits({ width: 1100, height: 640 });
 
 await browser.close();
 server.close();
