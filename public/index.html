@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.4.46"></script>
+    <script src="src/js/core/silent-logging.js?v=1.4.47"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     
     <!-- Preload LCP image for faster rendering -->
-    <link rel="preload" as="image" href="assets/images/dungeon-bg.webp" fetchpriority="high">
+    <link rel="preload" as="image" href="assets/images/dungeon-bg.webp?v=2" fetchpriority="high">
     
     <!-- SEO Meta Tags -->
     <meta name="description" content="A dark medieval roguelike card game. Explore dungeons, fight monsters, collect powerful relics and prove your skill in this challenging card game! 4 difficulties, 50 achievements, permanent unlock system.">
@@ -142,7 +142,7 @@
     <!-- WELCOME SCREEN
     <!-- ============================================ -->
     <div class="welcome-screen" id="welcomeScreen" style="
-        background: url('assets/images/dungeon-bg.webp') center center / cover no-repeat, linear-gradient(180deg, #1a1410 0%, #0d0a08 50%, #000000 100%);
+        background: url('assets/images/dungeon-bg.webp?v=2') center center / cover no-repeat, linear-gradient(180deg, #1a1410 0%, #0d0a08 50%, #000000 100%);
         position: relative;
         overflow: hidden;
     ">
@@ -352,7 +352,7 @@
                     text-transform: uppercase;
                     letter-spacing: 0.08em;
                     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-                " id="gameVersionBadge">v1.6.0</span>
+                " id="gameVersionBadge">v1.7.0</span>
             </div>
         </div>
         
@@ -670,8 +670,8 @@
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
                     <div class="class-card-frame">
                         <picture>
-                            <source srcset="assets/images/avatar-scoundrel.webp" type="image/webp">
-                            <img src="assets/images/avatar-scoundrel.webp" alt="Scoundrel" loading="lazy" class="img-cover"  width="832" height="1099">
+                            <source srcset="assets/images/avatar-scoundrel.webp?v=2" type="image/webp">
+                            <img src="assets/images/avatar-scoundrel.webp?v=2" alt="Scoundrel" loading="lazy" class="img-cover"  width="360" height="476">
                         </picture>
                     </div>
                     <h3 class="class-card-title">SCOUNDREL</h3>
@@ -692,8 +692,8 @@
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
                     <div class="class-card-frame">
                         <picture>
-                            <source srcset="assets/images/avatar-knight.webp" type="image/webp">
-                            <img src="assets/images/avatar-knight.webp" alt="Knight" loading="lazy" class="img-cover"  width="1024" height="1536">
+                            <source srcset="assets/images/avatar-knight.webp?v=2" type="image/webp">
+                            <img src="assets/images/avatar-knight.webp?v=2" alt="Knight" loading="lazy" class="img-cover"  width="360" height="540">
                         </picture>
                     </div>
                     <h3 class="class-card-title">KNIGHT</h3>
@@ -714,8 +714,8 @@
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
                     <div class="class-card-frame">
                         <picture>
-                            <source srcset="assets/images/avatar-rogue.webp" type="image/webp">
-                            <img src="assets/images/avatar-rogue.webp" alt="Rogue" loading="lazy" class="img-cover"  width="1024" height="1536">
+                            <source srcset="assets/images/avatar-rogue.webp?v=2" type="image/webp">
+                            <img src="assets/images/avatar-rogue.webp?v=2" alt="Rogue" loading="lazy" class="img-cover"  width="360" height="540">
                         </picture>
                     </div>
                     <h3 class="class-card-title">ROGUE</h3>
@@ -736,8 +736,8 @@
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
                     <div class="class-card-frame">
                         <picture>
-                            <source srcset="assets/images/avatar-dancer.webp" type="image/webp">
-                            <img src="assets/images/avatar-dancer.webp" alt="Dancer" loading="lazy" class="img-cover"  width="1024" height="1536">
+                            <source srcset="assets/images/avatar-dancer.webp?v=2" type="image/webp">
+                            <img src="assets/images/avatar-dancer.webp?v=2" alt="Dancer" loading="lazy" class="img-cover"  width="360" height="540">
                         </picture>
                     </div>
                     <h3 class="class-card-title">DANCER</h3>
@@ -758,8 +758,8 @@
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
                     <div class="class-card-frame">
                         <picture>
-                            <source srcset="assets/images/avatar-berserker.webp" type="image/webp">
-                            <img src="assets/images/avatar-berserker.webp" alt="Berserker" loading="lazy" class="img-cover"  width="712" height="982">
+                            <source srcset="assets/images/avatar-berserker.webp?v=2" type="image/webp">
+                            <img src="assets/images/avatar-berserker.webp?v=2" alt="Berserker" loading="lazy" class="img-cover"  width="360" height="497">
                         </picture>
                     </div>
                     <h3 class="class-card-title">BERSERKER</h3>
@@ -780,8 +780,8 @@
                 " onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateY(-5px)'" onmouseout="if(!this.classList.contains('selected')) { this.style.borderColor='#5a4a38'; this.style.transform='translateY(0)' }">
                     <div class="class-card-frame">
                         <picture>
-                            <source srcset="assets/images/avatar-priest.webp" type="image/webp">
-                            <img src="assets/images/avatar-priest.webp" alt="Priest" loading="lazy" class="img-cover"  width="832" height="1099">
+                            <source srcset="assets/images/avatar-priest.webp?v=2" type="image/webp">
+                            <img src="assets/images/avatar-priest.webp?v=2" alt="Priest" loading="lazy" class="img-cover"  width="360" height="476">
                         </picture>
                     </div>
                     <h3 class="class-card-title">PRIEST</h3>
@@ -1342,14 +1342,33 @@
     <div class="modal-overlay" id="versionModal">
         <div class="modal-content" style="max-width: 700px;">
             <button class="modal-close-btn" onclick="document.getElementById('versionModal').classList.remove('active');">✕</button>
-            <h2>🚀 What's New in v1.6.0</h2>
+            <h2>🚀 What's New in v1.7.0</h2>
             
             <div style="text-align: center; margin-bottom: 20px;">
-                <p style="color: #6bcf7f; font-size: 1.2em; font-weight: bold;">🗓️ Daily Challenge, career Stats & a Codex worth exploring</p>
+                <p style="color: #6bcf7f; font-size: 1.2em; font-weight: bold;">👹 Fair boss fights & a much faster dungeon</p>
                 <p style="color: #aaa; font-size: 0.9em;">Released: July 2, 2026</p>
             </div>
 
             <div style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
+                <div style="background: rgba(255, 107, 107, 0.08); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ff6b6b;">
+                    <h3 style="color: #ff9b9b; margin-top: 0;">👹 Bosses Fight Beside Their Horde</h3>
+                    <ul style="color: #ddd; line-height: 1.8; font-size: 0.95em;">
+                        <li><strong>No more checkmate:</strong> reaching a boss without a weapon used to be certain death. Now your run deck deals cards into the fight — dig for a blade while you dodge the guardian</li>
+                        <li><strong>The horde regroups:</strong> clear the boss's entourage and a new wave joins — but the boss lashes out each time it calls reinforcements</li>
+                        <li><strong>Fair strikes:</strong> a bare-handed swing at a boss now costs a harsh-but-survivable hit instead of your whole health bar</li>
+                        <li><strong>Last resort:</strong> if your deck has no weapon left at all, you'll find a rusted blade among the bones</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(107, 207, 127, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #6bcf7f;">
+                    <h3 style="color: #6bcf7f; margin-top: 0;">⚡ 70% Lighter, Instantly Snappier</h3>
+                    <ul style="color: #ddd; line-height: 1.8; font-size: 0.95em;">
+                        <li><strong>Card art loads ~4× faster</strong> — every illustration re-mastered for the size it's actually shown at</li>
+                        <li><strong>Cards pre-load in the background</strong> when an Adventure begins: no more art popping in mid-fight</li>
+                        <li><strong>Updates reach you reliably:</strong> fixed a caching bug that could keep an old version of the game in your browser long after a patch shipped</li>
+                    </ul>
+                </div>
+
+                <h3 style="color: #aaa; font-size: 0.95em; margin: 18px 0 8px;">Previously in v1.6.0</h3>
                 <div style="background: rgba(201, 169, 97, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #c9a961;">
                     <h3 style="color: #e8c878; margin-top: 0;">🎁 Pick Your Prize</h3>
                     <ul style="color: #ddd; line-height: 1.8; font-size: 0.95em;">
@@ -1543,46 +1562,46 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.4.46"></script>
+<script src="src/js/core/error-handler.js?v=1.4.47"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.4.46" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.4.47" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.4.46" defer></script>
-<script src="src/js/utils/helpers.js?v=1.4.46" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.4.46" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.4.46" defer></script>
-<script src="src/js/systems/achievements.js?v=1.4.46" defer></script>
-<script src="src/js/data/game-data.js?v=1.4.46" defer></script>
-<script src="src/js/systems/stats.js?v=1.4.46" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.4.46" defer></script>
-<script src="src/js/core/audio-context.js?v=1.4.46" defer></script>
-<script src="src/js/systems/music.js?v=1.4.46" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.4.47" defer></script>
+<script src="src/js/utils/helpers.js?v=1.4.47" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.4.47" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.4.47" defer></script>
+<script src="src/js/systems/achievements.js?v=1.4.47" defer></script>
+<script src="src/js/data/game-data.js?v=1.4.47" defer></script>
+<script src="src/js/systems/stats.js?v=1.4.47" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.4.47" defer></script>
+<script src="src/js/core/audio-context.js?v=1.4.47" defer></script>
+<script src="src/js/systems/music.js?v=1.4.47" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async></script>
-<script src="src/js/init-emailjs.js?v=1.4.46" defer></script>
-<script src="src/js/firebase-ready.js?v=1.4.46" defer></script>
+<script src="src/js/init-emailjs.js?v=1.4.47" defer></script>
+<script src="src/js/firebase-ready.js?v=1.4.47" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.4.46" defer></script>
+<script type="module" src="src/js/game.js?v=1.4.47" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.4.46" defer></script>
+<script src="src/js/systems/codex.js?v=1.4.47" defer></script>
 
 <!-- ADVENTURE MAP (module; exposes window.AdventureMap) -->
-<script type="module" src="src/js/modules/adventure-map.js?v=1.4.46" defer></script>
+<script type="module" src="src/js/modules/adventure-map.js?v=1.4.47" defer></script>
 <!-- ADVENTURE RUN orchestrator (classic; exposes window.AdventureRun) -->
-<script src="src/js/modules/adventure-run.js?v=1.4.46" defer></script>
+<script src="src/js/modules/adventure-run.js?v=1.4.47" defer></script>
 
 <!-- IN-GAME TUTORIAL (classic; exposes window.InGameTutorial) — loads after game.js -->
-<script src="src/js/modules/in-game-tutorial.js?v=1.4.46" defer></script>
+<script src="src/js/modules/in-game-tutorial.js?v=1.4.47" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.4.46" defer></script>
+<script src="src/js/register-sw.js?v=1.4.47" defer></script>
 
 </body>
 </html>

@@ -328,7 +328,10 @@ export function handleMonster(monster, index) {
     if (monster.isBoss) {
         // SPECIAL CASE: Boss without weapon - boss attacks once and flees!
         if (!game.equippedWeapon) {
-            const bossDamage = monster.numValue;
+            // Adventure bosses carry a capped .strike — their numValue is an
+            // HP pool, and taking 26-46 damage for one click was an instant
+            // unfair death. Classic bosses have no .strike: unchanged.
+            const bossDamage = monster.strike || monster.numValue;
             game.health -= bossDamage;
             game.stats.totalDamage += bossDamage;
             game.lastDamageSource = monster.bossName || 'the Boss';
@@ -446,6 +449,14 @@ export function handleMonster(monster, index) {
             // recycled into the persistent run deck, so a defeated (≤0 HP)
             // boss would circulate forever and re-pay boss gold each cycle.
             if (!game.adventureRun) game.discardPile.push(monster);
+
+            // Adventure: the fight ends when the guardian falls — surviving
+            // entourage cards scatter back into the run deck (they are the
+            // player's persistent deck cards, they must not be lost), which
+            // empties the room so checkGameState clears the encounter.
+            if (game.adventureRun && game.room.length) {
+                game.dungeon.push(...game.room.splice(0));
+            }
 
             // Boss gold based on difficulty
             const bossGoldByDifficulty = {

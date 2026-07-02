@@ -1,7 +1,7 @@
 # 📋 DUNGEON SCOUNDREL - BACKLOG UNIFICADO
 
 **Última atualização:** 2026-07-02
-**Versão atual:** 1.6.0 (Daily Challenge, Stats, Codex discovery)
+**Versão atual:** 1.7.0 (Boss entourage rebalance, perf pass, stale-cache fix)
 **Single Source of Truth para planejamento**
 
 > Remediação do audit já entregue (PRs #22–#27): XSS escaping, Firestore rules,
@@ -274,6 +274,17 @@ recap · HUD chips (combo/wave) · curse cards visíveis · raridade na sidebar 
 sons no Adventure · a11y (teclado, aria-live, dialog roles, reduced-motion,
 contraste, touch targets) · game-economy.js compartilhado · smoke test em CI.
 
+**v1.7.0 (boss fairness + perf):** boss entourage no Adventure (3 cartas do run
+deck junto ao boss; horda "regroups" com chip damage = strike/2; strike com cap
+10/12/14 em vez do HP pool como dano; rusted blade 4♦ como failsafe se o deck
+ficou sem armas; sweep das cartas sobreviventes de volta ao deck na vitória) ·
+arte re-masterizada para o tamanho real de exibição (4.4MB→~1.3MB, −70%) ·
+prefetch idle da arte no início do run · service worker cache-first p/ /assets/ ·
+**fix crítico de cache**: /src/js e /src/styles eram `immutable` 1 ano com URLs
+sem versão (imports de módulos ES e todos os <link> de CSS) — jogadores
+recorrentes ficavam com módulos/CSS antigos misturados a scripts novos após
+cada release; agora `max-age=0, must-revalidate`.
+
 ### 📋 Track B — propostas restantes (design notes na PR da pass)
 | ID | Item | Size | Imp | Status |
 |----|------|------|-----|--------|
@@ -281,12 +292,15 @@ contraste, touch targets) · game-economy.js compartilhado · smoke test em CI.
 | TB-3 | Codex com discovery ("?" até encontrar) | M | 🟡 | 🟢 Concluído (v1.6.0) |
 | TB-4 | Tela de lifetime stats / carreira (dados já existem) | M | 🟡 | 🟢 Concluído (v1.6.0 — aba Stats no Codex) |
 | TB-6 | Daily Run com seed compartilhada + seção no leaderboard | L | 🔴 | 🟢 Concluído (v1.6.0 — mapa seeded/dia; draws de carta ainda variam) |
-| TB-7 | Mecânica única por final boss (ligada à motivação) | L | 🟡 | 🔴 Proposto |
+| TB-7 | Mecânica única por final boss (ligada à motivação) | L | 🟡 | 🟡 Parcial (v1.7.0: boss entourage/waves é a base estrutural; mecânicas por-boss seguem propostas) |
 | TB-8 | Ascension ladder pós-Hard | XL | 🟡 | 🔴 Proposto (design doc primeiro) |
+| TB-9 | Verificar minificação em PRODUÇÃO (Netlify `[build.processing]` não roda em deploy previews — Lighthouse do preview acusa JS/CSS não minificados). Se prod também não minifica, adicionar build step (esbuild) validado pelo smoke local | M | 🟡 | 🔴 Novo (v1.7.0) |
 
 ### ⚠️ Limitações conhecidas (não corrigidas nesta pass)
 - Firestore ainda confia em `score`/`time` enviados pelo cliente (precisa de
   scoring server-authoritative — flag da QA pass anterior, segue aberto).
+- Phoenix Feather não dispara em mortes por strike/regroup de boss (dano fora
+  do fluxo normal de combate) — comportamento antigo, agora documentado.
 - Foco não retorna ao elemento que abriu o modal ao fechar (a11y).
 - Top-bar central pode colidir com os chips em 1024–1280px (sem breakpoint).
 - Inline styles em template literals JS (codex/adventure-run/tutorial/shop)

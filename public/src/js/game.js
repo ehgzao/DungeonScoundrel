@@ -1034,7 +1034,7 @@ function startGame() {
         const playerNameDisplay = document.getElementById('playerNameDisplay');
         const playerClassDisplay = document.getElementById('playerClassDisplay');
         
-        if (playerAvatar) playerAvatar.src = `assets/images/avatar-${game.playerClass}.webp`;
+        if (playerAvatar) playerAvatar.src = `assets/images/avatar-${game.playerClass}.webp?v=2`;
         if (playerNameDisplay) playerNameDisplay.textContent = sanitizePlayerName(playerNameInput.value);
         if (playerClassDisplay) playerClassDisplay.textContent = game.classData.name;
         
@@ -1422,6 +1422,13 @@ function checkGameState() {
     // Room Cleared?
     const roomEmpty = game.room.length === 0;
     const notGameOver = !game.gameOver;
+
+    // Adventure boss fights: when only the living boss remains in the room,
+    // the horde regroups (see adventure-run.js maybeRefillBossWave — the
+    // fairness system for reaching a boss without a weapon).
+    if (!roomEmpty && notGameOver && game.adventureRun && window.AdventureRun && window.AdventureRun.maybeRefillBossWave) {
+        window.AdventureRun.maybeRefillBossWave();
+    }
 
     if (roomEmpty && notGameOver) {
 
@@ -2783,7 +2790,7 @@ function updateUI() {
 
 // Bump when adventure card/boss/relic art is regenerated so browsers don't serve
 // stale cached images (the webp filenames are stable). Exposed for other modules.
-const ADV_ART_VER = '1.4.31';
+const ADV_ART_VER = '1.7.0';
 window.ADV_ART_VER = ADV_ART_VER;
 
 function createCardElement(card) {
