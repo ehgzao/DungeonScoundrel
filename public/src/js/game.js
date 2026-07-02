@@ -644,6 +644,19 @@ if (btnClassAbility) {
 // ============================================
 // KEYBOARD SHORTCUTS (Desktop Optimization)
 // ============================================
+
+// The visually-topmost active overlay: highest z-index wins, ties go to the
+// later element in DOM order (appended last = painted on top). Adventure
+// stacks overlays (map → intro/campfire/event), so "first DOM match" is wrong.
+function topActiveOverlay() {
+    let top = null, topZ = -Infinity;
+    document.querySelectorAll('.modal-overlay.active').forEach(el => {
+        const z = parseFloat(getComputedStyle(el).zIndex) || 0;
+        if (z >= topZ) { top = el; topZ = z; }
+    });
+    return top;
+}
+
 document.addEventListener('keydown', (e) => {
     // Ignore if typing in input
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -676,10 +689,24 @@ document.addEventListener('keydown', (e) => {
     const modalOpen = document.querySelector('.modal-overlay.active');
     if (modalOpen && e.key !== KEYS.ESCAPE) return;
     
-    // ESC - Close modals
+    // ESC - Close the TOPMOST modal only. Overlays declare their Escape
+    // semantics via data-esc: "block" = not dismissible (the Adventure map or
+    // the game-over screen — there is nothing behind them to return to), or a
+    // selector = click that overlay's own safe close button so its cleanup /
+    // return-to-map path always runs. Default: click a close button if the
+    // overlay has one (it may carry cleanup), else just hide the overlay.
     if (e.key === KEYS.ESCAPE) {
-        const modal = document.querySelector('.modal-overlay.active');
+        const modal = topActiveOverlay();
         if (modal) {
+            const escBehavior = modal.dataset.esc || '';
+            if (escBehavior === 'block') return;
+            const closeBtn = modal.querySelector(escBehavior || '.modal-close-btn, .close-modal-btn');
+            if (closeBtn && !closeBtn.disabled) {
+                closeBtn.click();
+                playSound('cardFlip');
+                return;
+            }
+            if (escBehavior) return; // declared button missing/disabled — don't blind-close
             modal.classList.remove('active');
             playSound('cardFlip');
             return;
@@ -1764,6 +1791,7 @@ function calculateDeathScore() {
 function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, reason, gaveUp) {
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay active game-over'; // Use modal class
+    overlay.dataset.esc = 'block'; // Escape must not dismiss it — Play Again is the only path back
     
     const submitButtonHTML = isVictory ? 
         `<button class="btn btn-success" id="btnSubmitScore">🚀 Submit Score</button>` : '';
@@ -2063,7 +2091,8 @@ function showEncouragingModal(isFullVersion = true, onCloseCallback = null) {
     
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay active';
-    
+    overlay.dataset.esc = '.modal-close-btn'; // Escape = the ✕ button, so onCloseCallback (menu return) always runs
+
     if (isFullVersion) {
         // FIRST DEATH: Full modal with tips
         overlay.innerHTML = `

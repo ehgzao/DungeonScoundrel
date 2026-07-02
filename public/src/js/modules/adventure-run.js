@@ -25,6 +25,22 @@
             window.AdventureMap.onNodeSelected = (node) => AR.enter(node);
             AR.showMap();
             AR._showIntroIfFirstTime();
+            AR._startWatchdog();
+        },
+
+        // Recovery net: in Adventure the map is the only way forward (the linear
+        // room buttons are hidden), so if every overlay is ever dismissed without
+        // handing control back — a future overlay bug, an unforeseen close path —
+        // reopen the map instead of stranding the run. No-op outside Adventure.
+        _startWatchdog() {
+            if (AR._watchdog) return;
+            AR._watchdog = setInterval(() => {
+                if (!game.adventureRun || game.gameOver) return;
+                if (AR._pending) return;                                    // encounter in progress
+                if (Array.isArray(game.room) && game.room.length) return;   // hand on screen
+                if (document.querySelector('.modal-overlay.active')) return;
+                AR.showMap();
+            }, 1500);
         },
 
         // Adventure's OWN tutorial — a concise first-run explainer of the map,
@@ -41,6 +57,7 @@
             overlay.className = 'modal-overlay active';
             overlay.id = 'advIntro';
             overlay.style.zIndex = '10002';
+            overlay.dataset.esc = '#advIntroBtn'; // Escape = "Begin" (marks seen, keeps the map open behind)
             overlay.innerHTML = `
                 <div class="modal-content" style="max-width:560px;text-align:left;border:2px solid #c9a961;">
                     <h2 style="font-family:'Cinzel',serif;color:#e8c878;text-align:center;">🗺️ Adventure — How It Works</h2>
@@ -148,6 +165,7 @@
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay active';
             overlay.style.zIndex = '10001';
+            overlay.dataset.esc = 'block'; // one-shot decision — must resolve via a button
             overlay.innerHTML = `
                 <div class="modal-content" style="max-width:460px;text-align:center;border:2px solid #c9a961;">
                     <div style="font-size:2.4em;">🔥</div>
@@ -248,6 +266,7 @@
             const prices = { weapon: 12 + act * 4, potion: 12 + act * 4, remove: 18 + act * 4, upgrade: 20 + act * 5, relic: 35 + act * 10 };
             let overlay = document.getElementById('advMerchant');
             if (!overlay) { overlay = document.createElement('div'); overlay.id = 'advMerchant'; overlay.className = 'modal-overlay'; overlay.style.zIndex = '10001'; document.body.appendChild(overlay); }
+            overlay.dataset.esc = '[data-buy="leave"]'; // Escape = Leave (returns to the map)
             overlay.classList.add('active');
             const render = () => {
                 const g = game.gold || 0;
@@ -413,6 +432,7 @@
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay active';
             overlay.style.zIndex = '10001';
+            overlay.dataset.esc = 'block'; // a choice is mandatory (events offer a "walk away" button)
             const btns = choices.map((c, i) =>
                 `<button class="btn ${i === 0 ? 'btn-primary' : 'btn-secondary'} adv-choice-btn" data-i="${i}" ${c.disabled ? 'disabled' : ''}>${c.label}${c.sub ? `<br><small>${c.sub}</small>` : ''}</button>`
             ).join('');
@@ -430,6 +450,7 @@
                     if (c.disabled) return;
                     const res = c.apply ? c.apply() : null;
                     if (window.updateUI) window.updateUI();
+                    overlay.dataset.esc = '#advChoiceCont'; // outcome shown — Escape = Continue (back to map)
                     overlay.querySelector('.modal-content').innerHTML = `
                         <div style="font-size:2.2em;">${icon}</div>
                         <p style="color:#ddd;line-height:1.7;padding:8px 10px;font-style:italic;">${res || '...'}</p>
@@ -441,15 +462,6 @@
                     };
                 };
             });
-        },
-
-        _observeClose(id) {
-            const el = document.getElementById(id);
-            if (!el) { AR._toMapSoon(); return; }
-            const obs = new MutationObserver(() => {
-                if (!el.classList.contains('active')) { obs.disconnect(); AR.showMap(); }
-            });
-            obs.observe(el, { attributes: true, attributeFilter: ['class'] });
         },
 
         _toMapSoon() { setTimeout(() => AR.showMap(), 300); },
@@ -490,6 +502,7 @@
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay active';
             overlay.style.zIndex = '10001';
+            overlay.dataset.esc = '#advEndBtn'; // Escape = Claim Victory (endGame is the only path forward)
             overlay.innerHTML = `
                 <div class="modal-content" style="max-width:560px;text-align:center;border:3px solid #c9a961;">
                     <div style="font-size:3em;">🏆</div>
