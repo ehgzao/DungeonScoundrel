@@ -271,7 +271,11 @@
             const act = node.act || 0;
             AR._merchantAct = act;
             AR._bumpLifetime('shopsVisited'); // parity with Classic shop (shopper achievement)
-            const prices = { weapon: 12 + act * 4, potion: 12 + act * 4, remove: 18 + act * 4, upgrade: 20 + act * 5, relic: 35 + act * 10 };
+            // Base prices scale with act; the discount rules (Merchant Friend
+            // unlock, Lucky Dice, Crystal) are the SAME as the Classic shop —
+            // shared core in game-economy.js so the two can't drift.
+            const P = (base) => (window.GameEconomy ? window.GameEconomy.discountedPrice(base) : base);
+            const prices = { weapon: P(12 + act * 4), potion: P(12 + act * 4), remove: P(18 + act * 4), upgrade: P(20 + act * 5), relic: P(35 + act * 10) };
             let overlay = document.getElementById('advMerchant');
             if (!overlay) { overlay = document.createElement('div'); overlay.id = 'advMerchant'; overlay.className = 'modal-overlay'; overlay.style.zIndex = '10001'; document.body.appendChild(overlay); }
             overlay.dataset.esc = '[data-buy="leave"]'; // Escape = Leave (returns to the map)
@@ -335,7 +339,9 @@
                 msg = 'Acquired a relic.';
             }
             game.gold -= cost;
-            AR._bumpLifetime('itemsBought'); // parity with Classic buyItem (shopaholic achievement)
+            // Shared purchase bookkeeping (lifetime itemsBought + achievements)
+            if (window.GameEconomy) window.GameEconomy.recordPurchase();
+            else AR._bumpLifetime('itemsBought');
             if (action !== 'relic') sfx('special'); // relic purchases already chime via _grantRelic
             if (window.updateUI) window.updateUI();
             if (window.showMessage && msg) window.showMessage('🏛️ ' + msg, 'success');

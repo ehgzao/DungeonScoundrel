@@ -66,7 +66,14 @@ export const game = {
     endlessLevel: 0,
     eventTriggeredThisRoom: false,
     firstAttackDone: false,
-    dodgeCounter: 0
+    dodgeCounter: 0,
+    // Fields historically assigned from outside this module — declared here so
+    // the literal stays the complete, readable schema of the run state.
+    mode: 'classic',            // 'classic' | 'adventure' (set by startGame from the mode selector)
+    adventureRun: false,        // true while an Adventure run drives progression (adventure-run.js)
+    heldCardIndex: 0,           // which held card is displayed (Rogue can hold 2)
+    criticalWarningShown: false,// low-HP warning shown once per dip below the threshold
+    gameTimerPausedAt: 0        // timer pause bookkeeping (tab hidden)
 };
 
 // ============================================

@@ -248,16 +248,11 @@ class MobileOptimization {
                 frames = 0;
                 lastTime = currentTime;
 
-                // Se FPS < 30, alertar
+                // Se FPS < 30, alertar. (The old "emergency mode" writes set
+                // game.maxParticles/enableAnimations, which nothing ever read —
+                // removed as dead writes rather than pretend they throttle.)
                 if (fps < 30) {
                     console.warn(`⚠️ Low FPS detected: ${fps} fps`);
-
-                    // Aplicar otimizações ainda mais agressivas
-                    if (window.game && !this._emergencyModeApplied) {
-                        window.game.maxParticles = 0;
-                        window.game.enableAnimations = false;
-                        this._emergencyModeApplied = true;
-                    }
                 }
             }
 

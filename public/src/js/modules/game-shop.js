@@ -10,7 +10,9 @@
  */
 
 // Import game state
-import { game, permanentUnlocks } from './game-state.js';
+import { game } from './game-state.js';
+import { GOLD } from '../config/game-constants.js';
+import { shopDiscount, recordPurchase } from './game-economy.js';
 
 // DOM Elements (will be initialized after DOM loads)
 let shopModal, shopItems, shopGoldAmount;
@@ -52,17 +54,9 @@ export function updateShopDisplay() {
         return;
     }
     
-    // Check for shop discount (unlocks + relics)
-    let discount = 1.0;
-    
-    // Permanent unlock: 20% discount
-    if (permanentUnlocks.shopDiscount) discount *= 0.8;
-    
-    // Dice relic: 5% discount
-    if (game.relics.some(r => r.id === 'dice')) discount *= 0.95;
-    
-    // Crystal relic: 15% discount
-    if (game.relics.some(r => r.id === 'crystal')) discount *= 0.85;
+    // Shop discount (unlocks + relics) — shared with the Adventure merchant,
+    // see game-economy.js.
+    const discount = shopDiscount();
     
     // Show price multiplier warning if prices have increased
     if (game.shopPriceMultiplier > 1.0) {
@@ -168,8 +162,8 @@ export function buyItem(item, finalPrice) {
         
         game.gold -= finalPrice;
         
-        // ANTI-EXPLOIT: Increase prices by 8% after each purchase (balanced)
-        game.shopPriceMultiplier *= 1.08;
+        // ANTI-EXPLOIT: Increase prices after each purchase (balanced)
+        game.shopPriceMultiplier *= GOLD.SHOP_PRICE_MULTIPLIER;
         
         if (typeof window.showMessage === 'function') {
             window.showMessage(`Purchased ${item.name}!`, 'success');
@@ -178,15 +172,11 @@ export function buyItem(item, finalPrice) {
             window.playSound('special');
         }
         
-        // Track item purchase for achievement
-        const saved = localStorage.getItem('scoundrel_lifetime_stats');
-        let lifetimeStats = saved ? JSON.parse(saved) : {};
-        lifetimeStats.itemsBought = (lifetimeStats.itemsBought || 0) + 1;
-        localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
-        
+        // Shared purchase bookkeeping (lifetime itemsBought + achievements)
+        recordPurchase();
+
         if (typeof window.updateUI === 'function') window.updateUI();
         updateShopDisplay(); // Re-render shop
-        if (typeof window.checkAchievements === 'function') window.checkAchievements();
     } else {
         if (typeof window.playSound === 'function') {
             window.playSound('error');

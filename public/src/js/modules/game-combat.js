@@ -369,8 +369,8 @@ export function handleMonster(monster, index) {
             // DECISION: If dungeon is empty, this is a "Boss Fled" victory (with penalty)
             // If dungeon has cards, boss respawns for another attempt
             if (game.dungeon.length === 0) {
-                // Boss fled, dungeon empty = Victory with penalty
-                game.bossFled = true; // Mark for score calculation
+                // Boss fled, dungeon empty = Victory with penalty (endGame gets
+                // the 'boss_fled' reason directly — no flag needed)
                 window.showMessage(`🏃 The ${monster.bossName || 'Boss'} fled into the shadows!`, 'warning');
                 setTimeout(() => {
                     window.endGame('boss_fled');

@@ -1,0 +1,25 @@
+# Headless smoke test: the game loads and a start-to-first-action loop works
+# in BOTH modes with zero page errors. Catches the highest-cost failure class
+# in this repo — a broken script in the hand-maintained index.html load order.
+name: smoke
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Run smoke test
+        run: node tests/smoke.mjs
