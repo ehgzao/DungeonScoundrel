@@ -1,7 +1,7 @@
 # 📋 DUNGEON SCOUNDREL - BACKLOG UNIFICADO
 
-**Última atualização:** 2026-06-29
-**Versão atual:** 1.4.6 (Audit remediation: segurança, PWA, perf)
+**Última atualização:** 2026-07-02
+**Versão atual:** 1.5.1 (Optimization pass: soft-locks, run integrity, relic choice, a11y)
 **Single Source of Truth para planejamento**
 
 > Remediação do audit já entregue (PRs #22–#27): XSS escaping, Firestore rules,
@@ -260,6 +260,37 @@ arte completa (CARD-3 regen, CARD-4 bosses + relics).
 TD-1/3/4 (dívida técnica antiga, fora do escopo Adventure).
 
 ---
+
+## 🔧 OPTIMIZATION PASS (v1.5.1) — resultados & propostas
+
+### ✅ Entregue nesta pass
+Escape soft-locks (map/intro/game-over) + watchdog de recuperação · resets de
+run (finalBossSpawned/undo/relics) · victory gates (Evade não pula o Dungeon
+Lord; morte não spawna boss) · integridade do Undo (deep-copy + stats) ·
+consumo de buffs em boss · boss não recicla no deck do Adventure · depth
+scaling idempotente · relics mortas revividas (Bronze Ring, Healing Charm,
+Crown×gold, per-room flags no Adventure) · pick-1-of-3 relic rewards · death
+recap · HUD chips (combo/wave) · curse cards visíveis · raridade na sidebar ·
+sons no Adventure · a11y (teclado, aria-live, dialog roles, reduced-motion,
+contraste, touch targets) · game-economy.js compartilhado · smoke test em CI.
+
+### 📋 Track B — propostas restantes (design notes na PR da pass)
+| ID | Item | Size | Imp | Status |
+|----|------|------|-----|--------|
+| TB-2 | Famílias de synergy de relics (3-4 tags que combinam) | L | 🔴 | 🔴 Proposto |
+| TB-3 | Codex com discovery ("?" até encontrar) | M | 🟡 | 🔴 Proposto |
+| TB-4 | Tela de lifetime stats / carreira (dados já existem) | M | 🟡 | 🔴 Proposto |
+| TB-6 | Daily Run com seed compartilhada + seção no leaderboard | L | 🔴 | 🔴 Proposto (RNG determinístico já existe) |
+| TB-7 | Mecânica única por final boss (ligada à motivação) | L | 🟡 | 🔴 Proposto |
+| TB-8 | Ascension ladder pós-Hard | XL | 🟡 | 🔴 Proposto (design doc primeiro) |
+
+### ⚠️ Limitações conhecidas (não corrigidas nesta pass)
+- Firestore ainda confia em `score`/`time` enviados pelo cliente (precisa de
+  scoring server-authoritative — flag da QA pass anterior, segue aberto).
+- Foco não retorna ao elemento que abriu o modal ao fechar (a11y).
+- Top-bar central pode colidir com os chips em 1024–1280px (sem breakpoint).
+- Inline styles em template literals JS (codex/adventure-run/tutorial/shop)
+  — segunda pass de TD-1 ainda pendente.
 
 ## 📈 ÉPICOS FUTUROS
 
