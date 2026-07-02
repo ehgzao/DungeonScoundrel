@@ -331,6 +331,7 @@ export function handleMonster(monster, index) {
             const bossDamage = monster.numValue;
             game.health -= bossDamage;
             game.stats.totalDamage += bossDamage;
+            game.lastDamageSource = monster.bossName || 'the Boss';
             window.resetCombo();
 
             // ADVENTURE: the boss is a one-off map encounter. Removing it would
@@ -671,6 +672,7 @@ export function handleMonster(monster, index) {
         if (remaining > 0) {
             game.health -= remaining;
             game.stats.totalDamage += remaining;
+            game.lastDamageSource = `a ${monster.value}${monster.suit} monster`;
             window.showDamageNumber(remaining, 'damage');
             window.playSound('damage');
         }
@@ -729,6 +731,10 @@ export function handleMonster(monster, index) {
     else {
         game.health -= damage;
         game.stats.totalDamage += damage;
+        // Run-recap: remember the last thing that hurt us (shown on death)
+        game.lastDamageSource = monster.isCurse
+            ? `a ${monster.numValue}-power curse`
+            : `a ${monster.value}${monster.suit} monster`;
         window.showDamageNumber(damage, 'damage');
         window.playSound('damage');
 

@@ -218,16 +218,40 @@
             if (window.updateUI) window.updateUI();
         },
 
+        // The genre-defining reward moment: pick 1 of 3 relics instead of an
+        // auto-grant — this is where a build identity is actually chosen.
+        // Used for elite/boss kills and uncursed treasure. Events, cursed
+        // chests and the merchant's Mystery Relic stay single-outcome bets by
+        // design (the gamble IS their decision).
+        _offerRelicChoice(act, icon, title, flavor) {
+            const rarity = AR._relicRarity(act);
+            const picks = window.relicChoicesByRarity ? window.relicChoicesByRarity(rarity, 3) : [];
+            if (picks.length < 2 || !window.giveSpecificRelic) { AR._grantRelic(act); AR._toMapSoon(); return; }
+            const rarityIcons = { common: '⚪', uncommon: '🟢', rare: '🔵', legendary: '🟠' };
+            AR._choiceModal({
+                icon: icon || '🎁',
+                title: title || 'Choose a Relic',
+                flavor: `${flavor || 'One prize leaves with you. The rest stay in the dark.'} (${rarityIcons[rarity] || ''} ${rarity})`,
+                choices: picks.map((r) => ({
+                    label: r.name,
+                    sub: r.description,
+                    apply: () => {
+                        window.giveSpecificRelic(r);
+                        return `${r.name} — yours. The dark keeps the rest.`;
+                    },
+                })),
+            });
+        },
+
         _treasure(node) {
             // ADV-6: ~35% of treasures are CURSED chests — a real risk/reward
             // decision instead of a free reward.
             if (Math.random() < 0.35) return AR._cursedChest(node);
             const gold = 10 + node.tier * 2;
             if (window.earnGold) window.earnGold(gold); else game.gold += gold;
-            AR._grantRelic(node.act);
             if (window.updateUI) window.updateUI();
-            if (window.showMessage) window.showMessage(`🎁 Treasure! A relic and ${gold} gold.`, 'success');
-            AR._toMapSoon();
+            if (window.showMessage) window.showMessage(`🎁 Treasure! ${gold} gold — and a choice of relics.`, 'success');
+            AR._offerRelicChoice(node.act, '🎁', 'Treasure', 'Three relics glitter in the chest. Take one.');
         },
 
         // ADV-6: drop a "curse" — a strong extra monster — into the live run deck.
@@ -511,13 +535,16 @@
                 AR._ending();
                 return;
             }
-            // ADV-5: relic rewards for tougher nodes.
+            // ADV-5: relic rewards for tougher nodes — pick 1 of 3 (the choice
+            // modal's Continue button returns to the map).
             if (node && node.type === 'elite') {
-                AR._grantRelic(node.act);
-                if (window.showMessage) window.showMessage('💀 Elite slain — a relic is yours!', 'success');
+                if (window.showMessage) window.showMessage('💀 Elite slain!', 'success');
+                AR._offerRelicChoice(node.act, '💀', 'Elite Spoils', 'It guarded these. It has no further use for them.');
+                return;
             } else if (node && node.type === 'boss') {
-                AR._grantRelic((node.act || 0) + 1);
-                if (window.showMessage) window.showMessage('👹 Boss felled — a powerful relic!', 'success');
+                if (window.showMessage) window.showMessage('👹 Boss felled!', 'success');
+                AR._offerRelicChoice((node.act || 0) + 1, '👹', "The Guardian's Hoard", "Take your prize from the warden's remains.");
+                return;
             }
             AR._toMapSoon();
         },

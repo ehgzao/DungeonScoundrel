@@ -41,61 +41,54 @@ function escapeForSingleQuotedJs(str) {
 }
 
 /**
- * Give relic by specific rarity
+ * Candidate relics of a rarity the player doesn't own yet (falls back to
+ * owned ones if the pool is exhausted). Used by the grant AND by the
+ * Adventure pick-1-of-3 reward UI.
  */
-export function giveRelicByRarity(rarity) {
-    // Access RELICS from global scope (loaded by game-data.js)
+export function relicChoicesByRarity(rarity, count = 1) {
     const RELICS = window.RELICS;
-    if (!RELICS) {
-        console.error('[RELICS] RELICS array not found!');
-        return;
-    }
-    
-    // Access RELIC_CONFIG from global scope
-    const RELIC_CONFIG = window.RELIC_CONFIG;
-    if (!RELIC_CONFIG) {
-        console.error('[RELICS] RELIC_CONFIG not found!');
-        return;
-    }
-    
+    if (!RELICS) return [];
     let available = RELICS.filter(r => r.rarity === rarity && !game.relics.find(gr => gr.id === r.id));
-    
-    // If no new relics of this rarity, allow duplicates
-    if (available.length === 0) {
-        available = RELICS.filter(r => r.rarity === rarity);
+    if (available.length === 0) available = RELICS.filter(r => r.rarity === rarity);
+    // sample without replacement
+    const pool = [...available];
+    const picks = [];
+    while (pool.length && picks.length < count) {
+        picks.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
     }
-    
-    if (available.length === 0) {
-        if (typeof window.showMessage === 'function') {
-            window.showMessage('No relics of this rarity available!', 'warning');
-        }
-        return;
-    }
-    
-    const randomRelic = available[Math.floor(Math.random() * available.length)];
-    game.relics.push({...randomRelic, used: false});
+    return picks;
+}
+
+/**
+ * Grant one specific relic (the single acquisition path: pushes, counts for
+ * the Priest unlock, applies immediate effects, announces, refreshes UI).
+ */
+export function giveSpecificRelic(relic) {
+    if (!relic) return;
+    const RELIC_CONFIG = window.RELIC_CONFIG || {};
+    game.relics.push({ ...relic, used: false });
     game.stats.relicsCollected++;  // Track for Priest unlock
-    
+
     // Apply immediate health effects
-    if (randomRelic.effect === 'smallHealth') { 
-        game.maxHealth += RELIC_CONFIG.SMALL_HEALTH_BONUS; 
-        game.health += RELIC_CONFIG.SMALL_HEALTH_BONUS; 
+    if (relic.effect === 'smallHealth') {
+        game.maxHealth += RELIC_CONFIG.SMALL_HEALTH_BONUS;
+        game.health += RELIC_CONFIG.SMALL_HEALTH_BONUS;
     }
-    if (randomRelic.effect === 'maxHealth') { 
-        game.maxHealth += RELIC_CONFIG.MEDIUM_HEALTH_BONUS; 
-        game.health += RELIC_CONFIG.MEDIUM_HEALTH_BONUS; 
+    if (relic.effect === 'maxHealth') {
+        game.maxHealth += RELIC_CONFIG.MEDIUM_HEALTH_BONUS;
+        game.health += RELIC_CONFIG.MEDIUM_HEALTH_BONUS;
     }
-    if (randomRelic.effect === 'bigHealth') { 
-        game.maxHealth += RELIC_CONFIG.BIG_HEALTH_BONUS; 
-        game.health += RELIC_CONFIG.BIG_HEALTH_BONUS; 
+    if (relic.effect === 'bigHealth') {
+        game.maxHealth += RELIC_CONFIG.BIG_HEALTH_BONUS;
+        game.health += RELIC_CONFIG.BIG_HEALTH_BONUS;
     }
-    if (randomRelic.effect === 'tinyHealth') {
+    if (relic.effect === 'tinyHealth') {
         game.maxHealth += RELIC_CONFIG.TINY_HEALTH_BONUS;
         game.health += RELIC_CONFIG.TINY_HEALTH_BONUS;
     }
 
     // BUGFIX: Charm relic gives +10 gold when obtained
-    if (randomRelic.effect === 'startGold') {
+    if (relic.effect === 'startGold') {
         if (typeof window.earnGold === 'function') {
             window.earnGold(10);
         } else {
@@ -105,11 +98,25 @@ export function giveRelicByRarity(rarity) {
 
     const rarityColors = { common: '⚪', uncommon: '🟢', rare: '🔵', legendary: '🟠' };
     if (typeof window.showMessage === 'function') {
-        window.showMessage(`${rarityColors[rarity]} Relic: ${randomRelic.name}!`, 'success');
+        window.showMessage(`${rarityColors[relic.rarity] || '⚪'} Relic: ${relic.name}!`, 'success');
     }
-    
+
     updateRelicsDisplay();
     if (typeof window.updateUI === 'function') window.updateUI();
+}
+
+/**
+ * Give relic by specific rarity
+ */
+export function giveRelicByRarity(rarity) {
+    const picks = relicChoicesByRarity(rarity, 1);
+    if (picks.length === 0) {
+        if (typeof window.showMessage === 'function') {
+            window.showMessage('No relics of this rarity available!', 'warning');
+        }
+        return;
+    }
+    giveSpecificRelic(picks[0]);
 }
 
 /**
@@ -237,6 +244,8 @@ export function getRelicBonus(type) {
 }
 
 // Global exposure for compatibility
+window.relicChoicesByRarity = relicChoicesByRarity;
+window.giveSpecificRelic = giveSpecificRelic;
 window.giveRelicByRarity = giveRelicByRarity;
 window.giveRandomRelic = giveRandomRelic;
 window.giveRareRelic = giveRareRelic;

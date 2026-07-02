@@ -1062,6 +1062,7 @@ function startGame() {
     game.endlessLevel = 0; // Track endless mode progression
     game.finalBossDefeated = false; // Track if final boss was defeated
     game.finalBossSpawned = false; // else the 2nd run's spawn guard blocks the boss → unwinnable deck end
+    game.lastDamageSource = null;  // death-recap "slain by" tracker
     game.undoAvailable = false;    // else Undo restores the PREVIOUS run's state
     game.lastGameState = null;
     game.heldCardIndex = 0; // Track which held card is currently displayed (for Rogue)
@@ -1668,7 +1669,16 @@ function endGame(reason, gaveUp = false) {
             'Another scoundrel falls to the abyss.'
         ];
         const randomDeath = deathNarratives[Math.floor(Math.random() * deathNarratives.length)];
-        message = gaveUp ? 'You gave up the run.' : randomDeath;
+        // Run recap: what killed you, and (Adventure) where you fell.
+        let recap = game.lastDamageSource ? ` Slain by ${game.lastDamageSource}.` : '';
+        if (game.adventureRun && window.AdventureMap && window.AdventureMap.map && window.AdventureMap.currentId) {
+            const cur = window.AdventureMap.node(window.AdventureMap.currentId);
+            if (cur) {
+                const act = window.AdventureMap.map.acts[cur.act];
+                recap += ` You fell in Act ${cur.act + 1}${act ? ' — ' + act.name : ''}, ${cur.row + 1} rows deep.`;
+            }
+        }
+        message = gaveUp ? 'You gave up the run.' : randomDeath + recap;
         score = gaveUp ? 0 : calculateDeathScore(); // Score is 0 if gave up
         scoreLabel = 'Final Score:';
         playSound('defeat');
@@ -2901,6 +2911,7 @@ function createMiniCardElement(card) {
 // Support Functions (Shop, Relics, etc.)
 // Helper: Take damage and reset combo (for events)
 function takeDamage(amount) {
+    game.lastDamageSource = 'a cruel bargain'; // events / cursed treasure
     game.health -= amount;
     game.stats.totalDamage = (game.stats.totalDamage || 0) + amount;
     resetCombo(); // Always reset combo when taking damage

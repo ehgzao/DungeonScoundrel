@@ -73,7 +73,8 @@ export const game = {
     adventureRun: false,        // true while an Adventure run drives progression (adventure-run.js)
     heldCardIndex: 0,           // which held card is displayed (Rogue can hold 2)
     criticalWarningShown: false,// low-HP warning shown once per dip below the threshold
-    gameTimerPausedAt: 0        // timer pause bookkeeping (tab hidden)
+    gameTimerPausedAt: 0,       // timer pause bookkeeping (tab hidden)
+    lastDamageSource: null      // what hurt us last — the death recap's "slain by"
 };
 
 // ============================================
