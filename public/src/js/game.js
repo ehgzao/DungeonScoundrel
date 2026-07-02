@@ -483,9 +483,17 @@ function showClassSelection() {
         // Apply locked visual state
         if (isLocked) {
             card.setAttribute('aria-disabled', 'true');
-            card.style.opacity = '0.4';
+            card.style.opacity = '0.55'; // 0.4 over the dark art read as a black box
             card.style.filter = 'grayscale(80%)';
             card.style.cursor = 'not-allowed';
+            // Show the unlock path on the grid itself (no click needed)
+            let req = card.querySelector('.class-card-req');
+            if (!req) {
+                req = document.createElement('div');
+                req.className = 'class-card-req';
+                card.appendChild(req);
+            }
+            req.textContent = `🔒 ${classData.unlockRequirement}`;
             
             // Add lock icon overlay
             if (!card.querySelector('.lock-overlay')) {
@@ -509,6 +517,8 @@ function showClassSelection() {
             card.style.opacity = '1';
             card.style.filter = 'none';
             card.style.cursor = 'pointer';
+            const req = card.querySelector('.class-card-req');
+            if (req) req.remove();
             
             // Remove lock overlay if exists
             const lockOverlay = card.querySelector('.lock-overlay');
