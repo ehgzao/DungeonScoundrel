@@ -31,9 +31,13 @@ const MIME = {
 const server = http.createServer((req, res) => {
   let p = decodeURIComponent(req.url.split('?')[0]);
   if (p === '/') p = '/index.html';
-  fs.readFile(path.join(ROOT, p), (err, data) => {
+  // Path-traversal guard: resolve against ROOT and refuse anything that
+  // escapes it (local test server, but no reason to ship the anti-pattern).
+  const file = path.resolve(ROOT, '.' + path.posix.normalize(p));
+  if (!file.startsWith(ROOT + path.sep)) { res.writeHead(403); res.end(); return; }
+  fs.readFile(file, (err, data) => {
     if (err) { res.writeHead(404); res.end(); return; }
-    res.writeHead(200, { 'Content-Type': MIME[path.extname(p)] || 'application/octet-stream' });
+    res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream' });
     res.end(data);
   });
 });
