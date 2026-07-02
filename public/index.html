@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.4.41"></script>
+    <script src="src/js/core/silent-logging.js?v=1.4.42"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -194,6 +194,8 @@
             <button id="btnStartClassic" class="menu-btn-secondary" aria-label="Play Classic mode" role="button"><span style="font-size: 1.1em;">⚔️</span> Classic</button>
             <button id="btnStartAdventure" class="menu-btn-secondary" aria-label="Play Adventure mode" role="button"><span style="font-size: 1.1em;">🗺️</span> Adventure</button>
 
+            <button id="btnStartDaily" class="menu-btn-secondary" aria-label="Play today's Daily Challenge — the same descent for everyone" role="button" title="One shared Adventure map per day, on Normal — compare scores on the Daily leaderboard"><span style="font-size: 1.1em;">🗓️</span> Daily Challenge</button>
+
             <button id="btnLearnToPlay" class="menu-btn-secondary" aria-label="Learn how to play the game" role="button"><span style="font-size: 1.1em;">📚</span> Learn to Play</button>
             
             <button id="btnWelcomeLeaderboard" class="menu-btn-secondary" aria-label="View hall of fame leaderboard" role="button"><span style="font-size: 1.1em;">🏆</span> Hall of Fame</button>
@@ -350,7 +352,7 @@
                     text-transform: uppercase;
                     letter-spacing: 0.08em;
                     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-                " id="gameVersionBadge">v1.5.1</span>
+                " id="gameVersionBadge">v1.6.0</span>
             </div>
         </div>
         
@@ -1041,10 +1043,11 @@
             <div style="display: flex; gap: 10px; margin-bottom: 12px; justify-content: center;">
                 <button class="difficulty-tab mode-tab active" data-mode="classic" onclick="switchLeaderboardMode('classic')">⚔️ Classic</button>
                 <button class="difficulty-tab mode-tab" data-mode="adventure" onclick="switchLeaderboardMode('adventure')">🗺️ Adventure</button>
+                <button class="difficulty-tab mode-tab" data-mode="daily" onclick="switchLeaderboardMode('daily')">🗓️ Daily</button>
             </div>
 
-            <!-- Difficulty Tabs -->
-            <div style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+            <!-- Difficulty Tabs (hidden for Daily — one shared board per day) -->
+            <div id="leaderboardDifficultyTabs" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
                 <button class="difficulty-tab active" data-difficulty="easy" onclick="switchLeaderboardDifficulty('easy')">
                     🟢 Easy
                 </button>
@@ -1251,6 +1254,20 @@
                     cursor: pointer;
                     transition: all 0.2s ease;
                 ">🏅 ACHIEVEMENTS</button>
+                <button onclick="switchCodexTab('stats')" id="codexTabStats" class="codex-tab" style="
+                    flex: 1;
+                    padding: 12px 20px;
+                    background: linear-gradient(180deg, #3d3328 0%, #2a2318 100%);
+                    border: 2px solid #5a4a38;
+                    border-bottom: none;
+                    border-radius: 8px 8px 0 0;
+                    color: #c9a961;
+                    font-family: 'Cinzel', serif;
+                    font-weight: bold;
+                    font-size: 0.95em;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                ">📊 STATS</button>
             </div>
             
             <!-- Tab Content: Upgrades -->
@@ -1307,6 +1324,16 @@
                 </div>
             </div>
             
+            <!-- Tab Content: Lifetime Stats -->
+            <div id="codexContentStats" class="codex-content" style="display: none;">
+                <p style="text-align: center; color: #aaa; margin-bottom: 15px;">
+                    Your career across every run — Classic and Adventure.
+                </p>
+                <div id="lifetimeStatsGrid" style="max-height: 450px; overflow-y: auto; padding-right: 10px;">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
             <button class="close-modal-btn" onclick="document.getElementById('codexModal').classList.remove('active');" style="margin-top: 20px;">Close</button>
         </div>
     </div>
@@ -1315,10 +1342,10 @@
     <div class="modal-overlay" id="versionModal">
         <div class="modal-content" style="max-width: 700px;">
             <button class="modal-close-btn" onclick="document.getElementById('versionModal').classList.remove('active');">✕</button>
-            <h2>🚀 What's New in v1.5.1</h2>
+            <h2>🚀 What's New in v1.6.0</h2>
             
             <div style="text-align: center; margin-bottom: 20px;">
-                <p style="color: #6bcf7f; font-size: 1.2em; font-weight: bold;">🔧 Optimization Pass — smoother, fairer, deeper</p>
+                <p style="color: #6bcf7f; font-size: 1.2em; font-weight: bold;">🗓️ Daily Challenge, career Stats & a Codex worth exploring</p>
                 <p style="color: #aaa; font-size: 0.9em;">Released: July 2, 2026</p>
             </div>
 
@@ -1326,6 +1353,9 @@
                 <div style="background: rgba(201, 169, 97, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #c9a961;">
                     <h3 style="color: #e8c878; margin-top: 0;">🎁 Pick Your Prize</h3>
                     <ul style="color: #ddd; line-height: 1.8; font-size: 0.95em;">
+                        <li><strong>🗓️ Daily Challenge:</strong> one shared descent per day, everyone on the same map — race the Daily leaderboard</li>
+                        <li><strong>📊 Stats tab</strong> in the Codex: your whole career, finally visible</li>
+                        <li><strong>Relic discovery:</strong> the Codex now reveals relics as you find them</li>
                         <li><strong>Choose 1 of 3 relics</strong> after elites, bosses and treasure in Adventure — build your run YOUR way</li>
                         <li><strong>Death recap:</strong> see what slew you and how deep you fell</li>
                         <li><strong>Combo & wave counters</strong> on the HUD; curse cards now clearly marked ☠️</li>
@@ -1513,46 +1543,46 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.4.41"></script>
+<script src="src/js/core/error-handler.js?v=1.4.42"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.4.41" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.4.42" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.4.41" defer></script>
-<script src="src/js/utils/helpers.js?v=1.4.41" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.4.41" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.4.41" defer></script>
-<script src="src/js/systems/achievements.js?v=1.4.41" defer></script>
-<script src="src/js/data/game-data.js?v=1.4.41" defer></script>
-<script src="src/js/systems/stats.js?v=1.4.41" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.4.41" defer></script>
-<script src="src/js/core/audio-context.js?v=1.4.41" defer></script>
-<script src="src/js/systems/music.js?v=1.4.41" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.4.42" defer></script>
+<script src="src/js/utils/helpers.js?v=1.4.42" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.4.42" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.4.42" defer></script>
+<script src="src/js/systems/achievements.js?v=1.4.42" defer></script>
+<script src="src/js/data/game-data.js?v=1.4.42" defer></script>
+<script src="src/js/systems/stats.js?v=1.4.42" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.4.42" defer></script>
+<script src="src/js/core/audio-context.js?v=1.4.42" defer></script>
+<script src="src/js/systems/music.js?v=1.4.42" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" async></script>
-<script src="src/js/init-emailjs.js?v=1.4.41" defer></script>
-<script src="src/js/firebase-ready.js?v=1.4.41" defer></script>
+<script src="src/js/init-emailjs.js?v=1.4.42" defer></script>
+<script src="src/js/firebase-ready.js?v=1.4.42" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.4.41" defer></script>
+<script type="module" src="src/js/game.js?v=1.4.42" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.4.41" defer></script>
+<script src="src/js/systems/codex.js?v=1.4.42" defer></script>
 
 <!-- ADVENTURE MAP (module; exposes window.AdventureMap) -->
-<script type="module" src="src/js/modules/adventure-map.js?v=1.4.41" defer></script>
+<script type="module" src="src/js/modules/adventure-map.js?v=1.4.42" defer></script>
 <!-- ADVENTURE RUN orchestrator (classic; exposes window.AdventureRun) -->
-<script src="src/js/modules/adventure-run.js?v=1.4.41" defer></script>
+<script src="src/js/modules/adventure-run.js?v=1.4.42" defer></script>
 
 <!-- IN-GAME TUTORIAL (classic; exposes window.InGameTutorial) — loads after game.js -->
-<script src="src/js/modules/in-game-tutorial.js?v=1.4.41" defer></script>
+<script src="src/js/modules/in-game-tutorial.js?v=1.4.42" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.4.41" defer></script>
+<script src="src/js/register-sw.js?v=1.4.42" defer></script>
 
 </body>
 </html>

@@ -8,6 +8,14 @@
    Loaded as a classic script after game.js + adventure-map.js; uses window.* .
    ============================================ */
 (function () {
+    // Daily Challenge: one shared seed per UTC day. Same class ⇒ identical map
+    // for every player that day (card draws still vary — documented honestly).
+    const _d = new Date();
+    const DAILY_DAY = `${_d.getUTCFullYear()}-${String(_d.getUTCMonth() + 1).padStart(2, '0')}-${String(_d.getUTCDate()).padStart(2, '0')}`;
+    let _h = 0;
+    for (const c of DAILY_DAY) _h = (_h * 31 + c.charCodeAt(0)) >>> 0;
+    window.DailyRun = { day: DAILY_DAY, seed: _h, pending: false };
+
     // Adventure reward/decision moments get the same audio cues as Classic
     // (shop purchases play 'special', blocks play 'error' — see game-shop.js).
     const sfx = (name) => { if (typeof window.playSound === 'function') window.playSound(name); };
@@ -25,7 +33,7 @@
                 const b = document.getElementById(id);
                 if (b) b.style.display = 'none';
             });
-            window.AdventureMap.start(game.playerClass);
+            window.AdventureMap.start(game.playerClass, game.dailyRun ? window.DailyRun.seed : null);
             window.AdventureMap.onNodeSelected = (node) => AR.enter(node);
             AR.showMap();
             AR._showIntroIfFirstTime();

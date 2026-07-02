@@ -59,7 +59,11 @@ async function submitScoreToLeaderboard(score, gameTime) {
     
     // Salvar em collection específica por dificuldade
     // Adventure scores go to their own collections; Classic keeps the originals.
-    const collectionName = (game.mode === 'adventure' ? 'leaderboard_adventure_' : 'leaderboard_') + game.difficulty;
+    // Daily Challenge scores live in one shared collection, stamped with the
+    // day (client-filtered on read) and the seed for verifiability.
+    const collectionName = game.dailyRun
+        ? 'leaderboard_daily'
+        : (game.mode === 'adventure' ? 'leaderboard_adventure_' : 'leaderboard_') + game.difficulty;
     const leaderboardCol = collection(db, `/artifacts/${appId}/public/data/${collectionName}`);
 
     // Check current top 10 to determine ranking position
@@ -96,6 +100,10 @@ async function submitScoreToLeaderboard(score, gameTime) {
         gold: game.totalGoldEarned,
         createdAt: new Date().toISOString()
     };
+    if (game.dailyRun) {
+        scoreData.day = game.dailyRun;
+        scoreData.seed = window.DailyRun ? window.DailyRun.seed : 0;
+    }
     
     await addDoc(leaderboardCol, scoreData);
     
@@ -166,13 +174,19 @@ async function loadLeaderboardForDifficulty(difficulty) {
 
     try {
         // Carregar da collection especÃ­fica da dificuldade
-        const collectionName = (currentLeaderboardMode === 'adventure' ? 'leaderboard_adventure_' : 'leaderboard_') + difficulty;
+        const isDaily = currentLeaderboardMode === 'daily';
+        const collectionName = isDaily
+            ? 'leaderboard_daily'
+            : (currentLeaderboardMode === 'adventure' ? 'leaderboard_adventure_' : 'leaderboard_') + difficulty;
         const leaderboardCol = collection(db, `/artifacts/${appId}/public/data/${collectionName}`);
         const q = query(leaderboardCol, limit(100)); // Get latest 100
         
         const querySnapshot = await getDocs(q);
         let scores = [];
         querySnapshot.forEach(doc => scores.push(doc.data()));
+
+        // Daily board: today's shared run only
+        if (isDaily && window.DailyRun) scores = scores.filter(s => s.day === window.DailyRun.day);
 
         // Sort on client (mandatory). LB-2: 'time' ranks by fastest clear
         // (ascending), keeping only entries with a real recorded time.
@@ -187,6 +201,10 @@ async function loadLeaderboardForDifficulty(difficulty) {
         const top10 = scores.slice(0, 10);
 
         if (top10.length === 0) {
+            if (isDaily) {
+                listDiv.innerHTML = `<p style="text-align: center; color: #aaa;">No clears yet for today's descent (${window.DailyRun ? window.DailyRun.day : ''}).<br>Be the first!</p>`;
+                return;
+            }
             const diffIcons = { easy: '🟢', normal: '🟡', hard: '🔴', endless: '♾️' };
             const diffName = difficulty ? difficulty.toUpperCase() : 'UNKNOWN';
             const emptyMsg = byTime
@@ -277,6 +295,9 @@ window.switchLeaderboardMode = async function(mode) {
     document.querySelectorAll('.mode-tab').forEach(tab => {
         tab.classList.toggle('active', tab.dataset.mode === mode);
     });
+    // Daily is one shared board per day — the difficulty tabs don't apply
+    const diffTabs = document.getElementById('leaderboardDifficultyTabs');
+    if (diffTabs) diffTabs.style.display = mode === 'daily' ? 'none' : 'flex';
     await loadLeaderboardForDifficulty(currentLeaderboardDifficulty);
 }
 

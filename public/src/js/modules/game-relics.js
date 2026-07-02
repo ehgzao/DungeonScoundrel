@@ -136,7 +136,22 @@ export function giveRareRelic() {
 /**
  * Update relics display in UI
  */
+// Codex discovery: any relic ever held is permanently revealed. Recorded at
+// render time so every acquisition path (grants, event pushes, unlock starts)
+// is covered without instrumenting each one.
+function recordSeenRelics() {
+    if (!window.storage || !game.relics.length) return;
+    try {
+        const seen = window.storage.get('scoundrel_seen_relics', []);
+        const set = new Set(Array.isArray(seen) ? seen : []);
+        const before = set.size;
+        game.relics.forEach(r => set.add(r.id));
+        if (set.size > before) window.storage.set('scoundrel_seen_relics', [...set]);
+    } catch (_) {}
+}
+
 export function updateRelicsDisplay() {
+    recordSeenRelics();
     if (!relicsList) {
         console.error('[RELICS] relicsList element not initialized!');
         return;
