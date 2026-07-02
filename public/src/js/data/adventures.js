@@ -15,37 +15,37 @@ export const ACTS = [
 // terminal encounter; ending is shown on victory.
 export const ADVENTURES = {
     scoundrel: {
-        motivation: 'No honor, no glory — only out, alive, and richer than I came.',
+        motivation: 'Heroes die down here. Rich men walk out. I know which one I am.',
         opening: 'You never wanted to be a hero. You wanted the vault. The door shut behind you anyway.',
         finalBoss: { name: 'The Warden of Debts', flavor: 'The keeper that lets nothing leave with what it owes.' },
         ending: 'No banners, no songs. Just daylight on your face and a heavy purse. You step over the threshold and never look back. That is its own kind of victory.',
     },
     knight: {
-        motivation: 'Honor and steel — to fulfill the oath that dragged me down here.',
+        motivation: 'I swore an oath over a dying king. It is not finished. Neither am I.',
         opening: 'An oath sworn over a dying king. The trail of that broken promise leads down, always down.',
         finalBoss: { name: 'The Oathbreaker', flavor: 'A lord who chose the dark over his word, now armored in shame.' },
         ending: 'You lower your blade to the broken lord and speak the oath aloud. The shame burns away to ash. Honor is not winning — it is keeping faith when it costs everything.',
     },
     rogue: {
-        motivation: 'In shadow and cunning — to steal the one prize no thief has ever taken.',
+        motivation: 'The deepest vault has one secret left. Soon it will have none.',
         opening: 'Every lock in the world has been picked but one. It sits at the bottom of this dark. You intend to be the first.',
         finalBoss: { name: 'The Pale Spymaster', flavor: 'Keeper of every secret the dungeon ever swallowed.' },
         ending: 'You slip the prize into your coat between one heartbeat and the next. The Spymaster never sees the hand that takes it. You were never here. You were never anywhere.',
     },
     dancer: {
-        motivation: 'Grace in motion — to dance with death itself and walk away.',
+        motivation: 'Let death lead if it likes. It has never once kept my tempo.',
         opening: 'They said no one dances past the dark. You came to prove the dark wrong, one step at a time.',
         finalBoss: { name: 'The Hollow Maestro', flavor: 'Conductor of the danse macabre, baton of bone.' },
         ending: 'You match the Maestro measure for measure until the music itself falters. The danse macabre ends, and you are still moving. Life, it turns out, just dances longer.',
     },
     berserker: {
-        motivation: 'Through pain, power — to feed the fury something big enough to fill it.',
+        motivation: 'The rage wants. The rage takes. Somewhere below waits a thing big enough to sate it.',
         opening: 'The rage never sleeps. You came down here looking for something worthy of it.',
         finalBoss: { name: 'Wrath Incarnate', flavor: 'A beast that grows fat on every scream above and below.' },
         ending: 'You and the beast tear at each other until only one storm remains — and it wears your face. The fury did not break you. You became the thing it feared.',
     },
     priest: {
-        motivation: 'The light guides me — to purify the rot at the root of this place.',
+        motivation: 'There is a rot at the root of the world. I was sent to burn it clean.',
         opening: 'The corruption has a source, a heart still beating in the black. You were sent to still it.',
         finalBoss: { name: 'The Profane Idol', flavor: 'The cold god the dungeon prays to in the dark.' },
         ending: 'You press your light against the idol until the dark has nowhere left to hide. The rot recoils, withers, is clean. The dungeon will dream again — but not of this.',

@@ -26,6 +26,11 @@ import {
     COMBAT,
     HEALTH
 } from '../config/game-constants.js';
+import { ADVENTURES } from '../data/adventures.js';
+
+// Hero voice lines live in data/adventures.js (single source): the class-select
+// screen and the Adventure endgame must speak with the same voice.
+const quote = (cls) => `“${ADVENTURES[cls].motivation}”`;
 
 // ============================================
 // CLASS DEFINITIONS
@@ -33,7 +38,7 @@ import {
 export const CLASSES = {
     scoundrel: {
         name: 'SCOUNDREL',
-        motivation: '"I have no honor, no glory, only survival in the dark."',
+        motivation: quote('scoundrel'),
         mechanics: '<strong>⚔️ Passive:</strong> None - Pure skill and luck<br><br><strong>✨ Active:</strong> None - Just you and your wits<br><br><em style="color: #8b7355; font-size: 0.9em;">This is the baseline class. Master the basics before seeking power.</em>',
         icon: '🎭',
         unlocked: true,
@@ -43,7 +48,7 @@ export const CLASSES = {
     },
     knight: {
         name: 'KNIGHT',
-        motivation: '"Honor and steel shall guide my path through the darkness."',
+        motivation: quote('knight'),
         mechanics: '<strong>🛡️ Passive:</strong> +5 Max HP | Weapons have +1 durability<br><br><strong>⚔️ Active (Shield Bash):</strong> Deal damage equal to your weapon value to the first monster in the room. Cooldown: 3 rooms.',
         icon: '🛡️',
         unlocked: false,
@@ -58,7 +63,7 @@ export const CLASSES = {
     },
     rogue: {
         name: 'ROGUE',
-        motivation: '"In shadows I thrive, through cunning I survive."',
+        motivation: quote('rogue'),
         mechanics: '<strong>🗡️ Passive:</strong> Can hold 2 cards instead of 1 | Start with 1 extra gold per room<br><br><strong>🔪 Active (Shadow Strike):</strong> Next monster takes double weapon damage and doesn\'t break combo. Cooldown: 4 rooms.',
         icon: '🗡️',
         unlocked: false,
@@ -73,7 +78,7 @@ export const CLASSES = {
     },
     dancer: {
         name: 'DANCER',
-        motivation: '"Grace in motion, life in every step, death in every turn."',
+        motivation: quote('dancer'),
         mechanics: '<strong>💃 Passive:</strong> Potions heal +3 HP | Can use 2 potions per room | Higher event chance (luck)<br><br><strong>✨ Active (Healing Dance):</strong> Heal 5 HP and gain +2 weapon damage for next 2 monsters. Cooldown: 5 rooms.',
         icon: '💃',
         unlocked: false,
@@ -88,7 +93,7 @@ export const CLASSES = {
     },
     berserker: {
         name: 'BERSERKER',
-        motivation: '"Through pain I find power. Through fury I find victory."',
+        motivation: quote('berserker'),
         mechanics: '<strong>💢 Passive (Bloodlust):</strong> Damage increases as HP decreases<br>• +1 damage at ≤70% HP<br>• +2 damage at ≤50% HP<br>• +3 damage at ≤30% HP<br><br><strong>⚔️ Active (Rage Strike):</strong> Sacrifice 5 HP for triple damage (3x) on next 3 attacks. Breaks combo. Cooldown: 4 rooms.<br><em style="color: #ff6b6b; font-size: 0.9em;">⚠️ Cannot use if HP ≤ 5</em>',
         icon: '💢',
         unlocked: false,
@@ -103,7 +108,7 @@ export const CLASSES = {
     },
     priest: {
         name: 'PRIEST',
-        motivation: '"The light protects me. The divine guides me. Chaos shall be purified."',
+        motivation: quote('priest'),
         mechanics: '<strong>🕊️ Passive (Divine Blessing):</strong> 15% chance to negate damage completely | Potions heal +2 HP | Start with +2 Max HP<br><br><strong>📿 Active (Purification):</strong> Permanently remove the strongest monster from current dungeon OR transform a monster into a potion. Cooldown: 6 rooms.<br><em style="color: #ffd700; font-size: 0.9em;">✨ Strategic: Eliminate threats before facing them</em>',
         icon: '📿',
         unlocked: false,

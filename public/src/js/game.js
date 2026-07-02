@@ -1686,7 +1686,11 @@ function endGame(reason, gaveUp = false) {
             'Your name will echo through these halls forever.'
         ];
         const randomVictory = victoryNarratives[Math.floor(Math.random() * victoryNarratives.length)];
-        message = randomVictory;
+        // Classic gets its own ending beat when the Dungeon Lord falls —
+        // Adventure's per-class endings live in data/adventures.js.
+        message = (!game.adventureRun && game.finalBossDefeated)
+            ? 'The Dungeon Lord falls, and every torch in the deep gutters at once. You walk out the way no one ever has — through the front door, unhurried, pockets full. The dark will spend a hundred years arguing about your name.'
+            : randomVictory;
         score = calculateWinScore();
         scoreLabel = 'Final Score:';
         playSound('victory');
@@ -2079,14 +2083,14 @@ function spawnFinalBoss() {
         isBoss: true,
         bossNumber: 99,  // Special marker for final boss
         bossName: 'The Dungeon Lord',
-        bossFlavor: 'The master of this cursed place. Defeat them to claim your victory!'
+        bossFlavor: 'It has worn this dungeon like a crown since the first stone was cut. It does not intend to be evicted.'
     };
-    
+
     game.room = [finalBoss];
-    
+
     playSound('special');
     if (window.music) window.music.playBossStinger();
-    showMessage('', 'danger');
+    showMessage('☠️ THE DUNGEON LORD RISES', 'danger');
     setTimeout(() => showMessage(finalBoss.bossFlavor, 'warning'), 1500);
     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 100);
     

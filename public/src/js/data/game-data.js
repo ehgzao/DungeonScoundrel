@@ -26,7 +26,7 @@ const RELICS = [
     { id: 'herb', name: '🌱 Herb', description: 'Potions usable twice per dungeon', rarity: 'common', effect: 'doublePot' },
     { id: 'map', name: '🗺️ Map', description: 'See next 3 cards', rarity: 'common', effect: 'cardPreview' },
     { id: 'gloves', name: '🧤 Gloves', description: 'Weapons last 1 extra use', rarity: 'common', effect: 'extraDurability' },
-    { id: 'book', name: '📖 Old Book', description: 'Special cards +10% more common', rarity: 'common', effect: 'moreSpecials' },
+    { id: 'book', name: '📖 Old Book', description: '+1 special card in each new deck', rarity: 'common', effect: 'moreSpecials' },
     { id: 'bell', name: '🔔 Bell', description: 'Gold visible on cards', rarity: 'common', effect: 'goldSight' },
     { id: 'key', name: '🔑 Old Key', description: 'Unlock 1 free shop item', rarity: 'common', effect: 'freeItem' },
     { id: 'mirror_shard', name: '🪞 Mirror Shard', description: 'Reflect 2 damage once per room', rarity: 'common', effect: 'weakReflect' },
@@ -61,7 +61,7 @@ const RELICS = [
     { id: 'tank', name: '🏰 Fortress Armor', description: 'Start each room with 1 HP shield', rarity: 'rare', effect: 'roomShield' },
     { id: 'master_smith', name: '🔨 Master Smith', description: 'Repairs weapon at end of each room', rarity: 'rare', effect: 'auto_repair' },
     { id: 'crown', name: '👑 Crown', description: 'Double all stat bonuses from relics', rarity: 'rare', effect: 'doubleRelics' },
-    { id: 'orb', name: '🔮 Magic Orb', description: 'Special cards appear 2x more', rarity: 'rare', effect: 'manySpecials' },
+    { id: 'orb', name: '🔮 Magic Orb', description: 'New decks hold twice the special cards', rarity: 'rare', effect: 'manySpecials' },
     
     // === LENDÃRIA (2) - Game-changing ===
     { id: 'phoenix', name: '🦅 Phoenix Feather', description: 'Revive once with 10 HP', rarity: 'legendary', effect: 'revive', oneTime: true, used: false },
@@ -158,12 +158,12 @@ const EVENTS = [
     { id: 'library', title: '📚 Ancient Library', text: 'You discover a library filled with magical tomes.',
         choices: [
             { text: '📖 Study combat techniques (+1 damage permanent)', effect: () => {
-                game.relics.push({ id: 'study_bonus', name: '📖 Combat Study', description: '+1 damage', rarity: 'common', effect: 'smallPower' });
+                game.relics.push({ id: 'study_bonus', name: '📖 Combat Study', description: '+1 weapon damage — knowledge cuts too', rarity: 'common', effect: 'smallPower' });
                 showMessage('📖 You learned new techniques!', 'success');
                 updateRelicsDisplay();
             }},
             { text: '🔮 Learn healing magic (+1 HP/room)', effect: () => {
-                game.relics.push({ id: 'healing_study', name: '🔮 Healing Magic', description: '+1 HP per room', rarity: 'uncommon', effect: 'passive_heal' });
+                game.relics.push({ id: 'healing_study', name: '🔮 Healing Magic', description: 'Mend 1 HP after each room — the body remembers the words', rarity: 'uncommon', effect: 'passive_heal' });
                 showMessage('🔮 You mastered healing!', 'success');
                 updateRelicsDisplay();
             }},
