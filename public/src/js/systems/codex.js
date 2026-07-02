@@ -11,6 +11,7 @@ function openCodex(tab = 'upgrades') {
     populateCodexUpgrades();
     populateCodexRelics('all');
     populateCodexAchievements();
+    populateCodexStats();
     switchCodexTab(tab);
     const codexModal = document.getElementById('codexModal');
     if (codexModal) {
@@ -64,10 +65,34 @@ function populateCodexUpgrades() {
     }).join('');
 }
 
+// Discovery state: a relic is revealed once it has ever been held in a run
+// (recorded by game-relics.js). Unseen relics show as "?" — the glossary is a
+// long-tail goal, not a spoiler sheet.
+function seenRelicIds() {
+    try {
+        const stored = window.storage ? window.storage.get('scoundrel_seen_relics', []) : JSON.parse(localStorage.getItem('scoundrel_seen_relics') || '[]');
+        const seen = new Set(Array.isArray(stored) ? stored : []);
+        // relics held right now count as discovered even before the next save
+        if (window.game && Array.isArray(window.game.relics)) window.game.relics.forEach(r => seen.add(r.id));
+        return seen;
+    } catch (_) { return new Set(); }
+}
+
+function relicTileHTML(relic, colors, ver, discovered) {
+    if (!discovered) {
+        return `<div style="background: rgba(90, 74, 56, 0.2); border: 2px dashed #5a4a38; border-radius: 8px; padding: 12px 15px; opacity: 0.65;"><div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;"><span style="width:36px;height:36px;flex:0 0 36px;border-radius:6px;border:1px solid #5a4a38;background:#140f0a;display:inline-flex;align-items:center;justify-content:center;color:#8b7355;font-weight:bold;font-size:1.2em;">?</span><span style="color: #8b7355; font-weight: bold; font-size: 1.05em; font-family: 'Cinzel', serif;">Undiscovered</span></div><p style="color: #8b7355; font-size: 0.9em; margin: 0; line-height: 1.5;">Find this relic in a run to reveal it.</p></div>`;
+    }
+    const nameParts = relic.name.split(' ');
+    const icon = nameParts[0];
+    const name = nameParts.slice(1).join(' ');
+    return `<div style="background: ${colors.bg}; border: 2px solid ${colors.border}; border-radius: 8px; padding: 12px 15px; transition: all 0.2s ease;" onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateX(5px)'" onmouseout="this.style.borderColor='${colors.border}'; this.style.transform='translateX(0)'"><div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;"><img src="assets/relics/relic_${relic.id}.webp?v=${ver}" alt="" style="width:36px;height:36px;flex:0 0 36px;border-radius:6px;object-fit:cover;border:1px solid #5a4a38;background:#140f0a;" onerror="this.outerHTML='<span style=&quot;font-size:1.3em;&quot;>${icon}</span>'"><span style="color: #d4af37; font-weight: bold; font-size: 1.05em; font-family: 'Cinzel', serif;">${name}</span></div><p style="color: #ddd; font-size: 0.9em; margin: 0; line-height: 1.5;">${relic.description}</p></div>`;
+}
+
 function populateCodexRelics(rarityFilter = 'all') {
     const glossary = document.getElementById('relicsGlossary');
     if (!glossary) return;
     
+    const seen = seenRelicIds();
     let filteredRelics = rarityFilter === 'all' ? RELICS : RELICS.filter(r => r.rarity === rarityFilter);
     const ver = window.ADV_ART_VER || '1'; // illustrated relic icon cache-bust
     const rarityOrder = ['common', 'uncommon', 'rare', 'legendary'];
@@ -78,27 +103,56 @@ function populateCodexRelics(rarityFilter = 'all') {
             const relicsInRarity = RELICS.filter(r => r.rarity === rarity);
             if (relicsInRarity.length === 0) return;
             const colors = rarityColors[rarity];
-            html += `<div style="margin-bottom: 25px;"><h3 style="color: ${colors.border}; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.1em; font-family: 'Cinzel', serif;">${colors.emoji} ${colors.name} (${relicsInRarity.length})</h3><div style="display: grid; gap: 10px;">`;
-            relicsInRarity.forEach(relic => {
-                const nameParts = relic.name.split(' ');
-                const icon = nameParts[0];
-                const name = nameParts.slice(1).join(' ');
-                html += `<div style="background: ${colors.bg}; border: 2px solid ${colors.border}; border-radius: 8px; padding: 12px 15px; transition: all 0.2s ease;" onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateX(5px)'" onmouseout="this.style.borderColor='${colors.border}'; this.style.transform='translateX(0)'"><div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;"><img src="assets/relics/relic_${relic.id}.webp?v=${ver}" alt="" style="width:36px;height:36px;flex:0 0 36px;border-radius:6px;object-fit:cover;border:1px solid #5a4a38;background:#140f0a;" onerror="this.outerHTML='<span style=&quot;font-size:1.3em;&quot;>${icon}</span>'"><span style="color: #d4af37; font-weight: bold; font-size: 1.05em; font-family: 'Cinzel', serif;">${name}</span></div><p style="color: #ddd; font-size: 0.9em; margin: 0; line-height: 1.5;">${relic.description}</p></div>`;
-            });
+            const found = relicsInRarity.filter(r => seen.has(r.id)).length;
+            html += `<div style="margin-bottom: 25px;"><h3 style="color: ${colors.border}; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.1em; font-family: 'Cinzel', serif;">${colors.emoji} ${colors.name} (${found}/${relicsInRarity.length} discovered)</h3><div style="display: grid; gap: 10px;">`;
+            relicsInRarity.forEach(relic => { html += relicTileHTML(relic, colors, ver, seen.has(relic.id)); });
             html += `</div></div>`;
         });
     } else {
         const colors = rarityColors[rarityFilter];
         html += '<div style="display: grid; gap: 10px;">';
-        filteredRelics.forEach(relic => {
-            const nameParts = relic.name.split(' ');
-            const icon = nameParts[0];
-            const name = nameParts.slice(1).join(' ');
-            html += `<div style="background: ${colors.bg}; border: 2px solid ${colors.border}; border-radius: 8px; padding: 12px 15px; transition: all 0.2s ease;" onmouseover="this.style.borderColor='#c9a961'; this.style.transform='translateX(5px)'" onmouseout="this.style.borderColor='${colors.border}'; this.style.transform='translateX(0)'"><div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;"><img src="assets/relics/relic_${relic.id}.webp?v=${ver}" alt="" style="width:36px;height:36px;flex:0 0 36px;border-radius:6px;object-fit:cover;border:1px solid #5a4a38;background:#140f0a;" onerror="this.outerHTML='<span style=&quot;font-size:1.3em;&quot;>${icon}</span>'"><span style="color: #d4af37; font-weight: bold; font-size: 1.05em; font-family: 'Cinzel', serif;">${name}</span></div><p style="color: #ddd; font-size: 0.9em; margin: 0; line-height: 1.5;">${relic.description}</p></div>`;
-        });
+        filteredRelics.forEach(relic => { html += relicTileHTML(relic, colors, ver, seen.has(relic.id)); });
         html += '</div>';
     }
     glossary.innerHTML = html;
+}
+
+// Lifetime career stats — the data has always been collected for unlock gates;
+// this finally shows it back to the player. Read-only.
+function populateCodexStats() {
+    const grid = document.getElementById('lifetimeStatsGrid');
+    if (!grid) return;
+    const s = window.storage ? window.storage.get('scoundrel_lifetime_stats', {}) : {};
+    const n = (k) => s[k] || 0;
+    const fmtTime = (secs) => secs > 0 ? `${Math.floor(secs / 60)}m ${secs % 60}s` : '—';
+    const winRate = (n('gamesWon') + n('deaths')) > 0 ? Math.round(100 * n('gamesWon') / (n('gamesWon') + n('deaths'))) + '%' : '—';
+    const sections = [
+        ['🏆 Career', [
+            ['Games won', n('gamesWon')], ['Deaths', n('deaths')], ['Win rate', winRate],
+            ['Fastest win', fmtTime(n('fastestWin'))], ['Best combo', n('maxCombo') + 'x'],
+        ]],
+        ['🎴 By mode & difficulty', [
+            ['Classic wins', n('classicWins')], ['Adventure wins', n('adventureWins')],
+            ['Easy wins', n('easyWins')], ['Normal wins', n('normalWins')], ['Hard wins', n('hardWins')],
+        ]],
+        ['⚔️ Combat', [
+            ['Monsters slain', n('monstersSlain')], ['Rooms cleared', n('roomsCleared')],
+            ['Damage taken', n('totalDamage')], ['Weapons equipped', n('weaponsEquipped')],
+            ['Weapons broken', n('weaponsBroken')], ['Rooms evaded', n('roomsAvoided')],
+        ]],
+        ['💰 Economy & spoils', [
+            ['Gold earned', n('totalGoldEarned')], ['Items bought', n('itemsBought')],
+            ['Shop visits', n('shopsVisited')], ['Relics collected', n('relicsCollected')],
+            ['Potions used', n('potionsUsed')], ['Events completed', n('eventsCompleted')],
+        ]],
+    ];
+    grid.innerHTML = sections.map(([title, rows]) => `
+        <div style="margin-bottom: 20px;">
+            <h3 style="color: #c9a961; margin-bottom: 10px; font-family: 'Cinzel', serif; letter-spacing: 0.05em;">${title}</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px;">
+                ${rows.map(([label, val]) => `<div style="background: rgba(0,0,0,0.3); border: 1px solid #5a4a38; border-radius: 8px; padding: 10px 12px;"><div style="color: #a89a85; font-size: 0.8em;">${label}</div><div style="color: #e8c878; font-size: 1.3em; font-weight: bold; font-family: 'Cinzel', serif;">${val}</div></div>`).join('')}
+            </div>
+        </div>`).join('');
 }
 
 function populateCodexAchievements() {
@@ -264,4 +318,5 @@ window.switchCodexTab = switchCodexTab;
 window.filterRelicsByRarity = filterCodexRelicsByRarity;
 window.filterUpgradesByStatus = filterUpgradesByStatus;
 window.filterAchievementsByTier = filterAchievementsByTier;
+window.populateCodexStats = populateCodexStats;
 

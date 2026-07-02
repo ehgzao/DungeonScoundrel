@@ -162,9 +162,24 @@ function showWelcomeScreen() {
     cleanupGameIndicators();
 }
 
-function showNewGameModal(mode) {
+function showNewGameModal(mode, opts = {}) {
     newGameModal.classList.add('active');
     trapFocus(newGameModal);
+
+    // Daily Challenge: everyone plays the same seeded Adventure on Normal, so
+    // the difficulty is locked for score comparability.
+    const isDaily = !!opts.daily;
+    if (window.DailyRun) window.DailyRun.pending = isDaily;
+    const diffSel = document.getElementById('difficultySelector');
+    if (diffSel) {
+        if (isDaily) {
+            diffSel.querySelectorAll('.difficulty-btn').forEach(b =>
+                b.classList.toggle('selected', b.dataset.difficulty === 'normal'));
+        }
+        diffSel.style.pointerEvents = isDaily ? 'none' : '';
+        diffSel.style.opacity = isDaily ? '0.5' : '';
+        diffSel.title = isDaily ? 'Daily Challenge is always Normal — same rules for everyone' : '';
+    }
 
     // Mode comes from the main-menu button; reflect it (default Classic) and
     // show it in the title (the in-modal toggle is hidden to avoid duplication).
@@ -172,7 +187,8 @@ function showNewGameModal(mode) {
     const ms = document.getElementById('modeSelector');
     if (ms) ms.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('selected', b.dataset.mode === chosen));
     const title = document.getElementById('newGameTitle');
-    if (title) title.textContent = chosen === 'adventure' ? '🗺️ New Game · Adventure' : '⚔️ New Game · Classic';
+    if (title) title.textContent = isDaily ? `🗓️ New Game · Daily Challenge (${window.DailyRun ? window.DailyRun.day : ''})`
+        : (chosen === 'adventure' ? '🗺️ New Game · Adventure' : '⚔️ New Game · Classic');
     const bossInfo = document.getElementById('bossBattlesInfo');
     if (bossInfo) bossInfo.textContent = chosen === 'adventure'
         ? 'An act boss at the end of each act, then a final boss unique to your hero.'
@@ -187,8 +203,8 @@ function showNewGameModal(mode) {
     // First-time player: Suggest Easy difficulty
     const hasPlayedBefore = localStorage.getItem(STORAGE_KEYS.PLAYED_BEFORE);
     
-    if (!hasPlayedBefore) {
-        
+    if (!hasPlayedBefore && !isDaily) { // Daily is locked to Normal — don't override with the Easy suggestion
+
         // Select Easy by default
         difficultySelector.querySelectorAll('.difficulty-btn').forEach(btn => {
             btn.classList.remove('selected');
@@ -225,6 +241,8 @@ const btnStartClassic = document.getElementById('btnStartClassic');
 const btnStartAdventure = document.getElementById('btnStartAdventure');
 if (btnStartClassic) btnStartClassic.onclick = () => showNewGameModal('classic');
 if (btnStartAdventure) btnStartAdventure.onclick = () => showNewGameModal('adventure');
+const btnStartDaily = document.getElementById('btnStartDaily');
+if (btnStartDaily) btnStartDaily.onclick = () => showNewGameModal('adventure', { daily: true });
 if (btnWelcomeStart) btnWelcomeStart.onclick = () => showNewGameModal();
 btnLearnToPlay.onclick = () => {
     learnToPlayModal.classList.add('active');
@@ -978,6 +996,9 @@ function startGame() {
     // 2. Configure Game State
     game.difficulty = document.querySelector('#difficultySelector .difficulty-btn.selected').dataset.difficulty;
     game.mode = document.querySelector('#modeSelector .mode-btn.selected')?.dataset.mode || 'classic';
+    // Daily Challenge: fixed rules for a comparable board (adventure + normal + shared seed)
+    game.dailyRun = (game.mode === 'adventure' && window.DailyRun && window.DailyRun.pending) ? window.DailyRun.day : null;
+    if (game.dailyRun) game.difficulty = 'normal';
     const healthMap = { easy: 20, normal: 15, hard: 10, endless: 15 };
     let startHealthBonus = permanentUnlocks.startHealth ? 5 : 0;
 

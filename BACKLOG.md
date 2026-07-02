@@ -1,7 +1,7 @@
 # 📋 DUNGEON SCOUNDREL - BACKLOG UNIFICADO
 
 **Última atualização:** 2026-07-02
-**Versão atual:** 1.5.1 (Optimization pass: soft-locks, run integrity, relic choice, a11y)
+**Versão atual:** 1.6.0 (Daily Challenge, Stats, Codex discovery)
 **Single Source of Truth para planejamento**
 
 > Remediação do audit já entregue (PRs #22–#27): XSS escaping, Firestore rules,
@@ -278,9 +278,9 @@ contraste, touch targets) · game-economy.js compartilhado · smoke test em CI.
 | ID | Item | Size | Imp | Status |
 |----|------|------|-----|--------|
 | TB-2 | Famílias de synergy de relics (3-4 tags que combinam) | L | 🔴 | 🔴 Proposto |
-| TB-3 | Codex com discovery ("?" até encontrar) | M | 🟡 | 🔴 Proposto |
-| TB-4 | Tela de lifetime stats / carreira (dados já existem) | M | 🟡 | 🔴 Proposto |
-| TB-6 | Daily Run com seed compartilhada + seção no leaderboard | L | 🔴 | 🔴 Proposto (RNG determinístico já existe) |
+| TB-3 | Codex com discovery ("?" até encontrar) | M | 🟡 | 🟢 Concluído (v1.6.0) |
+| TB-4 | Tela de lifetime stats / carreira (dados já existem) | M | 🟡 | 🟢 Concluído (v1.6.0 — aba Stats no Codex) |
+| TB-6 | Daily Run com seed compartilhada + seção no leaderboard | L | 🔴 | 🟢 Concluído (v1.6.0 — mapa seeded/dia; draws de carta ainda variam) |
 | TB-7 | Mecânica única por final boss (ligada à motivação) | L | 🟡 | 🔴 Proposto |
 | TB-8 | Ascension ladder pós-Hard | XL | 🟡 | 🔴 Proposto (design doc primeiro) |
 

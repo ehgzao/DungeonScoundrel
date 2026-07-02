@@ -5,6 +5,13 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-07-02 - 🗓️ Daily Challenge & Career Update
+
+### ✨ Added
+- **Daily Challenge:** one shared, seeded Adventure descent per UTC day (locked to Normal for comparable scores), started from its own main-menu button. Scores go to a dedicated **Daily leaderboard** tab stamped with the day and seed. Same class ⇒ identical map for every player that day (card draws still vary).
+- **📊 Stats tab in the Codex:** the lifetime stats that always fed unlock gates are finally shown to the player — career, per-mode/difficulty wins, combat and economy totals.
+- **Discovery-gated Codex:** relics show as "?" until you've held one in a run (recorded automatically at render time, so every acquisition path counts). Rarity headers show found/total.
+
 ## [1.5.1] - 2026-07-02 - 🔧 Optimization Pass
 
 ### 🐛 Fixed — Soft-locks & run integrity

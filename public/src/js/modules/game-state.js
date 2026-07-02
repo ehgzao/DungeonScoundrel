@@ -74,7 +74,8 @@ export const game = {
     heldCardIndex: 0,           // which held card is displayed (Rogue can hold 2)
     criticalWarningShown: false,// low-HP warning shown once per dip below the threshold
     gameTimerPausedAt: 0,       // timer pause bookkeeping (tab hidden)
-    lastDamageSource: null      // what hurt us last — the death recap's "slain by"
+    lastDamageSource: null,     // what hurt us last — the death recap's "slain by"
+    dailyRun: null              // 'YYYY-MM-DD' while playing today's Daily Challenge, else null
 };
 
 // ============================================
