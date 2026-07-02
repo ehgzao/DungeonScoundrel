@@ -164,6 +164,7 @@ function showWelcomeScreen() {
 
 function showNewGameModal(mode) {
     newGameModal.classList.add('active');
+    trapFocus(newGameModal);
 
     // Mode comes from the main-menu button; reflect it (default Classic) and
     // show it in the title (the in-modal toggle is hidden to avoid duplication).
@@ -441,6 +442,7 @@ let selectedClass = null;
 function showClassSelection() {
     newGameModal.classList.remove('active');
     classSelectionModal.classList.add('active');
+    trapFocus(classSelectionModal);
     selectedClass = null;
     btnConfirmClass.disabled = true;
     classDescription.style.display = 'none';
@@ -462,6 +464,7 @@ function showClassSelection() {
         
         // Apply locked visual state
         if (isLocked) {
+            card.setAttribute('aria-disabled', 'true');
             card.style.opacity = '0.4';
             card.style.filter = 'grayscale(80%)';
             card.style.cursor = 'not-allowed';
@@ -484,6 +487,7 @@ function showClassSelection() {
                 card.appendChild(lockOverlay);
             }
         } else {
+            card.removeAttribute('aria-disabled');
             card.style.opacity = '1';
             card.style.filter = 'none';
             card.style.cursor = 'pointer';
@@ -499,6 +503,16 @@ function showClassSelection() {
 
 // Class card click handlers
 classCards.forEach(card => {
+    // Keyboard operability: class selection is a mandatory step for every new
+    // game, but the cards are divs — give them button semantics + key handling.
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            card.click();
+        }
+    });
     card.onclick = () => {
         const className = card.dataset.class;
         const classData = CLASSES[className];
@@ -644,13 +658,26 @@ if (btnClassAbility) {
 // ============================================
 // KEYBOARD SHORTCUTS (Desktop Optimization)
 // ============================================
+
+// The visually-topmost active overlay: highest z-index wins, ties go to the
+// later element in DOM order (appended last = painted on top). Adventure
+// stacks overlays (map → intro/campfire/event), so "first DOM match" is wrong.
+function topActiveOverlay() {
+    let top = null, topZ = -Infinity;
+    document.querySelectorAll('.modal-overlay.active').forEach(el => {
+        const z = parseFloat(getComputedStyle(el).zIndex) || 0;
+        if (z >= topZ) { top = el; topZ = z; }
+    });
+    return top;
+}
+
 document.addEventListener('keydown', (e) => {
     // Ignore if typing in input
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
     
     // TUTORIAL MODE - Block all shortcuts except Space, Arrows, ESC
     if (window.InGameTutorial && window.InGameTutorial.isActive()) {
-        const allowedKeys = [' ', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Escape'];
+        const allowedKeys = [' ', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Escape', 'Enter', 'Tab'];
         
         // ESC during tutorial - Show skip confirmation
         if (e.key === KEYS.ESCAPE) {
@@ -676,10 +703,24 @@ document.addEventListener('keydown', (e) => {
     const modalOpen = document.querySelector('.modal-overlay.active');
     if (modalOpen && e.key !== KEYS.ESCAPE) return;
     
-    // ESC - Close modals
+    // ESC - Close the TOPMOST modal only. Overlays declare their Escape
+    // semantics via data-esc: "block" = not dismissible (the Adventure map or
+    // the game-over screen — there is nothing behind them to return to), or a
+    // selector = click that overlay's own safe close button so its cleanup /
+    // return-to-map path always runs. Default: click a close button if the
+    // overlay has one (it may carry cleanup), else just hide the overlay.
     if (e.key === KEYS.ESCAPE) {
-        const modal = document.querySelector('.modal-overlay.active');
+        const modal = topActiveOverlay();
         if (modal) {
+            const escBehavior = modal.dataset.esc || '';
+            if (escBehavior === 'block') return;
+            const closeBtn = modal.querySelector(escBehavior || '.modal-close-btn, .close-modal-btn');
+            if (closeBtn && !closeBtn.disabled) {
+                closeBtn.click();
+                playSound('cardFlip');
+                return;
+            }
+            if (escBehavior) return; // declared button missing/disabled — don't blind-close
             modal.classList.remove('active');
             playSound('cardFlip');
             return;
@@ -798,7 +839,7 @@ function generateTooltip(card) {
         return `<span class="tooltip-negative">👹 <strong>${bossName}</strong> - ${card.numValue}/${card.maxHP || card.numValue} HP<br>${card.bossFlavor || 'Defeat this boss to continue!'}</span>`;
     }
     
-    const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+    const powerBonus = getRelicBonus('totalPower');
     
     if (type === 'monster') {
         const baseWeapon = game.equippedWeapon?.numValue || 0;
@@ -869,12 +910,14 @@ function generateTooltip(card) {
         else return `<span class="tooltip-neutral">↔️ Same Weapon (${cardValue})</span>`;
         
     } else if (type === 'potion') {
-        const maxPotions = (game.classData && game.classData.passive.maxPotionsPerRoom) || 1;
+        let maxPotions = (game.classData && game.classData.passive.maxPotionsPerRoom) || 1;
+        // Herb relic raises the cap — keep in sync with handlePotion
+        if (game.relics.some(r => r.id === 'herb')) maxPotions = Math.max(maxPotions, POTIONS.DANCER_MAX_PER_ROOM);
         if (game.potionsUsed >= maxPotions) {
             return `<span class="tooltip-negative">❌ Potion limit reached (${maxPotions}/${maxPotions})</span>`;
         }
         
-        const healBonus = getRelicBonus('healBonus');
+        const healBonus = getRelicBonus('totalHealBonus');
         const classHealBonus = (game.classData && game.classData.passive.potionHealBonus) || 0;
         const totalHealBonus = healBonus + classHealBonus;
         const heal = Math.min(card.numValue + totalHealBonus, game.maxHealth - game.health);
@@ -952,11 +995,6 @@ function startGame() {
         }
     }
     
-    // Rope relic: +1 starting HP
-    if (game.relics.some(r => r.id === 'rope')) {
-        game.maxHealth += 1;
-    }
-    
     game.health = game.maxHealth;
     
     // Update player info display
@@ -997,6 +1035,12 @@ function startGame() {
         }
     }
     
+    // Clear last run's relics BEFORE building the deck — createDeck reads
+    // game.relics (Old Book / Magic Orb adjust the special-card count), so a
+    // stale relic list from the previous run would leak into the new deck.
+    // (The old rope re-check here double-dipped the same stale list; rope's
+    // +1 max HP applies at acquisition via its tinyHealth effect.)
+    game.relics = [];
     game.deck = createDeck();
     game.dungeon = [...game.deck];
     game.room = [];
@@ -1017,6 +1061,10 @@ function startGame() {
     game.eventTriggeredThisRoom = false; // Max 1 event per room
     game.endlessLevel = 0; // Track endless mode progression
     game.finalBossDefeated = false; // Track if final boss was defeated
+    game.finalBossSpawned = false; // else the 2nd run's spawn guard blocks the boss → unwinnable deck end
+    game.lastDamageSource = null;  // death-recap "slain by" tracker
+    game.undoAvailable = false;    // else Undo restores the PREVIOUS run's state
+    game.lastGameState = null;
     game.heldCardIndex = 0; // Track which held card is currently displayed (for Rogue)
     
     // Per-room flags initialization
@@ -1043,7 +1091,6 @@ function startGame() {
     const startingGoldMap = { easy: 30, normal: 15, hard: 0, endless: 15 };
     game.gold = startingGoldMap[game.difficulty] || 0;
     game.totalGoldEarned = 0;
-    game.relics = [];
     game.shopPriceMultiplier = 1.0; // Shop price multiplier (increases with visits)
     applyPermanentUnlocks(); // Applies initial gold/relics
 
@@ -1311,13 +1358,34 @@ function avoidRoom() {
     showMessage(`You avoided the dungeon! ${avoidCost} cards discarded.`, 'info');
     updateUI();
 
-    if (game.dungeon.length === 0) {
-        endGame('victory');
+    // Same victory gate as checkGameState: the run is only won once the
+    // Dungeon Lord falls — evading past the last card doesn't skip him.
+    if (game.dungeon.length === 0 && game.difficulty !== 'endless') {
+        if (game.finalBossDefeated) {
+            endGame('victory');
+        } else if (!game.finalBossSpawned) {
+            spawnFinalBoss();
+        }
     }
 }
 
 // NOTE: saveGameState, undoLastMove, handleCardClick moved to modules/game-combat.js
 // NOTE: getCardType, handleSpecial, handleMonster, handleWeapon, handlePotion moved to modules/game-combat.js
+
+// Once-per-room relic charges (Cloak, Stone, Mirror Shard, Fortress shield,
+// Power Gauntlet). Called on classic room clear AND on every Adventure
+// encounter clear (adventure-run.js) — the flags used to reset only in the
+// classic path, so in Adventure these relics worked once per RUN.
+function resetPerRoomRelicFlags() {
+    game.firstAttackDone = false; // Power Gauntlet
+    game.relics.forEach(r => {
+        if (r.id === 'tank') r.shieldUsed = false;
+        if (r.id === 'cloak') r.usedThisRoom = false;
+        if (r.id === 'stone') r.stoneUsed = false;
+        if (r.id === 'mirror_shard') r.usedThisRoom = false;
+    });
+}
+window.resetPerRoomRelicFlags = resetPerRoomRelicFlags;
 
 function checkGameState() {
     // Room Cleared?
@@ -1329,6 +1397,9 @@ function checkGameState() {
         // Adventure mode: a map encounter just cleared — hand control back to the
         // map orchestrator and skip all linear next-room/victory logic.
         if (game.adventureRun && window.AdventureRun) {
+            // A lethal blow on the encounter-clearing kill is still a death —
+            // don't advance to the next wave / reopen the map over the corpse.
+            if (game.health <= 0) { endGame('death'); return; }
             game.potionsUsed = 0;
             window.AdventureRun.afterEncounterCleared();
             return;
@@ -1369,20 +1440,9 @@ function checkGameState() {
         let goldPerRoom = 0;
         let passiveHeal = 0;
         
-        // Reset per-room flags
-        game.firstAttackDone = false; // Power Gauntlet reset
-        
+        resetPerRoomRelicFlags();
+
         game.relics.forEach(r => {
-            // Reset per-room relic flags
-            if (r.id === 'tank') r.shieldUsed = false;
-            if (r.id === 'cloak') r.usedThisRoom = false;
-            if (r.id === 'stone') r.stoneUsed = false;
-            if (r.id === 'mirror_shard') r.usedThisRoom = false;
-            
-            // Gold bonuses
-            if (r.id === 'coin_pouch') goldPerRoom += 2;
-            if (r.id === 'greedy') goldPerRoom += 3;
-            
             // Passive healing (generic system based on effect)
             if (r.effect === 'passive_heal') {
                 // Standard passive healing: +1 HP per room (meditation, healing_study)
@@ -1390,6 +1450,10 @@ function checkGameState() {
             }
             if (r.id === 'bandage') passiveHeal += 0.5; // Bandage gives additional 0.5
         });
+
+        // Gold bonuses via getRelicBonus so Crown's "double all stat bonuses"
+        // applies (the old per-id sum silently skipped it).
+        goldPerRoom += getRelicBonus('smallGoldPerRoom') + getRelicBonus('goldPerRoom');
         
         // Rogue: +1 gold per room
         if (game.classData && game.classData.passive.bonusGoldPerRoom) {
@@ -1462,9 +1526,11 @@ function checkGameState() {
         btnDrawRoom.removeAttribute('disabled');
         btnDrawRoom.disabled = false;
         
-        // First room (roomsCleared === 0): Avoid must be disabled
-        // After first room: Avoid enabled unless lastActionWasAvoid
-        if (game.stats.roomsCleared === 1 || game.lastActionWasAvoid) {
+        // After a room clears, Evade is allowed unless the last action was
+        // already an Evade. (roomsCleared is post-increment here so it can
+        // never be 0 — the old === 1 check wrongly locked Evade after room 1,
+        // and disagreed with closeShop(), which implements the intent.)
+        if (game.lastActionWasAvoid) {
             btnAvoidRoom.setAttribute('disabled', 'disabled');
             btnAvoidRoom.disabled = true;
         } else {
@@ -1475,6 +1541,7 @@ function checkGameState() {
 
     if (game.health <= 0) {
         endGame('death');
+        return; // dead — don't spawn the final boss over the defeat screen
     }
 
     // Victory condition: deck empty and room empty (non-endless)
@@ -1602,7 +1669,16 @@ function endGame(reason, gaveUp = false) {
             'Another scoundrel falls to the abyss.'
         ];
         const randomDeath = deathNarratives[Math.floor(Math.random() * deathNarratives.length)];
-        message = gaveUp ? 'You gave up the run.' : randomDeath;
+        // Run recap: what killed you, and (Adventure) where you fell.
+        let recap = game.lastDamageSource ? ` Slain by ${game.lastDamageSource}.` : '';
+        if (game.adventureRun && window.AdventureMap && window.AdventureMap.map && window.AdventureMap.currentId) {
+            const cur = window.AdventureMap.node(window.AdventureMap.currentId);
+            if (cur) {
+                const act = window.AdventureMap.map.acts[cur.act];
+                recap += ` You fell in Act ${cur.act + 1}${act ? ' — ' + act.name : ''}, ${cur.row + 1} rows deep.`;
+            }
+        }
+        message = gaveUp ? 'You gave up the run.' : randomDeath + recap;
         score = gaveUp ? 0 : calculateDeathScore(); // Score is 0 if gave up
         scoreLabel = 'Final Score:';
         playSound('defeat');
@@ -1645,7 +1721,11 @@ function endGame(reason, gaveUp = false) {
             'Your name will echo through these halls forever.'
         ];
         const randomVictory = victoryNarratives[Math.floor(Math.random() * victoryNarratives.length)];
-        message = randomVictory;
+        // Classic gets its own ending beat when the Dungeon Lord falls —
+        // Adventure's per-class endings live in data/adventures.js.
+        message = (!game.adventureRun && game.finalBossDefeated)
+            ? 'The Dungeon Lord falls, and every torch in the deep gutters at once. You walk out the way no one ever has — through the front door, unhurried, pockets full. The dark will spend a hundred years arguing about your name.'
+            : randomVictory;
         score = calculateWinScore();
         scoreLabel = 'Final Score:';
         playSound('victory');
@@ -1764,6 +1844,9 @@ function calculateDeathScore() {
 function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, reason, gaveUp) {
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay active game-over'; // Use modal class
+    overlay.dataset.esc = 'block'; // Escape must not dismiss it — Play Again is the only path back
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
     
     const submitButtonHTML = isVictory ? 
         `<button class="btn btn-success" id="btnSubmitScore">🚀 Submit Score</button>` : '';
@@ -1970,11 +2053,6 @@ function showGameOver(title, message, score, scoreLabel, isVictory, gameTime, re
                 hapticFeedback('success');
                 pulseElement(btn, result?.rankPosition ? '#ffd700' : '#6bcf7f');
                 
-                // Auto-close modal after 2 seconds on success
-                setTimeout(() => {
-                    const gameOverOverlay = document.querySelector('.game-over-overlay');
-                    if (gameOverOverlay) gameOverOverlay.remove();
-                }, 2000);
             } catch (err) {
                 setButtonLoading(btn, false);
                 btn.textContent = '❌ Submission Failed';
@@ -2037,14 +2115,14 @@ function spawnFinalBoss() {
         isBoss: true,
         bossNumber: 99,  // Special marker for final boss
         bossName: 'The Dungeon Lord',
-        bossFlavor: 'The master of this cursed place. Defeat them to claim your victory!'
+        bossFlavor: 'It has worn this dungeon like a crown since the first stone was cut. It does not intend to be evicted.'
     };
-    
+
     game.room = [finalBoss];
-    
+
     playSound('special');
     if (window.music) window.music.playBossStinger();
-    showMessage('', 'danger');
+    showMessage('☠️ THE DUNGEON LORD RISES', 'danger');
     setTimeout(() => showMessage(finalBoss.bossFlavor, 'warning'), 1500);
     createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 100);
     
@@ -2063,7 +2141,8 @@ function showEncouragingModal(isFullVersion = true, onCloseCallback = null) {
     
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay active';
-    
+    overlay.dataset.esc = '.modal-close-btn'; // Escape = the ✕ button, so onCloseCallback (menu return) always runs
+
     if (isFullVersion) {
         // FIRST DEATH: Full modal with tips
         overlay.innerHTML = `
@@ -2292,6 +2371,25 @@ function updateUI() {
     
     statRoomsEl.textContent = game.stats.roomsCleared;
     mainScoreValue.textContent = game.score; // Update main score
+
+    // Combo drives real damage math (getComboBonus) but was only surfaced via
+    // transient toasts — keep it on the HUD while it's live.
+    const comboChip = document.getElementById('top-bar-combo');
+    if (comboChip) {
+        comboChip.style.display = game.combo > 0 ? '' : 'none';
+        if (game.combo > 0) document.getElementById('comboCount').textContent = `${game.combo}x`;
+    }
+    // Same for Adventure multi-wave encounters (the "Wave 2 of 3" toast fades).
+    const waveChip = document.getElementById('top-bar-wave');
+    if (waveChip) {
+        const ar = window.AdventureRun;
+        const inWaves = game.adventureRun && ar && ar._pending && (ar._handsTotal || 1) > 1;
+        waveChip.style.display = inWaves ? '' : 'none';
+        if (inWaves) {
+            document.getElementById('waveCount').textContent =
+                `${Math.min((ar._handsDone || 0) + 1, ar._handsTotal)}/${ar._handsTotal}`;
+        }
+    }
     
     // Show active class buff indicator (OPTIMIZED: reuse element)
     let buffIndicator = document.getElementById('classBuffIndicator');
@@ -2344,7 +2442,7 @@ function updateUI() {
         const cardEl = createCardElement(game.equippedWeapon);
         cardEl.classList.add('equipped');
         
-        const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+        const powerBonus = getRelicBonus('totalPower');
         const berserkBonus = game.berserkStacks > 0 ? 5 : 0;
         const bloodlustBonus = getBloodlustBonus(); // Berserker passive
         const comboBonus = getComboBonus(); // Combo damage
@@ -2586,7 +2684,7 @@ function updateUI() {
             
             // Add preview
             const type = getCardType(card);
-            const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+            const powerBonus = getRelicBonus('totalPower');
             const baseWeaponVal = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
             const effectiveWeapon = game.doubleDamage ? (baseWeaponVal + powerBonus) * 2 : (baseWeaponVal + powerBonus);
 
@@ -2601,7 +2699,8 @@ function updateUI() {
                 else if (cardValue < current) cardEl.classList.add('preview-danger');
                 else cardEl.classList.add('preview-neutral');
             } else if (type === 'potion') {
-                const maxPotions = (game.classData && game.classData.passive.maxPotionsPerRoom) || 1;
+                let maxPotions = (game.classData && game.classData.passive.maxPotionsPerRoom) || 1;
+                if (game.relics.some(r => r.id === 'herb')) maxPotions = Math.max(maxPotions, POTIONS.DANCER_MAX_PER_ROOM);
                 if (game.potionsUsed >= maxPotions) cardEl.classList.add('preview-danger');
                 else cardEl.classList.add('preview-safe');
             } else if (type === 'special') {
@@ -2744,7 +2843,7 @@ function createCardElement(card) {
         // DAMAGE PREVIEW for monster cards
         if (type === 'monster' && card.numValue > 0) {
             const baseWeapon = game.equippedWeapon ? game.equippedWeapon.numValue : 0;
-            const powerBonus = getRelicBonus('power') + getRelicBonus('bigPower');
+            const powerBonus = getRelicBonus('totalPower');
             const berserkBonus = game.berserkStacks > 0 ? 5 : 0;
             const totalDamage = baseWeapon + powerBonus + berserkBonus;
             const netDamage = card.numValue - totalDamage;
@@ -2773,6 +2872,18 @@ function createCardElement(card) {
             cardEl.appendChild(goldBadge);
         }
     }
+
+    // Curse cards (injected by Adventure cursed chests / bound spirits) would
+    // otherwise render as ordinary monsters — mark them so the threat the
+    // pickup toast warned about is identifiable when it finally surfaces.
+    if (card.isCurse) {
+        cardEl.classList.add('curse');
+        const curseBadge = document.createElement('div');
+        curseBadge.className = 'curse-badge';
+        curseBadge.textContent = '☠️ CURSE';
+        cardEl.appendChild(curseBadge);
+        cardEl.title = 'A curse — fights like a monster, but it was never part of your deck.';
+    }
     return cardEl;
 }
 
@@ -2800,6 +2911,7 @@ function createMiniCardElement(card) {
 // Support Functions (Shop, Relics, etc.)
 // Helper: Take damage and reset combo (for events)
 function takeDamage(amount) {
+    game.lastDamageSource = 'a cruel bargain'; // events / cursed treasure
     game.health -= amount;
     game.stats.totalDamage = (game.stats.totalDamage || 0) + amount;
     resetCombo(); // Always reset combo when taking damage

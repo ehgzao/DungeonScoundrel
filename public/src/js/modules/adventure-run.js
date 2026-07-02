@@ -8,6 +8,10 @@
    Loaded as a classic script after game.js + adventure-map.js; uses window.* .
    ============================================ */
 (function () {
+    // Adventure reward/decision moments get the same audio cues as Classic
+    // (shop purchases play 'special', blocks play 'error' — see game-shop.js).
+    const sfx = (name) => { if (typeof window.playSound === 'function') window.playSound(name); };
+
     const AR = {
         _pending: null,
 
@@ -25,6 +29,22 @@
             window.AdventureMap.onNodeSelected = (node) => AR.enter(node);
             AR.showMap();
             AR._showIntroIfFirstTime();
+            AR._startWatchdog();
+        },
+
+        // Recovery net: in Adventure the map is the only way forward (the linear
+        // room buttons are hidden), so if every overlay is ever dismissed without
+        // handing control back — a future overlay bug, an unforeseen close path —
+        // reopen the map instead of stranding the run. No-op outside Adventure.
+        _startWatchdog() {
+            if (AR._watchdog) return;
+            AR._watchdog = setInterval(() => {
+                if (!game.adventureRun || game.gameOver) return;
+                if (AR._pending) return;                                    // encounter in progress
+                if (Array.isArray(game.room) && game.room.length) return;   // hand on screen
+                if (document.querySelector('.modal-overlay.active')) return;
+                AR.showMap();
+            }, 1500);
         },
 
         // Adventure's OWN tutorial — a concise first-run explainer of the map,
@@ -41,6 +61,7 @@
             overlay.className = 'modal-overlay active';
             overlay.id = 'advIntro';
             overlay.style.zIndex = '10002';
+            overlay.dataset.esc = '#advIntroBtn'; // Escape = "Begin" (marks seen, keeps the map open behind)
             overlay.innerHTML = `
                 <div class="modal-content" style="max-width:560px;text-align:left;border:2px solid #c9a961;">
                     <h2 style="font-family:'Cinzel',serif;color:#e8c878;text-align:center;">🗺️ Adventure — How It Works</h2>
@@ -63,6 +84,7 @@
         },
 
         showMap() {
+            if (game.gameOver) return; // never reopen the map over a game-over screen
             if (window.AdventureMap) window.AdventureMap.openScreen();
         },
 
@@ -103,7 +125,11 @@
             if (mult > 1.01 && Array.isArray(game.room)) {
                 game.room.forEach((c) => {
                     if ((c.suitName === 'clubs' || c.suitName === 'spades') && !c.isBoss && c.numValue > 0) {
-                        c.numValue = Math.max(2, Math.round(c.numValue * mult));
+                        // Scale from the card's BASE value: these objects live in
+                        // the persistent run deck and recycle through the discard,
+                        // so scaling numValue in place would compound every cycle.
+                        if (c._baseValue == null) c._baseValue = c.numValue;
+                        c.numValue = Math.max(2, Math.round(c._baseValue * mult));
                     }
                 });
                 if (window.updateUI) window.updateUI();
@@ -148,6 +174,7 @@
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay active';
             overlay.style.zIndex = '10001';
+            overlay.dataset.esc = 'block'; // one-shot decision — must resolve via a button
             overlay.innerHTML = `
                 <div class="modal-content" style="max-width:460px;text-align:center;border:2px solid #c9a961;">
                     <div style="font-size:2.4em;">🔥</div>
@@ -162,6 +189,7 @@
             const done = () => { overlay.remove(); if (window.updateUI) window.updateUI(); AR._toMapSoon(); };
             overlay.querySelector('#advRestHeal').onclick = () => {
                 game.health = Math.min(game.maxHealth, game.health + heal);
+                sfx('heal');
                 if (window.showMessage) window.showMessage(`🔥 You rest — recovered ${heal} HP.`, 'success');
                 done();
             };
@@ -170,6 +198,7 @@
                     const di = game.dungeon.indexOf(worst);
                     if (di >= 0) game.dungeon.splice(di, 1);
                     else { const pi = game.discardPile.indexOf(worst); if (pi >= 0) game.discardPile.splice(pi, 1); }
+                    sfx('avoid');
                     if (window.showMessage) window.showMessage(`⚒️ You cull a ${worst.numValue}-power monster from the dungeon.`, 'success');
                 }
                 done();
@@ -185,7 +214,33 @@
         },
         _grantRelic(act) {
             if (window.giveRelicByRarity) window.giveRelicByRarity(AR._relicRarity(act));
+            sfx('special');
             if (window.updateUI) window.updateUI();
+        },
+
+        // The genre-defining reward moment: pick 1 of 3 relics instead of an
+        // auto-grant — this is where a build identity is actually chosen.
+        // Used for elite/boss kills and uncursed treasure. Events, cursed
+        // chests and the merchant's Mystery Relic stay single-outcome bets by
+        // design (the gamble IS their decision).
+        _offerRelicChoice(act, icon, title, flavor) {
+            const rarity = AR._relicRarity(act);
+            const picks = window.relicChoicesByRarity ? window.relicChoicesByRarity(rarity, 3) : [];
+            if (picks.length < 2 || !window.giveSpecificRelic) { AR._grantRelic(act); AR._toMapSoon(); return; }
+            const rarityIcons = { common: '⚪', uncommon: '🟢', rare: '🔵', legendary: '🟠' };
+            AR._choiceModal({
+                icon: icon || '🎁',
+                title: title || 'Choose a Relic',
+                flavor: `${flavor || 'One prize leaves with you. The rest stay in the dark.'} (${rarityIcons[rarity] || ''} ${rarity})`,
+                choices: picks.map((r) => ({
+                    label: r.name,
+                    sub: r.description,
+                    apply: () => {
+                        window.giveSpecificRelic(r);
+                        return `${r.name} — yours. The dark keeps the rest.`;
+                    },
+                })),
+            });
         },
 
         _treasure(node) {
@@ -194,10 +249,9 @@
             if (Math.random() < 0.35) return AR._cursedChest(node);
             const gold = 10 + node.tier * 2;
             if (window.earnGold) window.earnGold(gold); else game.gold += gold;
-            AR._grantRelic(node.act);
             if (window.updateUI) window.updateUI();
-            if (window.showMessage) window.showMessage(`🎁 Treasure! A relic and ${gold} gold.`, 'success');
-            AR._toMapSoon();
+            if (window.showMessage) window.showMessage(`🎁 Treasure! ${gold} gold — and a choice of relics.`, 'success');
+            AR._offerRelicChoice(node.act, '🎁', 'Treasure', 'Three relics glitter in the chest. Take one.');
         },
 
         // ADV-6: drop a "curse" — a strong extra monster — into the live run deck.
@@ -211,6 +265,7 @@
             if (!Array.isArray(game.dungeon)) game.dungeon = [];
             const idx = Math.floor(Math.random() * (game.dungeon.length + 1));
             game.dungeon.splice(idx, 0, curse);
+            sfx('damage'); // ominous thud — something foul just joined the deck
         },
 
         _cursedChest(node) {
@@ -245,9 +300,14 @@
             const act = node.act || 0;
             AR._merchantAct = act;
             AR._bumpLifetime('shopsVisited'); // parity with Classic shop (shopper achievement)
-            const prices = { weapon: 12 + act * 4, potion: 12 + act * 4, remove: 18 + act * 4, upgrade: 20 + act * 5, relic: 35 + act * 10 };
+            // Base prices scale with act; the discount rules (Merchant Friend
+            // unlock, Lucky Dice, Crystal) are the SAME as the Classic shop —
+            // shared core in game-economy.js so the two can't drift.
+            const P = (base) => (window.GameEconomy ? window.GameEconomy.discountedPrice(base) : base);
+            const prices = { weapon: P(12 + act * 4), potion: P(12 + act * 4), remove: P(18 + act * 4), upgrade: P(20 + act * 5), relic: P(35 + act * 10) };
             let overlay = document.getElementById('advMerchant');
             if (!overlay) { overlay = document.createElement('div'); overlay.id = 'advMerchant'; overlay.className = 'modal-overlay'; overlay.style.zIndex = '10001'; document.body.appendChild(overlay); }
+            overlay.dataset.esc = '[data-buy="leave"]'; // Escape = Leave (returns to the map)
             overlay.classList.add('active');
             const render = () => {
                 const g = game.gold || 0;
@@ -278,7 +338,7 @@
 
         // Returns true if a purchase happened (so the merchant re-renders).
         _merchantBuy(action, cost) {
-            if ((game.gold || 0) < cost) return false;
+            if ((game.gold || 0) < cost) { sfx('error'); return false; }
             let msg = '';
             if (action === 'weapon') {
                 const v = 6 + Math.floor(Math.random() * 5);
@@ -292,14 +352,14 @@
                 const pool = [...(game.dungeon || []), ...(game.discardPile || [])];
                 const worst = pool.filter(c => (c.suitName === 'clubs' || c.suitName === 'spades') && !c.isBoss)
                     .reduce((m, c) => (!m || c.numValue > m.numValue ? c : m), null);
-                if (!worst) { if (window.showMessage) window.showMessage('No threats left to remove.', 'warning'); return false; }
+                if (!worst) { sfx('error'); if (window.showMessage) window.showMessage('No threats left to remove.', 'warning'); return false; }
                 const di = game.dungeon.indexOf(worst);
                 if (di >= 0) game.dungeon.splice(di, 1); else { const pi = game.discardPile.indexOf(worst); if (pi >= 0) game.discardPile.splice(pi, 1); }
                 msg = `Removed a ${worst.numValue}-power monster from your deck.`;
             } else if (action === 'upgrade') {
                 const pool = [...(game.dungeon || []), ...(game.discardPile || [])];
                 const weapons = pool.filter(c => c.suitName === 'diamonds' && c.numValue < 13);
-                if (!weapons.length) { if (window.showMessage) window.showMessage('No weapon to sharpen.', 'warning'); return false; }
+                if (!weapons.length) { sfx('error'); if (window.showMessage) window.showMessage('No weapon to sharpen.', 'warning'); return false; }
                 const w = weapons[Math.floor(Math.random() * weapons.length)];
                 w.numValue = Math.min(13, w.numValue + 2); w.value = String(w.numValue);
                 msg = `Sharpened a weapon to ${w.numValue}♦.`;
@@ -308,7 +368,10 @@
                 msg = 'Acquired a relic.';
             }
             game.gold -= cost;
-            AR._bumpLifetime('itemsBought'); // parity with Classic buyItem (shopaholic achievement)
+            // Shared purchase bookkeeping (lifetime itemsBought + achievements)
+            if (window.GameEconomy) window.GameEconomy.recordPurchase();
+            else AR._bumpLifetime('itemsBought');
+            if (action !== 'relic') sfx('special'); // relic purchases already chime via _grantRelic
             if (window.updateUI) window.updateUI();
             if (window.showMessage && msg) window.showMessage('🏛️ ' + msg, 'success');
             return true;
@@ -413,6 +476,7 @@
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay active';
             overlay.style.zIndex = '10001';
+            overlay.dataset.esc = 'block'; // a choice is mandatory (events offer a "walk away" button)
             const btns = choices.map((c, i) =>
                 `<button class="btn ${i === 0 ? 'btn-primary' : 'btn-secondary'} adv-choice-btn" data-i="${i}" ${c.disabled ? 'disabled' : ''}>${c.label}${c.sub ? `<br><small>${c.sub}</small>` : ''}</button>`
             ).join('');
@@ -428,8 +492,10 @@
                 b.onclick = () => {
                     const c = choices[+b.dataset.i];
                     if (c.disabled) return;
+                    sfx('cardFlip'); // outcome reveal
                     const res = c.apply ? c.apply() : null;
                     if (window.updateUI) window.updateUI();
+                    overlay.dataset.esc = '#advChoiceCont'; // outcome shown — Escape = Continue (back to map)
                     overlay.querySelector('.modal-content').innerHTML = `
                         <div style="font-size:2.2em;">${icon}</div>
                         <p style="color:#ddd;line-height:1.7;padding:8px 10px;font-style:italic;">${res || '...'}</p>
@@ -443,20 +509,15 @@
             });
         },
 
-        _observeClose(id) {
-            const el = document.getElementById(id);
-            if (!el) { AR._toMapSoon(); return; }
-            const obs = new MutationObserver(() => {
-                if (!el.classList.contains('active')) { obs.disconnect(); AR.showMap(); }
-            });
-            obs.observe(el, { attributes: true, attributeFilter: ['class'] });
-        },
-
         _toMapSoon() { setTimeout(() => AR.showMap(), 300); },
 
         // Called from checkGameState when an adventure combat/boss room empties.
         afterEncounterCleared() {
+            if (game.gameOver) return; // death already handled — no next wave, no map
             game.stats.roomsCleared++;
+            // Encounter cleared = room cleared: recharge once-per-room relics
+            // (they used to recharge only in the classic room-clear path).
+            if (window.resetPerRoomRelicFlags) window.resetPerRoomRelicFlags();
             if (game.classAbilityCooldown > 0) game.classAbilityCooldown--;
             if (window.updateUI) window.updateUI();
             const node = AR._pending;
@@ -474,13 +535,16 @@
                 AR._ending();
                 return;
             }
-            // ADV-5: relic rewards for tougher nodes.
+            // ADV-5: relic rewards for tougher nodes — pick 1 of 3 (the choice
+            // modal's Continue button returns to the map).
             if (node && node.type === 'elite') {
-                AR._grantRelic(node.act);
-                if (window.showMessage) window.showMessage('💀 Elite slain — a relic is yours!', 'success');
+                if (window.showMessage) window.showMessage('💀 Elite slain!', 'success');
+                AR._offerRelicChoice(node.act, '💀', 'Elite Spoils', 'It guarded these. It has no further use for them.');
+                return;
             } else if (node && node.type === 'boss') {
-                AR._grantRelic((node.act || 0) + 1);
-                if (window.showMessage) window.showMessage('👹 Boss felled — a powerful relic!', 'success');
+                if (window.showMessage) window.showMessage('👹 Boss felled!', 'success');
+                AR._offerRelicChoice((node.act || 0) + 1, '👹', "The Guardian's Hoard", "Take your prize from the warden's remains.");
+                return;
             }
             AR._toMapSoon();
         },
@@ -490,6 +554,7 @@
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay active';
             overlay.style.zIndex = '10001';
+            overlay.dataset.esc = '#advEndBtn'; // Escape = Claim Victory (endGame is the only path forward)
             overlay.innerHTML = `
                 <div class="modal-content" style="max-width:560px;text-align:center;border:3px solid #c9a961;">
                     <div style="font-size:3em;">🏆</div>

@@ -34,7 +34,7 @@ const ACHIEVEMENTS = [
     { id: 'time_traveler', tier: 'bronze', icon: '⏰', title: 'Time Traveler', description: 'Use Time Warp card', check: () => getLifetimeStat('timeWarps') >= 1 },
     { id: 'berserker_ach', tier: 'bronze', icon: '🔥', title: 'Berserker', description: 'Use Berserk mode 3 times', check: () => getLifetimeStat('berserkUses') >= 3 },
     
-    // 🥈 SILVER (15) - Médias
+    // 🥈 SILVER (14) - Médias
     { id: 'veteran', tier: 'silver', icon: '🎖️', title: 'Veteran', description: 'Win 5 games', check: () => getLifetimeStat('gamesWon') >= 5 },
     { id: 'massacre', tier: 'silver', icon: '⚔️', title: 'Massacre', description: 'Defeat 50 monsters', check: () => getLifetimeStat('monstersSlain') >= 50 },
     { id: 'dungeon_master', tier: 'silver', icon: '🏰', title: 'Dungeon Master', description: 'Clear 50 rooms', check: () => getLifetimeStat('roomsCleared') >= 50 },
@@ -45,16 +45,16 @@ const ACHIEVEMENTS = [
     { id: 'arsenal', tier: 'silver', icon: '⚔️', title: 'Arsenal', description: 'Equip 25 weapons (lifetime)', check: () => getLifetimeStat('weaponsEquipped') >= 25 },
     { id: 'pharmacist', tier: 'silver', icon: '💊', title: 'Pharmacist', description: 'Use 25 potions (lifetime)', check: () => getLifetimeStat('potionsUsed') >= 25 },
     { id: 'special_ops', tier: 'silver', icon: '✨', title: 'Special Ops', description: 'Use 15 special cards', check: () => getLifetimeStat('specialsUsed') >= 15 },
-    { id: 'speedrun', tier: 'silver', icon: '⏱️', title: 'Speedrunner', description: 'Win a game in under 1 minute', check: () => false },
     { id: 'iron_will', tier: 'silver', icon: '💪', title: 'Iron Will', description: 'Win with exactly 1 HP', check: () => false },
     { id: 'perfect_run', tier: 'silver', icon: '✨', title: 'Perfect Run', description: 'Clear 10 rooms with 10x combo', check: () => false },
     { id: 'shopaholic', tier: 'silver', icon: '🛍️', title: 'Shopaholic', description: 'Buy 30 items from shop (lifetime)', check: () => getLifetimeStat('itemsBought') >= 30 },
     { id: 'event_master', tier: 'silver', icon: '🎲', title: 'Event Master', description: 'Complete 20 events', check: () => getLifetimeStat('eventsCompleted') >= 20 },
     
-    // 🥇 GOLD (9) - Difíceis (5 secretas)
+    // 🥇 GOLD (10) - Difíceis (5 secretas)
+    { id: 'speedrun', tier: 'gold', icon: '⚡', title: 'Lightning Run', description: 'Win a game in under 1 minute', check: () => false }, // Checked during game
     { id: 'legend', tier: 'gold', icon: '👑', title: 'Legend', description: 'Win 10 games', check: () => getLifetimeStat('gamesWon') >= 10 },
     { id: 'hard_win', tier: 'gold', icon: '🔴', title: 'Hard Victory', description: 'Win on Hard difficulty', check: () => getLifetimeStat('hardWins') >= 1 },
-    { id: 'genocide', tier: 'gold', icon: '☠️', title: 'Genocide', description: 'Defeat 200 monsters', check: () => getLifetimeStat('monstersSlain') >= 200 },
+    { id: 'genocide', tier: 'gold', icon: '☠️', title: 'Monster Bane', description: 'Defeat 200 monsters', check: () => getLifetimeStat('monstersSlain') >= 200 },
     { id: 'conqueror', tier: 'gold', icon: '🏆', title: 'Conqueror', description: 'Clear 100 rooms', check: () => getLifetimeStat('roomsCleared') >= 100 },
     
     // 🎴 MODES & MASTERY
@@ -63,7 +63,7 @@ const ACHIEVEMENTS = [
     { id: 'adventure_normal', tier: 'silver', icon: '🟡', title: 'Seasoned Delver', description: 'Win Adventure on Normal', check: () => getLifetimeStat('adventure_normalWins') >= 1 },
     { id: 'adventure_hard', tier: 'gold', icon: '🔴', title: 'Deep Descent', description: 'Win Adventure on Hard', check: () => getLifetimeStat('adventure_hardWins') >= 1 },
     { id: 'classic_hard', tier: 'gold', icon: '⚔️', title: 'Old-School Hardcore', description: 'Win Classic on Hard', check: () => getLifetimeStat('classic_hardWins') >= 1 },
-    { id: 'speedrunner', tier: 'gold', icon: '⏱️', title: 'Speedrunner', description: 'Win a run in under 5 minutes', check: () => { const t = getLifetimeStat('fastestWin'); return t > 0 && t <= 300; } },
+    { id: 'speedrunner', tier: 'silver', icon: '⏱️', title: 'Speedrunner', description: 'Win a run in under 5 minutes', check: () => { const t = getLifetimeStat('fastestWin'); return t > 0 && t <= 300; } },
     { id: 'all_heroes', tier: 'gold', icon: '🎭', title: 'Many Faces', description: 'Win an Adventure run with all 6 heroes', check: () => ['scoundrel', 'knight', 'rogue', 'dancer', 'berserker', 'priest'].every(c => getLifetimeStat('adv_' + c + 'Wins') >= 1) },
 
     // 🔒 SECRET GOLDS (5)

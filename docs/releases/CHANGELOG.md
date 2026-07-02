@@ -5,6 +5,30 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.1] - 2026-07-02 - 🔧 Optimization Pass
+
+### 🐛 Fixed — Soft-locks & run integrity
+- **Escape-key soft-locks (critical):** Escape closed the *first* active overlay in DOM order and just hid it. In Adventure this could dismiss the map (the run's only hub) or the map *behind* the first-run intro, stranding the run; it could also dismiss the game-over screen in both modes. Escape now targets the visually-topmost overlay and honors per-overlay semantics (`data-esc`); every Adventure overlay's close path returns to the map, and a recovery watchdog reopens the map if all overlays ever vanish.
+- **Second-run soft-lock (critical):** `finalBossSpawned` was never reset, so the second Classic run in a session could never spawn the Dungeon Lord — unwinnable at deck end. Undo state and the previous run's relics (which inflated the new deck's special count) are now reset too.
+- **Victory gates:** Evading past the last card granted a full-score victory *without* the final boss; death no longer falls through into final-boss spawning; a lethal blow on an Adventure encounter-clearing kill now registers as a death instead of advancing waves over the corpse.
+- **Undo integrity (Easy/Normal):** snapshots now deep-copy cards and capture stats — boss HP no longer survives an undo (free boss kills), and kill→undo loops no longer inflate score/lifetime stats.
+- **Boss combat:** one-shot buffs (Power, Berserk, Shadow Strike, Rage Strike) are consumed on boss hits — they used to multiply *every* boss hit and persist after the fight. Defeated Adventure bosses no longer recycle into the run deck (infinite boss-gold farm); depth scaling no longer compounds on deck recycles.
+- **Dead relics revived:** Bronze Ring / Combat Study (+1 damage) and Healing Charm (+1 potion heal) did literally nothing — their effect types were never queried. Crown now doubles gold-per-room relics as described. Once-per-room relics (Cloak/Stone/Mirror Shard/Gauntlet) now recharge after Adventure encounters. Herb is reflected in potion tooltips/previews.
+- Portal event heal clamped; Shrine/Library relic grants count toward the Priest unlock; tutorial ✕ no longer permanently disables the game buttons.
+
+### ✨ Added
+- **Pick-1-of-3 relic rewards** (Adventure): elite/boss kills and uncursed treasure offer a choice of three relics — the genre's build-identity moment. Events/cursed chests/Mystery Relic stay single-outcome bets by design.
+- **Death run recap:** "Slain by a 10♠ monster… You fell in Act 2 — The Sunken Halls, 5 rows deep."
+- **HUD chips** for combo and Adventure wave progress (both drive damage math but only appeared as fading toasts); curse cards now render with a violet border + ☠️ badge; relic sidebar shows rarity colors; Adventure reward moments have sound.
+- **First automated test:** `tests/smoke.mjs` + GitHub Action drives menu → new game → first action in both modes, zero page errors required.
+
+### ♿ Accessibility
+- Class selection, top-bar chips and the version badge are keyboard-operable; focus traps on the new-game/class/map modals; `aria-live` combat announcements; `role="dialog"` on all modals; `prefers-reduced-motion` support; 44px close buttons; AA contrast for achievement requirements; legible map tooltips; tap-to-preview map nodes on touch.
+
+### 🛠️ Architecture & content
+- New `game-economy.js`: one pricing/purchase core for the Classic shop and Adventure merchant (discount relics now work at the merchant — they silently didn't); `GOLD.SHOP_PRICE_MULTIPLIER` finally consumed by its shop; the `game` state literal now declares every live field; dead writes removed.
+- Six hero motivations rewritten as six distinct voices, single-sourced from `data/adventures.js` into the class-select screen; the Dungeon Lord gets a real flavor line, announcement and ending beat; relic copy dedup/tightening; Rules Reference dedup; "Speedrunner" tier/title collision fixed; "Genocide" retitled.
+
 ## [1.5.0] - 2026-06-30 - 🗺️ Adventure Update
 
 ### ✨ Added — Adventure Mode

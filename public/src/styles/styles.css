@@ -770,6 +770,15 @@
             align-items: center;
             gap: 10px;
         }
+        /* Rarity is part of the reward — keep it visible after the pickup toast.
+           Same palette as the Codex rarity headers. */
+        .relic-item.rarity-common    { border-left-color: #aaa; }
+        .relic-item.rarity-uncommon  { border-left-color: #6bcf7f; }
+        .relic-item.rarity-rare      { border-left-color: #4a9eff; }
+        .relic-item.rarity-legendary {
+            border-left-color: #ff9800;
+            background: linear-gradient(90deg, rgba(255, 152, 0, 0.12), rgba(255, 255, 255, 0.05) 55%);
+        }
         .relic-icon {
             width: 42px; height: 42px; flex: 0 0 42px;
             border-radius: 6px; object-fit: cover;
@@ -1095,6 +1104,32 @@
             text-shadow: 0 1px 3px #000;
         }
 
+        /* Curse cards — injected into the run deck by Adventure cursed chests /
+           bound spirits. Sickly violet glow + badge so they read as "curse"
+           the instant they surface, distinct from the red monster border. */
+        .card.curse,
+        .card.adventure-art.monster.curse {
+            border-color: #8b4fd8;
+            box-shadow: inset 0 0 0 2px rgba(139, 79, 216, 0.45), 0 0 16px rgba(139, 79, 216, 0.55), 0 6px 15px rgba(0, 0, 0, 0.7);
+        }
+        .card.curse .adv-type-monster { color: #b98aec; }
+        .curse-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            padding: 2px 7px;
+            background: linear-gradient(135deg, rgba(58, 24, 92, 0.95), rgba(35, 12, 60, 0.95));
+            border: 1.5px solid #8b4fd8;
+            border-radius: 6px;
+            color: #d8b4ff;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.62em;
+            letter-spacing: 0.06em;
+            pointer-events: none;
+            z-index: 2;
+        }
+
         /* Adventure event / cursed-chest choice modal */
         .adv-choices { display: flex; flex-direction: column; gap: 10px; margin: 16px 0 4px; }
         .adv-choices .adv-choice-btn { width: 100%; line-height: 1.25; }
@@ -1130,17 +1165,20 @@
             display: flex; flex-direction: column; gap: 3px; text-align: center;
             opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.15s, transform 0.15s; z-index: 50;
         }
-        .adv-node .adv-tip strong { color: #e8c878; font-family: 'Cinzel', serif; font-size: 0.5em; letter-spacing: 0.3px; }
-        .adv-node .adv-tip span { color: #cbb892; font-size: 0.44em; line-height: 1.35; }
+        .adv-node .adv-tip strong { color: #e8c878; font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.3px; }
+        .adv-node .adv-tip span { color: #cbb892; font-size: 12px; line-height: 1.35; }
         .adv-node .adv-tip::after {
             content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
             border: 6px solid transparent; border-top-color: #c9a961;
         }
-        .adv-node:hover .adv-tip, .adv-node:focus-visible .adv-tip {
+        .adv-node:hover .adv-tip, .adv-node:focus-visible .adv-tip,
+        .adv-node.adv-preview .adv-tip {
             opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
         }
         /* Keep the hovered/focused node above its neighbours so the tip isn't clipped. */
-        .adv-node:hover, .adv-node:focus-visible { z-index: 60; }
+        .adv-node:hover, .adv-node:focus-visible, .adv-node.adv-preview { z-index: 60; }
+        /* Touch commit hint: previewed node pulses gold until the second tap. */
+        .adv-node.adv-preview { outline: 2px solid #e8c878; outline-offset: 2px; }
 
 
         /* Parchment texture overlay on cards */
@@ -1364,13 +1402,13 @@
         /* X button in top right corner of modals */
         .modal-close-btn {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 10px;
+            right: 10px;
             background: rgba(0, 0, 0, 0.5);
             border: 2px solid var(--stone-light);
             color: var(--gold-bright);
-            width: 35px;
-            height: 35px;
+            width: 44px;  /* WCAG touch-target minimum */
+            height: 44px;
             border-radius: 50%;
             font-size: 1.5em;
             line-height: 1;
@@ -1653,7 +1691,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 1.5em;
-            color: #666;
+            color: #a89a85; /* was #666 — ~2.4:1 on the dark bg, below AA */
         }
         .achievement-header {
             display: flex;
@@ -1675,7 +1713,7 @@
         }
         .achievement-requirement {
             margin-top: 8px;
-            color: #666;
+            color: #a89a85; /* was #666 — ~2.4:1 on the dark bg, below AA */
             font-size: 0.8em;
             font-style: italic;
         }
@@ -2350,3 +2388,17 @@
                            inset 0 0 40px rgba(255, 215, 0, 0.2);
             }
         }
+
+/* ============================================
+ * REDUCED MOTION — no gameplay logic depends on animation events, so
+ * collapsing all animation/transition time is safe and honors the OS setting
+ * (perpetual torch/pulse/shake effects are vestibular-trigger territory).
+ * ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

@@ -58,6 +58,11 @@
 }
 
 /* Volume Slider */
+#welcomeMusicVolume:focus-visible {
+    outline: 2px solid var(--gold-treasure, #c9a961);
+    outline-offset: 3px;
+}
+
 #welcomeMusicVolume {
     width: 140px;
     height: 6px;

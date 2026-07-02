@@ -26,7 +26,7 @@ const RELICS = [
     { id: 'herb', name: '🌱 Herb', description: 'Potions usable twice per dungeon', rarity: 'common', effect: 'doublePot' },
     { id: 'map', name: '🗺️ Map', description: 'See next 3 cards', rarity: 'common', effect: 'cardPreview' },
     { id: 'gloves', name: '🧤 Gloves', description: 'Weapons last 1 extra use', rarity: 'common', effect: 'extraDurability' },
-    { id: 'book', name: '📖 Old Book', description: 'Special cards +10% more common', rarity: 'common', effect: 'moreSpecials' },
+    { id: 'book', name: '📖 Old Book', description: '+1 special card in each new deck', rarity: 'common', effect: 'moreSpecials' },
     { id: 'bell', name: '🔔 Bell', description: 'Gold visible on cards', rarity: 'common', effect: 'goldSight' },
     { id: 'key', name: '🔑 Old Key', description: 'Unlock 1 free shop item', rarity: 'common', effect: 'freeItem' },
     { id: 'mirror_shard', name: '🪞 Mirror Shard', description: 'Reflect 2 damage once per room', rarity: 'common', effect: 'weakReflect' },
@@ -51,7 +51,7 @@ const RELICS = [
     { id: 'magnet', name: '🧲 Magnet', description: '+40% gold from all sources', rarity: 'uncommon', effect: 'goldBonus' },
     { id: 'ring_fire', name: '🔥 Fire Ring', description: 'Combo damage +1 per stack', rarity: 'uncommon', effect: 'comboBoost' },
     { id: 'cloak', name: '🧥 Cloak', description: 'First damage each room is 0', rarity: 'uncommon', effect: 'firstDodge' },
-    { id: 'berserker_ring', name: '💢 Berserker Ring', description: '+2 damage to all weapons', rarity: 'uncommon', effect: 'power' },
+    { id: 'berserker_ring', name: '💢 Berserker Ring', description: '+4 weapon damage while at half HP or less', rarity: 'uncommon', effect: 'lowHpPower' },
     
     // === RARA (8) - Efeitos poderosos ===
     { id: 'gold_shield', name: '🛡️ Golden Shield', description: '+10 maximum health', rarity: 'rare', effect: 'bigHealth' },
@@ -61,7 +61,7 @@ const RELICS = [
     { id: 'tank', name: '🏰 Fortress Armor', description: 'Start each room with 1 HP shield', rarity: 'rare', effect: 'roomShield' },
     { id: 'master_smith', name: '🔨 Master Smith', description: 'Repairs weapon at end of each room', rarity: 'rare', effect: 'auto_repair' },
     { id: 'crown', name: '👑 Crown', description: 'Double all stat bonuses from relics', rarity: 'rare', effect: 'doubleRelics' },
-    { id: 'orb', name: '🔮 Magic Orb', description: 'Special cards appear 2x more', rarity: 'rare', effect: 'manySpecials' },
+    { id: 'orb', name: '🔮 Magic Orb', description: 'New decks hold twice the special cards', rarity: 'rare', effect: 'manySpecials' },
     
     // === LENDÃRIA (2) - Game-changing ===
     { id: 'phoenix', name: '🦅 Phoenix Feather', description: 'Revive once with 10 HP', rarity: 'legendary', effect: 'revive', oneTime: true, used: false },
@@ -71,11 +71,12 @@ const RELICS = [
 const EVENTS = [
     { id: 'shrine', title: '🔮 Mysterious Shrine', text: 'You find a glowing shrine. An ancient voice offers you a choice...',
         choices: [
-            { text: '❤️ Sacrifice 5 HP for +2 weapon damage permanently (Gain Berserker Ring)',
+            { text: '❤️ Sacrifice 5 HP for the Berserker Ring (+4 weapon damage while at half HP or less)',
                 effect: () => {
                     if (game.health > 5) { 
                         takeDamage(5); 
                         game.relics.push({...RELICS.find(r => r.id === 'berserker_ring')}); 
+                        game.stats.relicsCollected++; // count toward Priest unlock like every other relic
                         showMessage('Gained Berserker Ring!', 'success'); 
                         updateRelicsDisplay(); 
                     } 
@@ -158,12 +159,14 @@ const EVENTS = [
     { id: 'library', title: '📚 Ancient Library', text: 'You discover a library filled with magical tomes.',
         choices: [
             { text: '📖 Study combat techniques (+1 damage permanent)', effect: () => {
-                game.relics.push({ id: 'study_bonus', name: '📖 Combat Study', description: '+1 damage', rarity: 'common', effect: 'smallPower' });
+                game.relics.push({ id: 'study_bonus', name: '📖 Combat Study', description: '+1 weapon damage — knowledge cuts too', rarity: 'common', effect: 'smallPower' });
+                game.stats.relicsCollected++;
                 showMessage('📖 You learned new techniques!', 'success');
                 updateRelicsDisplay();
             }},
             { text: '🔮 Learn healing magic (+1 HP/room)', effect: () => {
-                game.relics.push({ id: 'healing_study', name: '🔮 Healing Magic', description: '+1 HP per room', rarity: 'uncommon', effect: 'passive_heal' });
+                game.relics.push({ id: 'healing_study', name: '🔮 Healing Magic', description: 'Mend 1 HP after each room — the body remembers the words', rarity: 'uncommon', effect: 'passive_heal' });
+                game.stats.relicsCollected++;
                 showMessage('🔮 You mastered healing!', 'success');
                 updateRelicsDisplay();
             }},
@@ -277,7 +280,7 @@ const EVENTS = [
             { text: '🎲 Jump in! (Random outcome)', effect: () => {
                 const outcomes = ['good', 'great', 'bad'];
                 const result = outcomes[Math.floor(Math.random() * outcomes.length)];
-                if (result === 'good') { game.health += 8; showMessage('🌀 Portal leads to healing springs! +8 HP', 'success'); }
+                if (result === 'good') { game.health = Math.min(game.maxHealth, game.health + 8); showMessage('🌀 Portal leads to healing springs! +8 HP', 'success'); }
                 else if (result === 'great') { giveRandomRelic(); showMessage('🌀 You found a treasure room! Relic gained!', 'success'); }
                 else { takeDamage(5); showMessage('🌀 Ouch! Rough landing. -5 HP', 'danger'); }
                 updateUI();

@@ -227,7 +227,20 @@ AdventureMap.renderInto = function (container) {
                 tip.innerHTML = `<strong>${t.icon} ${tipName}</strong><span>${t.desc}</span>`;
                 node.appendChild(tip);
                 if (state === 'reachable') {
-                    node.onclick = () => { if (this.select(n.id)) this.renderInto(container); };
+                    node.onclick = () => {
+                        // Touch has no hover, so entering a node on the first tap
+                        // commits blind. First tap previews the tooltip, second
+                        // tap (same node) enters. Pointer/hover devices commit
+                        // immediately as before.
+                        if (window.matchMedia && window.matchMedia('(hover: none)').matches &&
+                            !node.classList.contains('adv-preview')) {
+                            container.querySelectorAll('.adv-node.adv-preview')
+                                .forEach(p => p.classList.remove('adv-preview'));
+                            node.classList.add('adv-preview');
+                            return;
+                        }
+                        if (this.select(n.id)) this.renderInto(container);
+                    };
                 } else {
                     node.disabled = true;
                 }
@@ -278,8 +291,13 @@ AdventureMap.openScreen = function () {
     }
     const op = overlay.querySelector('#adventureMapOpening');
     if (op) op.textContent = this.map.adventure.opening;
+    // The map IS the run's hub — there is nothing behind it to Escape back to,
+    // so the global Escape handler must not dismiss it (data-esc="block").
+    overlay.dataset.esc = 'block';
     overlay.classList.add('active');
     this.renderInto(overlay.querySelector('#adventureMapBody'));
+    // Keyboard: keep focus cycling inside the map (nodes are real <button>s).
+    if (typeof window.trapFocus === 'function') window.trapFocus(overlay);
 };
 
 AdventureMap.closeScreen = function () {
@@ -287,26 +305,9 @@ AdventureMap.closeScreen = function () {
     if (overlay) overlay.classList.remove('active');
 };
 
-// Self-contained preview overlay (also the basis of the in-game map screen).
-AdventureMap.preview = function (playerClass = 'scoundrel', seed = null) {
-    this.start(playerClass, seed);
-    let overlay = document.getElementById('adventureMapModal');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'adventureMapModal';
-        overlay.className = 'modal-overlay';
-        overlay.innerHTML = `
-            <div class="modal-content" style="max-width:760px;width:92vw;max-height:90vh;overflow-y:auto;">
-                <button class="modal-close-btn" onclick="document.getElementById('adventureMapModal').classList.remove('active')">✕</button>
-                <h2 style="text-align:center;">🗺️ ${this.map.adventure ? '' : ''}The Descent</h2>
-                <p style="text-align:center;color:#cbb892;font-style:italic;margin-top:-6px;">${this.map.adventure.opening}</p>
-                <div id="adventureMapBody"></div>
-            </div>`;
-        document.body.appendChild(overlay);
-    }
-    overlay.classList.add('active');
-    this.renderInto(overlay.querySelector('#adventureMapBody'));
-};
+// NOTE: the old AdventureMap.preview() overlay was removed — it was never
+// called, and it built a variant of #adventureMapModal with a ✕ button that
+// could dismiss the run's map if the two paths ever shared the element.
 
 if (typeof window !== 'undefined') {
     window.AdventureMap = AdventureMap;
