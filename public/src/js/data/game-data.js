@@ -76,6 +76,7 @@ const EVENTS = [
                     if (game.health > 5) { 
                         takeDamage(5); 
                         game.relics.push({...RELICS.find(r => r.id === 'berserker_ring')}); 
+                        game.stats.relicsCollected++; // count toward Priest unlock like every other relic
                         showMessage('Gained Berserker Ring!', 'success'); 
                         updateRelicsDisplay(); 
                     } 
@@ -159,11 +160,13 @@ const EVENTS = [
         choices: [
             { text: '📖 Study combat techniques (+1 damage permanent)', effect: () => {
                 game.relics.push({ id: 'study_bonus', name: '📖 Combat Study', description: '+1 weapon damage — knowledge cuts too', rarity: 'common', effect: 'smallPower' });
+                game.stats.relicsCollected++;
                 showMessage('📖 You learned new techniques!', 'success');
                 updateRelicsDisplay();
             }},
             { text: '🔮 Learn healing magic (+1 HP/room)', effect: () => {
                 game.relics.push({ id: 'healing_study', name: '🔮 Healing Magic', description: 'Mend 1 HP after each room — the body remembers the words', rarity: 'uncommon', effect: 'passive_heal' });
+                game.stats.relicsCollected++;
                 showMessage('🔮 You mastered healing!', 'success');
                 updateRelicsDisplay();
             }},
@@ -277,7 +280,7 @@ const EVENTS = [
             { text: '🎲 Jump in! (Random outcome)', effect: () => {
                 const outcomes = ['good', 'great', 'bad'];
                 const result = outcomes[Math.floor(Math.random() * outcomes.length)];
-                if (result === 'good') { game.health += 8; showMessage('🌀 Portal leads to healing springs! +8 HP', 'success'); }
+                if (result === 'good') { game.health = Math.min(game.maxHealth, game.health + 8); showMessage('🌀 Portal leads to healing springs! +8 HP', 'success'); }
                 else if (result === 'great') { giveRandomRelic(); showMessage('🌀 You found a treasure room! Relic gained!', 'success'); }
                 else { takeDamage(5); showMessage('🌀 Ouch! Rough landing. -5 HP', 'danger'); }
                 updateUI();

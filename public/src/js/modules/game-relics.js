@@ -215,6 +215,14 @@ export function getRelicBonus(type) {
         bonus *= 2;
     }
     
+    // Sum all potion-heal bonus types — the single source for potion heals
+    // (game-combat.js handlePotion + the game.js tooltip). Healing Charm's
+    // smallHealBonus was dead before this existed.
+    if (type === 'totalHealBonus') {
+        bonus += getRelicBonus('smallHealBonus');
+        bonus += getRelicBonus('healBonus');
+    }
+
     // Sum all power types for total weapon bonus — THE single source every
     // damage path uses (game.js, game-combat.js, game-classes.js). Adding a
     // new power-family effect? Add it here and it applies everywhere.

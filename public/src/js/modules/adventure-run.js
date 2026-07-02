@@ -84,6 +84,7 @@
         },
 
         showMap() {
+            if (game.gameOver) return; // never reopen the map over a game-over screen
             if (window.AdventureMap) window.AdventureMap.openScreen();
         },
 
@@ -124,7 +125,11 @@
             if (mult > 1.01 && Array.isArray(game.room)) {
                 game.room.forEach((c) => {
                     if ((c.suitName === 'clubs' || c.suitName === 'spades') && !c.isBoss && c.numValue > 0) {
-                        c.numValue = Math.max(2, Math.round(c.numValue * mult));
+                        // Scale from the card's BASE value: these objects live in
+                        // the persistent run deck and recycle through the discard,
+                        // so scaling numValue in place would compound every cycle.
+                        if (c._baseValue == null) c._baseValue = c.numValue;
+                        c.numValue = Math.max(2, Math.round(c._baseValue * mult));
                     }
                 });
                 if (window.updateUI) window.updateUI();
@@ -484,7 +489,11 @@
 
         // Called from checkGameState when an adventure combat/boss room empties.
         afterEncounterCleared() {
+            if (game.gameOver) return; // death already handled — no next wave, no map
             game.stats.roomsCleared++;
+            // Encounter cleared = room cleared: recharge once-per-room relics
+            // (they used to recharge only in the classic room-clear path).
+            if (window.resetPerRoomRelicFlags) window.resetPerRoomRelicFlags();
             if (game.classAbilityCooldown > 0) game.classAbilityCooldown--;
             if (window.updateUI) window.updateUI();
             const node = AR._pending;

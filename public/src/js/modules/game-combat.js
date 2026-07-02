@@ -214,7 +214,7 @@ export function handlePotion(potion, index) {
     // POTIONS DO NOT BREAK COMBO! (Strategic choice - different from weapons)
     // This allows for healing while maintaining combo chains
     
-    const healBonus = window.getRelicBonus('healBonus');
+    const healBonus = window.getRelicBonus('totalHealBonus');
     // Add class bonus (Dancer: +3 HP)
     const classHealBonus = (game.classData && game.classData.passive.potionHealBonus) || 0;
     const heal = potion.numValue + healBonus + classHealBonus;
@@ -388,7 +388,25 @@ export function handleMonster(monster, index) {
         }
         
         monster.numValue -= effectiveWeapon;
-        
+
+        // A boss hit is an attack: consume the same one-shot buffs the normal
+        // path consumes below (both boss branches return before that block, so
+        // Power/Berserk/Shadow Strike/Rage Strike used to multiply EVERY boss
+        // hit and still be active after the fight).
+        if (game.doubleDamage) game.doubleDamage = false;
+        if (game.berserkStacks > 0 && berserkBonus > 0) {
+            game.berserkStacks--;
+            window.showMessage(`🔥 Berserk +5 damage! (${game.berserkStacks} left)`, 'info');
+        }
+        if (game.classAbilityActive && game.classAbilityCounter > 0) {
+            game.classAbilityCounter--;
+            if (game.classAbilityCounter === 0) {
+                game.classAbilityActive = false;
+                game.rageStrikeActive = false;
+                window.showMessage('✨ Class ability buff expired!', 'info');
+            }
+        }
+
         // Weapon durability for boss attacks
         if (game.equippedWeapon && game.equippedWeapon.durability < 999) {
             game.equippedWeapon.durability--;
@@ -423,7 +441,10 @@ export function handleMonster(monster, index) {
             }
 
             game.room.splice(index, 1);
-            game.discardPile.push(monster);
+            // Bosses are one-off encounter cards. In Adventure the discard is
+            // recycled into the persistent run deck, so a defeated (≤0 HP)
+            // boss would circulate forever and re-pay boss gold each cycle.
+            if (!game.adventureRun) game.discardPile.push(monster);
 
             // Boss gold based on difficulty
             const bossGoldByDifficulty = {
@@ -836,12 +857,17 @@ export function handleMonster(monster, index) {
  * Save game state before action (for undo on Easy/Normal)
  */
 export function saveGameState() {
+    // Deep-copy the card objects: combat mutates them in place (boss HP,
+    // sharpened weapons), so a shallow [...array] snapshot would let those
+    // mutations survive an undo (hit boss → undo → hit again = free kill).
     game.lastGameState = {
         health: game.health,
         gold: game.gold,
-        room: [...game.room],
-        dungeon: [...game.dungeon],
-        discardPile: [...game.discardPile],
+        totalGoldEarned: game.totalGoldEarned,
+        stats: { ...game.stats }, // else kill→undo loops inflate score/lifetime stats
+        room: game.room.map(c => ({ ...c })),
+        dungeon: game.dungeon.map(c => ({ ...c })),
+        discardPile: game.discardPile.map(c => ({ ...c })),
         equippedWeapon: game.equippedWeapon ? {...game.equippedWeapon} : null,
         potionsUsed: game.potionsUsed,
         combo: game.combo,
@@ -862,9 +888,11 @@ export function undoLastMove() {
     // Restore game state
     game.health = game.lastGameState.health;
     game.gold = game.lastGameState.gold;
-    game.room = [...game.lastGameState.room];
-    game.dungeon = [...game.lastGameState.dungeon];
-    game.discardPile = [...game.lastGameState.discardPile];
+    game.totalGoldEarned = game.lastGameState.totalGoldEarned;
+    game.stats = { ...game.lastGameState.stats };
+    game.room = game.lastGameState.room.map(c => ({ ...c }));
+    game.dungeon = game.lastGameState.dungeon.map(c => ({ ...c }));
+    game.discardPile = game.lastGameState.discardPile.map(c => ({ ...c }));
     game.equippedWeapon = game.lastGameState.equippedWeapon ? {...game.lastGameState.equippedWeapon} : null;
     game.potionsUsed = game.lastGameState.potionsUsed;
     game.combo = game.lastGameState.combo;
