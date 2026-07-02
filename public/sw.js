@@ -1,5 +1,5 @@
 // Minimal Service Worker for PWA - No console logs to avoid Lighthouse penalty
-const CACHE_NAME = 'dungeon-scoundrel-v1';
+const CACHE_NAME = 'dungeon-scoundrel-v2';
 const OFFLINE_URL = '/';
 
 // Install: cache the offline page
@@ -20,11 +20,26 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch: network-first strategy with offline fallback
+// Fetch: network-first for navigations (offline fallback), cache-first for
+// same-origin /assets/ (art is content-addressed by ?v= query, so a cached
+// entry is immutable — this makes mid-run card reveals instant on revisits).
 self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
+  const req = event.request;
+  if (req.mode === 'navigate') {
+    event.respondWith(fetch(req).catch(() => caches.match(OFFLINE_URL)));
+    return;
+  }
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  if (url.origin === self.location.origin && url.pathname.startsWith('/assets/')) {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match(OFFLINE_URL))
+      caches.open(CACHE_NAME).then(async (cache) => {
+        const hit = await cache.match(req);
+        if (hit) return hit;
+        const res = await fetch(req);
+        if (res.ok) cache.put(req, res.clone());
+        return res;
+      })
     );
   }
 });

@@ -38,6 +38,31 @@
             AR.showMap();
             AR._showIntroIfFirstTime();
             AR._startWatchdog();
+            AR._warmArt();
+        },
+
+        // Prefetch this run's card art in idle time so mid-run reveals don't
+        // pop in one by one (each card is a lazy background-image otherwise).
+        // URLs must match game.js's createCardElement exactly (?v=ADV_ART_VER)
+        // or the browser cache / service worker cache is missed.
+        _warmArt() {
+            if (AR._warmed) return;
+            AR._warmed = true;
+            try { if (navigator.connection && navigator.connection.saveData) return; } catch (_) {}
+            const ver = window.ADV_ART_VER || '1';
+            const names = [];
+            for (let v = 2; v <= 14; v++) names.push(`monster_${v}`);
+            for (let v = 2; v <= 10; v++) names.push(`weapon_${v}`, `potion_${v}`);
+            names.push('boss_act1', 'boss_act2', `boss_${game.playerClass || 'scoundrel'}`);
+            const urls = names.map(n => `assets/cards/adventure/${n}.webp?v=${ver}`);
+            ['campfire', 'merchant', 'chest', 'event'].forEach(s => urls.push(`assets/images/scene-${s}.webp`));
+            const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 400));
+            const loadNext = () => {
+                if (!urls.length || !game.adventureRun) return;
+                urls.splice(0, 4).forEach(u => { const img = new Image(); img.src = u; });
+                idle(loadNext);
+            };
+            idle(loadNext);
         },
 
         // Recovery net: in Adventure the map is the only way forward (the linear
@@ -80,6 +105,7 @@
                         <li>🔥 Campfire — <strong>heal OR cull</strong> a threat from your deck (pick one). &nbsp; 🎁 Treasure — some chests are <strong>cursed</strong>: big reward, but a curse joins your deck.</li>
                         <li><strong>Difficulty = waves</strong> per encounter: Easy 1 · Normal 2 · Hard 3.</li>
                         <li>Your <strong>deck persists</strong> all run — cull threats, buy cards, sharpen weapons to build it.</li>
+                        <li><strong>Bosses fight beside their horde</strong> — your deck deals cards into the fight, so a weapon is always within reach… for a price.</li>
                         <li>Reach the bottom and defeat <strong>${bossName}</strong> to win.</li>
                     </ul>
                     <div style="text-align:center;">
@@ -164,12 +190,84 @@
                 bossFlavor: node.boss ? node.boss.flavor : 'A warden of the deep.',
                 suitName: 'spades',
                 artKey,
+                // Capped retaliation for a weaponless strike (game-combat.js):
+                // numValue is an HP POOL (26-46), not a monster value — using it
+                // as damage one-shot any player who arrived without a weapon.
+                strike: node.type === 'finalboss' ? 14 : 10 + (node.act || 0) * 2,
             };
             game.room = [boss];
             game.lastActionWasAvoid = false;
+            AR._wavesDealt = 0;
+            AR._dealBossWave(node);
             if (window.music && window.music.playBossStinger) window.music.playBossStinger();
             if (window.updateUI) window.updateUI();
             if (window.showMessage) window.showMessage(`👹 ${boss.bossName} — ${boss.bossFlavor}`, 'danger');
+        },
+
+        // Boss entourage: the guardian never fights alone — each wave deals 3
+        // cards from the persistent run deck next to it. This is the fairness
+        // system for arriving weaponless: weapons and potions cycle through the
+        // waves, so the fight is a dig for a blade instead of a checkmate.
+        _dealBossWave(node) {
+            const draw = [];
+            for (let i = 0; i < 3; i++) {
+                if (!game.dungeon.length && game.discardPile.length) {
+                    const recycled = game.discardPile.splice(0);
+                    game.dungeon = window.shuffleDeck ? window.shuffleDeck(recycled) : recycled;
+                }
+                if (game.dungeon.length) draw.push(game.dungeon.shift());
+            }
+            // Same depth scaling as _drawHand, from base values (idempotent —
+            // these cards recycle through the discard all run).
+            const mult = 1 + (node.tier || 0) * 0.03;
+            if (mult > 1.01) {
+                draw.forEach((c) => {
+                    if ((c.suitName === 'clubs' || c.suitName === 'spades') && !c.isBoss && c.numValue > 0) {
+                        if (c._baseValue == null) c._baseValue = c.numValue;
+                        c.numValue = Math.max(2, Math.round(c._baseValue * mult));
+                    }
+                });
+            }
+            // Failsafe: a deck stripped of every weapon (culls, sales) would
+            // still be unwinnable bare-handed — leave a rusted blade in reach.
+            const hasWeaponSomewhere = !!game.equippedWeapon ||
+                [...draw, ...game.room, ...game.dungeon, ...game.discardPile].some(c => c.suitName === 'diamonds');
+            if (!hasWeaponSomewhere) {
+                draw.push({ value: '4', suit: '♦', numValue: 4, suitName: 'diamonds' });
+                if (window.showMessage) window.showMessage('🗡️ You spot a rusted blade among the bones.', 'info');
+            }
+            game.room.push(...draw);
+            game.potionsUsed = 0; // each wave is a fresh room, same as multi-hand combat
+            AR._wavesDealt = (AR._wavesDealt || 0) + 1;
+            if (window.updateUI) window.updateUI();
+        },
+
+        // Called from checkGameState after every action while a room is live:
+        // when only the living boss remains, the horde regroups. Refills after
+        // the opening wave cost chip damage — that pressure is what keeps the
+        // endless deck recycle from being a free score/gold farm (score counts
+        // kills + gold), and it puts a clock on digging for a weapon.
+        maybeRefillBossWave() {
+            const node = AR._pending;
+            if (!node || (node.type !== 'boss' && node.type !== 'finalboss')) return;
+            if (game.gameOver || AR._waveTimer) return;
+            if (game.room.length !== 1) return;
+            const boss = game.room[0];
+            if (!boss || !boss.isBoss || boss.numValue <= 0) return;
+            AR._waveTimer = setTimeout(() => {
+                AR._waveTimer = null;
+                // Conditions may have shifted during the delay (undo, defeat).
+                if (game.gameOver || game.room.length !== 1 || !game.room[0] || !game.room[0].isBoss) return;
+                const chip = Math.ceil((game.room[0].strike || 10) / 2);
+                game.health -= chip;
+                game.stats.totalDamage += chip;
+                game.lastDamageSource = game.room[0].bossName || 'the Boss';
+                if (window.showMessage) window.showMessage(`👹 ${game.room[0].bossName || 'The boss'} lashes out as the horde regroups! -${chip} HP`, 'danger');
+                sfx('damage');
+                if (window.screenShake) window.screenShake();
+                AR._dealBossWave(node); // updateUI inside catches a lethal chip -> death
+                if (window.checkGameState) window.checkGameState();
+            }, 600);
         },
 
         _rest(node) {

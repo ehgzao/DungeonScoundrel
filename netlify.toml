@@ -54,15 +54,22 @@
 # CACHE CONTROL (Performance Optimization)
 # ============================================
 
+# /src/* must NOT be immutable: ES module imports (game.js -> modules/*.js)
+# and every stylesheet <link> are UNVERSIONED URLs — with a 1-year immutable
+# cache, returning players kept stale JS modules and CSS for up to a year
+# after every release (only the ?v=-busted top-level scripts refreshed,
+# leaving mixed-version code in the field). ETag revalidation costs a batch
+# of parallel 304s; correctness is worth it. /assets/* stays immutable —
+# art URLs are content-addressed with ?v=.
 [[headers]]
   for = "/src/js/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/src/styles/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/assets/*"

@@ -5,6 +5,27 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-07-02 - 👹 Fair Bosses & Performance Update
+
+### ⚖️ Rebalanced — Adventure boss fights (the "no weapon = checkmate" fix)
+- **Boss entourage:** Adventure bosses no longer fight alone. Entering a boss node deals 3 cards from your persistent run deck alongside the boss, and whenever only the boss remains alive the horde regroups with a fresh wave — so weapons and potions keep cycling into the fight. Arriving weaponless is now a desperate dig for a blade instead of a guaranteed death spiral.
+- **Regroup pressure:** each wave after the first costs chip damage (half the boss's strike) — it puts a clock on digging for a weapon and stops the endless deck recycle from becoming a free score/gold farm (score counts kills + gold).
+- **Capped bare-hand strikes:** a boss's `numValue` is an HP pool (26–46); it was also used as the damage for a weaponless click — an instant, unfair death. Bosses now carry a capped `strike` (act 1: 10, act 2: 12, finale: 14). Classic bosses are untouched.
+- **Rusted-blade failsafe:** if the run deck has been stripped of every weapon (culls, sales), a 4♦ blade is dealt into the wave — the fight is always winnable in principle.
+- **Victory sweep:** when the boss falls, surviving entourage cards return to the run deck (they're the player's persistent cards) and the encounter clears into the usual reward flow. Potion-per-room limit resets per wave, matching multi-hand combat.
+
+### ⚡ Performance (Lighthouse follow-up: "cards too heavy")
+- **Art re-mastered to display size:** all 39 Adventure card illustrations were shipped at 537×760 (~115KB each) but render at ≤120×170 CSS px. Re-encoded at 360×510: **4.4MB → ~1.3MB** (−70%), visually identical at 2× DPR (verified side-by-side). Hero avatars (832–1536px → 360px) and the dungeon background (LCP preload, 119KB → 67KB) likewise.
+- **Adventure art pre-warms** at run start (idle-time `Image()` prefetch, skipped on Save-Data) so card reveals don't pop in one by one mid-fight.
+- **Service worker now caches `/assets/`** (cache-first; URLs are content-addressed with `?v=`) — repeat visits render card art instantly and offline.
+
+### 🐛 Fixed — stale-code caching (why shipped fixes sometimes "didn't arrive")
+- `/src/js/*` and `/src/styles/*` were served `max-age=31536000, immutable`, but ES-module imports (`game.js` → `modules/*.js`) and every stylesheet `<link>` are **unversioned URLs** — returning players could keep stale modules/CSS for up to a year after a release, mixed with fresh `?v=`-busted top-level scripts. Now `max-age=0, must-revalidate` (cheap parallel 304s). `/assets/*` stays immutable.
+
+### 📝 Notes
+- Netlify `[build.processing]` minification does not apply to deploy previews, so preview Lighthouse flags unminified JS/CSS; production behavior to be verified before adding a build step (see BACKLOG).
+- Known limitation (unchanged): Phoenix Feather does not trigger on boss-strike/regroup chip deaths; Firestore still trusts client-submitted score/time.
+
 ## [1.6.0] - 2026-07-02 - 🗓️ Daily Challenge & Career Update
 
 ### ✨ Added
