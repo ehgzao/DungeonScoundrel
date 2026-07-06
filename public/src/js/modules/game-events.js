@@ -10,7 +10,7 @@
  */
 
 // Import game state
-import { game, runRand } from './game-state.js?v=1.7.5';
+import { game, runRand } from './game-state.js?v=1.7.6';
 
 // DOM Elements (will be initialized after DOM loads)
 let eventModal, eventTitle, eventText, eventChoices;
@@ -83,7 +83,11 @@ export function showEventModal(event) {
     eventChoices.innerHTML = ''; // Clear previous choices
     
     event.choices.forEach(choice => {
-        const choiceEl = document.createElement('div');
+        // A real <button>: the old <div onclick> was mouse-only — a
+        // keyboard player who triggered an event could not resolve it
+        // (draw/avoid are disabled while the modal is open = soft-lock).
+        const choiceEl = document.createElement('button');
+        choiceEl.type = 'button';
         choiceEl.className = 'event-choice';
         choiceEl.innerHTML = choice.text;
         choiceEl.onclick = () => {

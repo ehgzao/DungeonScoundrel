@@ -67,5 +67,26 @@ for (const f of jsFiles) {
 const leftover = [...fs.readFileSync(INDEX, 'utf8').matchAll(/["'](src\/(?:js|styles)\/[^"']+?\.(?:js|css))["']/g)];
 for (const m of leftover) { console.error(`UNVERSIONED URL in index.html: ${m[1]}`); bad++; }
 
+// ---------- 4. Service worker: version the cache + precache the app shell ----------
+// Every versioned URL in the graph: index.html references + module imports
+// (resolved to absolute /src paths).
+const shell = new Set();
+for (const m of fs.readFileSync(INDEX, 'utf8').matchAll(/["'](src\/(?:js|styles)\/[^"']+?\.(?:js|css)\?v=[\w.\-]+)["']/g)) {
+    shell.add('/' + m[1]);
+}
+for (const f of jsFiles) {
+    const dir = '/' + path.relative(path.join(ROOT, 'public'), path.dirname(f)).replace(/\\/g, '/');
+    for (const m of fs.readFileSync(f, 'utf8').matchAll(/from\s+["'](\.{1,2}\/[^"']+?\.js\?v=[\w.\-]+)["']/g)) {
+        shell.add(path.posix.normalize(dir + '/' + m[1]));
+    }
+}
+const SW = path.join(ROOT, 'public/sw.js');
+let sw = fs.readFileSync(SW, 'utf8');
+sw = sw.replace(/const CACHE_NAME = '[^']+';/, `const CACHE_NAME = 'dungeon-scoundrel-v${VERSION}';`);
+sw = sw.replace(/\/\* PRECACHE-START \*\/[\s\S]*?\/\* PRECACHE-END \*\//,
+    `/* PRECACHE-START */\nconst PRECACHE_URLS = ${JSON.stringify([...shell].sort(), null, 0)};\n/* PRECACHE-END */`);
+fs.writeFileSync(SW, sw);
+console.log(`sw.js: cache dungeon-scoundrel-v${VERSION}, ${shell.size} shell URLs precached`);
+
 if (bad) { console.error(`\n${bad} unversioned reference(s) — FIX BEFORE SHIPPING (split-brain risk).`); process.exit(1); }
 console.log(`OK: ${changed} URLs now at ?v=${VERSION}`);

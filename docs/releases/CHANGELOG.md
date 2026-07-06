@@ -5,6 +5,12 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.6] - 2026-07-06 - True offline play + keyboard accessibility
+
+- **The game now actually plays offline.** The service worker precaches the whole versioned app shell (38 JS/CSS URLs, generated per release by the bump script) — the old SW cached only "/", so offline the shell loaded and every script 404'd. Verified headlessly: install SW, kill the network, reload, start a run and play a room.
+- **Classic events are keyboard-operable** — choices were mouse-only divs; a keyboard player who triggered an event was soft-locked (draw/avoid disabled under the modal). Now real buttons with a visible focus ring.
+- **Every modal returns focus to whatever opened it** (screen-reader/keyboard users landed on the page body after closing anything). Implemented once inside trapFocus via a class/DOM observer — no per-modal wiring.
+
 ## [1.7.5] - 2026-07-06 - Mobile hotfixes + real minification
 
 ### Fixed (mobile, user-reported)

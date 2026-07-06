@@ -1557,7 +1557,8 @@
         .buy-btn { background: linear-gradient(135deg, var(--gold-treasure) 0%, var(--gold-dark) 100%); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
         .buy-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(201, 169, 97, 0.4); }
         .buy-btn:disabled { background: #555; cursor: not-allowed; transform: none; }
-        .event-choice { background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 10px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; }
+        .event-choice { display: block; width: 100%; text-align: left; font: inherit; color: inherit; background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 10px; cursor: pointer; border: 2px solid transparent; transition: all 0.3s; }
+        .event-choice:focus-visible { border-color: var(--gold-hi); outline: 2px solid var(--gold-hi); outline-offset: 2px; }
         .event-choice:hover { border-color: var(--gold-hi); background: rgba(255, 215, 0, 0.2); transform: translateX(10px); }
         .event-text { font-size: 1.1em; line-height: 1.6; color: #ddd; margin-bottom: 20px; }
         .unlock-item.locked { opacity: 0.5; }

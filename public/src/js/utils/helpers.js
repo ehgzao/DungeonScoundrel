@@ -409,6 +409,27 @@ function trapFocus(element) {
     element.__trapFocusHandler = handler;
     element.addEventListener('keydown', handler);
 
+    // Focus restore: no modal in the app returned focus to its opener —
+    // keyboard/screen-reader users landed on <body> after every close.
+    // There is no central closeModal(), so watch for the 'active' class
+    // (or DOM removal) and give focus back to whatever opened us.
+    const opener = document.activeElement;
+    if (opener && opener !== document.body && !element.contains(opener)) {
+        if (element.__focusRestoreObserver) element.__focusRestoreObserver.disconnect();
+        const observer = new MutationObserver(() => {
+            const gone = !element.isConnected || !element.classList.contains('active');
+            if (!gone) return;
+            observer.disconnect();
+            element.__focusRestoreObserver = null;
+            if (opener.isConnected && document.contains(opener)) {
+                try { opener.focus(); } catch (_) {}
+            }
+        });
+        observer.observe(element, { attributes: true, attributeFilter: ['class'] });
+        if (element.parentNode) observer.observe(element.parentNode, { childList: true });
+        element.__focusRestoreObserver = observer;
+    }
+
     // Focus first element when modal opens
     if (firstFocusable) {
         setTimeout(() => firstFocusable.focus(), 100);
