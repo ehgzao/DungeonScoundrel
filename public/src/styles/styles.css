@@ -2467,3 +2467,76 @@
         scroll-behavior: auto !important;
     }
 }
+
+/* ============================================
+ * MOBILE PORTRAIT GAMEPLAY — pass 2 (user report: cards wrong size,
+ * screen shifts, unpleasant play). One simple scrollable column,
+ * nothing position:fixed, nothing pushed by toasts:
+ *  - toasts OVERLAY the board (they used to be in-flow and resize
+ *    the whole screen on every message)
+ *  - cards size to the viewport so a 4-card room always fits one row,
+ *    and 5-card boss waves wrap instead of clipping at 160px
+ *  - compact top bar / score / controls to keep the room above the fold
+ * Placed last in the file: overrides the older 768px-portrait rules.
+ * ============================================ */
+@media screen and (max-width: 600px) and (orientation: portrait) {
+    .game-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100dvh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Toasts: fixed overlay — the board never moves when a message lands */
+    #messageArea {
+        position: fixed !important;
+        top: 88px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 94% !important;
+        margin: 0 !important;
+        pointer-events: none;
+        z-index: 10001;
+    }
+    .message { padding: 7px 10px !important; font-size: 0.85em !important; margin-top: 6px !important; }
+
+    /* Top bar: tight — two short rows max */
+    .top-bar { padding: 4px 8px !important; min-height: 0 !important; gap: 4px 10px !important; }
+    .stat-display { padding: 2px 7px !important; font-size: 0.8em !important; }
+    #topBarCenter { gap: 8px !important; }
+    .music-controls #musicVolume { display: none; } /* slider steals ~120px of the bar */
+    .settings-btn { padding: 4px 8px !important; font-size: 0.9em !important; }
+
+    /* Column flow: kill the fixed panels and artificial 50vh caps */
+    .center-area { min-height: 0 !important; max-height: none !important; height: auto !important; padding: 4px 8px !important; }
+    .center-stage { gap: 6px !important; }
+    .controls { position: static !important; padding: 6px 0 !important; background: none !important; border: 0 !important; }
+    .controls .btn { min-width: 0 !important; padding: 11px 6px !important; font-size: 0.78em !important; }
+
+    .score-display { padding: 2px 12px !important; margin: 2px auto !important; }
+    .score-label { font-size: 0.55em !important; letter-spacing: 2px !important; }
+    .score-value { font-size: 1.5em !important; }
+    #center-stage-weapon { margin: 4px 0 !important; }
+    .center-stage-label { font-size: 0.7em !important; }
+
+    /* Room: in flow at the end of the column, wraps freely,
+       cards sized by viewport (4 across always fit) */
+    .bottom-bar {
+        position: static !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        padding: 8px 6px 16px !important;
+        gap: 8px !important;
+        flex-wrap: wrap;
+        margin-top: auto; /* pin to the bottom when content is short */
+    }
+    .card, .empty-slot {
+        width: clamp(72px, calc((100vw - 60px) / 4), 96px) !important;
+        height: auto !important;
+        aspect-ratio: 85 / 120;
+        min-height: 0 !important;
+    }
+    .card-value { font-size: 1.7em !important; }
+    .card-suit { font-size: 1.4em !important; }
+}
