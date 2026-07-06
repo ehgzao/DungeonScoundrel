@@ -10,7 +10,7 @@
  */
 
 // Import game state
-import { game, runRand } from './game-state.js?v=1.7.6';
+import { game, runRand } from './game-state.js?v=1.8.0';
 
 // DOM Elements (will be initialized after DOM loads)
 let eventModal, eventTitle, eventText, eventChoices;

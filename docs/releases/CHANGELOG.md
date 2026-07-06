@@ -5,6 +5,15 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2026-07-06 - Ascension Update
+
+### Added
+- **Ascension ladder (A1-A10):** win an Adventure run at your highest level to unlock the next. Each level stacks one modifier onto the existing knobs — A1 bosses +15% HP, A2 faster depth scaling, A3 merchant prices +20%, A4 -2 max HP, A5 meaner elites, A6 weaker campfires, A7 -25% monster gold, A8 fiercer horde regroups, A9 potions heal 1 less, A10 the final boss awakens (+20% HP, +2 strike). Score earns +10% per level. Selector appears in the Adventure new-game modal once unlocked; an "A" chip shows in the HUD during the run. Daily Challenge is always A0 (comparable board), and the leaderboard payload is unchanged (Firestore field whitelist stays valid).
+- **Per-act backdrops (Gemini art, style-anchored to the base dungeon):** descending into Act 2 floods the screen with The Sunken Halls (drowned teal vaults) and Act 3 with The Black Heart (ember-cracked obsidian). 34KB + 17KB, idle-prefetched with the rest of the run art.
+
+### Verified
+- 9-check ascension suite (selector gating, modifier math at A5, boss HP scaling, act backdrop classes, victory unlock A5->A6, Daily forced to A0), full smoke, boss suite, daily determinism — all green.
+
 ## [1.7.6] - 2026-07-06 - True offline play + keyboard accessibility
 
 - **The game now actually plays offline.** The service worker precaches the whole versioned app shell (38 JS/CSS URLs, generated per release by the bump script) — the old SW cached only "/", so offline the shell loaded and every script 404'd. Verified headlessly: install SW, kill the network, reload, start a run and play a room.

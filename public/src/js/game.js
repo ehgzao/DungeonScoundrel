@@ -27,7 +27,7 @@ import {
     SPECIAL_CARDS,
     COMBAT,
     LUCKY_DRAW
-} from './config/game-constants.js?v=1.7.6';
+} from './config/game-constants.js?v=1.8.0';
 
 // Import game state module
 import {
@@ -36,15 +36,19 @@ import {
     permanentUnlocks,
     UNLOCKS,
     seedRunRng,
-    runRand
-} from './modules/game-state.js?v=1.7.6';
+    runRand,
+    ascensionEffects,
+    ascensionUnlocked,
+    ASCENSION_MAX,
+    ASCENSION_DESCRIPTIONS
+} from './modules/game-state.js?v=1.8.0';
 
 // Import game events module
 import {
     triggerRandomEvent,
     showEventModal,
     closeEventWrapper
-} from './modules/game-events.js?v=1.7.6';
+} from './modules/game-events.js?v=1.8.0';
 
 // Import game shop module
 import {
@@ -52,7 +56,7 @@ import {
     buyItem,
     openShop,
     closeShop
-} from './modules/game-shop.js?v=1.7.6';
+} from './modules/game-shop.js?v=1.8.0';
 
 // Import game relics module
 import {
@@ -61,7 +65,7 @@ import {
     giveRareRelic,
     updateRelicsDisplay,
     getRelicBonus
-} from './modules/game-relics.js?v=1.7.6';
+} from './modules/game-relics.js?v=1.8.0';
 
 // Import game classes module
 import {
@@ -73,10 +77,10 @@ import {
     updateAbilityUI,
     startGameWithClass,
     getPassiveIcons
-} from './modules/game-classes.js?v=1.7.6';
+} from './modules/game-classes.js?v=1.8.0';
 
 // Import game sounds module
-import { playSound } from './modules/game-sounds.js?v=1.7.6';
+import { playSound } from './modules/game-sounds.js?v=1.8.0';
 
 // Import game deck module
 import { 
@@ -84,7 +88,7 @@ import {
     createDeck, 
     shuffleDeck, 
     balanceEasyModeDeck 
-} from './modules/game-deck.js?v=1.7.6';
+} from './modules/game-deck.js?v=1.8.0';
 
 // Import game combat module
 import {
@@ -99,7 +103,7 @@ import {
     saveGameState,
     undoLastMove,
     handleCardClick
-} from './modules/game-combat.js?v=1.7.6';
+} from './modules/game-combat.js?v=1.8.0';
 
 // ============================================
 // DOM ELEMENTS
@@ -195,6 +199,35 @@ function showNewGameModal(mode, opts = {}) {
     if (bossInfo) bossInfo.textContent = chosen === 'adventure'
         ? 'An act boss at the end of each act, then a final boss unique to your hero.'
         : '2 Minibosses (room 15 & 25) + Final Boss!';
+
+    // Ascension selector (Adventure only, not Daily, only once unlocked)
+    const ascRow = document.getElementById('ascensionRow');
+    if (ascRow) {
+        const unlocked = ascensionUnlocked();
+        const show = chosen === 'adventure' && !isDaily && unlocked > 0;
+        ascRow.style.display = show ? 'block' : 'none';
+        if (show) {
+            const picker = document.getElementById('ascensionPicker');
+            const desc = document.getElementById('ascensionDesc');
+            picker.innerHTML = '';
+            const sel = Math.min(window.__selectedAscension || 0, unlocked);
+            window.__selectedAscension = sel;
+            for (let a = 0; a <= unlocked; a++) {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'difficulty-btn' + (a === sel ? ' selected' : '');
+                b.textContent = `A${a}`;
+                b.title = ASCENSION_DESCRIPTIONS[a];
+                b.onclick = () => {
+                    window.__selectedAscension = a;
+                    picker.querySelectorAll('button').forEach(x => x.classList.toggle('selected', x === b));
+                    if (desc) desc.textContent = ASCENSION_DESCRIPTIONS[a];
+                };
+                picker.appendChild(b);
+            }
+            if (desc) desc.textContent = ASCENSION_DESCRIPTIONS[sel];
+        }
+    }
 
     // CRITICAL: ALWAYS remove old suggestions first (prevents duplicate suggestions)
     const oldSuggestion = document.querySelector('.difficulty-suggestion');
@@ -1014,10 +1047,14 @@ function startGame() {
     // LCG stream, which consumes the raw seed). Non-daily: back to Math.random.
     seedRunRng(game.dailyRun ? ((window.DailyRun.seed ^ 0x9E3779B9) >>> 0) : null);
     if (game.dailyRun) game.difficulty = 'normal';
+    // Ascension: Adventure-only ladder; Daily is always A0 (comparable board)
+    game.ascension = (game.mode === 'adventure' && !game.dailyRun)
+        ? Math.min(window.__selectedAscension || 0, ascensionUnlocked()) : 0;
+    document.body.classList.remove('adv-act-2', 'adv-act-3'); // per-act backdrop reset
     const healthMap = { easy: 20, normal: 15, hard: 10, endless: 15 };
     let startHealthBonus = permanentUnlocks.startHealth ? 5 : 0;
 
-    game.maxHealth = healthMap[game.difficulty] + startHealthBonus;
+    game.maxHealth = healthMap[game.difficulty] + startHealthBonus + ascensionEffects(game.ascension).maxHpDelta;
     
     // Apply class passives
     if (game.classData && game.classData.passive) {
@@ -1770,6 +1807,16 @@ function endGame(reason, gaveUp = false) {
         
     } else if (reason === 'victory') {
         isVictory = true;
+        // Ascension ladder: winning Adventure at your highest level unlocks the next
+        if (game.adventureRun && !game.dailyRun && window.storage) {
+            const curAsc = ascensionUnlocked();
+            if (game.ascension >= curAsc && curAsc < ASCENSION_MAX) {
+                window.storage.update('scoundrel_ascension', (v) => {
+                    v = v || {}; v.unlocked = curAsc + 1; return v;
+                });
+                setTimeout(() => showMessage(`⛰️ Ascension ${curAsc + 1} unlocked!`, 'success'), 1200);
+            }
+        }
         title = '🏆 VICTORY';
         const victoryNarratives = [
             'Against all odds, you emerge victorious!',
@@ -1869,6 +1916,7 @@ function calculateWinScore() {
     
     const totalScore = Math.floor(
         ((baseScore + healthBonus + goldBonus + comboBonus + monsterBonus + speedrunBonus + perfectRunBonus) - timePenalty - shopPenalty) * difficultyMultiplier
+        * ascensionEffects(game.ascension).scoreMult // +10% per Ascension level
     );
     
     return Math.max(1, totalScore); // Score must be at least 1
@@ -2434,6 +2482,11 @@ function updateUI() {
 
     // Combo drives real damage math (getComboBonus) but was only surfaced via
     // transient toasts — keep it on the HUD while it's live.
+    const ascChip = document.getElementById('top-bar-ascension');
+    if (ascChip) {
+        ascChip.style.display = game.ascension > 0 ? '' : 'none';
+        if (game.ascension > 0) document.getElementById('ascensionLevel').textContent = `A${game.ascension}`;
+    }
     const comboChip = document.getElementById('top-bar-combo');
     if (comboChip) {
         comboChip.style.display = game.combo > 0 ? '' : 'none';
