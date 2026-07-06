@@ -67,3 +67,4 @@ backups/
 
 # Temporary scripts
 add_img_dims.py
+node_modules
