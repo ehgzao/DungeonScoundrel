@@ -5,6 +5,12 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.2] - 2026-07-06 - 🎲 Daily Challenge: truly fair
+
+- **The whole run is seeded now, not just the map.** Deck shuffles, card draws, gold rolls, crits, event/treasure/curse outcomes and relic-choice pools all consume one seeded run-RNG stream on Daily runs (`seedRunRng`/`runRand`, XOR-decorrelated from the map's LCG stream). Same day + same class + same choices ⇒ identical game for every player — the daily board now ranks decisions, not luck. Verified: two independent browsers produce byte-identical decks, maps and RNG streams; Classic stays truly random.
+- Cosmetic rolls (particles, death-narrative picks) deliberately do NOT consume the seeded stream, so visual state can't desync gameplay between players.
+- Also: the game is now **playable on mobile (beta)** — the waitlist hard-gate became a dismissible notice with a primary Play Now button (QA'd headlessly at 390×844: zero errors, zero horizontal overflow).
+
 ## [1.7.1] - 2026-07-06 - 🔧 Robustness & Fairness Patch (post-audit batch 1)
 
 From the full-site audit (5 parallel deep reviews + live production verification):

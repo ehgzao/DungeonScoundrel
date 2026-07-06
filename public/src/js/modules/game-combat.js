@@ -23,7 +23,7 @@
 // ============================================
 // IMPORTS
 // ============================================
-import { game, permanentUnlocks } from './game-state.js';
+import { game, permanentUnlocks, runRand } from './game-state.js';
 import { COMBO, COMBAT, POTIONS, BOSS, TIMING, UI } from '../config/game-constants.js';
 import { getBloodlustBonus } from './game-classes.js';
 
@@ -270,13 +270,13 @@ export function handleMonster(monster, index) {
     
     // Thunder Gauntlet: 20% chance to deal double damage (flag only)
     let thunderCrit = false;
-    if (game.relics.some(r => r.id === 'warrior') && Math.random() < 0.2) {
+    if (game.relics.some(r => r.id === 'warrior') && runRand() < 0.2) {
         thunderCrit = true;
     }
     
     // Critical Strike permanent unlock: 10% chance to deal 3x damage (flag only)
     let criticalHit = false;
-    if (permanentUnlocks.criticalStrike && Math.random() < 0.1) {
+    if (permanentUnlocks.criticalStrike && runRand() < 0.1) {
         criticalHit = true;
     }
     
@@ -460,10 +460,10 @@ export function handleMonster(monster, index) {
 
             // Boss gold based on difficulty
             const bossGoldByDifficulty = {
-                easy: Math.floor(Math.random() * 16) + 25,    // 25-40 gold
-                normal: Math.floor(Math.random() * 11) + 20,  // 20-30 gold
-                hard: Math.floor(Math.random() * 11) + 18,    // 18-28 gold (was 15-25: Hard paid least for the hardest fights)
-                endless: Math.floor(Math.random() * 11) + 20  // 20-30 gold
+                easy: Math.floor(runRand() * 16) + 25,    // 25-40 gold
+                normal: Math.floor(runRand() * 11) + 20,  // 20-30 gold
+                hard: Math.floor(runRand() * 11) + 18,    // 18-28 gold (was 15-25: Hard paid least for the hardest fights)
+                endless: Math.floor(runRand() * 11) + 20  // 20-30 gold
             };
             const bossGold = bossGoldByDifficulty[game.difficulty] || 20;
             window.earnGold(bossGold);
@@ -664,7 +664,7 @@ export function handleMonster(monster, index) {
         window.showMessage('🛡️ Dodged! No damage!', 'success');
     }
     // Priest Divine Blessing - 15% chance to dodge
-    else if (damage > 0 && game.classData && game.classData.passive.divineBlessing && Math.random() < COMBAT.DIVINE_BLESSING_CHANCE) {
+    else if (damage > 0 && game.classData && game.classData.passive.divineBlessing && runRand() < COMBAT.DIVINE_BLESSING_CHANCE) {
         weaponWasUsed = false; // Divine Blessing = no weapon used
         attackWasMade = false; // Divine Blessing = no attack made
         window.playSound('special');
@@ -827,10 +827,10 @@ export function handleMonster(monster, index) {
     if (monster.isBoss) {
         // Boss gold rewards (much more generous!)
         const bossGoldByDifficulty = {
-            easy: Math.floor(Math.random() * 16) + 25,    // 25-40 gold
-            normal: Math.floor(Math.random() * 11) + 20,  // 20-30 gold
-            hard: Math.floor(Math.random() * 11) + 18,    // 18-28 gold (was 15-25: Hard paid least for the hardest fights)
-            endless: Math.floor(Math.random() * 11) + 20  // 20-30 gold
+            easy: Math.floor(runRand() * 16) + 25,    // 25-40 gold
+            normal: Math.floor(runRand() * 11) + 20,  // 20-30 gold
+            hard: Math.floor(runRand() * 11) + 18,    // 18-28 gold (was 15-25: Hard paid least for the hardest fights)
+            endless: Math.floor(runRand() * 11) + 20  // 20-30 gold
         };
         const bossGold = bossGoldByDifficulty[game.difficulty] || 20;
         window.earnGold(bossGold);
@@ -839,10 +839,10 @@ export function handleMonster(monster, index) {
     } else {
         // Normal monster gold
         const goldByDifficulty = {
-            easy: Math.floor(Math.random() * 4) + 3,    // 3-6 gold
-            normal: Math.floor(Math.random() * 3) + 2,  // 2-4 gold
-            hard: Math.floor(Math.random() * 3) + 2,    // 2-4 gold (buffed from 1-2)
-            endless: Math.floor(Math.random() * 3) + 2  // 2-4 gold
+            easy: Math.floor(runRand() * 4) + 3,    // 3-6 gold
+            normal: Math.floor(runRand() * 3) + 2,  // 2-4 gold
+            hard: Math.floor(runRand() * 3) + 2,    // 2-4 gold (buffed from 1-2)
+            endless: Math.floor(runRand() * 3) + 2  // 2-4 gold
         };
         const baseGold = goldByDifficulty[game.difficulty] || 2;
         window.earnGold(baseGold);

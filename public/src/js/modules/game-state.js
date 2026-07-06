@@ -164,9 +164,30 @@ export const UNLOCKS = [
 ];
 
 // ============================================
+// RUN-SCOPED RNG
+// ============================================
+// Daily Challenge seeds this so every player's day rolls the SAME stream —
+// the map was already seeded, but draws/gold/crits/events were plain
+// Math.random, so the daily board ranked luck, not skill. Unseeded (null)
+// = passthrough Math.random. Cosmetic rolls (particles, narrative picks)
+// intentionally do NOT consume this stream, so visual state can't desync
+// the run stream between players.
+let _runRngState = null;
+export function seedRunRng(seed) {
+    _runRngState = seed == null ? null : ((seed >>> 0) || 1);
+}
+export function runRand() {
+    if (_runRngState === null) return Math.random();
+    _runRngState = (Math.imul(_runRngState, 1664525) + 1013904223) >>> 0;
+    return _runRngState / 4294967296;
+}
+
+// ============================================
 // GLOBAL EXPOSURE (for compatibility)
 // ============================================
 window.game = game;
+window.seedRunRng = seedRunRng;
+window.runRand = runRand;
 window.permanentStats = permanentStats;
 window.permanentUnlocks = permanentUnlocks;
 window.UNLOCKS = UNLOCKS;

@@ -34,7 +34,9 @@ import {
     game,
     permanentStats,
     permanentUnlocks,
-    UNLOCKS
+    UNLOCKS,
+    seedRunRng,
+    runRand
 } from './modules/game-state.js';
 
 // Import game events module
@@ -1008,6 +1010,9 @@ function startGame() {
     game.mode = document.querySelector('#modeSelector .mode-btn.selected')?.dataset.mode || 'classic';
     // Daily Challenge: fixed rules for a comparable board (adventure + normal + shared seed)
     game.dailyRun = (game.mode === 'adventure' && window.DailyRun && window.DailyRun.pending) ? window.DailyRun.day : null;
+    // Daily: seed the gameplay RNG stream (XOR'd so it differs from the map's
+    // LCG stream, which consumes the raw seed). Non-daily: back to Math.random.
+    seedRunRng(game.dailyRun ? ((window.DailyRun.seed ^ 0x9E3779B9) >>> 0) : null);
     if (game.dailyRun) game.difficulty = 'normal';
     const healthMap = { easy: 20, normal: 15, hard: 10, endless: 15 };
     let startHealthBonus = permanentUnlocks.startHealth ? 5 : 0;
@@ -1521,10 +1526,10 @@ function checkGameState() {
         
         // Room clear bonus (difficulty-based)
         const roomBonusByDifficulty = {
-            easy: Math.floor(Math.random() * 4) + 5,    // 5-8 gold
-            normal: Math.floor(Math.random() * 3) + 4,  // 4-6 gold
-            hard: Math.floor(Math.random() * 3) + 3,    // 3-5 gold (was 2-4: Hard paid ~half of Normal at full prices)
-            endless: Math.floor(Math.random() * 3) + 4  // 4-6 gold
+            easy: Math.floor(runRand() * 4) + 5,    // 5-8 gold
+            normal: Math.floor(runRand() * 3) + 4,  // 4-6 gold
+            hard: Math.floor(runRand() * 3) + 3,    // 3-5 gold (was 2-4: Hard paid ~half of Normal at full prices)
+            endless: Math.floor(runRand() * 3) + 4  // 4-6 gold
         };
         const bonusGold = roomBonusByDifficulty[game.difficulty] || 3;
         earnGold(bonusGold);
@@ -1563,7 +1568,7 @@ function checkGameState() {
         eventChance = Math.min(eventChance, EVENT_CONFIG.CHANCE_CAP);
 
         setTimeout(() => {
-            if (!game.gameOver && !game.eventTriggeredThisRoom && Math.random() < eventChance) {
+            if (!game.gameOver && !game.eventTriggeredThisRoom && runRand() < eventChance) {
                 triggerRandomEvent();
             }
         }, 800);
@@ -3160,7 +3165,7 @@ function applyPermanentUnlocks() {
     // Weapon unlock
     if (permanentUnlocks.startPower) {
         const weaponValues = [2, 3, 4, 5, 6, 7, 8, 9, 10];
-        const randomValue = weaponValues[Math.floor(Math.random() * weaponValues.length)];
+        const randomValue = weaponValues[Math.floor(runRand() * weaponValues.length)];
         const weaponCard = {
             value: randomValue.toString(),
             suit: '♦',
