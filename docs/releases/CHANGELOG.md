@@ -5,6 +5,11 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.3] - 2026-07-06 - Repeat visits: instant
+
+- **Every first-party JS/CSS URL is now version-addressed** — including the ES-module import specifiers and stylesheet links that were unversioned — so /src/* is served immutable again. Repeat visits stop paying ~30 conditional-GET round-trips (the interim must-revalidate cost from v1.7.0's correctness fix) while keeping the guarantee that every release reaches every player atomically.
+- New scripts/bump-asset-version.mjs (run per release, reads package.json version): rewrites the whole URL graph and **fails if any relative import is left unversioned** — a missed one would load a second instance of a module (split-brain game state).
+
 ## [1.7.2] - 2026-07-06 - 🎲 Daily Challenge: truly fair
 
 - **The whole run is seeded now, not just the map.** Deck shuffles, card draws, gold rolls, crits, event/treasure/curse outcomes and relic-choice pools all consume one seeded run-RNG stream on Daily runs (`seedRunRng`/`runRand`, XOR-decorrelated from the map's LCG stream). Same day + same class + same choices ⇒ identical game for every player — the daily board now ranks decisions, not luck. Verified: two independent browsers produce byte-identical decks, maps and RNG streams; Classic stays truly random.
