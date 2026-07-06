@@ -511,7 +511,13 @@ window.sendBugReport = function() {
             
             // LEGACY FIELDS
             version: getGameVersion(),
-            date: new Date().toLocaleString()
+            date: new Date().toLocaleString(),
+
+            // Recent suppressed errors (silent-logging.js keeps the last 50 in
+            // memory but nothing ever read them — bug reports arrived blind)
+            recent_errors: (window.__errorLog || []).slice(-10).map(e => {
+                try { return JSON.stringify(e).slice(0, 300); } catch (_) { return String(e).slice(0, 300); }
+            }).join('\n') || 'none'
         };
         
         

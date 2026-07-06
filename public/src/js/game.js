@@ -1317,8 +1317,9 @@ function drawRoom() {
         
         createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 60);
     } else {
-        // Normal room
-        const numToDraw = 4;
+        // Normal room (Speed Boots: +1 — it used to apply only in the Classic
+        // miniboss branch, i.e. ~twice per run and never in Adventure)
+        const numToDraw = 4 + (game.relics.some(r => r.id === 'boots') ? 1 : 0);
         
         // BEGINNER HELP: Guarantee weapon in first 5 rooms if player has none
         if (game.stats.roomsCleared < 5 && !game.equippedWeapon) {
@@ -1327,7 +1328,7 @@ function drawRoom() {
             if (weaponIndex !== -1) {
                 // Draw weapon + 3 random cards
                 const weapon = game.dungeon.splice(weaponIndex, 1)[0];
-                const otherCards = game.dungeon.splice(0, Math.min(3, game.dungeon.length));
+                const otherCards = game.dungeon.splice(0, Math.min(numToDraw - 1, game.dungeon.length));
                 game.room.push(weapon, ...otherCards);
                 showMessage('🔰 Beginner help: Weapon included!', 'success');
             } else {
@@ -1492,6 +1493,7 @@ function checkGameState() {
         // Gold bonuses via getRelicBonus so Crown's "double all stat bonuses"
         // applies (the old per-id sum silently skipped it).
         goldPerRoom += getRelicBonus('smallGoldPerRoom') + getRelicBonus('goldPerRoom');
+        if (game.relics.some(r => r.id === 'bell')) goldPerRoom += 2; // Bell: was purely cosmetic
         
         // Rogue: +1 gold per room
         if (game.classData && game.classData.passive.bonusGoldPerRoom) {
@@ -1499,7 +1501,14 @@ function checkGameState() {
         }
         
         if (goldPerRoom > 0) earnGold(goldPerRoom);
-        if (passiveHeal > 0) game.health = Math.min(game.maxHealth, game.health + Math.floor(passiveHeal));
+        // Fractional passive heal (Bandage = 0.5/room) accumulates across rooms —
+        // a plain floor made a lone Bandage heal 0 HP for the entire run.
+        if (passiveHeal > 0) {
+            const total = passiveHeal + (game.passiveHealCarry || 0);
+            const whole = Math.floor(total);
+            game.passiveHealCarry = total - whole;
+            if (whole > 0) game.health = Math.min(game.maxHealth, game.health + whole);
+        }
         
         // Reset Mirror Shield at room clear (only for current dungeon)
         game.mirrorShield = 0;
@@ -1514,7 +1523,7 @@ function checkGameState() {
         const roomBonusByDifficulty = {
             easy: Math.floor(Math.random() * 4) + 5,    // 5-8 gold
             normal: Math.floor(Math.random() * 3) + 4,  // 4-6 gold
-            hard: Math.floor(Math.random() * 3) + 2,    // 2-4 gold
+            hard: Math.floor(Math.random() * 3) + 3,    // 3-5 gold (was 2-4: Hard paid ~half of Normal at full prices)
             endless: Math.floor(Math.random() * 3) + 4  // 4-6 gold
         };
         const bonusGold = roomBonusByDifficulty[game.difficulty] || 3;
@@ -1677,6 +1686,11 @@ function endGame(reason, gaveUp = false) {
     
     game.gameOver = true;
     if (game.gameTimerInterval) clearInterval(game.gameTimerInterval); // Stop clock
+    // Adventure watchdog outlives the run otherwise (1.5s interval forever)
+    if (window.AdventureRun && window.AdventureRun._watchdog) {
+        clearInterval(window.AdventureRun._watchdog);
+        window.AdventureRun._watchdog = null;
+    }
     if (window.music) window.music.setLowHpTension(false); // stop low-HP heartbeat
 
     // CRITICAL: Clean up all game indicators/popups immediately
@@ -2291,6 +2305,9 @@ function showEncouragingModal(isFullVersion = true, onCloseCallback = null) {
 }
 
 function showMessage(text, type) {
+    // Cap the stack: combat bursts (multi-relic procs, combos) used to pile up
+    // unbounded toasts — visually and for the aria-live queue.
+    while (messageArea.children.length >= 3) messageArea.firstChild.remove();
     const msgEl = document.createElement('div');
     msgEl.className = `message ${type}`;
     msgEl.textContent = text;
@@ -2966,8 +2983,6 @@ function earnGold(amount) {
     
     // Permanent unlocks
     if (permanentUnlocks.betterDrops) mult += 0.3;   // +30%
-    if (permanentUnlocks.goldRush) mult += 0.5;      // +50%
-    if (permanentUnlocks.luckyCharm) mult += 0.6;    // +60% (already implemented!)
     
     const actual = Math.floor(amount * mult);
     game.gold += actual;

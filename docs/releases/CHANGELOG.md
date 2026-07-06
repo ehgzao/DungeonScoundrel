@@ -5,6 +5,27 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.1] - 2026-07-06 - 🔧 Robustness & Fairness Patch (post-audit batch 1)
+
+From the full-site audit (5 parallel deep reviews + live production verification):
+
+### 🐛 Fixed
+- **Unguarded `JSON.parse` in gameplay handlers (6 sites):** a corrupt `scoundrel_lifetime_stats` key threw mid-card-resolution (after room state had already mutated), wedging the run — and production error-suppression hid it. All sites now route through the guarded `window.storage.update`.
+- **Bug reports arrived blind:** production suppresses all console/window errors into an in-memory log nothing read. The last 10 suppressed errors now ship with every bug report.
+- **Dead relics revived:** Bandage healed 0 HP all run (`floor(0.5)` per room — fraction now accumulates across rooms); Speed Boots only fired at Classic minibosses (now +1 card in every normal room draw, both modes); Bell was purely cosmetic (now also +2 gold per room). Copy synced: Herb says "per room" (matching code), Master Smith discloses its hidden +1 weapon damage.
+- **Dead code:** removed `goldRush`/`luckyCharm` gold multipliers that read unlock keys which have never existed (the comment claimed "already implemented!").
+- **Adventure watchdog interval** now cleared on game end (ran forever at 1.5s).
+
+### ⚖️ Balance
+- **Boss regroup chip damage escalates** +50% per extra wave (cap 2× strike): a potion-rich deck out-healed the flat chip, so stalling the boss had no clock — and score counts kills+gold, so free waves were a leaderboard farm.
+- **Hard-mode economy softened one lever:** boss gold 15-25 → 18-28, room-clear 2-4 → 3-5. Hard stacked three penalties at once (tougher enemies, ~half income, same prices).
+
+### 🔒 Security & delivery
+- **EmailJS CDN script pinned** to `@4.4.1` with SRI `integrity` + `crossorigin` (was a floating `@4` tag — silent supply-chain exposure).
+- **Headers:** `frame-ancestors 'self'` added to CSP; explicit `Strict-Transport-Security` with `includeSubDomains`; manifest cache rule fixed to target `site.webmanifest` (pointed at a nonexistent `manifest.json`).
+- **Toast cap:** at most 3 concurrent messages (combat bursts flooded the screen and the `aria-live` queue).
+- **Social preview:** `og-image` 957KB PNG → 73KB JPEG; removed 251KB unreferenced `title-logo-readme.png` from the deploy.
+
 ## [1.7.0] - 2026-07-02 - 👹 Fair Bosses & Performance Update
 
 ### ⚖️ Rebalanced — Adventure boss fights (the "no weapon = checkmate" fix)

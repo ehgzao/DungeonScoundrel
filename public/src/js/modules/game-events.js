@@ -111,10 +111,7 @@ export function showEventModal(event) {
             eventModal.classList.remove('active');
             
             // Track event completion for achievement
-            const saved = localStorage.getItem('scoundrel_lifetime_stats');
-            let lifetimeStats = saved ? JSON.parse(saved) : {};
-            lifetimeStats.eventsCompleted = (lifetimeStats.eventsCompleted || 0) + 1;
-            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
+            if (window.storage) window.storage.update('scoundrel_lifetime_stats', (s) => { s.eventsCompleted = (s.eventsCompleted || 0) + 1; return s; });
             
             // Re-enable buttons if room is empty
             if (game.room.length === 0 && btnDrawRoom && btnAvoidRoom) {

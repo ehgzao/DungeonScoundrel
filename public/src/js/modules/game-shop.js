@@ -212,10 +212,7 @@ export function openShop() {
     // Track shop visit for score penalty AND achievements
     game.stats.shopsVisited = (game.stats.shopsVisited || 0) + 1;
     
-    const saved = localStorage.getItem('scoundrel_lifetime_stats');
-    let lifetimeStats = saved ? JSON.parse(saved) : {};
-    lifetimeStats.shopsVisited = (lifetimeStats.shopsVisited || 0) + 1;
-    localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
+    if (window.storage) window.storage.update('scoundrel_lifetime_stats', (s) => { s.shopsVisited = (s.shopsVisited || 0) + 1; return s; });
     
     if (typeof window.checkAchievements === 'function') {
         window.checkAchievements();

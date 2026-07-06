@@ -462,7 +462,7 @@ export function handleMonster(monster, index) {
             const bossGoldByDifficulty = {
                 easy: Math.floor(Math.random() * 16) + 25,    // 25-40 gold
                 normal: Math.floor(Math.random() * 11) + 20,  // 20-30 gold
-                hard: Math.floor(Math.random() * 11) + 15,    // 15-25 gold
+                hard: Math.floor(Math.random() * 11) + 18,    // 18-28 gold (was 15-25: Hard paid least for the hardest fights)
                 endless: Math.floor(Math.random() * 11) + 20  // 20-30 gold
             };
             const bossGold = bossGoldByDifficulty[game.difficulty] || 20;
@@ -829,7 +829,7 @@ export function handleMonster(monster, index) {
         const bossGoldByDifficulty = {
             easy: Math.floor(Math.random() * 16) + 25,    // 25-40 gold
             normal: Math.floor(Math.random() * 11) + 20,  // 20-30 gold
-            hard: Math.floor(Math.random() * 11) + 15,    // 15-25 gold
+            hard: Math.floor(Math.random() * 11) + 18,    // 18-28 gold (was 15-25: Hard paid least for the hardest fights)
             endless: Math.floor(Math.random() * 11) + 20  // 20-30 gold
         };
         const bossGold = bossGoldByDifficulty[game.difficulty] || 20;
@@ -950,10 +950,9 @@ export function handleCardClick(card, index) {
         window.createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 40);
         
         // Track obliteration for achievement
-        const saved = localStorage.getItem('scoundrel_lifetime_stats');
-        let lifetimeStats = saved ? JSON.parse(saved) : {};
-        lifetimeStats.cardsObliterated = (lifetimeStats.cardsObliterated || 0) + 1;
-        localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
+        // Guarded write-through (storage.update try/catches the parse) — a raw
+        // JSON.parse here threw mid-card-resolution on a corrupt key.
+        if (window.storage) window.storage.update('scoundrel_lifetime_stats', (s) => { s.cardsObliterated = (s.cardsObliterated || 0) + 1; return s; });
         
         window.updateUI();
         window.checkGameState();

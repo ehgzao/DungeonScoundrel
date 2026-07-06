@@ -446,8 +446,8 @@ export const GOLD_REWARDS = {
     BOSS_EASY_MAX: 40,
     BOSS_NORMAL_MIN: 20,
     BOSS_NORMAL_MAX: 30,
-    BOSS_HARD_MIN: 15,
-    BOSS_HARD_MAX: 25,
+    BOSS_HARD_MIN: 18,
+    BOSS_HARD_MAX: 28,
     /** Monster gold by difficulty */
     MONSTER_EASY_MIN: 3,
     MONSTER_EASY_MAX: 6,
@@ -460,7 +460,7 @@ export const GOLD_REWARDS = {
     ROOM_EASY_MAX: 8,
     ROOM_NORMAL_MIN: 4,
     ROOM_NORMAL_MAX: 6,
-    ROOM_HARD_MIN: 2,
+    ROOM_HARD_MIN: 3,
     ROOM_HARD_MAX: 4
 };
 
