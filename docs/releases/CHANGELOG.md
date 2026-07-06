@@ -5,6 +5,11 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.2] - 2026-07-06 - App Check scaffolding + Classic event voice
+
+- **Firebase App Check pre-wired** (anti-abuse, next real security step): `firebase-auth.js` initializes reCAPTCHA v3 App Check when `window.__appcheck_site_key` (in `src/config/firebase-config.js`) is non-empty — empty means fully off, the game runs unchanged. Enabling it is now: register in Firebase Console, paste one string, deploy, watch metrics, then enforce. CSP extended for `www.google.com` (reCAPTCHA script + frame); `/src/config/*` gets a must-revalidate cache rule (it is unversioned — a pasted key must reach players immediately).
+- **All 15 Classic events rewritten in the Adventure voice** (audit: "placeholder-grade next to the polished Adventure writing" — "Maybe next time!" era). Intros and dismissal lines only; every mechanical choice/effect untouched.
+
 ## [1.8.1] - 2026-07-06 - Map tension + accessibility + unit tests
 
 ### Balance (audit: "take every elite/treasure" was the dominant line)

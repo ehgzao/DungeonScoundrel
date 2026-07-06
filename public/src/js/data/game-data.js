@@ -69,7 +69,7 @@ const RELICS = [
 ];
 
 const EVENTS = [
-    { id: 'shrine', title: '🔮 Mysterious Shrine', text: 'You find a glowing shrine. An ancient voice offers you a choice...',
+    { id: 'shrine', title: '🔮 Mysterious Shrine', text: 'A shrine hums in the dark, older than the dungeon around it. The voice inside it does not ask twice.',
         choices: [
             { text: '❤️ Sacrifice 5 HP for the Berserker Ring (+4 weapon damage while at half HP or less)',
                 effect: () => {
@@ -87,9 +87,9 @@ const EVENTS = [
                     if (game.gold >= 20) { game.gold -= 20; game.maxHealth += 5; game.health += 5; showMessage('+5 Max HP!', 'success'); } 
                     else { showMessage('Not enough gold!', 'danger'); }
                 }},
-            { text: '🚪 Leave quietly', effect: () => { showMessage('You leave the shrine untouched.', 'info'); }}
+            { text: '🚪 Leave quietly', effect: () => { showMessage('You back away. The shrine\'s hum follows you a while.', 'info'); }}
         ]},
-    { id: 'merchant', title: '🎒 Traveling Merchant', text: 'A friendly merchant offers you a deal!',
+    { id: 'merchant', title: '🎒 Traveling Merchant', text: 'A pack-laden traveler waits where no road should be. His smile is warm; his prices are not.',
         choices: [
             { text: '💊 Buy healing potion for 15 gold (heal 8 HP)',
                 effect: () => {
@@ -101,9 +101,9 @@ const EVENTS = [
                     if (game.gold >= 30) { game.gold -= 30; giveRandomRelic(); } 
                     else { showMessage('Not enough gold!', 'danger'); }
                 }},
-            { text: '👋 Say goodbye', effect: () => { showMessage('Maybe next time!', 'info'); }}
+            { text: '👋 Say goodbye', effect: () => { showMessage('The merchant shrugs. "The dungeon pays better than you, friend."', 'info'); }}
         ]},
-    { id: 'fountain', title: '💧 Whispering Fountain', text: 'You find a shimmering fountain. The water looks pure.',
+    { id: 'fountain', title: '💧 Whispering Fountain', text: 'Clear water in a place like this. Either a mercy, or bait.',
         choices: [
             { text: 'Drink (Heal 5 HP)', effect: () => { 
                 const heal = Math.min(5, game.maxHealth - game.health);
@@ -111,9 +111,9 @@ const EVENTS = [
                 showMessage(`💧 You feel refreshed! +${heal} HP`, 'success');
                 updateUI();
             }},
-            { text: 'Ignore', effect: () => { showMessage('You move on.', 'info'); }}
+            { text: 'Ignore', effect: () => { showMessage('You leave the water untouched. It stops rippling the moment you turn.', 'info'); }}
         ]},
-    { id: 'gambler', title: '🎲 Shady Gambler', text: 'A figure offers a game. "Bet 10 Gold. Win 25 or lose it all."',
+    { id: 'gambler', title: '🎲 Shady Gambler', text: 'Dice clatter in the shadows. "Ten gold, scoundrel. The dark pays five-and-twenty — when it pays."',
         choices: [
             { text: 'Bet (Requires 10 Gold)', effect: () => { 
                 if (game.gold < 10) { showMessage('🎲 "You don\'t have enough gold!" he scoffs.', 'warning'); return; }
@@ -122,9 +122,9 @@ const EVENTS = [
                 else { showMessage('🎲 You lost! -10 Gold!', 'danger'); }
                 updateUI();
             }},
-            { text: 'Refuse', effect: () => { showMessage('You walk away from the game.', 'info'); }}
+            { text: 'Refuse', effect: () => { showMessage('You keep your gold. The dice rattle once more behind you, at nothing.', 'info'); }}
         ]},
-    { id: 'treasure', title: '🏺 Cursed Treasure', text: 'A golden chest glimmers before you... but dark energy surrounds it.',
+    { id: 'treasure', title: '🏺 Cursed Treasure', text: 'Gold gleams through the grate of a chest that no one ever came back for. The air around it tastes wrong.',
         choices: [
             { text: '💰 Take the risk (+50 gold, -10 HP)', effect: () => { 
                 if (game.health > 10) { takeDamage(10); earnGold(50); showMessage('💰 +50 gold! But the curse hurts...', 'success'); }
@@ -136,9 +136,9 @@ const EVENTS = [
                 else { takeDamage(15); showMessage('💔 The curse backfired! -15 HP!', 'danger'); }
                 updateUI();
             }},
-            { text: '🚪 Leave it alone', effect: () => { showMessage('Wisdom over greed.', 'info'); }}
+            { text: '🚪 Leave it alone', effect: () => { showMessage('You leave it be. Whatever waits inside settles back to sleep.', 'info'); }}
         ]},
-    { id: 'witch', title: '🧙 Mysterious Witch', text: 'An old witch offers her services: "I can upgrade your equipment... for a price."',
+    { id: 'witch', title: '🧙 Mysterious Witch', text: 'She was here before you arrived, stirring something that smells of iron. "Blades and blood, dear. I mend both — for coin."',
         choices: [
             { text: '⚔️ Upgrade weapon (+2 damage, 25 gold)', effect: () => {
                 if (game.gold >= 25 && game.equippedWeapon) { 
@@ -154,9 +154,9 @@ const EVENTS = [
                 if (game.gold >= 30) { game.gold -= 30; game.health = game.maxHealth; showMessage('❤️ Fully healed!', 'success'); updateUI(); }
                 else { showMessage('Not enough gold!', 'danger'); }
             }},
-            { text: '🃏 Decline', effect: () => { showMessage('"Your loss, scoundrel!"', 'info'); }}
+            { text: '🃏 Decline', effect: () => { showMessage('"Your loss, scoundrel." The cauldron laughs even if she doesn\'t.', 'info'); }}
         ]},
-    { id: 'library', title: '📚 Ancient Library', text: 'You discover a library filled with magical tomes.',
+    { id: 'library', title: '📚 Ancient Library', text: 'Shelves sag under books no one has burned yet. Some of them are still warm.',
         choices: [
             { text: '📖 Study combat techniques (+1 damage permanent)', effect: () => {
                 game.relics.push({ id: 'study_bonus', name: '📖 Combat Study', description: '+1 weapon damage — knowledge cuts too', rarity: 'common', effect: 'smallPower' });
@@ -170,9 +170,9 @@ const EVENTS = [
                 showMessage('🔮 You mastered healing!', 'success');
                 updateRelicsDisplay();
             }},
-            { text: '🚪 Leave quickly', effect: () => { showMessage('No time for reading!', 'info'); }}
+            { text: '🚪 Leave quickly', effect: () => { showMessage('You leave the books to their whispering.', 'info'); }}
         ]},
-    { id: 'beggar', title: '🙏 Poor Beggar', text: 'A starving beggar asks for help. "Please... just 5 gold for food..."',
+    { id: 'beggar', title: '🙏 Poor Beggar', text: 'A ragged figure huddles against the cold stone. Down here, charity is the strangest gamble of all.',
         choices: [
             { text: '❤️ Give 5 gold (Karma reward)', effect: () => {
                 if (game.gold >= 5) { 
@@ -189,9 +189,9 @@ const EVENTS = [
                     showMessage('✨ Your kindness is rewarded! (Relic gained)', 'success');
                 } else { showMessage('Not enough gold!', 'danger'); }
             }},
-            { text: '🚶 Ignore', effect: () => { showMessage('You walk past...', 'info'); }}
+            { text: '🚶 Ignore', effect: () => { showMessage('You walk past. The silence behind you is very loud.', 'info'); }}
         ]},
-    { id: 'blacksmith', title: '⚒️ Dwarven Blacksmith', text: 'A skilled dwarf offers to fix your gear. "I can repair or enhance!"',
+    { id: 'blacksmith', title: '⚒️ Dwarven Blacksmith', text: 'Hammer-song echoes off the walls: a dwarf works a forge that should not be lit. "Steel dulls. I do not."',
         choices: [
             { text: '🔧 Repair weapon (Full durability, 15 gold)', effect: () => {
                 if (game.gold >= 15 && game.equippedWeapon && game.equippedWeapon.durability < game.equippedWeapon.maxDurability) {
@@ -213,9 +213,9 @@ const EVENTS = [
                 } else if (!game.equippedWeapon) { showMessage('No weapon!', 'warning'); }
                 else { showMessage('Not enough gold!', 'danger'); }
             }},
-            { text: '👋 No thanks', effect: () => { showMessage('"Suit yourself!"', 'info'); }}
+            { text: '👋 No thanks', effect: () => { showMessage('"Suit yourself." The hammer-song resumes before you\'ve left the room.', 'info'); }}
         ]},
-    { id: 'dragon', title: '🐉 Sleeping Dragon', text: 'A dragon sleeps atop a massive hoard of gold. Do you dare...?',
+    { id: 'dragon', title: '🐉 Sleeping Dragon', text: 'The hoard rises and falls with the dragon\'s breath. Every coin you can see has been counted — by it.',
         choices: [
             { text: '💎 Steal carefully (60% success)', effect: () => {
                 if (Math.random() < 0.6) { 
@@ -235,9 +235,9 @@ const EVENTS = [
                 } else { showMessage('Too dangerous!', 'danger'); }
                 updateUI();
             }},
-            { text: '🃏 Run away', effect: () => { showMessage('Discretion is the better part of valor.', 'info'); }}
+            { text: '🃏 Run away', effect: () => { showMessage('You retreat one careful step at a time. The hoard breathes on.', 'info'); }}
         ]},
-    { id: 'mirror', title: '🪞 Magic Mirror', text: 'A mystical mirror shows your reflection. "Touch me and face yourself..."',
+    { id: 'mirror', title: '🪞 Magic Mirror', text: 'The mirror shows you — but a heartbeat late, and smiling first. It wants you to reach out.',
         choices: [
             { text: '✨ Accept the challenge (Mirror match)', effect: () => {
                 const damage = Math.floor(game.health * 0.3);
@@ -253,7 +253,7 @@ const EVENTS = [
             }},
             { text: '🚪 Leave', effect: () => { showMessage('You look away from the mirror.', 'info'); }}
         ]},
-    { id: 'ghost', title: '👻 Friendly Ghost', text: 'A spectral figure appears. "I can help you... or hurt you. Your choice!"',
+    { id: 'ghost', title: '👻 Friendly Ghost', text: 'Something that used to be a person drifts closer. It remembers kindness. It also remembers everything else.',
         choices: [
             { text: '🎁 Accept help (Random buff)', effect: () => {
                 const buffs = ['dodge', 'berserk', 'goldBonus'];
@@ -275,7 +275,7 @@ const EVENTS = [
             }},
             { text: '🙏 Show respect', effect: () => { showMessage('👻 "Wise choice, mortal."', 'info'); }}
         ]},
-    { id: 'portal', title: '🌀 Mysterious Portal', text: 'A swirling portal appears. Where does it lead?',
+    { id: 'portal', title: '🌀 Mysterious Portal', text: 'A tear in the dungeon\'s dark, humming softly. Whatever is on the other side already knows you are here.',
         choices: [
             { text: '🎲 Jump in! (Random outcome)', effect: () => {
                 const outcomes = ['good', 'great', 'bad'];
@@ -292,7 +292,7 @@ const EVENTS = [
             }},
             { text: '🚫 Avoid it', effect: () => { showMessage('You don\'t trust strange portals.', 'info'); }}
         ]},
-    { id: 'altar', title: '🕯️ Sacrificial Altar', text: 'An ancient altar radiates dark power. "Offer something... gain something greater."',
+    { id: 'altar', title: '🕯️ Sacrificial Altar', text: 'An altar slick with old offerings. It thirsts, and it bargains.',
         choices: [
             { text: '❤️ Sacrifice 10 HP (Rare relic)', effect: () => {
                 if (game.health > 10) {
@@ -313,7 +313,7 @@ const EVENTS = [
             }},
             { text: '🃏 Flee', effect: () => { showMessage('You back away slowly.', 'info'); }}
         ]},
-    { id: 'trap', title: '⚠️ Hidden Trap Room', text: 'You trigger a trap! Spikes, arrows, or treasure?',
+    { id: 'trap', title: '⚠️ Hidden Trap Room', text: 'The floor clicks under your heel. Somewhere in the walls, something old wakes up and takes aim.',
         choices: [
             { text: '🛡️ Defend (-5 HP, safe)', effect: () => {
                 takeDamage(5);
