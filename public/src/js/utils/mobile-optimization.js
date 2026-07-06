@@ -154,10 +154,10 @@ class MobileOptimization {
                     transition-duration: 0.2s !important;
                 }
 
-                /* Simplificar gradientes */
-                .card, .button, .modal {
-                    background-image: none !important;
-                }
+                /* (removed) .card/.modal background-image suppression — it
+                   erased ALL Adventure card art on phones. The art is now
+                   ~34KB/card, viewport-sized and idle-prefetched; suppressing
+                   it made cards look broken (user-reported). */
 
                 /* Desabilitar blur */
                 .blur, .backdrop-blur {

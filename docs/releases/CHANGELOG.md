@@ -5,6 +5,15 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.5] - 2026-07-06 - Mobile hotfixes + real minification
+
+### Fixed (mobile, user-reported)
+- **Menu no longer scrolls into the game screen** — the v1.7.4 mobile block overrode the game wrapper's hidden state (display cascade bug), rendering the board underneath the welcome screen.
+- **Card art restored on phones** — an old mobile "optimization" injected `.card { background-image: none !important }` at <=768px, erasing ALL Adventure card illustrations (from when art was 115KB/card; it is ~34KB and idle-prefetched now).
+
+### Build
+- **Real JS/CSS minification on Netlify** (`scripts/minify.mjs`, esbuild): 686KB -> 405KB (-41%) inside the build container; repo keeps readable sources. Whitespace+syntax only — identifiers are never renamed (the window.* contract and hand-maintained load order stay untouched). Replaces the deprecated `[build.processing]` no-op (production verifiably shipped unminified code). Full smoke + boss suites pass ON the minified output.
+
 ## [1.7.4] - 2026-07-06 - Mobile gameplay pass 2
 
 User-reported: cards the wrong size, screen shifting, unpleasant play on phones. Root causes fixed (portrait <=600px):

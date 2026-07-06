@@ -14,7 +14,7 @@ import {
     HEALTH,
     GOLD,
     GAME_MODES
-} from '../config/game-constants.js?v=1.7.4';
+} from '../config/game-constants.js?v=1.7.5';
 
 // ============================================
 // GAME STATE OBJECT

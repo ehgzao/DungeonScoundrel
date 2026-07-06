@@ -2480,9 +2480,10 @@
  * Placed last in the file: overrides the older 768px-portrait rules.
  * ============================================ */
 @media screen and (max-width: 600px) and (orientation: portrait) {
+    /* NOTE: no `display` here — base .game-wrapper is display:none until JS
+       adds .active; overriding display made the game screen render under
+       the menu (scroll-through bug). */
     .game-wrapper {
-        display: flex;
-        flex-direction: column;
         height: 100dvh;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
