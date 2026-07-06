@@ -10,7 +10,7 @@
  */
 
 // Import game state
-import { game } from './game-state.js';
+import { game, runRand } from './game-state.js';
 
 // DOM Elements (will be initialized after DOM loads)
 let eventModal, eventTitle, eventText, eventChoices;
@@ -58,7 +58,7 @@ export function triggerRandomEvent() {
     }
     
     // Pick random event from available pool
-    const event = availableEvents[Math.floor(Math.random() * availableEvents.length)];
+    const event = availableEvents[Math.floor(runRand() * availableEvents.length)];
     
     // Mark event as seen this run
     game.seenEvents.push(event.id);

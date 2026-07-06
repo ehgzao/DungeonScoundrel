@@ -19,7 +19,7 @@
 // ============================================
 // IMPORTS
 // ============================================
-import { game } from './game-state.js';
+import { game, runRand } from './game-state.js';
 import { SPECIAL_CARDS, LUCKY_DRAW } from '../config/game-constants.js';
 
 // ============================================
@@ -127,7 +127,7 @@ export const specialCards = [
         name: '🎰 Gamble', 
         description: '50% chance: +15 HP or -10 HP', 
         effect: () => {
-            const win = Math.random() < 0.5;
+            const win = runRand() < 0.5;
             if (win) {
                 const heal = Math.min(15, game.maxHealth - game.health);
                 game.health = Math.min(game.maxHealth, game.health + 15);
@@ -176,23 +176,23 @@ export const specialCards = [
                 const monsters = game.dungeon.filter(c => c.suitName === 'clubs' || c.suitName === 'spades');
                 
                 let selectedCard = null;
-                const roll = Math.random();
+                const roll = runRand();
                 
                 // 40% chance for potion
                 if (roll < LUCKY_DRAW.POTION_CHANCE && potions.length > 0) {
-                    selectedCard = potions[Math.floor(Math.random() * potions.length)];
+                    selectedCard = potions[Math.floor(runRand() * potions.length)];
                 }
                 // 40% chance for weapon (cumulative 0.40-0.80)
                 else if (roll < LUCKY_DRAW.WEAPON_CHANCE && weapons.length > 0) {
-                    selectedCard = weapons[Math.floor(Math.random() * weapons.length)];
+                    selectedCard = weapons[Math.floor(runRand() * weapons.length)];
                 }
                 // 20% chance for monster OR fallback if preferred types unavailable
                 else if (monsters.length > 0) {
-                    selectedCard = monsters[Math.floor(Math.random() * monsters.length)];
+                    selectedCard = monsters[Math.floor(runRand() * monsters.length)];
                 }
                 // Fallback: draw any card if specific type unavailable
                 else {
-                    selectedCard = game.dungeon[Math.floor(Math.random() * game.dungeon.length)];
+                    selectedCard = game.dungeon[Math.floor(runRand() * game.dungeon.length)];
                 }
                 
                 if (selectedCard) {
@@ -229,7 +229,7 @@ export const specialCards = [
 export function shuffleDeck(deck) {
     let shuffled = [...deck];
     for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = Math.floor(runRand() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
@@ -258,7 +258,7 @@ export function balanceEasyModeDeck(deck) {
         for (let i = 0; i < toReplace; i++) {
             const highMonster = highMonsters[i];
             const index = balanced.indexOf(highMonster);
-            const newValue = [2, 3, 4][Math.floor(Math.random() * 3)];
+            const newValue = [2, 3, 4][Math.floor(runRand() * 3)];
             balanced[index] = {
                 ...highMonster,
                 value: newValue.toString(),
@@ -277,7 +277,7 @@ export function balanceEasyModeDeck(deck) {
         for (let i = 0; i < toReplace; i++) {
             const offWeapon = offWeapons[i];
             const index = balanced.indexOf(offWeapon);
-            const newValue = [4, 5, 6, 7, 8][Math.floor(Math.random() * 5)];
+            const newValue = [4, 5, 6, 7, 8][Math.floor(runRand() * 5)];
             balanced[index] = {
                 ...offWeapon,
                 value: newValue.toString(),
@@ -360,7 +360,7 @@ export function createDeck() {
             suit: '', 
             numValue: 0, 
             suitName: 'special', 
-            special: specialCards[Math.floor(Math.random() * specialCards.length)] 
+            special: specialCards[Math.floor(runRand() * specialCards.length)] 
         });
     }
     

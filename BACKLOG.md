@@ -298,7 +298,7 @@ cada release; agora `max-age=0, must-revalidate`.
 | TB-2 | Famílias de synergy de relics (3-4 tags que combinam) | L | 🔴 | 🔴 Proposto |
 | TB-3 | Codex com discovery ("?" até encontrar) | M | 🟡 | 🟢 Concluído (v1.6.0) |
 | TB-4 | Tela de lifetime stats / carreira (dados já existem) | M | 🟡 | 🟢 Concluído (v1.6.0 — aba Stats no Codex) |
-| TB-6 | Daily Run com seed compartilhada + seção no leaderboard | L | 🔴 | 🟢 Concluído (v1.6.0 — mapa seeded/dia; draws de carta ainda variam) |
+| TB-6 | Daily Run com seed compartilhada + seção no leaderboard | L | 🔴 | 🟢 Concluído (v1.6.0 mapa; **v1.7.2: run inteiro seeded** — draws/gold/crits/eventos determinísticos por dia+classe) |
 | TB-7 | Mecânica única por final boss (ligada à motivação) | L | 🟡 | 🟡 Parcial (v1.7.0: boss entourage/waves é a base estrutural; mecânicas por-boss seguem propostas) |
 | TB-8 | Ascension ladder pós-Hard | XL | 🟡 | 🔴 Proposto (design doc primeiro) |
 | TB-9 | Verificar minificação em PRODUÇÃO (Netlify `[build.processing]` não roda em deploy previews — Lighthouse do preview acusa JS/CSS não minificados). Se prod também não minifica, adicionar build step (esbuild) validado pelo smoke local | M | 🟡 | 🔴 Novo (v1.7.0) |

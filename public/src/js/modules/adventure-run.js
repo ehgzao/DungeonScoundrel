@@ -9,7 +9,7 @@
    ============================================ */
 (function () {
     // Daily Challenge: one shared seed per UTC day. Same class ⇒ identical map
-    // for every player that day (card draws still vary — documented honestly).
+    // AND identical gameplay RNG stream (draws, gold, events — seedRunRng).
     const _d = new Date();
     const DAILY_DAY = `${_d.getUTCFullYear()}-${String(_d.getUTCMonth() + 1).padStart(2, '0')}-${String(_d.getUTCDate()).padStart(2, '0')}`;
     let _h = 0;
@@ -19,6 +19,9 @@
     // Adventure reward/decision moments get the same audio cues as Classic
     // (shop purchases play 'special', blocks play 'error' — see game-shop.js).
     const sfx = (name) => { if (typeof window.playSound === 'function') window.playSound(name); };
+
+    // Run-scoped RNG (seeded on Daily runs — see game-state.js runRand).
+    const rnd = () => (typeof window.runRand === 'function' ? window.runRand() : Math.random());
 
     const AR = {
         _pending: null,
@@ -319,7 +322,7 @@
 
         // Relic rarity scales with depth (act 0..2; bosses pass act+1 for rarer).
         _relicRarity(act) {
-            const r = Math.random();
+            const r = rnd();
             if (act <= 0) return r < 0.7 ? 'common' : 'uncommon';
             if (act === 1) return r < 0.6 ? 'uncommon' : 'rare';
             return r < 0.6 ? 'rare' : 'legendary';
@@ -358,7 +361,7 @@
         _treasure(node) {
             // ADV-6: ~35% of treasures are CURSED chests — a real risk/reward
             // decision instead of a free reward.
-            if (Math.random() < 0.35) return AR._cursedChest(node);
+            if (rnd() < 0.35) return AR._cursedChest(node);
             const gold = 10 + node.tier * 2;
             if (window.earnGold) window.earnGold(gold); else game.gold += gold;
             if (window.updateUI) window.updateUI();
@@ -371,18 +374,18 @@
         // target the highest-power card, so they're the natural answer.
         _injectCurse(power) {
             const v = Math.max(2, Math.min(14, Math.round(power)));
-            const suit = Math.random() < 0.5 ? '♠' : '♣';
+            const suit = rnd() < 0.5 ? '♠' : '♣';
             const suitName = suit === '♠' ? 'spades' : 'clubs';
             const curse = { value: String(v), suit, numValue: v, suitName, isCurse: true };
             if (!Array.isArray(game.dungeon)) game.dungeon = [];
-            const idx = Math.floor(Math.random() * (game.dungeon.length + 1));
+            const idx = Math.floor(rnd() * (game.dungeon.length + 1));
             game.dungeon.splice(idx, 0, curse);
             sfx('damage'); // ominous thud — something foul just joined the deck
         },
 
         _cursedChest(node) {
             const gold = 18 + node.tier * 3;
-            const cursePow = 8 + node.act * 2 + Math.floor(Math.random() * 4);
+            const cursePow = 8 + node.act * 2 + Math.floor(rnd() * 4);
             AR._choiceModal({
                 icon: '⚰️', scene: 'scene-chest', title: 'A Cursed Chest',
                 flavor: 'Gold glints behind a sigil of binding. Greed always has a price.',
@@ -454,11 +457,11 @@
             if ((game.gold || 0) < cost) { sfx('error'); return false; }
             let msg = '';
             if (action === 'weapon') {
-                const v = 6 + Math.floor(Math.random() * 5);
+                const v = 6 + Math.floor(rnd() * 5);
                 game.dungeon.push({ value: String(v), suit: '♦', numValue: v, suitName: 'diamonds' });
                 msg = `Bought a ${v}♦ weapon — it joins your deck.`;
             } else if (action === 'potion') {
-                const v = 6 + Math.floor(Math.random() * 5);
+                const v = 6 + Math.floor(rnd() * 5);
                 game.dungeon.push({ value: String(v), suit: '♥', numValue: v, suitName: 'hearts' });
                 msg = `Bought a ${v}♥ potion — it joins your deck.`;
             } else if (action === 'remove') {
@@ -473,7 +476,7 @@
                 const pool = [...(game.dungeon || []), ...(game.discardPile || [])];
                 const weapons = pool.filter(c => c.suitName === 'diamonds' && c.numValue < 13);
                 if (!weapons.length) { sfx('error'); if (window.showMessage) window.showMessage('No weapon to sharpen.', 'warning'); return false; }
-                const w = weapons[Math.floor(Math.random() * weapons.length)];
+                const w = weapons[Math.floor(rnd() * weapons.length)];
                 w.numValue = Math.min(13, w.numValue + 2); w.value = String(w.numValue);
                 msg = `Sharpened a weapon to ${w.numValue}♦.`;
             } else if (action === 'relic') {
@@ -501,7 +504,7 @@
             };
             const hurt = (n) => { game.health = Math.max(1, game.health - n); };
             const addCard = (suit, suitName) => {
-                const v = 6 + Math.floor(Math.random() * 5);
+                const v = 6 + Math.floor(rnd() * 5);
                 game.dungeon.push({ value: String(v), suit, numValue: v, suitName });
                 return v;
             };
@@ -523,7 +526,7 @@
                     flavor: 'A grinning shade rattles a cup of bone dice. "Double or nothing, friend?"',
                     choices: [
                         { label: '🎲 Roll the bones', sub: 'Wager half your gold — win double or lose it', disabled: (game.gold || 0) < 10,
-                          apply: () => { const stake = Math.floor((game.gold || 0) / 2); spend(stake); if (Math.random() < 0.5) { gold(stake * 2); return `The dice land kind — you win ${stake * 2} gold!`; } return `The dice betray you. ${stake} gold gone.`; } },
+                          apply: () => { const stake = Math.floor((game.gold || 0) / 2); spend(stake); if (rnd() < 0.5) { gold(stake * 2); return `The dice land kind — you win ${stake * 2} gold!`; } return `The dice betray you. ${stake} gold gone.`; } },
                         { label: '🍞 Decline politely', sub: 'A small meal, +10% HP',
                           apply: () => { const h = heal(0.10); return `You decline and share his bread instead. +${h} HP.`; } },
                     ],
@@ -578,7 +581,7 @@
             if (game.stats) game.stats.eventsTriggered = (game.stats.eventsTriggered || 0) + 1;
             AR._bumpLifetime('eventsCompleted');
             const pool = AR._eventPool(node);
-            const ev = pool[Math.floor(Math.random() * pool.length)];
+            const ev = pool[Math.floor(rnd() * pool.length)];
             AR._choiceModal({ ...ev, scene: 'scene-event' });
         },
 

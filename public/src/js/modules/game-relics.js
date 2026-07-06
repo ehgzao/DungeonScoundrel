@@ -10,7 +10,7 @@
  */
 
 // Import game state
-import { game } from './game-state.js';
+import { game, runRand } from './game-state.js';
 
 // DOM Elements (will be initialized after DOM loads)
 let relicsList;
@@ -54,7 +54,7 @@ export function relicChoicesByRarity(rarity, count = 1) {
     const pool = [...available];
     const picks = [];
     while (pool.length && picks.length < count) {
-        picks.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+        picks.push(pool.splice(Math.floor(runRand() * pool.length), 1)[0]);
     }
     return picks;
 }
