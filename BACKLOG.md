@@ -306,6 +306,10 @@ cada release; agora `max-age=0, must-revalidate`.
 ### ⚠️ Limitações conhecidas (não corrigidas nesta pass)
 - Firestore ainda confia em `score`/`time` enviados pelo cliente (precisa de
   scoring server-authoritative — flag da QA pass anterior, segue aberto).
+  **Mitigado em profundidade (v1.7.4, pendente publicar no console):** allowlist
+  de collections (o wildcard aceitava escrita em QUALQUER nome), `hasOnly`/`hasAll`
+  de campos, ranges em todos os números, day/seed obrigatórios só no daily.
+  Próximo passo real: Firebase App Check + Cloud Function de scoring.
 - Phoenix Feather não dispara em mortes por strike/regroup de boss (dano fora
   do fluxo normal de combate) — comportamento antigo, agora documentado.
 - Foco não retorna ao elemento que abriu o modal ao fechar (a11y).
