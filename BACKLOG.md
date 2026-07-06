@@ -1,7 +1,14 @@
 # 📋 DUNGEON SCOUNDREL - BACKLOG UNIFICADO
 
-**Última atualização:** 2026-07-02
-**Versão atual:** 1.7.0 (Boss entourage rebalance, perf pass, stale-cache fix)
+**Última atualização:** 2026-07-06
+**Versão atual:** 1.7.1 (batch 1 pós-auditoria: robustez, balance, headers)
+
+> **Auditoria completa 2026-07-06** (5 reviews paralelos + verificação de produção
+> ao vivo): lista priorizada entregue no chat da sessão. Executando em batches.
+> Batch 1 (este release) = itens S de robustez/segurança/balance. Próximos:
+> mobile soft-gate, Daily 100% seeded, cache fase 2 + split CSS + build step
+> esbuild (TB-9 CONFIRMADO: produção NÃO minifica), Firestore hardening
+> (allowlist de collections + hasOnly + App Check), ascension (TB-8).
 **Single Source of Truth para planejamento**
 
 > Remediação do audit já entregue (PRs #22–#27): XSS escaping, Firestore rules,

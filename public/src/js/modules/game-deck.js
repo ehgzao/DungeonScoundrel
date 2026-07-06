@@ -84,10 +84,7 @@ export const specialCards = [
             window.createParticles(window.innerWidth / 2, window.innerHeight / 2, '#ff6b6b', 40);
             
             // Track berserk use for achievement
-            const saved = localStorage.getItem('scoundrel_lifetime_stats');
-            let lifetimeStats = saved ? JSON.parse(saved) : {};
-            lifetimeStats.berserkUses = (lifetimeStats.berserkUses || 0) + 1;
-            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
+            if (window.storage) window.storage.update('scoundrel_lifetime_stats', (s) => { s.berserkUses = (s.berserkUses || 0) + 1; return s; });
         } 
     },
     { 
@@ -104,10 +101,7 @@ export const specialCards = [
                 window.updateUI();
                 
                 // Track time warp use for achievement
-                const saved = localStorage.getItem('scoundrel_lifetime_stats');
-                let lifetimeStats = saved ? JSON.parse(saved) : {};
-                lifetimeStats.timeWarps = (lifetimeStats.timeWarps || 0) + 1;
-                localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
+                if (window.storage) window.storage.update('scoundrel_lifetime_stats', (s) => { s.timeWarps = (s.timeWarps || 0) + 1; return s; });
             } else {
                 window.showMessage('⏰ Time Warp! Not enough cards in deck!', 'warning');
             }
@@ -160,10 +154,7 @@ export const specialCards = [
             window.updateUI();
             
             // Track gamble use for achievement
-            const saved = localStorage.getItem('scoundrel_lifetime_stats');
-            let lifetimeStats = saved ? JSON.parse(saved) : {};
-            lifetimeStats.gambleCards = (lifetimeStats.gambleCards || 0) + 1;
-            localStorage.setItem('scoundrel_lifetime_stats', JSON.stringify(lifetimeStats)); if (window.storage) window.storage.invalidate('scoundrel_lifetime_stats'); // QA: keep storage cache in sync
+            if (window.storage) window.storage.update('scoundrel_lifetime_stats', (s) => { s.gambleCards = (s.gambleCards || 0) + 1; return s; });
         } 
     },
     { 

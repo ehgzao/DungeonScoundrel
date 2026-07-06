@@ -258,7 +258,13 @@
                 AR._waveTimer = null;
                 // Conditions may have shifted during the delay (undo, defeat).
                 if (game.gameOver || game.room.length !== 1 || !game.room[0] || !game.room[0].isBoss) return;
-                const chip = Math.ceil((game.room[0].strike || 10) / 2);
+                // Chip escalates 50% per extra wave (capped at 2x strike): a potion-
+                // rich deck out-healed a flat chip, so stalling had no clock at all.
+                const waves = Math.max(1, AR._wavesDealt || 1);
+                const chip = Math.min(
+                    (game.room[0].strike || 10) * 2,
+                    Math.ceil(((game.room[0].strike || 10) / 2) * (1 + (waves - 1) * 0.5))
+                );
                 game.health -= chip;
                 game.stats.totalDamage += chip;
                 game.lastDamageSource = game.room[0].bossName || 'the Boss';
