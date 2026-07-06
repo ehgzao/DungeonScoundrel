@@ -13,7 +13,7 @@
  * @module game-economy
  */
 
-import { game, permanentUnlocks } from './game-state.js?v=1.8.0';
+import { game, permanentUnlocks } from './game-state.js?v=1.8.1';
 
 /** Combined discount multiplier from unlocks + relics (multiplicative). */
 export function shopDiscount() {

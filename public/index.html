@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.8.0"></script>
+    <script src="src/js/core/silent-logging.js?v=1.8.1"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,17 +66,17 @@
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&display=swap"></noscript>
     
     <!-- CSS: critical (render-blocking, needed above the fold) -->
-    <link rel="stylesheet" href="src/styles/variables.css?v=1.8.0">
-    <link rel="stylesheet" href="src/styles/styles.css?v=1.8.0">
-    <link rel="stylesheet" href="src/styles/components/buttons.css?v=1.8.0">
+    <link rel="stylesheet" href="src/styles/variables.css?v=1.8.1">
+    <link rel="stylesheet" href="src/styles/styles.css?v=1.8.1">
+    <link rel="stylesheet" href="src/styles/components/buttons.css?v=1.8.1">
     <!-- CSS: non-critical (deferred to speed up FCP/LCP) -->
-    <link rel="preload" as="style" href="src/styles/animations.css?v=1.8.0" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" as="style" href="src/styles/scrollbar.css?v=1.8.0" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" as="style" href="src/styles/components/waitlist.css?v=1.8.0" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="src/styles/animations.css?v=1.8.1" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="src/styles/scrollbar.css?v=1.8.1" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="src/styles/components/waitlist.css?v=1.8.1" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
-        <link rel="stylesheet" href="src/styles/animations.css?v=1.8.0">
-        <link rel="stylesheet" href="src/styles/scrollbar.css?v=1.8.0">
-        <link rel="stylesheet" href="src/styles/components/waitlist.css?v=1.8.0">
+        <link rel="stylesheet" href="src/styles/animations.css?v=1.8.1">
+        <link rel="stylesheet" href="src/styles/scrollbar.css?v=1.8.1">
+        <link rel="stylesheet" href="src/styles/components/waitlist.css?v=1.8.1">
     </noscript>
 
 </head>
@@ -355,7 +355,7 @@
                     text-transform: uppercase;
                     letter-spacing: 0.08em;
                     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-                " id="gameVersionBadge">v1.8.0</span>
+                " id="gameVersionBadge">v1.8.1</span>
             </div>
         </div>
         
@@ -601,7 +601,7 @@
     <!-- ============================================ -->
 
     <!-- Modal: New Game -->
-    <div class="modal-overlay" id="newGameModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="newGameModal">
         <div class="modal-content" style="max-width: 600px !important; max-height: 90vh; overflow-y: auto;">
             <button class="modal-close-btn" onclick="document.getElementById('newGameModal').classList.remove('active');">✕</button>
             <h2 id="newGameTitle">✨ New Game</h2>
@@ -659,7 +659,7 @@
     </div>
 
     <!-- Modal: Class Selection -->
-    <div class="modal-overlay" id="classSelectionModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="classSelectionModal">
         <div class="modal-content" style="max-width: 1000px !important; width: 90vw !important; padding: 40px 30px !important;">
             <h2 id="classSelectionTitle" style="text-align: center; font-family: 'Cinzel', serif; color: #c9a961; margin-bottom: 10px;">⚔️ SELECT YOUR HERO</h2>
             <p id="classSelectionSubtitle" style="text-align: center; color: #8b7355; font-size: 0.9em; margin-bottom: 20px; min-height: 20px;"></p>
@@ -822,7 +822,7 @@
     </div>
     
     <!-- Modal: Interactive Tutorial -->
-    <div class="modal-overlay" id="interactiveTutorialModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="interactiveTutorialModal">
         <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
             <button class="modal-close-btn" onclick="document.getElementById('btnTutorialSkip').click();">✕</button>
             <h2 id="tutorialStepTitle">🎮 Interactive Tutorial</h2>
@@ -904,7 +904,7 @@
     </div>
     
     <!-- Modal: Rules Reference -->
-    <div class="modal-overlay" id="tutorialModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="tutorialModal">
         <div class="modal-content">
             <button class="modal-close-btn" onclick="document.getElementById('tutorialModal').classList.remove('active');">✕</button>
             <h2>📖 Rules Reference</h2>
@@ -1045,7 +1045,7 @@
     </div>
     
     <!-- Modal: Leaderboard -->
-    <div class="modal-overlay" id="leaderboardModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="leaderboardModal">
         <div class="modal-content" style="max-width: 700px;">
             <button class="modal-close-btn" onclick="document.getElementById('leaderboardModal').classList.remove('active');">✕</button>
             <h2>🏆 Hall of Fame (Top 10)</h2>
@@ -1087,7 +1087,7 @@
     </div>
     
     <!-- Other Modals (Shop, Event, Unlocks) - Identical structure -->
-    <div class="modal-overlay" id="shopModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="shopModal">
         <div class="modal-content">
             <button class="modal-close-btn" onclick="closeShopWrapper();">✕</button>
             <h2>🏺 Merchant's Wares</h2>
@@ -1099,7 +1099,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="eventModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="eventModal">
         <div class="modal-content">
             <button class="modal-close-btn" onclick="closeEventWrapper();">✕</button>
             <h2 id="eventTitle">🎲 Event</h2>
@@ -1109,7 +1109,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="unlocksModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="unlocksModal">
         <div class="modal-content">
             <button class="modal-close-btn" onclick="document.getElementById('unlocksModal').classList.remove('active');">✕</button>
             <h2>⭐ Permanent Upgrades</h2>
@@ -1123,7 +1123,7 @@
     
     
     <!-- Modal: Achievements -->
-    <div class="modal-overlay" id="achievementsModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="achievementsModal">
         <div class="modal-content" style="max-width: 900px;">
             <button class="modal-close-btn" onclick="document.getElementById('achievementsModal').classList.remove('active');">✕</button>
             <h2>🏆 Achievements</h2>
@@ -1140,7 +1140,7 @@
     </div>
     
     <!-- Modal: Soundboard -->
-    <div class="modal-overlay" id="soundboardModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="soundboardModal">
         <div class="modal-content" style="max-width: 600px;">
             <button class="modal-close-btn" onclick="document.getElementById('soundboardModal').classList.remove('active');">✕</button>
             <h2>🎵 Music Chamber</h2>
@@ -1195,7 +1195,7 @@
     </div>
     
     <!-- Modal: Give Up Confirmation -->
-    <div class="modal-overlay" id="giveUpModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="giveUpModal">
         <div class="modal-content" style="max-width: 500px; text-align: center;">
             <h2 style="color: #ff6b6b; margin-bottom: 20px;">⚠️ Give Up?</h2>
             <p style="color: #ddd; font-size: 1.1em; line-height: 1.6; margin-bottom: 25px;">
@@ -1210,7 +1210,7 @@
     </div>
     
     <!-- Modal: Codex (Unified) -->
-    <div class="modal-overlay" id="codexModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="codexModal">
         <div class="modal-content" style="max-width: 900px;">
             <button class="modal-close-btn" onclick="document.getElementById('codexModal').classList.remove('active');">✕</button>
             <h2>📖 CODEX</h2>
@@ -1350,7 +1350,7 @@
     </div>
     
     <!-- Modal: Version / What's New -->
-    <div class="modal-overlay" id="versionModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="versionModal">
         <div class="modal-content" style="max-width: 700px;">
             <button class="modal-close-btn" onclick="document.getElementById('versionModal').classList.remove('active');">✕</button>
             <h2>🚀 What's New in v1.8.0</h2>
@@ -1419,7 +1419,7 @@
     </div>
     
     <!-- Modal: Bug Report -->
-    <div class="modal-overlay" id="bugReportModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="bugReportModal">
         <div class="modal-content" style="max-width: 600px;">
             <button class="modal-close-btn" onclick="document.getElementById('bugReportModal').classList.remove('active'); hideHumanVerification();">✕</button>
             <h2>🐛 Report a Bug</h2>
@@ -1485,7 +1485,7 @@
     </div>
     
     <!-- Modal: Contact -->
-    <div class="modal-overlay" id="contactModal">
+    <div class="modal-overlay" role="dialog" aria-modal="true" id="contactModal">
         <div class="modal-content" style="max-width: 600px;">
             <button class="modal-close-btn" onclick="document.getElementById('contactModal').classList.remove('active'); resetContactForm();">✕</button>
             <h2>📧 Contact Developer</h2>
@@ -1584,46 +1584,46 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.8.0"></script>
+<script src="src/js/core/error-handler.js?v=1.8.1"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.8.0" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.8.1" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.8.0" defer></script>
-<script src="src/js/utils/helpers.js?v=1.8.0" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.8.0" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.8.0" defer></script>
-<script src="src/js/systems/achievements.js?v=1.8.0" defer></script>
-<script src="src/js/data/game-data.js?v=1.8.0" defer></script>
-<script src="src/js/systems/stats.js?v=1.8.0" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.8.0" defer></script>
-<script src="src/js/core/audio-context.js?v=1.8.0" defer></script>
-<script src="src/js/systems/music.js?v=1.8.0" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.8.1" defer></script>
+<script src="src/js/utils/helpers.js?v=1.8.1" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.8.1" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.8.1" defer></script>
+<script src="src/js/systems/achievements.js?v=1.8.1" defer></script>
+<script src="src/js/data/game-data.js?v=1.8.1" defer></script>
+<script src="src/js/systems/stats.js?v=1.8.1" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.8.1" defer></script>
+<script src="src/js/core/audio-context.js?v=1.8.1" defer></script>
+<script src="src/js/systems/music.js?v=1.8.1" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.4.1/dist/email.min.js" integrity="sha384-SALc35EccAf6RzGw4iNsyj7kTPr33K7RoGzYu+7heZhT8s0GZouafRiCg1qy44AS" crossorigin="anonymous" async></script>
-<script src="src/js/init-emailjs.js?v=1.8.0" defer></script>
-<script src="src/js/firebase-ready.js?v=1.8.0" defer></script>
+<script src="src/js/init-emailjs.js?v=1.8.1" defer></script>
+<script src="src/js/firebase-ready.js?v=1.8.1" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.8.0" defer></script>
+<script type="module" src="src/js/game.js?v=1.8.1" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.8.0" defer></script>
+<script src="src/js/systems/codex.js?v=1.8.1" defer></script>
 
 <!-- ADVENTURE MAP (module; exposes window.AdventureMap) -->
-<script type="module" src="src/js/modules/adventure-map.js?v=1.8.0" defer></script>
+<script type="module" src="src/js/modules/adventure-map.js?v=1.8.1" defer></script>
 <!-- ADVENTURE RUN orchestrator (classic; exposes window.AdventureRun) -->
-<script src="src/js/modules/adventure-run.js?v=1.8.0" defer></script>
+<script src="src/js/modules/adventure-run.js?v=1.8.1" defer></script>
 
 <!-- IN-GAME TUTORIAL (classic; exposes window.InGameTutorial) — loads after game.js -->
-<script src="src/js/modules/in-game-tutorial.js?v=1.8.0" defer></script>
+<script src="src/js/modules/in-game-tutorial.js?v=1.8.1" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.8.0" defer></script>
+<script src="src/js/register-sw.js?v=1.8.1" defer></script>
 
 </body>
 </html>
