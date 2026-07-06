@@ -10,7 +10,7 @@
  */
 
 // Import game state
-import { game, runRand } from './game-state.js?v=1.8.1';
+import { game, runRand } from './game-state.js?v=1.8.2';
 
 // DOM Elements (will be initialized after DOM loads)
 let relicsList;

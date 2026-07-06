@@ -19,14 +19,14 @@
 // ============================================
 // IMPORTS
 // ============================================
-import { game } from './game-state.js?v=1.8.1';
+import { game } from './game-state.js?v=1.8.2';
 import {
     CLASS_COOLDOWNS,
     POTIONS,
     COMBAT,
     HEALTH
-} from '../config/game-constants.js?v=1.8.1';
-import { ADVENTURES } from '../data/adventures.js?v=1.8.1';
+} from '../config/game-constants.js?v=1.8.2';
+import { ADVENTURES } from '../data/adventures.js?v=1.8.2';
 
 // Hero voice lines live in data/adventures.js (single source): the class-select
 // screen and the Adventure endgame must speak with the same voice.

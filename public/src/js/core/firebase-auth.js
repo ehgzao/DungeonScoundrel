@@ -52,6 +52,22 @@ async function _doLoadFirebase() {
     const firebaseConfig = typeof window.__firebase_config !== 'undefined' ? JSON.parse(window.__firebase_config) : {};
 
     const app = initializeApp(firebaseConfig);
+
+    // App Check (reCAPTCHA v3): only when a site key is configured — and never
+    // fatal: if the provider fails to load, the game still runs (Firestore
+    // requests only get rejected once enforcement is turned on server-side).
+    if (window.__appcheck_site_key) {
+        try {
+            const acMod = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app-check.js");
+            acMod.initializeAppCheck(app, {
+                provider: new acMod.ReCaptchaV3Provider(window.__appcheck_site_key),
+                isTokenAutoRefreshEnabled: true,
+            });
+        } catch (e) {
+            (window.silentError || console.error)('App Check init failed:', e);
+        }
+    }
+
     db = getFirestore(app);
     auth = getAuth(app);
     appId = typeof window.__app_id !== 'undefined' ? window.__app_id : 'default-app-id';

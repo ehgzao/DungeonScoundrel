@@ -15,3 +15,9 @@ window.__firebase_config = JSON.stringify({
 });
 
 window.__app_id = "dungeon_scoundrel_v1";
+
+// Firebase App Check (anti-abuse): paste the reCAPTCHA v3 SITE key here after
+// registering the app in Firebase Console -> App Check. Empty = App Check off
+// (the game works normally). Enforce in the console ONLY after this ships and
+// the App Check metrics show verified traffic.
+window.__appcheck_site_key = "";

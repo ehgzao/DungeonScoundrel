@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.8.1"></script>
+    <script src="src/js/core/silent-logging.js?v=1.8.2"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,17 +66,17 @@
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&display=swap"></noscript>
     
     <!-- CSS: critical (render-blocking, needed above the fold) -->
-    <link rel="stylesheet" href="src/styles/variables.css?v=1.8.1">
-    <link rel="stylesheet" href="src/styles/styles.css?v=1.8.1">
-    <link rel="stylesheet" href="src/styles/components/buttons.css?v=1.8.1">
+    <link rel="stylesheet" href="src/styles/variables.css?v=1.8.2">
+    <link rel="stylesheet" href="src/styles/styles.css?v=1.8.2">
+    <link rel="stylesheet" href="src/styles/components/buttons.css?v=1.8.2">
     <!-- CSS: non-critical (deferred to speed up FCP/LCP) -->
-    <link rel="preload" as="style" href="src/styles/animations.css?v=1.8.1" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" as="style" href="src/styles/scrollbar.css?v=1.8.1" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" as="style" href="src/styles/components/waitlist.css?v=1.8.1" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="src/styles/animations.css?v=1.8.2" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="src/styles/scrollbar.css?v=1.8.2" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="src/styles/components/waitlist.css?v=1.8.2" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
-        <link rel="stylesheet" href="src/styles/animations.css?v=1.8.1">
-        <link rel="stylesheet" href="src/styles/scrollbar.css?v=1.8.1">
-        <link rel="stylesheet" href="src/styles/components/waitlist.css?v=1.8.1">
+        <link rel="stylesheet" href="src/styles/animations.css?v=1.8.2">
+        <link rel="stylesheet" href="src/styles/scrollbar.css?v=1.8.2">
+        <link rel="stylesheet" href="src/styles/components/waitlist.css?v=1.8.2">
     </noscript>
 
 </head>
@@ -355,7 +355,7 @@
                     text-transform: uppercase;
                     letter-spacing: 0.08em;
                     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-                " id="gameVersionBadge">v1.8.1</span>
+                " id="gameVersionBadge">v1.8.2</span>
             </div>
         </div>
         
@@ -1584,46 +1584,46 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.8.1"></script>
+<script src="src/js/core/error-handler.js?v=1.8.2"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.8.1" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.8.2" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.8.1" defer></script>
-<script src="src/js/utils/helpers.js?v=1.8.1" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.8.1" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.8.1" defer></script>
-<script src="src/js/systems/achievements.js?v=1.8.1" defer></script>
-<script src="src/js/data/game-data.js?v=1.8.1" defer></script>
-<script src="src/js/systems/stats.js?v=1.8.1" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.8.1" defer></script>
-<script src="src/js/core/audio-context.js?v=1.8.1" defer></script>
-<script src="src/js/systems/music.js?v=1.8.1" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.8.2" defer></script>
+<script src="src/js/utils/helpers.js?v=1.8.2" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.8.2" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.8.2" defer></script>
+<script src="src/js/systems/achievements.js?v=1.8.2" defer></script>
+<script src="src/js/data/game-data.js?v=1.8.2" defer></script>
+<script src="src/js/systems/stats.js?v=1.8.2" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.8.2" defer></script>
+<script src="src/js/core/audio-context.js?v=1.8.2" defer></script>
+<script src="src/js/systems/music.js?v=1.8.2" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.4.1/dist/email.min.js" integrity="sha384-SALc35EccAf6RzGw4iNsyj7kTPr33K7RoGzYu+7heZhT8s0GZouafRiCg1qy44AS" crossorigin="anonymous" async></script>
-<script src="src/js/init-emailjs.js?v=1.8.1" defer></script>
-<script src="src/js/firebase-ready.js?v=1.8.1" defer></script>
+<script src="src/js/init-emailjs.js?v=1.8.2" defer></script>
+<script src="src/js/firebase-ready.js?v=1.8.2" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.8.1" defer></script>
+<script type="module" src="src/js/game.js?v=1.8.2" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.8.1" defer></script>
+<script src="src/js/systems/codex.js?v=1.8.2" defer></script>
 
 <!-- ADVENTURE MAP (module; exposes window.AdventureMap) -->
-<script type="module" src="src/js/modules/adventure-map.js?v=1.8.1" defer></script>
+<script type="module" src="src/js/modules/adventure-map.js?v=1.8.2" defer></script>
 <!-- ADVENTURE RUN orchestrator (classic; exposes window.AdventureRun) -->
-<script src="src/js/modules/adventure-run.js?v=1.8.1" defer></script>
+<script src="src/js/modules/adventure-run.js?v=1.8.2" defer></script>
 
 <!-- IN-GAME TUTORIAL (classic; exposes window.InGameTutorial) — loads after game.js -->
-<script src="src/js/modules/in-game-tutorial.js?v=1.8.1" defer></script>
+<script src="src/js/modules/in-game-tutorial.js?v=1.8.2" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.8.1" defer></script>
+<script src="src/js/register-sw.js?v=1.8.2" defer></script>
 
 </body>
 </html>
