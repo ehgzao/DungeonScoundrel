@@ -5,10 +5,17 @@ rules_version = '2';
 // (or paste into Firebase Console → Firestore → Rules → Publish)
 //
 // Rationale: the app uses anonymous auth, so "request.auth != null" alone is
-// effectively open. These rules cap the blast radius of leaderboard writes
-// (ownership + type + range) and isolate per-user cloud saves. Client-side
-// score forgery cannot be fully closed without server-authoritative scoring,
-// but spoofed-owner / malformed / absurd entries are rejected here.
+// effectively open. These rules cap the blast radius of leaderboard writes:
+//   - collection ALLOWLIST (the old {collection} wildcard accepted writes
+//     into ANY collection name under public/data — unbounded spam surface)
+//   - field allowlist via hasOnly (no arbitrary payloads up to the 1MiB
+//     document limit) + required-field set via hasAll
+//   - type AND range checks on every field (time/gold/combo previously had
+//     no range, so negative or absurd values passed)
+//   - ownership (userId == auth.uid), no client edits/deletes
+// Client-side score forgery cannot be fully closed without
+// server-authoritative scoring (known limitation); the next hardening step
+// is Firebase App Check enforcement, which needs console setup + client SDK.
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -17,20 +24,56 @@ service cloud.firestore {
     // LEADERBOARD — public read, controlled write
     // ============================================
     match /artifacts/{appId}/public/data/{collection}/{document} {
-      // Anyone may read the leaderboard (including queries)
+      // Anyone may read the leaderboards (including queries)
       allow read: if true;
 
-      // Only an authenticated client may CREATE a score it owns
+      // Only an authenticated client may CREATE a score it owns, into a
+      // known leaderboard, with exactly the fields the game submits
+      // (leaderboard.js scoreData) — nothing more, nothing absurd.
       allow create: if request.auth != null
+                    && collection in [
+                         'leaderboard_easy', 'leaderboard_normal',
+                         'leaderboard_hard', 'leaderboard_endless',
+                         'leaderboard_adventure_easy', 'leaderboard_adventure_normal',
+                         'leaderboard_adventure_hard', 'leaderboard_adventure_endless',
+                         'leaderboard_daily'
+                       ]
+                    && request.resource.data.keys().hasOnly([
+                         'name', 'score', 'userId', 'difficulty', 'time',
+                         'health', 'combo', 'gold', 'createdAt', 'day', 'seed'
+                       ])
+                    && request.resource.data.keys().hasAll([
+                         'name', 'score', 'userId', 'difficulty', 'time',
+                         'health', 'combo', 'gold', 'createdAt'
+                       ])
                     && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() >= 1
+                    && request.resource.data.name.size() <= 20
                     && request.resource.data.score is number
                     && request.resource.data.score >= 0
                     && request.resource.data.score <= 10000000
-                    && request.resource.data.name is string
-                    && request.resource.data.name.size() <= 20
+                    && request.resource.data.difficulty in ['easy', 'normal', 'hard', 'endless']
                     && request.resource.data.time is number
+                    && request.resource.data.time >= 0
+                    && request.resource.data.time <= 1000000000
+                    && request.resource.data.health is number
+                    && request.resource.data.health >= 0
+                    && request.resource.data.health <= 1000
+                    && request.resource.data.combo is number
+                    && request.resource.data.combo >= 0
+                    && request.resource.data.combo <= 100000
                     && request.resource.data.gold is number
-                    && request.resource.data.combo is number;
+                    && request.resource.data.gold >= 0
+                    && request.resource.data.gold <= 10000000
+                    && request.resource.data.createdAt is string
+                    && request.resource.data.createdAt.size() <= 40
+                    // day/seed: only on (and required for) the daily board
+                    && (collection == 'leaderboard_daily'
+                          ? (request.resource.data.day is string
+                             && request.resource.data.day.size() == 10
+                             && request.resource.data.seed is number)
+                          : (!request.resource.data.keys().hasAny(['day', 'seed'])));
 
       // No edits or deletes from clients (anti-cheat)
       allow update, delete: if false;
