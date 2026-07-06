@@ -23,9 +23,9 @@
 // ============================================
 // IMPORTS
 // ============================================
-import { game, permanentUnlocks, runRand } from './game-state.js?v=1.7.6';
-import { COMBO, COMBAT, POTIONS, BOSS, TIMING, UI } from '../config/game-constants.js?v=1.7.6';
-import { getBloodlustBonus } from './game-classes.js?v=1.7.6';
+import { game, permanentUnlocks, runRand } from './game-state.js?v=1.8.0';
+import { COMBO, COMBAT, POTIONS, BOSS, TIMING, UI } from '../config/game-constants.js?v=1.8.0';
+import { getBloodlustBonus } from './game-classes.js?v=1.8.0';
 
 // ============================================
 // COMBAT HELPER FUNCTIONS
@@ -217,7 +217,8 @@ export function handlePotion(potion, index) {
     const healBonus = window.getRelicBonus('totalHealBonus');
     // Add class bonus (Dancer: +3 HP)
     const classHealBonus = (game.classData && game.classData.passive.potionHealBonus) || 0;
-    const heal = potion.numValue + healBonus + classHealBonus;
+    const ascPotion = window.ascensionEffects ? window.ascensionEffects(game.ascension).potionDelta : 0; // A9
+    const heal = Math.max(1, potion.numValue + healBonus + classHealBonus + ascPotion);
     
     const oldHealth = game.health;
     game.health = Math.min(game.health + heal, game.maxHealth);
@@ -844,7 +845,10 @@ export function handleMonster(monster, index) {
             hard: Math.floor(runRand() * 3) + 2,    // 2-4 gold (buffed from 1-2)
             endless: Math.floor(runRand() * 3) + 2  // 2-4 gold
         };
-        const baseGold = goldByDifficulty[game.difficulty] || 2;
+        let baseGold = goldByDifficulty[game.difficulty] || 2;
+        // A7: monsters carry less gold on high Ascension
+        const goldMult = window.ascensionEffects ? window.ascensionEffects(game.ascension).goldMult : 1;
+        if (goldMult !== 1) baseGold = Math.max(1, Math.floor(baseGold * goldMult));
         window.earnGold(baseGold);
     }
     

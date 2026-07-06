@@ -17,7 +17,7 @@
 // ============================================
 // IMPORTS
 // ============================================
-import { game } from './game-state.js?v=1.7.6';
+import { game } from './game-state.js?v=1.8.0';
 
 // ============================================
 // SOUND EFFECTS DEFINITIONS

@@ -6,7 +6,7 @@
     <title>Dungeon Scoundrel - Roguelike Card Game</title>
     
     <!-- CRITICAL: Production-aware silent logging (must be first, blocking) -->
-    <script src="src/js/core/silent-logging.js?v=1.7.6"></script>
+    <script src="src/js/core/silent-logging.js?v=1.8.0"></script>
     
     <!-- Critical preconnects (before any external resources) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,17 +66,17 @@
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&display=swap"></noscript>
     
     <!-- CSS: critical (render-blocking, needed above the fold) -->
-    <link rel="stylesheet" href="src/styles/variables.css?v=1.7.6">
-    <link rel="stylesheet" href="src/styles/styles.css?v=1.7.6">
-    <link rel="stylesheet" href="src/styles/components/buttons.css?v=1.7.6">
+    <link rel="stylesheet" href="src/styles/variables.css?v=1.8.0">
+    <link rel="stylesheet" href="src/styles/styles.css?v=1.8.0">
+    <link rel="stylesheet" href="src/styles/components/buttons.css?v=1.8.0">
     <!-- CSS: non-critical (deferred to speed up FCP/LCP) -->
-    <link rel="preload" as="style" href="src/styles/animations.css?v=1.7.6" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" as="style" href="src/styles/scrollbar.css?v=1.7.6" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" as="style" href="src/styles/components/waitlist.css?v=1.7.6" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="src/styles/animations.css?v=1.8.0" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="src/styles/scrollbar.css?v=1.8.0" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="src/styles/components/waitlist.css?v=1.8.0" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
-        <link rel="stylesheet" href="src/styles/animations.css?v=1.7.6">
-        <link rel="stylesheet" href="src/styles/scrollbar.css?v=1.7.6">
-        <link rel="stylesheet" href="src/styles/components/waitlist.css?v=1.7.6">
+        <link rel="stylesheet" href="src/styles/animations.css?v=1.8.0">
+        <link rel="stylesheet" href="src/styles/scrollbar.css?v=1.8.0">
+        <link rel="stylesheet" href="src/styles/components/waitlist.css?v=1.8.0">
     </noscript>
 
 </head>
@@ -355,7 +355,7 @@
                     text-transform: uppercase;
                     letter-spacing: 0.08em;
                     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-                " id="gameVersionBadge">v1.7.6</span>
+                " id="gameVersionBadge">v1.8.0</span>
             </div>
         </div>
         
@@ -385,6 +385,9 @@
                 </div>
                 <div class="stat-display" id="top-bar-combo" title="Combo — perfect kills chain for bonus damage; breaks on damage or re-equip" role="status" style="display: none; color: #ffb347;">
                     🔥 <span class="stat-value" id="comboCount">0x</span>
+                </div>
+                <div class="stat-display" id="top-bar-ascension" title="Ascension level — the dungeon is harder, the score richer" role="status" style="display: none; color: #e8a87c;">
+                    ⛰️ <span class="stat-value" id="ascensionLevel">A1</span>
                 </div>
                 <div class="stat-display" id="top-bar-wave" title="Waves left in this encounter (Adventure)" role="status" style="display: none; color: #8fd3ff;">
                     🌊 <span class="stat-value" id="waveCount">1/2</span>
@@ -607,6 +610,11 @@
                 <input type="text" id="playerNameInput" placeholder="Enter your name" minlength="3" maxlength="10" required>
                 <div id="nameError" style="display: none; color: #ff6b6b; font-size: 0.9em; margin-top: 5px; font-weight: bold;"></div>
                 <small style="color: #aaa; font-size: 0.85em;">Minimum 3, maximum 10 characters</small>
+            </div>
+            <div class="form-group" id="ascensionRow" style="display: none;">
+                <label>⛰️ Ascension <small style="color:#a89a85;font-weight:normal;">— win at your highest level to unlock the next</small></label>
+                <div class="difficulty-selector" id="ascensionPicker" style="flex-wrap: wrap;"></div>
+                <div id="ascensionDesc" style="color:#e8a87c;font-size:0.85em;margin-top:6px;min-height:1.2em;"></div>
             </div>
             <div class="form-group">
                 <label>🔥 Difficulty</label>
@@ -1345,14 +1353,24 @@
     <div class="modal-overlay" id="versionModal">
         <div class="modal-content" style="max-width: 700px;">
             <button class="modal-close-btn" onclick="document.getElementById('versionModal').classList.remove('active');">✕</button>
-            <h2>🚀 What's New in v1.7.1</h2>
+            <h2>🚀 What's New in v1.8.0</h2>
             
             <div style="text-align: center; margin-bottom: 20px;">
-                <p style="color: #6bcf7f; font-size: 1.2em; font-weight: bold;">👹 Fair boss fights & a much faster dungeon</p>
+                <p style="color: #6bcf7f; font-size: 1.2em; font-weight: bold;">⛰️ Ascension, a deeper dungeon & fair boss fights</p>
                 <p style="color: #aaa; font-size: 0.9em;">Released: July 2, 2026</p>
             </div>
 
             <div style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
+                <div style="background: rgba(232, 168, 124, 0.10); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #e8a87c;">
+                    <h3 style="color: #e8a87c; margin-top: 0;">⛰️ Ascension (New!)</h3>
+                    <ul style="color: #ddd; line-height: 1.8; font-size: 0.95em;">
+                        <li><strong>Win an Adventure run to unlock Ascension 1</strong> — then climb: each level adds one twist of the screw (tougher bosses, meaner depths, pricier merchants…) up to A10</li>
+                        <li><strong>+10% score per level</strong> — the ladder is the leaderboard's new ceiling</li>
+                        <li><strong>Each act has its own face now:</strong> descend from the Upper Crypts into the flooded Sunken Halls and the ember-lit Black Heart</li>
+                        <li>Daily Challenge stays A0 for everyone — and is now <strong>fully seeded</strong>: same day, same class, same choices ⇒ same game</li>
+                        <li>The game is <strong>playable on mobile (beta)</strong> and <strong>works offline</strong></li>
+                    </ul>
+                </div>
                 <div style="background: rgba(255, 107, 107, 0.08); padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ff6b6b;">
                     <h3 style="color: #ff9b9b; margin-top: 0;">👹 Bosses Fight Beside Their Horde</h3>
                     <ul style="color: #ddd; line-height: 1.8; font-size: 0.95em;">
@@ -1566,46 +1584,46 @@
     <!-- Game Over Overlay (will be created via JS) -->
     
 <!-- CRITICAL: Error handler must load first (blocking) -->
-<script src="src/js/core/error-handler.js?v=1.7.6"></script>
+<script src="src/js/core/error-handler.js?v=1.8.0"></script>
 
 <!-- FIREBASE CONFIG (blocking - needed early) -->
 <script src="src/config/firebase-config.js"></script>
 
 <!-- DEFERRED SCRIPTS (non-blocking, maintain order) -->
-<script src="src/js/features/inline-scripts.js?v=1.7.6" defer></script>
+<script src="src/js/features/inline-scripts.js?v=1.8.0" defer></script>
 <!-- Firebase Auth (module) -->
-<script type="module" src="src/js/core/firebase-auth.js?v=1.7.6" defer></script>
-<script src="src/js/utils/helpers.js?v=1.7.6" defer></script>
-<script src="src/js/utils/mobile-optimization.js?v=1.7.6" defer></script>
-<script src="src/js/utils/offline-storage.js?v=1.7.6" defer></script>
-<script src="src/js/systems/achievements.js?v=1.7.6" defer></script>
-<script src="src/js/data/game-data.js?v=1.7.6" defer></script>
-<script src="src/js/systems/stats.js?v=1.7.6" defer></script>
-<script src="src/js/systems/leaderboard.js?v=1.7.6" defer></script>
-<script src="src/js/core/audio-context.js?v=1.7.6" defer></script>
-<script src="src/js/systems/music.js?v=1.7.6" defer></script>
+<script type="module" src="src/js/core/firebase-auth.js?v=1.8.0" defer></script>
+<script src="src/js/utils/helpers.js?v=1.8.0" defer></script>
+<script src="src/js/utils/mobile-optimization.js?v=1.8.0" defer></script>
+<script src="src/js/utils/offline-storage.js?v=1.8.0" defer></script>
+<script src="src/js/systems/achievements.js?v=1.8.0" defer></script>
+<script src="src/js/data/game-data.js?v=1.8.0" defer></script>
+<script src="src/js/systems/stats.js?v=1.8.0" defer></script>
+<script src="src/js/systems/leaderboard.js?v=1.8.0" defer></script>
+<script src="src/js/core/audio-context.js?v=1.8.0" defer></script>
+<script src="src/js/systems/music.js?v=1.8.0" defer></script>
 
 <!-- EMAILJS: async load CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4.4.1/dist/email.min.js" integrity="sha384-SALc35EccAf6RzGw4iNsyj7kTPr33K7RoGzYu+7heZhT8s0GZouafRiCg1qy44AS" crossorigin="anonymous" async></script>
-<script src="src/js/init-emailjs.js?v=1.7.6" defer></script>
-<script src="src/js/firebase-ready.js?v=1.7.6" defer></script>
+<script src="src/js/init-emailjs.js?v=1.8.0" defer></script>
+<script src="src/js/firebase-ready.js?v=1.8.0" defer></script>
 
 <!-- MAIN GAME (module, deferred) -->
-<script type="module" src="src/js/game.js?v=1.7.6" defer></script>
+<script type="module" src="src/js/game.js?v=1.8.0" defer></script>
 
 <!-- CODEX (loads after game.js) -->
-<script src="src/js/systems/codex.js?v=1.7.6" defer></script>
+<script src="src/js/systems/codex.js?v=1.8.0" defer></script>
 
 <!-- ADVENTURE MAP (module; exposes window.AdventureMap) -->
-<script type="module" src="src/js/modules/adventure-map.js?v=1.7.6" defer></script>
+<script type="module" src="src/js/modules/adventure-map.js?v=1.8.0" defer></script>
 <!-- ADVENTURE RUN orchestrator (classic; exposes window.AdventureRun) -->
-<script src="src/js/modules/adventure-run.js?v=1.7.6" defer></script>
+<script src="src/js/modules/adventure-run.js?v=1.8.0" defer></script>
 
 <!-- IN-GAME TUTORIAL (classic; exposes window.InGameTutorial) — loads after game.js -->
-<script src="src/js/modules/in-game-tutorial.js?v=1.7.6" defer></script>
+<script src="src/js/modules/in-game-tutorial.js?v=1.8.0" defer></script>
 
 <!-- SERVICE WORKER REGISTRATION -->
-<script src="src/js/register-sw.js?v=1.7.6" defer></script>
+<script src="src/js/register-sw.js?v=1.8.0" defer></script>
 
 </body>
 </html>

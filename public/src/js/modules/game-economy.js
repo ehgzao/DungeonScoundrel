@@ -13,7 +13,7 @@
  * @module game-economy
  */
 
-import { game, permanentUnlocks } from './game-state.js?v=1.7.6';
+import { game, permanentUnlocks } from './game-state.js?v=1.8.0';
 
 /** Combined discount multiplier from unlocks + relics (multiplicative). */
 export function shopDiscount() {
@@ -26,7 +26,8 @@ export function shopDiscount() {
 
 /** Base price → what the player actually pays (before per-mode multipliers). */
 export function discountedPrice(basePrice) {
-    return Math.max(0, Math.floor(basePrice * shopDiscount()));
+    const asc = (window.ascensionEffects ? window.ascensionEffects(game.ascension).priceMult : 1); // A3
+    return Math.max(0, Math.floor(basePrice * asc * shopDiscount()));
 }
 
 /**

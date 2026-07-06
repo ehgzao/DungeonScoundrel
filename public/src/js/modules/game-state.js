@@ -14,7 +14,7 @@ import {
     HEALTH,
     GOLD,
     GAME_MODES
-} from '../config/game-constants.js?v=1.7.6';
+} from '../config/game-constants.js?v=1.8.0';
 
 // ============================================
 // GAME STATE OBJECT
@@ -75,7 +75,8 @@ export const game = {
     criticalWarningShown: false,// low-HP warning shown once per dip below the threshold
     gameTimerPausedAt: 0,       // timer pause bookkeeping (tab hidden)
     lastDamageSource: null,     // what hurt us last — the death recap's "slain by"
-    dailyRun: null              // 'YYYY-MM-DD' while playing today's Daily Challenge, else null
+    dailyRun: null,             // 'YYYY-MM-DD' while playing today's Daily Challenge, else null
+    ascension: 0                // Adventure Ascension level (0-10); 0 outside Adventure / on Daily
 };
 
 // ============================================
@@ -162,6 +163,51 @@ export const UNLOCKS = [
     { id: 'lifeSteal', name: '🧛 Life Steal', description: 'Heal 1 HP on every perfect kill', requirement: 'Kill 100 monsters (lifetime)', check: () => getTotalStat('monstersSlain') >= 100 },
     { id: 'thornsArmor', name: '🌵 Thorns Armor', description: 'Reflect 2 damage to all attackers', requirement: 'Take 200 damage (lifetime)', check: () => getTotalStat('totalDamage') >= 200 }
 ];
+
+// ============================================
+// ASCENSION (Adventure post-Hard ladder)
+// ============================================
+// A modifier layer riding the knobs that already exist — each level stacks
+// one screw-turn. Unlock: win an Adventure run at your current highest level.
+// Daily runs are always A0 (comparable board).
+export const ASCENSION_MAX = 10;
+export const ASCENSION_DESCRIPTIONS = [
+    'The dungeon as you know it.',
+    'A1 — Bosses have 15% more health.',
+    'A2 — The depths scale faster.',
+    'A3 — Merchants charge 20% more.',
+    'A4 — Begin with 2 less max HP.',
+    'A5 — Elites hit harder.',
+    'A6 — Campfires heal less.',
+    'A7 — Monsters carry 25% less gold.',
+    'A8 — The horde regroups more fiercely.',
+    'A9 — Potions heal 1 less.',
+    'A10 — The final boss awakens fully.',
+];
+export function ascensionEffects(a) {
+    a = a || 0;
+    return {
+        bossHpMult: (1 + (a >= 1 ? 0.15 : 0)) * (a >= 10 ? 1.20 : 1),
+        depthSlope: a >= 2 ? 0.045 : 0.03,
+        priceMult: a >= 3 ? 1.20 : 1,
+        maxHpDelta: a >= 4 ? -2 : 0,
+        eliteBonus: a >= 5 ? 0.35 : 0.25,
+        campfireHeal: a >= 6 ? 0.20 : 0.30,
+        goldMult: a >= 7 ? 0.75 : 1,
+        chipWaveBase: a >= 8 ? 2 : 1,
+        potionDelta: a >= 9 ? -1 : 0,
+        bossStrikeDelta: a >= 10 ? 2 : 0,
+        scoreMult: 1 + a * 0.10,
+    };
+}
+export function ascensionUnlocked() {
+    try {
+        const v = window.storage ? window.storage.get('scoundrel_ascension', { unlocked: 0 }) : { unlocked: 0 };
+        return Math.min(ASCENSION_MAX, Math.max(0, Number(v && v.unlocked) || 0));
+    } catch (_) { return 0; }
+}
+window.ascensionEffects = ascensionEffects;
+window.ascensionUnlocked = ascensionUnlocked;
 
 // ============================================
 // RUN-SCOPED RNG

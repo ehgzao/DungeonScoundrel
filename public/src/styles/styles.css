@@ -2542,3 +2542,15 @@
     .card-value { font-size: 1.7em !important; }
     .card-suit { font-size: 1.4em !important; }
 }
+
+/* Per-act Adventure backdrops (Gemini art, style-anchored to dungeon-bg):
+   Act 1 keeps the base look; Acts 2/3 recolor the whole screen as you
+   descend — The Sunken Halls (drowned teal) and The Black Heart (ember). */
+body.adv-act-2 {
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.72)),
+        url('../../assets/images/bg-act2.webp?v=1') center center / cover no-repeat fixed;
+}
+body.adv-act-3 {
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.72)),
+        url('../../assets/images/bg-act3.webp?v=1') center center / cover no-repeat fixed;
+}

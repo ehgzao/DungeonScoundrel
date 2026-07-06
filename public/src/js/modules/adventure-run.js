@@ -59,6 +59,7 @@
             names.push('boss_act1', 'boss_act2', `boss_${game.playerClass || 'scoundrel'}`);
             const urls = names.map(n => `assets/cards/adventure/${n}.webp?v=${ver}`);
             ['campfire', 'merchant', 'chest', 'event'].forEach(s => urls.push(`assets/images/scene-${s}.webp`));
+            urls.push('assets/images/bg-act2.webp?v=1', 'assets/images/bg-act3.webp?v=1');
             const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 400));
             const loadNext = () => {
                 if (!urls.length || !game.adventureRun) return;
@@ -127,6 +128,9 @@
 
         enter(node) {
             if (window.AdventureMap) window.AdventureMap.closeScreen();
+            // Per-act combat backdrop (Gemini art): act 1 keeps the base bg
+            document.body.classList.toggle('adv-act-2', node.act === 1);
+            document.body.classList.toggle('adv-act-3', node.act === 2);
             switch (node.type) {
                 case 'combat':
                 case 'elite': return AR._combat(node);
@@ -158,7 +162,8 @@
             const node = AR._pending;
             if (typeof window.drawRoom === 'function') window.drawRoom();
             // Depth scaling: deeper nodes hit harder. Elites get an extra bump.
-            const mult = 1 + (node.tier || 0) * 0.03 + (node.type === 'elite' ? 0.25 : 0);
+            const eff = window.ascensionEffects ? window.ascensionEffects(game.ascension) : { depthSlope: 0.03, eliteBonus: 0.25 };
+            const mult = 1 + (node.tier || 0) * eff.depthSlope + (node.type === 'elite' ? eff.eliteBonus : 0);
             if (mult > 1.01 && Array.isArray(game.room)) {
                 game.room.forEach((c) => {
                     if ((c.suitName === 'clubs' || c.suitName === 'spades') && !c.isBoss && c.numValue > 0) {
@@ -178,8 +183,10 @@
 
         _boss(node) {
             AR._pending = node;
+            const asc = window.ascensionEffects ? window.ascensionEffects(game.ascension) : null;
             const baseHp = { easy: 18, normal: 26, hard: 34, endless: 26 }[game.difficulty] || 26;
-            const hp = node.type === 'finalboss' ? baseHp + 12 : baseHp + node.act * 4;
+            let hp = node.type === 'finalboss' ? baseHp + 12 : baseHp + node.act * 4;
+            if (asc) hp = Math.round(hp * asc.bossHpMult); // A1/A10
             // Illustrated boss art: per-class for the finale, generic guardian per
             // act otherwise (see tools/cards.config.mjs BOSSES + assets/cards/adventure).
             const artKey = node.type === 'finalboss'
@@ -196,7 +203,7 @@
                 // Capped retaliation for a weaponless strike (game-combat.js):
                 // numValue is an HP POOL (26-46), not a monster value — using it
                 // as damage one-shot any player who arrived without a weapon.
-                strike: node.type === 'finalboss' ? 14 : 10 + (node.act || 0) * 2,
+                strike: (node.type === 'finalboss' ? 14 : 10 + (node.act || 0) * 2) + (asc ? asc.bossStrikeDelta : 0),
             };
             game.room = [boss];
             game.lastActionWasAvoid = false;
@@ -222,7 +229,7 @@
             }
             // Same depth scaling as _drawHand, from base values (idempotent —
             // these cards recycle through the discard all run).
-            const mult = 1 + (node.tier || 0) * 0.03;
+            const mult = 1 + (node.tier || 0) * (window.ascensionEffects ? window.ascensionEffects(game.ascension).depthSlope : 0.03);
             if (mult > 1.01) {
                 draw.forEach((c) => {
                     if ((c.suitName === 'clubs' || c.suitName === 'spades') && !c.isBoss && c.numValue > 0) {
@@ -263,7 +270,7 @@
                 if (game.gameOver || game.room.length !== 1 || !game.room[0] || !game.room[0].isBoss) return;
                 // Chip escalates 50% per extra wave (capped at 2x strike): a potion-
                 // rich deck out-healed a flat chip, so stalling had no clock at all.
-                const waves = Math.max(1, AR._wavesDealt || 1);
+                const waves = Math.max(1, (AR._wavesDealt || 1) + ((window.ascensionEffects ? window.ascensionEffects(game.ascension).chipWaveBase : 1) - 1));
                 const chip = Math.min(
                     (game.room[0].strike || 10) * 2,
                     Math.ceil(((game.room[0].strike || 10) / 2) * (1 + (waves - 1) * 0.5))
@@ -280,7 +287,7 @@
         },
 
         _rest(node) {
-            const heal = Math.ceil(game.maxHealth * 0.3);
+            const heal = Math.ceil(game.maxHealth * (window.ascensionEffects ? window.ascensionEffects(game.ascension).campfireHeal : 0.3));
             // Count the worst threat still in the run deck (dungeon + discard).
             const pool = [...(game.dungeon || []), ...(game.discardPile || [])];
             const monsters = pool.filter(c => (c.suitName === 'clubs' || c.suitName === 'spades') && !c.isBoss);
