@@ -5,6 +5,13 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.4] - 2026-07-06 - Mobile gameplay pass 2
+
+User-reported: cards the wrong size, screen shifting, unpleasant play on phones. Root causes fixed (portrait <=600px):
+- **Toasts no longer resize the board** — the message area was in-flow on mobile (every toast pushed score/weapon/controls/cards down); now a fixed overlay, layout never moves.
+- **Cards size to the viewport** (clamp 72-96px): a 4-card room always fits one row on any phone; 5-card boss waves wrap into a second row instead of being clipped by the old fixed 160px bottom bar.
+- **One simple scrollable column** — no fixed-positioned panels fighting each other; compact top bar (volume slider hidden), compact score/controls; the room pins to the bottom for thumb reach.
+
 ## [1.7.3] - 2026-07-06 - Repeat visits: instant
 
 - **Every first-party JS/CSS URL is now version-addressed** — including the ES-module import specifiers and stylesheet links that were unversioned — so /src/* is served immutable again. Repeat visits stop paying ~30 conditional-GET round-trips (the interim must-revalidate cost from v1.7.0's correctness fix) while keeping the guarantee that every release reaches every player atomically.
