@@ -10,9 +10,9 @@
  */
 
 // Import game state
-import { game } from './game-state.js';
-import { GOLD } from '../config/game-constants.js';
-import { shopDiscount, recordPurchase } from './game-economy.js';
+import { game } from './game-state.js?v=1.7.3';
+import { GOLD } from '../config/game-constants.js?v=1.7.3';
+import { shopDiscount, recordPurchase } from './game-economy.js?v=1.7.3';
 
 // DOM Elements (will be initialized after DOM loads)
 let shopModal, shopItems, shopGoldAmount;

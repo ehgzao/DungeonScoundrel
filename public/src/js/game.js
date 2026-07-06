@@ -27,7 +27,7 @@ import {
     SPECIAL_CARDS,
     COMBAT,
     LUCKY_DRAW
-} from './config/game-constants.js';
+} from './config/game-constants.js?v=1.7.3';
 
 // Import game state module
 import {
@@ -37,14 +37,14 @@ import {
     UNLOCKS,
     seedRunRng,
     runRand
-} from './modules/game-state.js';
+} from './modules/game-state.js?v=1.7.3';
 
 // Import game events module
 import {
     triggerRandomEvent,
     showEventModal,
     closeEventWrapper
-} from './modules/game-events.js';
+} from './modules/game-events.js?v=1.7.3';
 
 // Import game shop module
 import {
@@ -52,7 +52,7 @@ import {
     buyItem,
     openShop,
     closeShop
-} from './modules/game-shop.js';
+} from './modules/game-shop.js?v=1.7.3';
 
 // Import game relics module
 import {
@@ -61,7 +61,7 @@ import {
     giveRareRelic,
     updateRelicsDisplay,
     getRelicBonus
-} from './modules/game-relics.js';
+} from './modules/game-relics.js?v=1.7.3';
 
 // Import game classes module
 import {
@@ -73,10 +73,10 @@ import {
     updateAbilityUI,
     startGameWithClass,
     getPassiveIcons
-} from './modules/game-classes.js';
+} from './modules/game-classes.js?v=1.7.3';
 
 // Import game sounds module
-import { playSound } from './modules/game-sounds.js';
+import { playSound } from './modules/game-sounds.js?v=1.7.3';
 
 // Import game deck module
 import { 
@@ -84,7 +84,7 @@ import {
     createDeck, 
     shuffleDeck, 
     balanceEasyModeDeck 
-} from './modules/game-deck.js';
+} from './modules/game-deck.js?v=1.7.3';
 
 // Import game combat module
 import {
@@ -99,7 +99,7 @@ import {
     saveGameState,
     undoLastMove,
     handleCardClick
-} from './modules/game-combat.js';
+} from './modules/game-combat.js?v=1.7.3';
 
 // ============================================
 // DOM ELEMENTS
