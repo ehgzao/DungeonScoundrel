@@ -19,8 +19,8 @@
 // ============================================
 // IMPORTS
 // ============================================
-import { game, runRand } from './game-state.js?v=1.8.0';
-import { SPECIAL_CARDS, LUCKY_DRAW } from '../config/game-constants.js?v=1.8.0';
+import { game, runRand } from './game-state.js?v=1.8.1';
+import { SPECIAL_CARDS, LUCKY_DRAW } from '../config/game-constants.js?v=1.8.1';
 
 // ============================================
 // SPECIAL CARDS DEFINITIONS

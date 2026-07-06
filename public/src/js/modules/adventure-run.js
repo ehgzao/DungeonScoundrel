@@ -105,8 +105,8 @@
                     <p style="color:#cbb892;text-align:center;margin-top:-4px;">A branching descent. You choose the path; every run is different.</p>
                     <ul style="color:#ddd;line-height:1.7;font-size:0.95em;padding-left:18px;margin:14px 0;">
                         <li><strong>Pick a node</strong> each step — only connected nodes ahead are selectable (hover for a tooltip).</li>
-                        <li>⚔️ Battle &nbsp; 💀 Elite (drops a relic) &nbsp; ❓ Event (real choices) &nbsp; 🏛️ Merchant</li>
-                        <li>🔥 Campfire — <strong>heal OR cull</strong> a threat from your deck (pick one). &nbsp; 🎁 Treasure — some chests are <strong>cursed</strong>: big reward, but a curse joins your deck.</li>
+                        <li>⚔️ Battle &nbsp; 💀 Elite (drops a relic — fights one wave longer) &nbsp; ❓ Event (real choices) &nbsp; 🏛️ Merchant</li>
+                        <li>🔥 Campfire — <strong>heal OR cull</strong> a threat from your deck (pick one). &nbsp; 🎁 Treasure — some chests are <strong>cursed</strong> (likelier the deeper you go): big reward, but a curse joins your deck.</li>
                         <li><strong>Difficulty = waves</strong> per encounter: Easy 1 · Normal 2 · Hard 3.</li>
                         <li>Your <strong>deck persists</strong> all run — cull threats, buy cards, sharpen weapons to build it.</li>
                         <li><strong>Bosses fight beside their horde</strong> — your deck deals cards into the fight, so a weapon is always within reach… for a price.</li>
@@ -145,13 +145,16 @@
         },
 
         // Number of hands (rooms) a combat encounter lasts, by difficulty.
-        _handsFor() {
-            return { easy: 1, normal: 2, hard: 3, endless: 2 }[game.difficulty] || 1;
+        // Elites fight one wave longer: the relic was nearly free (+0.25
+        // scaling only), making "take every elite" the dominant line.
+        _handsFor(node) {
+            const base = { easy: 1, normal: 2, hard: 3, endless: 2 }[game.difficulty] || 1;
+            return base + (node && node.type === 'elite' ? 1 : 0);
         },
 
         _combat(node) {
             AR._pending = node;
-            AR._handsTotal = AR._handsFor();
+            AR._handsTotal = AR._handsFor(node);
             AR._handsDone = 0;
             AR._drawHand();
         },
@@ -366,9 +369,9 @@
         },
 
         _treasure(node) {
-            // ADV-6: ~35% of treasures are CURSED chests — a real risk/reward
-            // decision instead of a free reward.
-            if (rnd() < 0.35) return AR._cursedChest(node);
+            // ADV-6: cursed-chest odds DEEPEN with the acts (30% / 45% / 60%)
+            // — a fixed 35% made deep treasure a near-free relic grab.
+            if (rnd() < 0.30 + (node.act || 0) * 0.15) return AR._cursedChest(node);
             const gold = 10 + node.tier * 2;
             if (window.earnGold) window.earnGold(gold); else game.gold += gold;
             if (window.updateUI) window.updateUI();

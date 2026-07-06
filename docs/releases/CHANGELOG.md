@@ -5,6 +5,20 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.1] - 2026-07-06 - Map tension + accessibility + unit tests
+
+### Balance (audit: "take every elite/treasure" was the dominant line)
+- **Elites fight one wave longer** — the relic reward finally has an attrition price (was only +0.25 depth scaling).
+- **Cursed-chest odds deepen with the acts: 30% / 45% / 60%** (was a flat 35%) — deep treasure is a real gamble now. Adventure intro copy updated.
+
+### Accessibility
+- **Shift+1..5 holds a card** — Hold was pointer-only (right-click / long-press).
+- **All 15 static modals announce as dialogs** (`role="dialog" aria-modal="true"`).
+
+### Testing & housekeeping
+- **`tests/unit.mjs`** — table-driven tests for the pure game math (ascension effects, seeded RNG determinism, shop pricing), wired into the smoke CI workflow. Its first run caught a real latent bug:
+- **Removed the broken default export in `game-constants.js`** — it referenced `EVENTS`/`RELICS`/`ACHIEVEMENTS` that don't exist in the file and only evaluated in the browser by accident (game-data.js defines them as window globals first; in Node it threw). Nothing imported it.
+
 ## [1.8.0] - 2026-07-06 - Ascension Update
 
 ### Added

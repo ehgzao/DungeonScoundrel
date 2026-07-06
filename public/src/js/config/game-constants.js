@@ -478,28 +478,8 @@ export const SPECIAL_EFFECTS = {
     LUCKY_DRAW_CARDS: 3
 };
 
-// ============================================
-// EXPORT ALL
-// ============================================
-export default {
-    EVENT_CONFIG,
-    COMBO,
-    BOSS,
-    DIFFICULTY,
-    EVENTS,
-    POTIONS,
-    RELICS,
-    ACHIEVEMENTS,
-    UI,
-    TIMING,
-    SHOP_PRICES,
-    SHOP_VALUES,
-    CLASS_COOLDOWNS,
-    KEYS,
-    STORAGE_KEYS,
-    GAME_MODES,
-    CARD_TYPES,
-    SUITS,
-    LOG_TYPES,
-    MESSAGE_TYPES
-};
+// NOTE: the old `export default {...}` was removed — it referenced EVENTS/
+// RELICS/ACHIEVEMENTS that don't exist in this file and only evaluated in
+// the browser by ACCIDENT (game-data.js defines them as window globals
+// before this module runs; in Node it threw). Nothing imported the default.
+

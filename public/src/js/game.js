@@ -27,7 +27,7 @@ import {
     SPECIAL_CARDS,
     COMBAT,
     LUCKY_DRAW
-} from './config/game-constants.js?v=1.8.0';
+} from './config/game-constants.js?v=1.8.1';
 
 // Import game state module
 import {
@@ -41,14 +41,14 @@ import {
     ascensionUnlocked,
     ASCENSION_MAX,
     ASCENSION_DESCRIPTIONS
-} from './modules/game-state.js?v=1.8.0';
+} from './modules/game-state.js?v=1.8.1';
 
 // Import game events module
 import {
     triggerRandomEvent,
     showEventModal,
     closeEventWrapper
-} from './modules/game-events.js?v=1.8.0';
+} from './modules/game-events.js?v=1.8.1';
 
 // Import game shop module
 import {
@@ -56,7 +56,7 @@ import {
     buyItem,
     openShop,
     closeShop
-} from './modules/game-shop.js?v=1.8.0';
+} from './modules/game-shop.js?v=1.8.1';
 
 // Import game relics module
 import {
@@ -65,7 +65,7 @@ import {
     giveRareRelic,
     updateRelicsDisplay,
     getRelicBonus
-} from './modules/game-relics.js?v=1.8.0';
+} from './modules/game-relics.js?v=1.8.1';
 
 // Import game classes module
 import {
@@ -77,10 +77,10 @@ import {
     updateAbilityUI,
     startGameWithClass,
     getPassiveIcons
-} from './modules/game-classes.js?v=1.8.0';
+} from './modules/game-classes.js?v=1.8.1';
 
 // Import game sounds module
-import { playSound } from './modules/game-sounds.js?v=1.8.0';
+import { playSound } from './modules/game-sounds.js?v=1.8.1';
 
 // Import game deck module
 import { 
@@ -88,7 +88,7 @@ import {
     createDeck, 
     shuffleDeck, 
     balanceEasyModeDeck 
-} from './modules/game-deck.js?v=1.8.0';
+} from './modules/game-deck.js?v=1.8.1';
 
 // Import game combat module
 import {
@@ -103,7 +103,7 @@ import {
     saveGameState,
     undoLastMove,
     handleCardClick
-} from './modules/game-combat.js?v=1.8.0';
+} from './modules/game-combat.js?v=1.8.1';
 
 // ============================================
 // DOM ELEMENTS
@@ -793,6 +793,15 @@ document.addEventListener('keydown', (e) => {
     // Only in-game shortcuts below
     if (!gameWrapper.classList.contains('active') || game.gameOver) return;
     
+    // Shift+1..5 = HOLD that card (Hold was pointer-only: right-click /
+    // long-press). e.code because Shift turns '1' into '!' on most layouts.
+    if (e.shiftKey && /^Digit[1-5]$/.test(e.code)) {
+        e.preventDefault();
+        const i = parseInt(e.code.slice(5), 10) - 1;
+        if (!game.gameOver && game.room && game.room[i]) holdCard(game.room[i], i);
+        return;
+    }
+
     switch(e.key.toLowerCase()) {
         case ' ': // Space - Enter Chamber
         case KEYS.DRAW:
