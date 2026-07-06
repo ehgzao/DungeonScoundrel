@@ -168,3 +168,13 @@
     color: #6bcf7f;
     margin-top: 20px;
 }
+
+/* Soft-gate: waitlist is the secondary action now — Play Now is primary */
+.waitlist-btn-secondary {
+    background: transparent;
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    color: #ffd700;
+}
+.waitlist-btn-secondary:hover {
+    background: rgba(255, 215, 0, 0.12);
+}
