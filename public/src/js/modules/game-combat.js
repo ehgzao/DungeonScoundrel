@@ -23,9 +23,9 @@
 // ============================================
 // IMPORTS
 // ============================================
-import { game, permanentUnlocks, runRand } from './game-state.js?v=1.8.2';
-import { COMBO, COMBAT, POTIONS, BOSS, TIMING, UI } from '../config/game-constants.js?v=1.8.2';
-import { getBloodlustBonus } from './game-classes.js?v=1.8.2';
+import { game, permanentUnlocks, runRand } from './game-state.js?v=1.8.3';
+import { COMBO, COMBAT, POTIONS, BOSS, TIMING, UI } from '../config/game-constants.js?v=1.8.3';
+import { getBloodlustBonus } from './game-classes.js?v=1.8.3';
 
 // ============================================
 // COMBAT HELPER FUNCTIONS

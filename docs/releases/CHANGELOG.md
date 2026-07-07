@@ -5,6 +5,10 @@ All notable changes to Dungeon Scoundrel will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.3] - 2026-07-07 - App Check live (unenforced)
+
+- reCAPTCHA v3 site key configured — every Firebase load now initializes App Check and attests requests. **Enforcement stays OFF** in the console until the App Check metrics show verified traffic (enforcing early would reject players still on cached old versions).
+
 ## [1.8.2] - 2026-07-06 - App Check scaffolding + Classic event voice
 
 - **Firebase App Check pre-wired** (anti-abuse, next real security step): `firebase-auth.js` initializes reCAPTCHA v3 App Check when `window.__appcheck_site_key` (in `src/config/firebase-config.js`) is non-empty — empty means fully off, the game runs unchanged. Enabling it is now: register in Firebase Console, paste one string, deploy, watch metrics, then enforce. CSP extended for `www.google.com` (reCAPTCHA script + frame); `/src/config/*` gets a must-revalidate cache rule (it is unversioned — a pasted key must reach players immediately).

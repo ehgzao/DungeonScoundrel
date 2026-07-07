@@ -20,4 +20,4 @@ window.__app_id = "dungeon_scoundrel_v1";
 // registering the app in Firebase Console -> App Check. Empty = App Check off
 // (the game works normally). Enforce in the console ONLY after this ships and
 // the App Check metrics show verified traffic.
-window.__appcheck_site_key = "";
+window.__appcheck_site_key = "6Lf6MkgtAAAAADH3fclbYb1xP-EjUtVxjtcU4BxL"; // reCAPTCHA v3 SITE key (public by design)
