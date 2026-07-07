@@ -10,7 +10,7 @@
    top via window.AdventureMap.
    ============================================ */
 
-import { ACTS, ADVENTURES, adventureFor } from '../data/adventures.js?v=1.8.2';
+import { ACTS, ADVENTURES, adventureFor } from '../data/adventures.js?v=1.8.3';
 
 // Node types and their map glyphs.
 export const NODE_TYPES = {
